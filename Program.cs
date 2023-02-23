@@ -2,7 +2,6 @@
 using MediaToolkit.Options;
 using MediaToolkit;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using ImageMagick;
 using Bulk_Thumbnail_Creator;
@@ -16,42 +15,23 @@ namespace BTC_Prototype
 			Directory.CreateDirectory(BTCSettings.outputDir);
 			Directory.CreateDirectory(BTCSettings.textAddedDir);
 
-			var inputFile = new MediaFile { Filename = "..\\..\\testvideo.mp4" };
-			int interval = 15;
-			List<string> FilePaths = new List<string>();
+			var inputFile = new MediaFile { Filename = BTCSettings.pathToVideo };
 
 			// creates 10 images from a mediafile
 			for (int i = 0; i < 10; i++)
 			{
 				var outputFileName = new MediaFile { Filename = $"output/{i + 1}.jpeg" };
 
-				GrabThumbNail(inputFile, outputFileName, interval);
-				interval += 15;
+				GrabThumbNail(inputFile, outputFileName, BTCSettings.intervalBetweenThumbnails);
+				
+				// increases the interval between pictures by 15 seconds
+				BTCSettings.IncreaseInterval();
 
-				FilePaths.Add(outputFileName.Filename);
+				BTCSettings.FilePaths.Add(outputFileName.Filename);
 			}
 
-			List<MagickReadSettings> listOfSettingsForText = new List<MagickReadSettings>();
-
-
-			var settingsTextOne = new MagickReadSettings
-			{
-				Font = "italic",
-				FillColor = MagickColors.Tan,
-				StrokeColor = MagickColors.Tan,
-				FontStyle = FontStyleType.Bold,
-				FontPointsize = 200,
-				FontWeight = FontWeight.Bold,
-				BackgroundColor = MagickColors.Transparent,
-				Height = 1850, // height of text box
-				Width = 1500, // width of text box
-
-			};
-
-			listOfSettingsForText.Add(settingsTextOne);
-
 			Random RandomSettings = new Random();
-			foreach (string filepath in FilePaths)
+			foreach (string filepath in BTCSettings.FilePaths)
 			{
 				string filepathCorrected = filepath.TrimStart('o', 'u', 't', 'p', 'u', 't', '/');
 				string textAddedPath = $"text added/{filepathCorrected}";
@@ -62,7 +42,7 @@ namespace BTC_Prototype
 				// which automatically resizes the text to best
 				// fit within the box.
 
-				var settings = listOfSettingsForText[RandomSettings.Next(listOfSettingsForText.Count)];
+				var settings = BTCSettings.listOfSettingsForText[RandomSettings.Next(BTCSettings.listOfSettingsForText.Count)];
 
 				using (var image = new MagickImage(pathToBackgroundImage))
 				{
