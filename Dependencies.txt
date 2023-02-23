@@ -1,0 +1,3 @@
+﻿ImageMagick
+MediaToolKit
+Magick.NET-Q16-AnyCPU
