@@ -73,7 +73,7 @@ namespace Bulk_Thumbnail_Creator
 					FontWeight = FontWeight.Bold,
 					BackgroundColor = MagickColors.Transparent,
 					Height = 1850, // height of text box
-					Width = 1500, // width of text box
+					Width = 1900, // width of text box
 
 				};
 

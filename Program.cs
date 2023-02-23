@@ -41,7 +41,7 @@ namespace BTC_Prototype
 				string filepathCorrected = filepath.TrimStart('o', 'u', 't', 'p', 'u', 't', '/');
 				string textAddedPath = $"text added/{filepathCorrected}";
 				var pathToBackgroundImage = filepath;
-				var textToWrite = "WHAT?!";
+				var textToWrite = "I beg Your Pardon?????";
 				using (var image = new MagickImage(pathToBackgroundImage))
 				{
 					MagickReadSettings settings = BTCSettings.listOfSettingsForText[x];
