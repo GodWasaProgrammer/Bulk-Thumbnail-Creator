@@ -15,6 +15,9 @@ namespace BTC_Prototype
 			Directory.CreateDirectory(BTCSettings.outputDir);
 			Directory.CreateDirectory(BTCSettings.textAddedDir);
 
+			BTCSettings.AddSettings();
+
+
 			var inputFile = new MediaFile { Filename = BTCSettings.pathToVideo };
 
 			// creates 10 images from a mediafile
@@ -23,7 +26,7 @@ namespace BTC_Prototype
 				var outputFileName = new MediaFile { Filename = $"output/{i + 1}.jpeg" };
 
 				GrabThumbNail(inputFile, outputFileName, BTCSettings.intervalBetweenThumbnails);
-				
+
 				// increases the interval between pictures by 15 seconds
 				BTCSettings.IncreaseInterval();
 
@@ -31,16 +34,13 @@ namespace BTC_Prototype
 			}
 
 			Random RandomSettings = new Random();
+
 			foreach (string filepath in BTCSettings.FilePaths)
 			{
 				string filepathCorrected = filepath.TrimStart('o', 'u', 't', 'p', 'u', 't', '/');
 				string textAddedPath = $"text added/{filepathCorrected}";
 				var pathToBackgroundImage = filepath;
 				var textToWrite = "WHAT?!";
-
-				// These settings will create a new caption
-				// which automatically resizes the text to best
-				// fit within the box.
 
 				var settings = BTCSettings.listOfSettingsForText[RandomSettings.Next(BTCSettings.listOfSettingsForText.Count)];
 
@@ -51,7 +51,8 @@ namespace BTC_Prototype
 						// Add the caption layer on top of the background image
 
 						var size = new MagickGeometry(1280, 720);
-						image.Composite(caption, 50, 100, CompositeOperator.Over);
+						image.Composite(caption, BTCSettings.positionoftextonHorizontalAxis, BTCSettings.positionoftextonVerticalAxis, CompositeOperator.Over);
+						image.Composite(caption, BTCSettings.positionoftextonHorizontalAxis, BTCSettings.LowerPositionHorizontalAxis, CompositeOperator.Over);
 						image.Resize(size);
 						image.Write(textAddedPath);
 

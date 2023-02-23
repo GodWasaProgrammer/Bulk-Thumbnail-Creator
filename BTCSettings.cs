@@ -1,14 +1,26 @@
 ﻿using ImageMagick;
 using System.Collections.Generic;
+using System.IO;
 using System.Xml.Serialization;
 
 namespace Bulk_Thumbnail_Creator
 {
+	
 	public class BTCSettings
 	{
 		// directories to create 
 		public static string outputDir = "output";
 		public static string textAddedDir = "text added";
+
+		// horizontal positioning of text composition
+		public static int positionoftextonHorizontalAxis = 0;
+
+		// vertical position of text composition
+		public static int positionoftextonVerticalAxis = 0;
+
+		public static int LowerPositionHorizontalAxis = 850;
+
+		const string PATH = "TextPrintSettings.xml";
 
 		// path to the video to take thumbnails from
 		public static string pathToVideo = "..\\..\\testvideo.mp4";
@@ -22,7 +34,7 @@ namespace Bulk_Thumbnail_Creator
 		// list of created Presets for printing text to image
 		public static List<MagickReadSettings> listOfSettingsForText = new List<MagickReadSettings>();
 
-		XmlSerializer serializer = new XmlSerializer(typeof(MagickReadSettings));
+		// static XmlSerializer serializer = new XmlSerializer(typeof(MagickReadSettings));
 
 		public static void IncreaseInterval()
 		{
@@ -34,8 +46,9 @@ namespace Bulk_Thumbnail_Creator
 			MagickReadSettings settingsTextOne = new MagickReadSettings
 			{
 				Font = "italic",
-				FillColor = MagickColors.Tan,
+				FillColor = MagickColors.Blue,
 				StrokeColor = MagickColors.Tan,
+				BorderColor = MagickColors.Black,
 				FontStyle = FontStyleType.Bold,
 				FontPointsize = 200,
 				FontWeight = FontWeight.Bold,
@@ -46,6 +59,16 @@ namespace Bulk_Thumbnail_Creator
 			};
 
 			listOfSettingsForText.Add(settingsTextOne);
+
+		}
+
+		public static void WriteToXML()
+		{
+			// writes our written quiz to our xml QuizSheet.xml
+			using (FileStream file = File.OpenWrite(PATH))
+			{
+				// serializer.Serialize(file, listOfSettingsForText);
+			}
 
 		}
 	}
