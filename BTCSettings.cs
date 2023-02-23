@@ -1,16 +1,18 @@
 ﻿using ImageMagick;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 
 namespace Bulk_Thumbnail_Creator
 {
-	
+
 	public class BTCSettings
 	{
 		// directories to create 
 		public static string outputDir = "output";
 		public static string textAddedDir = "text added";
+		public static int MaxRGB = 256;
 
 		// horizontal positioning of text composition
 		public static int positionoftextonHorizontalAxis = 0;
@@ -36,42 +38,50 @@ namespace Bulk_Thumbnail_Creator
 
 		// static XmlSerializer serializer = new XmlSerializer(typeof(MagickReadSettings));
 
+		static Random colorRandom = new Random();
+
 		public static void IncreaseInterval()
 		{
 			intervalBetweenThumbnails += 15;
 		}
 
-		public static void AddSettings()
+		internal static MagickColor RandomizeColor()
 		{
-			MagickReadSettings settingsTextOne = new MagickReadSettings
-			{
-				Font = "italic",
-				FillColor = MagickColors.Blue,
-				StrokeColor = MagickColors.Tan,
-				BorderColor = MagickColors.Black,
-				FontStyle = FontStyleType.Bold,
-				FontPointsize = 200,
-				FontWeight = FontWeight.Bold,
-				BackgroundColor = MagickColors.Transparent,
-				Height = 1850, // height of text box
-				Width = 1500, // width of text box
+			byte pickedColorRedRGB = (byte)colorRandom.Next(MaxRGB);
+			byte pickedColorGreenRGB = (byte)colorRandom.Next(MaxRGB);
+			byte pickedColorBlueRGB = (byte)colorRandom.Next(MaxRGB);
+			// byte pickedColorAlphaRGB = (byte)colorRandom.Next(MaxRGB);
 
-			};
+			MagickColor colorRNGPicked = new MagickColor();
 
-			listOfSettingsForText.Add(settingsTextOne);
+			colorRNGPicked = MagickColor.FromRgba(pickedColorRedRGB, pickedColorGreenRGB, pickedColorBlueRGB, 255);
 
+			return colorRNGPicked;
 		}
-
-		public static void WriteToXML()
+		public static void RandomizeTextColorSettings()
 		{
-			// writes our written quiz to our xml QuizSheet.xml
-			using (FileStream file = File.OpenWrite(PATH))
+			foreach (string filepath in FilePaths)
 			{
-				// serializer.Serialize(file, listOfSettingsForText);
+				MagickReadSettings settingsTextRandom = new MagickReadSettings
+				{
+					Font = "italic",
+					FillColor = RandomizeColor(),
+					StrokeColor = RandomizeColor(),
+					BorderColor = RandomizeColor(),
+					FontStyle = FontStyleType.Bold,
+					FontPointsize = 200,
+					FontWeight = FontWeight.Bold,
+					BackgroundColor = MagickColors.Transparent,
+					Height = 1850, // height of text box
+					Width = 1500, // width of text box
+
+				};
+
+				listOfSettingsForText.Add(settingsTextRandom);
 			}
 
 		}
+
 	}
 
-	
 }

@@ -10,12 +10,11 @@ namespace BTC_Prototype
 {
 	public class Program
 	{
+		static readonly Random RandomSettings = new Random();
 		public static void Main()
 		{
 			Directory.CreateDirectory(BTCSettings.outputDir);
 			Directory.CreateDirectory(BTCSettings.textAddedDir);
-
-			BTCSettings.AddSettings();
 
 
 			var inputFile = new MediaFile { Filename = BTCSettings.pathToVideo };
@@ -33,7 +32,9 @@ namespace BTC_Prototype
 				BTCSettings.FilePaths.Add(outputFileName.Filename);
 			}
 
-			Random RandomSettings = new Random();
+			BTCSettings.RandomizeTextColorSettings();
+
+			int x = 0;
 
 			foreach (string filepath in BTCSettings.FilePaths)
 			{
@@ -41,11 +42,9 @@ namespace BTC_Prototype
 				string textAddedPath = $"text added/{filepathCorrected}";
 				var pathToBackgroundImage = filepath;
 				var textToWrite = "WHAT?!";
-
-				var settings = BTCSettings.listOfSettingsForText[RandomSettings.Next(BTCSettings.listOfSettingsForText.Count)];
-
 				using (var image = new MagickImage(pathToBackgroundImage))
 				{
+					MagickReadSettings settings = BTCSettings.listOfSettingsForText[x];
 					using (var caption = new MagickImage($"label:{textToWrite}", settings))
 					{
 						// Add the caption layer on top of the background image
@@ -55,9 +54,8 @@ namespace BTC_Prototype
 						image.Composite(caption, BTCSettings.positionoftextonHorizontalAxis, BTCSettings.LowerPositionHorizontalAxis, CompositeOperator.Over);
 						image.Resize(size);
 						image.Write(textAddedPath);
-
 					}
-
+					x++;
 				}
 
 			}
@@ -75,7 +73,6 @@ namespace BTC_Prototype
 
 				// fetches image, creates it.
 				engine.GetThumbnail(inputFile, outputFile, options);
-
 			}
 
 		}
