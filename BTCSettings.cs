@@ -42,7 +42,7 @@ namespace Bulk_Thumbnail_Creator
 
 		public static void IncreaseInterval()
 		{
-			intervalBetweenThumbnails += 15;
+			intervalBetweenThumbnails += 5;
 		}
 
 		internal static MagickColor RandomizeColor()
@@ -58,7 +58,7 @@ namespace Bulk_Thumbnail_Creator
 
 			return colorRNGPicked;
 		}
-		public static void RandomizeTextColorSettings()
+		public static void GenerateColorSettings()
 		{
 			foreach (string filepath in FilePaths)
 			{
@@ -69,12 +69,13 @@ namespace Bulk_Thumbnail_Creator
 					StrokeColor = RandomizeColor(),
 					BorderColor = RandomizeColor(),
 					FontStyle = FontStyleType.Bold,
+					StrokeAntiAlias = true,
+					StrokeWidth = 10,
 					FontPointsize = 200,
 					FontWeight = FontWeight.Bold,
 					BackgroundColor = MagickColors.Transparent,
 					Height = 1850, // height of text box
 					Width = 1900, // width of text box
-
 				};
 
 				listOfSettingsForText.Add(settingsTextRandom);
