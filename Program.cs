@@ -20,7 +20,7 @@ namespace BTC_Prototype
 			var inputFile = new MediaFile { Filename = BTCSettings.pathToVideo };
 
 			// creates 10 images from a mediafile
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < BTCSettings.numberOfThumbnails; i++)
 			{
 				var outputFileName = new MediaFile { Filename = $"output/{i + 1}.jpeg" };
 
@@ -32,7 +32,7 @@ namespace BTC_Prototype
 				BTCSettings.FilePaths.Add(outputFileName.Filename);
 			}
 
-			BTCSettings.RandomizeTextColorSettings();
+			BTCSettings.GenerateColorSettings();
 
 			int x = 0;
 
@@ -41,7 +41,7 @@ namespace BTC_Prototype
 				string filepathCorrected = filepath.TrimStart('o', 'u', 't', 'p', 'u', 't', '/');
 				string textAddedPath = $"text added/{filepathCorrected}";
 				var pathToBackgroundImage = filepath;
-				var textToWrite = "I beg Your Pardon?????";
+				var textToWrite = "I beg Your Pardon?";
 				using (var image = new MagickImage(pathToBackgroundImage))
 				{
 					MagickReadSettings settings = BTCSettings.listOfSettingsForText[x];
