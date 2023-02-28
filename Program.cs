@@ -11,7 +11,7 @@ namespace BTC_Prototype
 			Directory.CreateDirectory(BTCSettings.outputDir);
 			Directory.CreateDirectory(BTCSettings.textAddedDir);
 
-			// creates 10 images from a mediafile
+			// creates x images from a mediafile
 			for (int i = 0; i < BTCSettings.numberOfThumbnails; i++)
 			{
 				Logic.ExtractThumbnails(i);

@@ -67,6 +67,9 @@
   <ItemGroup>
     <Content Include="Dependencies.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DankMemeStash\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\Magick.NET-Q16-AnyCPU.12.3.0\build\netstandard20\Magick.NET-Q16-AnyCPU.targets" Condition="Exists('packages\Magick.NET-Q16-AnyCPU.12.3.0\build\netstandard20\Magick.NET-Q16-AnyCPU.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -7,10 +7,13 @@ namespace Bulk_Thumbnail_Creator
 	{
 		// directories to create 
 		public static string outputDir = "output";
+
 		public static string textAddedDir = "text added";
+
 		public static int MaxRGB = 256;
 
 		public static string textToWrite = "Check out BTC!";
+
 		public static int numberOfThumbnails = 25;
 
 		// horizontal positioning of text composition

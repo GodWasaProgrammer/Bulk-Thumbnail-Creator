@@ -8,7 +8,7 @@ namespace Bulk_Thumbnail_Creator
 {
 	public class UI
 	{
-		public static int NumberOfThumbNails()
+		public static int TakeNumberOfThumbNails()
 		{
 			bool isParsable;
 			int inputAsInt;

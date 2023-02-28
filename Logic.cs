@@ -32,6 +32,7 @@ namespace Bulk_Thumbnail_Creator
 						image.Resize(size);
 						image.Write(textAddedPath);
 					}
+
 				}
 
 			}
