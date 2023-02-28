@@ -18,7 +18,7 @@ namespace Bulk_Thumbnail_Creator
 				string filepathCorrected = filepath.TrimStart('o', 'u', 't', 'p', 'u', 't', '/');
 				string textAddedPath = $"text added/{filepathCorrected}";
 				var pathToBackgroundImage = filepath;
-				
+
 				using (MagickImage image = new MagickImage(pathToBackgroundImage))
 				{
 					MagickReadSettings settings = Logic.listOfSettingsForText[i];
@@ -38,18 +38,19 @@ namespace Bulk_Thumbnail_Creator
 			}
 
 		}
+
 		public static void ExtractThumbnails(int i)
 		{
 			var inputFile = new MediaFile { Filename = BTCSettings.pathToVideo };
 
-				var outputFileName = new MediaFile { Filename = $"output/{i + 1}.jpeg" };
+			var outputFileName = new MediaFile { Filename = $"output/{i + 1}.jpeg" };
 
-				GrabThumbNail(inputFile, outputFileName, BTCSettings.intervalBetweenThumbnails);
+			GrabThumbNail(inputFile, outputFileName, BTCSettings.intervalBetweenThumbnails);
 
-				// increases the interval between pictures by 15 seconds
-				BTCSettings.IncreaseInterval();
+			// increases the interval between pictures by 15 seconds
+			BTCSettings.IncreaseInterval();
 
-				BTCSettings.FilePaths.Add(outputFileName.Filename);
+			BTCSettings.FilePaths.Add(outputFileName.Filename);
 		}
 
 		// MediaToolKit
@@ -88,22 +89,22 @@ namespace Bulk_Thumbnail_Creator
 
 		public static MagickReadSettings GenerateColorSettings()
 		{
-			
-				MagickReadSettings settingsTextRandom = new MagickReadSettings
-				{
-					Font = "italic",
-					FillColor = RandomizeColor(),
-					StrokeColor = RandomizeColor(),
-					BorderColor = RandomizeColor(),
-					FontStyle = FontStyleType.Bold,
-					StrokeAntiAlias = true,
-					StrokeWidth = 10,
-					FontPointsize = 200,
-					FontWeight = FontWeight.Bold,
-					BackgroundColor = MagickColors.Transparent,
-					Height = 1850, // height of text box
-					Width = 1900, // width of text box
-				};
+
+			MagickReadSettings settingsTextRandom = new MagickReadSettings
+			{
+				Font = "italic",
+				FillColor = RandomizeColor(),
+				StrokeColor = RandomizeColor(),
+				BorderColor = RandomizeColor(),
+				FontStyle = FontStyleType.Bold,
+				StrokeAntiAlias = true,
+				StrokeWidth = 10,
+				FontPointsize = 200,
+				FontWeight = FontWeight.Bold,
+				BackgroundColor = MagickColors.Transparent,
+				Height = 1850, // height of text box
+				Width = 1900, // width of text box
+			};
 
 			return settingsTextRandom;
 		}

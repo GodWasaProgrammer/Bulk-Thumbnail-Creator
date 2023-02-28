@@ -1,0 +1,4 @@
+﻿Make faces be composited over just like text.
+Make so you can use vertical text aswell.
+Allow text to stack in corners if wanted/needed
+Make other effects optional aswell, see imagemagick for functions to implement

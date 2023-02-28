@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Dependencies.txt" />
+    <Content Include="Things To Do.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DankMemeStash\" />
