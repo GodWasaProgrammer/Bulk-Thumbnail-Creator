@@ -12,30 +12,34 @@ namespace Bulk_Thumbnail_Creator
 	{
 		public static void AddTextComposite()
 		{
-			for (int i = 0; i < BTCSettings.FilePaths.Count; i++)
-			{
-				string filepath = BTCSettings.FilePaths[i];
-				string filepathCorrected = filepath.TrimStart('o', 'u', 't', 'p', 'u', 't', '/');
-				string textAddedPath = $"text added/{filepathCorrected}";
-				var pathToBackgroundImage = filepath;
+			
 
-				using (MagickImage image = new MagickImage(pathToBackgroundImage))
+				for (int i = 0; i < BTCSettings.FilePaths.Count; i++)
 				{
-					MagickReadSettings settings = Logic.listOfSettingsForText[i];
-					using (var caption = new MagickImage($"caption:{BTCSettings.textToWrite}", settings))
-					{
-						// Add the caption layer on top of the background image
+					string filepath = BTCSettings.FilePaths[i];
+					string filepathCorrected = filepath.TrimStart('o', 'u', 't', 'p', 'u', 't', '/');
+					string textAddedPath = $"text added/{filepathCorrected}";
+					var pathToBackgroundImage = filepath;
 
-						var size = new MagickGeometry(1280, 720);
-						image.Composite(caption, BTCSettings.positionoftextonHorizontalAxis, BTCSettings.positionoftextonVerticalAxis, CompositeOperator.Over);
-						image.Composite(caption, BTCSettings.positionoftextonHorizontalAxis, BTCSettings.LowerPositionHorizontalAxis, CompositeOperator.Over);
-						image.Resize(size);
-						image.Write(textAddedPath);
+					using (MagickImage image = new MagickImage(pathToBackgroundImage))
+					{
+						MagickReadSettings settings = Logic.listOfSettingsForText[i];
+						using (var caption = new MagickImage($"caption:{BTCSettings.listOfText[0]}", settings))
+						using (var caption2 = new MagickImage($"caption:{BTCSettings.listOfText[1]}", settings))
+						{
+							// Add the caption layer on top of the background image
+
+							var size = new MagickGeometry(1280, 720);
+
+							image.Composite(caption, BTCSettings.positionoftextonHorizontalAxis, BTCSettings.positionoftextonVerticalAxis, CompositeOperator.Over);
+							image.Composite(caption2, BTCSettings.positionoftextonHorizontalAxis, BTCSettings.LowerPositionHorizontalAxis, CompositeOperator.Over);
+							image.Resize(size);
+							image.Write(textAddedPath);
+						}
+
 					}
 
 				}
-
-			}
 
 		}
 

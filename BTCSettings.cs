@@ -14,6 +14,10 @@ namespace Bulk_Thumbnail_Creator
 
 		public static string textToWrite = "Check out BTC!";
 
+		public static List<string> listOfText= new List<string>();
+
+		public static string PhraseOne = "First Text to Print";
+
 		public static int numberOfThumbnails = 25;
 
 		// horizontal positioning of text composition
@@ -38,6 +42,11 @@ namespace Bulk_Thumbnail_Creator
 			intervalBetweenThumbnails += 5;
 		}
 
+		public static void TextAdderTemp()
+		{
+			listOfText.Add(textToWrite);
+			listOfText.Add(PhraseOne);
+		}
 	}
 
 }

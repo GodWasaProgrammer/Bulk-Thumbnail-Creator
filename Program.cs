@@ -23,7 +23,11 @@ namespace BTC_Prototype
 				Logic.listOfSettingsForText.Add(Logic.GenerateColorSettings());
 			}
 
-			Logic.AddTextComposite();
+			BTCSettings.TextAdderTemp();
+
+			
+				Logic.AddTextComposite();
+			
 
 		}
 
