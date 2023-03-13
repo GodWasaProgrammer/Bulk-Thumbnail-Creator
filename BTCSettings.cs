@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -12,11 +13,7 @@ namespace Bulk_Thumbnail_Creator
 
 		public static int MaxRGB = 256;
 
-		public static string textToWrite = "Check out BTC!";
-
 		public static List<string> listOfText= new List<string>();
-
-		public static string PhraseOne = "First Text to Print";
 
 		public static int numberOfThumbnails = 25;
 
@@ -37,6 +34,9 @@ namespace Bulk_Thumbnail_Creator
 		// paths to our outputted thumbnails
 		public static List<string> FilePaths = new List<string>();
 
+		// an array of file paths of the dankmemestashfolder
+		public static string[] memeStashFilePaths;
+
 		public static void IncreaseInterval()
 		{
 			intervalBetweenThumbnails += 5;
@@ -44,8 +44,8 @@ namespace Bulk_Thumbnail_Creator
 
 		public static void TextAdderTemp()
 		{
-			listOfText.Add(textToWrite);
-			listOfText.Add(PhraseOne);
+			listOfText.Add("BTC, Your friendly Thumbnail Creator");
+			listOfText.Add("Check it out!");
 		}
 	}
 

@@ -4,6 +4,7 @@ using MediaToolkit.Options;
 using MediaToolkit;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -12,8 +13,6 @@ namespace Bulk_Thumbnail_Creator
 	{
 		public static void AddTextComposite()
 		{
-			
-
 				for (int i = 0; i < BTCSettings.FilePaths.Count; i++)
 				{
 					string filepath = BTCSettings.FilePaths[i];
@@ -26,14 +25,16 @@ namespace Bulk_Thumbnail_Creator
 						MagickReadSettings settings = Logic.listOfSettingsForText[i];
 						using (var caption = new MagickImage($"caption:{BTCSettings.listOfText[0]}", settings))
 						using (var caption2 = new MagickImage($"caption:{BTCSettings.listOfText[1]}", settings))
+						using (var memeFace = new MagickImage(BTCSettings.memeStashFilePaths[0]))
 						{
 							// Add the caption layer on top of the background image
 
 							var size = new MagickGeometry(1280, 720);
-
+							image.Composite(memeFace, 1400, 0, CompositeOperator.Over);
 							image.Composite(caption, BTCSettings.positionoftextonHorizontalAxis, BTCSettings.positionoftextonVerticalAxis, CompositeOperator.Over);
 							image.Composite(caption2, BTCSettings.positionoftextonHorizontalAxis, BTCSettings.LowerPositionHorizontalAxis, CompositeOperator.Over);
 							image.Resize(size);
+							image.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
 							image.Write(textAddedPath);
 						}
 
@@ -85,7 +86,7 @@ namespace Bulk_Thumbnail_Creator
 			// byte pickedColorAlphaRGB = (byte)colorRandom.Next(MaxRGB);
 
 			MagickColor colorRNGPicked;
-
+			// last one is opacity
 			colorRNGPicked = MagickColor.FromRgba(pickedColorRedRGB, pickedColorGreenRGB, pickedColorBlueRGB, 255);
 
 			return colorRNGPicked;
@@ -93,7 +94,6 @@ namespace Bulk_Thumbnail_Creator
 
 		public static MagickReadSettings GenerateColorSettings()
 		{
-
 			MagickReadSettings settingsTextRandom = new MagickReadSettings
 			{
 				Font = "italic",
@@ -107,10 +107,15 @@ namespace Bulk_Thumbnail_Creator
 				FontWeight = FontWeight.Bold,
 				BackgroundColor = MagickColors.Transparent,
 				Height = 1850, // height of text box
-				Width = 1900, // width of text box
+				Width = 1600, // width of text box
 			};
 
 			return settingsTextRandom;
+		}
+
+		public static void MemeStashDirectories()
+		{
+			BTCSettings.memeStashFilePaths = Directory.GetFiles("..\\..\\DankMemeStash");
 		}
 
 	}

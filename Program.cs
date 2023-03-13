@@ -23,12 +23,12 @@ namespace BTC_Prototype
 				Logic.listOfSettingsForText.Add(Logic.GenerateColorSettings());
 			}
 
+			/// dev area
 			BTCSettings.TextAdderTemp();
+			Logic.MemeStashDirectories();
 
-			
-				Logic.AddTextComposite();
-			
-
+			//
+			Logic.AddTextComposite();
 		}
 
 	}
