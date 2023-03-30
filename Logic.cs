@@ -13,49 +13,51 @@ namespace Bulk_Thumbnail_Creator
 	{
 		public static void AddTextComposite()
 		{
-				for (int i = 0; i < BTCSettings.FilePaths.Count; i++)
+			for (int i = 0; i < BTCSettings.FileNames.Count; i++)
+			{
+				string fileName = BTCSettings.FileNames[i];
+
+				string textAddedPath = $"{BTCSettings.TextAddedDir}/{fileName}";
+				string screenCapturePath = $"{BTCSettings.OutputDir}/{fileName}";
+
+				using (MagickImage outputImage = new MagickImage(screenCapturePath))
 				{
-					string filepath = BTCSettings.FilePaths[i];
-					string filepathCorrected = filepath.TrimStart('o', 'u', 't', 'p', 'u', 't', '/');
-					string textAddedPath = $"text added/{filepathCorrected}";
-					var pathToBackgroundImage = filepath;
+					MagickReadSettings settings = Logic.listOfSettingsForText[i];
+					using (var caption = new MagickImage($"caption:{BTCSettings.ListOfText[0]}", settings))
+					using (var caption2 = new MagickImage($"caption:{BTCSettings.ListOfText[1]}", settings))
+					using (var memeFace = new MagickImage(BTCSettings.MemeStashFilePaths[0]))
 
-					using (MagickImage image = new MagickImage(pathToBackgroundImage))
 					{
-						MagickReadSettings settings = Logic.listOfSettingsForText[i];
-						using (var caption = new MagickImage($"caption:{BTCSettings.listOfText[0]}", settings))
-						using (var caption2 = new MagickImage($"caption:{BTCSettings.listOfText[1]}", settings))
-						using (var memeFace = new MagickImage(BTCSettings.memeStashFilePaths[0]))
-						{
-							// Add the caption layer on top of the background image
+						// Add the caption layer on top of the background image
 
-							var size = new MagickGeometry(1280, 720);
-							image.Composite(memeFace, 1400, 0, CompositeOperator.Over);
-							image.Composite(caption, BTCSettings.positionoftextonHorizontalAxis, BTCSettings.positionoftextonVerticalAxis, CompositeOperator.Over);
-							image.Composite(caption2, BTCSettings.positionoftextonHorizontalAxis, BTCSettings.LowerPositionHorizontalAxis, CompositeOperator.Over);
-							image.Resize(size);
-							image.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
-							image.Write(textAddedPath);
-						}
+						var size = new MagickGeometry(1280, 720);
 
+						outputImage.Composite(memeFace, 1400, 0, CompositeOperator.Over);
+						outputImage.Composite(caption, BTCSettings.PositionoftextonHorizontalAxis, BTCSettings.PositionoftextonVerticalAxis, CompositeOperator.Over);
+						outputImage.Composite(caption2, BTCSettings.PositionoftextonHorizontalAxis, BTCSettings.LowerPositionHorizontalAxis, CompositeOperator.Over);
+						outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
+						outputImage.Quality = 100;
+						outputImage.Write(textAddedPath);
 					}
 
 				}
+
+			}
 
 		}
 
 		public static void ExtractThumbnails(int i)
 		{
-			var inputFile = new MediaFile { Filename = BTCSettings.pathToVideo };
+			var inputFile = new MediaFile { Filename = BTCSettings.PathToVideo };
 
-			var outputFileName = new MediaFile { Filename = $"output/{i + 1}.jpeg" };
+			var outputFileName = new MediaFile { Filename = $"{BTCSettings.OutputDir}/{i + 1}.bmp" };
 
-			GrabThumbNail(inputFile, outputFileName, BTCSettings.intervalBetweenThumbnails);
+			GrabThumbNail(inputFile, outputFileName, BTCSettings.IntervalBetweenThumbnails);
 
 			// increases the interval between pictures by 15 seconds
-			BTCSettings.IncreaseInterval();
+			Logic.IncreaseInterval();
 
-			BTCSettings.FilePaths.Add(outputFileName.Filename);
+			BTCSettings.FileNames.Add(Path.GetFileName(outputFileName.Filename));
 		}
 
 		// MediaToolKit
@@ -65,8 +67,8 @@ namespace Bulk_Thumbnail_Creator
 			{
 				engine.GetMetadata(inputFile);
 
-				var options = new ConversionOptions { Seek = TimeSpan.FromSeconds(intervalBetweenPictures) };
-
+				var options = new ConversionOptions { Seek = TimeSpan.FromSeconds(intervalBetweenPictures), };
+				
 				// fetches image, creates it.
 				engine.GetThumbnail(inputFile, outputFile, options);
 			}
@@ -107,7 +109,7 @@ namespace Bulk_Thumbnail_Creator
 				FontWeight = FontWeight.Bold,
 				BackgroundColor = MagickColors.Transparent,
 				Height = 1850, // height of text box
-				Width = 1600, // width of text box
+				Width = 1400, // width of text box
 			};
 
 			return settingsTextRandom;
@@ -115,8 +117,20 @@ namespace Bulk_Thumbnail_Creator
 
 		public static void MemeStashDirectories()
 		{
-			BTCSettings.memeStashFilePaths = Directory.GetFiles("..\\..\\DankMemeStash");
+			BTCSettings.MemeStashFilePaths = Directory.GetFiles("..\\..\\DankMemeStash");
+		}
+
+		public static void IncreaseInterval()
+		{
+			BTCSettings.IntervalBetweenThumbnails += 5;
+		}
+
+		public static void TextAdder()
+		{
+			BTCSettings.ListOfText.Add("Bulk Thumbies Creator");
+			BTCSettings.ListOfText.Add("Check it out!");
 		}
 
 	}
+
 }
