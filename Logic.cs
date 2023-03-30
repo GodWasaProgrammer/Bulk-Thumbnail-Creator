@@ -11,6 +11,9 @@ namespace Bulk_Thumbnail_Creator
 
 	internal class Logic
 	{
+		private static int maxLengthOfRandom;
+
+		private static readonly Random pickTextFromListRandomly = new Random();
 		public static void AddTextComposite()
 		{
 			for (int i = 0; i < BTCSettings.FileNames.Count; i++)
@@ -23,8 +26,8 @@ namespace Bulk_Thumbnail_Creator
 				using (MagickImage outputImage = new MagickImage(screenCapturePath))
 				{
 					MagickReadSettings settings = Logic.listOfSettingsForText[i];
-					using (var caption = new MagickImage($"caption:{BTCSettings.ListOfText[0]}", settings))
-					using (var caption2 = new MagickImage($"caption:{BTCSettings.ListOfText[1]}", settings))
+					using (var caption = new MagickImage($"caption:{BTCSettings.ListOfText[pickTextFromListRandomly.Next(maxLengthOfRandom)]}", settings))
+					using (var caption2 = new MagickImage($"caption:{BTCSettings.ListOfText[pickTextFromListRandomly.Next(maxLengthOfRandom)]}", settings))
 					using (var memeFace = new MagickImage(BTCSettings.MemeStashFilePaths[0]))
 
 					{
@@ -113,6 +116,11 @@ namespace Bulk_Thumbnail_Creator
 			};
 
 			return settingsTextRandom;
+		}
+
+		public static void GetLengthOfListOfText()
+		{
+			maxLengthOfRandom = BTCSettings.ListOfText.Count;
 		}
 
 		public static void MemeStashDirectories()
