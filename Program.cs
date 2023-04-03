@@ -10,10 +10,13 @@ namespace Bulk_Thumbnail_Creator
 			Directory.CreateDirectory(BTCSettings.OutputDir);
 			Directory.CreateDirectory(BTCSettings.TextAddedDir);
 
+			BTCSettings.IntervalBetweenThumbnails = Logic.SplitMetaDataIntoInterValsForThumbNailCreation();
+
 			// creates x images from a mediafile
 			for (int i = 0; i < BTCSettings.NumberOfThumbnails; i++)
 			{
 				Logic.ExtractThumbnails(i);
+				Logic.IncreaseInterval();
 			}
 
 			// loops foreach file in list of filepaths, generate some settings, return the settings, add em to our listofsettingsfortext.

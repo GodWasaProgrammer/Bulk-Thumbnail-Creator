@@ -11,3 +11,4 @@ uncompressed data - check quality settings
 placement imagemagick write a wrapper method for pixel handling
 facedetection lib
 
+change the colorgrading of the random to a linear method instead of a random one

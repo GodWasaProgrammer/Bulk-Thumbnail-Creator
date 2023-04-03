@@ -12,23 +12,23 @@ namespace Bulk_Thumbnail_Creator
 
 		public static int MaxRGB = 256;
 
-		public static List<string> ListOfText= new List<string>();
+		public static List<string> ListOfText = new List<string>();
 
-		public static int NumberOfThumbnails = 25;
+		public static int NumberOfThumbnails { get; set; } = 5;
 
 		// horizontal positioning of text composition
-		public static int PositionoftextonHorizontalAxis = 0;
+		public static int PositionoftextonHorizontalAxis = 10;
 
 		// vertical position of text composition
-		public static int PositionoftextonVerticalAxis = 0;
+		public static int PositionoftextonVerticalAxis = 600;
 
 		public static int LowerPositionHorizontalAxis = 850;
 
 		// path to the video to take thumbnails from
-		public static string PathToVideo = "..\\..\\testvideo.mp4";
+		public static string PathToVideo = "..\\..\\Mando.mkv";
 
 		// the number of seconds between each thumbnail
-		public static int IntervalBetweenThumbnails = 15;
+		public static int IntervalBetweenThumbnails;
 
 		// filenames of our outputted thumbnails
 		public static List<string> FileNames { get; set; } = new List<string>();
