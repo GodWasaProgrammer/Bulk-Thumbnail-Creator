@@ -25,13 +25,15 @@ namespace Bulk_Thumbnail_Creator
 					MagickReadSettings settings = Logic.listOfSettingsForText[i];
 					using (var caption = new MagickImage($"caption:{BTCSettings.ListOfText[0]}", settings))
 
-
 					{
 						// Add the caption layer on top of the background image
-
 						outputImage.Composite(caption, BTCSettings.PositionoftextonHorizontalAxis, BTCSettings.PositionoftextonVerticalAxis, CompositeOperator.Over);
+						// watermark
 						outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
+
+						// sets quality to max possible
 						outputImage.Quality = 100;
+						// outputs the file to the provided path and name
 						outputImage.Write(textAddedPath);
 					}
 
@@ -53,7 +55,7 @@ namespace Bulk_Thumbnail_Creator
 		}
 
 		// MediaToolKit
-		public static void GrabThumbNail(MediaFile inputFile, MediaFile outputFile, int intervalBetweenPictures)
+		private static void GrabThumbNail(MediaFile inputFile, MediaFile outputFile, int intervalBetweenPictures)
 		{
 			using (var engine = new Engine())
 			{
@@ -77,16 +79,63 @@ namespace Bulk_Thumbnail_Creator
 			byte pickedColorRedRGB = (byte)colorRandom.Next(BTCSettings.MaxRGB);
 			byte pickedColorGreenRGB = (byte)colorRandom.Next(BTCSettings.MaxRGB);
 			byte pickedColorBlueRGB = (byte)colorRandom.Next(BTCSettings.MaxRGB);
-			// byte pickedColorAlphaRGB = (byte)colorRandom.Next(MaxRGB);
 
 			MagickColor colorRNGPicked;
 			// last one is opacity
-			colorRNGPicked = MagickColor.FromRgba(pickedColorRedRGB, pickedColorGreenRGB, pickedColorBlueRGB, 255);
+			colorRNGPicked = MagickColor.FromRgb(pickedColorRedRGB, pickedColorGreenRGB, pickedColorBlueRGB);
 
 			return colorRNGPicked;
 		}
 
-		public static MagickReadSettings GenerateColorSettings()
+		static byte risingColorRedRGB = 0;
+		static byte fallingColorGreenRGB = 255;
+		static byte fallingColorBlueRGB = 255;
+
+		internal static MagickColor ColorsFallingAndRising()
+		{
+			if (risingColorRedRGB != 255)
+			{
+				risingColorRedRGB += 25;
+			}
+
+			if (fallingColorGreenRGB != 0)
+			{
+				fallingColorGreenRGB -= 25;
+			}
+
+			if (fallingColorBlueRGB != 0)
+			{
+				fallingColorBlueRGB -= 25;
+			}
+			MagickColor colorFallingAndRising;
+			colorFallingAndRising = MagickColor.FromRgb(fallingColorBlueRGB, fallingColorGreenRGB, fallingColorBlueRGB);
+
+			return colorFallingAndRising;
+		}
+
+		public static MagickReadSettings GenerateLinearProgressionColorSettings()
+		{
+			MagickColor LinearColoring = ColorsFallingAndRising();
+			MagickReadSettings settingsTextRandom = new MagickReadSettings
+			{
+				Font = "italic",
+				FillColor = ColorsFallingAndRising(),
+				StrokeColor = ColorsFallingAndRising(),
+				BorderColor = ColorsFallingAndRising(),
+				FontStyle = FontStyleType.Bold,
+				StrokeAntiAlias = true,
+				StrokeWidth = 10,
+				FontPointsize = 200,
+				FontWeight = FontWeight.Bold,
+				BackgroundColor = MagickColors.Transparent,
+				Height = 1850, // height of text box
+				Width = 1700, // width of text box
+			};
+
+			return settingsTextRandom;
+		}
+
+		public static MagickReadSettings GenerateRandomColorSettings()
 		{
 			MagickReadSettings settingsTextRandom = new MagickReadSettings
 			{

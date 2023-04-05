@@ -22,7 +22,8 @@ namespace Bulk_Thumbnail_Creator
 			// loops foreach file in list of filepaths, generate some settings, return the settings, add em to our listofsettingsfortext.
 			foreach (string fileName in BTCSettings.FileNames)
 			{
-				Logic.listOfSettingsForText.Add(Logic.GenerateColorSettings());
+				Logic.listOfSettingsForText.Add(Logic.GenerateLinearProgressionColorSettings());
+				// Logic.listOfSettingsForText.Add(Logic.GenerateRandomColorSettings());
 			}
 
 			/// dev area

@@ -25,7 +25,7 @@ namespace Bulk_Thumbnail_Creator
 		public static int LowerPositionHorizontalAxis = 850;
 
 		// path to the video to take thumbnails from
-		public static string PathToVideo = "..\\..\\Mando.mkv";
+		public static string PathToVideo = "..\\..\\testvideo.mp4";
 
 		// the number of seconds between each thumbnail
 		public static int IntervalBetweenThumbnails;
