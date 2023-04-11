@@ -4,11 +4,12 @@ Make faces be composited over just like text. /
 Make so you can use vertical text aswell. -
 Allow text to stack in corners if wanted/needed /
 
-implement youtube-dl to allow download of specified url to work on
-after user picks one they like, give them suggestions based from this so + and - of the range 
+implement youtube-dl to allow download of specified url to work on // still to do
 
-uncompressed data - check quality settings
+after user picks one they like, give them suggestions based from this so + and - of the range // linear progression added
+
+uncompressed data - check quality settings // fixed
 placement imagemagick write a wrapper method for pixel handling
 facedetection lib
 
-change the colorgrading of the random to a linear method instead of a random one
+change the colorgrading of the random to a linear method instead of a random one // done

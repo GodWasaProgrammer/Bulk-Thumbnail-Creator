@@ -32,7 +32,7 @@ namespace Bulk_Thumbnail_Creator
 						// northeast working
 						// nortwest working
 						// southwest working
-						// 
+						// southeast working
 						// watermark
 						outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
 
