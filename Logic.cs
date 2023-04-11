@@ -81,7 +81,7 @@ namespace Bulk_Thumbnail_Creator
 			byte pickedColorBlueRGB = (byte)colorRandom.Next(BTCSettings.MaxRGB);
 
 			MagickColor colorRNGPicked;
-			// last one is opacity
+
 			colorRNGPicked = MagickColor.FromRgb(pickedColorRedRGB, pickedColorGreenRGB, pickedColorBlueRGB);
 
 			return colorRNGPicked;
@@ -96,19 +96,36 @@ namespace Bulk_Thumbnail_Creator
 			if (risingColorRedRGB != 255)
 			{
 				risingColorRedRGB += 25;
+
+				if (risingColorRedRGB == 255)
+				{
+					risingColorRedRGB = 0;
+				}
 			}
 
 			if (fallingColorGreenRGB != 0)
 			{
 				fallingColorGreenRGB -= 25;
+
+				if (fallingColorGreenRGB == 0)
+				{
+					fallingColorGreenRGB = 255;
+				}
+
 			}
 
 			if (fallingColorBlueRGB != 0)
 			{
 				fallingColorBlueRGB -= 25;
+
+				if (fallingColorBlueRGB == 0)
+				{
+					fallingColorBlueRGB = 255;
+				}
+
 			}
 			MagickColor colorFallingAndRising;
-			colorFallingAndRising = MagickColor.FromRgb(fallingColorBlueRGB, fallingColorGreenRGB, fallingColorBlueRGB);
+			colorFallingAndRising = MagickColor.FromRgb(risingColorRedRGB, fallingColorGreenRGB, fallingColorBlueRGB);
 
 			return colorFallingAndRising;
 		}
@@ -181,7 +198,7 @@ namespace Bulk_Thumbnail_Creator
 
 		public static void IncreaseInterval()
 		{
-			BTCSettings.IntervalBetweenThumbnails += 35;
+			BTCSettings.IntervalBetweenThumbnails += 5;
 		}
 
 		public static void TextAdder()

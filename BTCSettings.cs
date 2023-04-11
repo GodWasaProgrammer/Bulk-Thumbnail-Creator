@@ -14,7 +14,7 @@ namespace Bulk_Thumbnail_Creator
 
 		public static List<string> ListOfText = new List<string>();
 
-		public static int NumberOfThumbnails { get; set; } = 5;
+		public static int NumberOfThumbnails { get; set; } = 50;
 
 		// horizontal positioning of text composition
 		public static int PositionoftextonHorizontalAxis = 10;
