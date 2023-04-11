@@ -27,7 +27,12 @@ namespace Bulk_Thumbnail_Creator
 
 					{
 						// Add the caption layer on top of the background image
-						outputImage.Composite(caption, BTCSettings.PositionoftextonHorizontalAxis, BTCSettings.PositionoftextonVerticalAxis, CompositeOperator.Over);
+						outputImage.Composite(caption,Gravity.Southeast, CompositeOperator.Over);
+
+						// northeast working
+						// nortwest working
+						// southwest working
+						// 
 						// watermark
 						outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
 
@@ -145,8 +150,8 @@ namespace Bulk_Thumbnail_Creator
 				FontPointsize = 200,
 				FontWeight = FontWeight.Bold,
 				BackgroundColor = MagickColors.Transparent,
-				Height = 1850, // height of text box
-				Width = 1700, // width of text box
+				//Height = 1850, // height of text box
+				//Width = 1700, // width of text box
 			};
 
 			return settingsTextRandom;
@@ -163,7 +168,7 @@ namespace Bulk_Thumbnail_Creator
 				FontStyle = FontStyleType.Bold,
 				StrokeAntiAlias = true,
 				StrokeWidth = 10,
-				FontPointsize = 200,
+				FontPointsize = 175,
 				FontWeight = FontWeight.Bold,
 				BackgroundColor = MagickColors.Transparent,
 				Height = 1850, // height of text box
