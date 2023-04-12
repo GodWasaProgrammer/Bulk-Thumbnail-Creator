@@ -14,7 +14,7 @@ namespace Bulk_Thumbnail_Creator
 
 		public static List<string> ListOfText = new List<string>();
 
-		public static int NumberOfThumbnails { get; set; } = 5;
+		public static int NumberOfThumbnails { get; set; } = 25;
 
 		// horizontal positioning of text composition
 		public static int PositionoftextonHorizontalAxis = 10;
@@ -25,7 +25,7 @@ namespace Bulk_Thumbnail_Creator
 		public static int LowerPositionHorizontalAxis = 850;
 
 		// path to the video to take thumbnails from
-		public static string PathToVideo = "..\\..\\testvideo.mp4";
+		public static string PathToVideo;
 
 		// the number of seconds between each thumbnail
 		public static int IntervalBetweenThumbnails;
