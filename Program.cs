@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Eventing.Reader;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using YoutubeDLSharp;
 
@@ -30,7 +29,6 @@ namespace Bulk_Thumbnail_Creator
 				BTCSettings.PathToVideo = res.Data;
 			};
 			
-
 			// creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
 			Directory.CreateDirectory(BTCSettings.OutputDir);
 			Directory.CreateDirectory(BTCSettings.TextAddedDir);
