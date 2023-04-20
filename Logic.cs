@@ -137,7 +137,7 @@ namespace Bulk_Thumbnail_Creator
 
 		public static MagickReadSettings GenerateLinearProgressionColorSettings()
 		{
-			MagickColor LinearColoring = ColorsFallingAndRising();
+			
 			MagickReadSettings settingsTextRandom = new MagickReadSettings
 			{
 				Font = "italic",

@@ -10,25 +10,25 @@ namespace Bulk_Thumbnail_Creator
 		{
 			// YT-DL
 			// declare instance of youtubeDL
-			var ytdl = new YoutubeDL();
-
-			// set paths
-			ytdl.YoutubeDLPath = "..\\..\\yt-dlp.exe";
-			ytdl.FFmpegPath = "..\\..\\ffmpeg.exe";
-			ytdl.OutputFolder= "..\\..\\YTDL";
+			var ytdl = new YoutubeDL
+			{
+				// set paths
+				YoutubeDLPath = "..\\..\\yt-dlp.exe",
+				FFmpegPath = "..\\..\\ffmpeg.exe",
+				OutputFolder = "YTDL"
+			};
 			//---------------------------------------------
 
 			// downloads specified video from youtube
 			var res = await ytdl.RunVideoDownload("https://www.youtube.com/watch?v=b627luXmC1E&t=");
-			// the path of the downloaded file
-			string path = res.Data;
 
-			// sets BTC to run on the recently downloaded file
-			BTCSettings.PathToVideo = path;
+			// sets BTC to run on the recently downloaded file res.data is the returned path.
+			BTCSettings.PathToVideo = res.Data;
 
 			// creates our 2 dirs to push out unedited thumbnails, and the edited thumbnails.
 			Directory.CreateDirectory(BTCSettings.OutputDir);
 			Directory.CreateDirectory(BTCSettings.TextAddedDir);
+			Directory.CreateDirectory(BTCSettings.YoutubeDLDir);
 
 			BTCSettings.IntervalBetweenThumbnails = Logic.SplitMetaDataIntoInterValsForThumbNailCreation();
 
@@ -40,10 +40,9 @@ namespace Bulk_Thumbnail_Creator
 			}
 
 			// loops foreach file in list of filepaths, generate some settings, return the settings, add em to our listofsettingsfortext.
-			foreach (string fileName in BTCSettings.FileNames)
+			for (int i = 0; i < BTCSettings.FileNames.Count; i++)
 			{
 				Logic.listOfSettingsForText.Add(Logic.GenerateLinearProgressionColorSettings());
-				// Logic.listOfSettingsForText.Add(Logic.GenerateRandomColorSettings());
 			}
 
 			/// dev area
