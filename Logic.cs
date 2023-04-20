@@ -28,7 +28,7 @@ namespace Bulk_Thumbnail_Creator
 					{
 						// Add the caption layer on top of the background image
 						// gravity will dictate position of your text instead of x/y
-						outputImage.Composite(caption,Gravity.Southeast, CompositeOperator.Over);
+						outputImage.Composite(caption,Gravity.Northwest, CompositeOperator.Over);
 						outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
 						outputImage.Quality = 100;
 						// outputs the file to the provided path and name

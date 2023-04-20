@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ImageMagick;
+using System.Collections.Generic;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -13,6 +14,8 @@ namespace Bulk_Thumbnail_Creator
 		public static string YoutubeDLDir { get; set; } = "YTDL";
 
 		public static string YoutubeLink { get; set; }
+
+		public static ImageMagick.Gravity PositionOfText = Gravity.Northwest;
 
 		public static int MaxRGB { get; set; } = 256;
 
