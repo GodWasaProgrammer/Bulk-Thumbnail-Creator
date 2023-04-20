@@ -27,16 +27,9 @@ namespace Bulk_Thumbnail_Creator
 
 					{
 						// Add the caption layer on top of the background image
+						// gravity will dictate position of your text instead of x/y
 						outputImage.Composite(caption,Gravity.Southeast, CompositeOperator.Over);
-
-						// northeast working
-						// nortwest working
-						// southwest working
-						// southeast working
-						// watermark
 						outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
-
-						// sets quality to max possible
 						outputImage.Quality = 100;
 						// outputs the file to the provided path and name
 						outputImage.Write(textAddedPath);
@@ -96,6 +89,7 @@ namespace Bulk_Thumbnail_Creator
 		static byte fallingColorGreenRGB = 255;
 		static byte fallingColorBlueRGB = 255;
 
+		// attempt at making some sort of semi-linear coloring function
 		internal static MagickColor ColorsFallingAndRising()
 		{
 			if (risingColorRedRGB != 255)
