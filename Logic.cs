@@ -11,7 +11,7 @@ namespace Bulk_Thumbnail_Creator
 
 	internal class Logic
 	{
-		public static void AddTextComposite()
+		public static void AddTextComposite(ImageMagick.Gravity PositionOfText)
 		{
 			for (int i = 0; i < BTCSettings.FileNames.Count; i++)
 			{
@@ -22,13 +22,13 @@ namespace Bulk_Thumbnail_Creator
 
 				using (MagickImage outputImage = new MagickImage(screenCapturePath))
 				{
-					MagickReadSettings settings = Logic.listOfSettingsForText[i];
+					MagickReadSettings settings = Logic.ListOfSettingsForText[i];
 					using (var caption = new MagickImage($"caption:{BTCSettings.ListOfText[0]}", settings))
 
 					{
 						// Add the caption layer on top of the background image
 						// gravity will dictate position of your text instead of x/y
-						outputImage.Composite(caption,Gravity.Northwest, CompositeOperator.Over);
+						outputImage.Composite(caption,PositionOfText, CompositeOperator.Over);
 						outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
 						outputImage.Quality = 100;
 						// outputs the file to the provided path and name
@@ -68,7 +68,7 @@ namespace Bulk_Thumbnail_Creator
 		}
 
 		// list of created Presets for printing text to image
-		public static List<MagickReadSettings> listOfSettingsForText = new List<MagickReadSettings>();
+		public static List<MagickReadSettings> ListOfSettingsForText { get; set; } = new List<MagickReadSettings>();
 
 		static readonly Random colorRandom = new Random();
 
