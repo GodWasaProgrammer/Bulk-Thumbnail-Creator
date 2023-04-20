@@ -12,6 +12,8 @@ namespace Bulk_Thumbnail_Creator
 
 		public static string YoutubeDLDir = "YTDL";
 
+		public static string YoutubeLink;
+
 		public static int MaxRGB = 256;
 
 		public static List<string> ListOfText = new List<string>();

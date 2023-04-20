@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics.Eventing.Reader;
+using System.IO;
 using System.Threading.Tasks;
 using YoutubeDLSharp;
 
@@ -19,13 +20,18 @@ namespace Bulk_Thumbnail_Creator
 			};
 			//---------------------------------------------
 
+			BTCSettings.YoutubeLink = "https://www.youtube.com/watch?v=b627luXmC1E&t=";
 			// downloads specified video from youtube
-			var res = await ytdl.RunVideoDownload("https://www.youtube.com/watch?v=b627luXmC1E&t=");
 
-			// sets BTC to run on the recently downloaded file res.data is the returned path.
-			BTCSettings.PathToVideo = res.Data;
+			if (!File.Exists(BTCSettings.YoutubeLink))
+			{
+				var res = await ytdl.RunVideoDownload(url: BTCSettings.YoutubeLink);
+				// sets BTC to run on the recently downloaded file res.data is the returned path.
+				BTCSettings.PathToVideo = res.Data;
+			};
+			
 
-			// creates our 2 dirs to push out unedited thumbnails, and the edited thumbnails.
+			// creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
 			Directory.CreateDirectory(BTCSettings.OutputDir);
 			Directory.CreateDirectory(BTCSettings.TextAddedDir);
 			Directory.CreateDirectory(BTCSettings.YoutubeDLDir);
@@ -48,8 +54,6 @@ namespace Bulk_Thumbnail_Creator
 			/// dev area
 			Logic.TextAdder();
 			Logic.MemeStashDirectories();
-
-			//
 			Logic.AddTextComposite();
 		}
 
