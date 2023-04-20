@@ -1,3 +1,11 @@
 ﻿ImageMagick
+https://github.com/ImageMagick/ImageMagick/blob/main/README.md
+
 MediaToolKit
+https://github.com/AydinAdn/MediaToolkit
+
 Magick.NET-Q16-AnyCPU
+https://github.com/dlemstra/Magick.NET/blob/main/docs/Readme.md
+
+YoutubeDLSharp
+https://github.com/Bluegrams/YoutubeDLSharp
