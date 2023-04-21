@@ -88,43 +88,40 @@ namespace Bulk_Thumbnail_Creator
 		// attempt at making some sort of semi-linear coloring function
 		internal static MagickColor ColorsFallingAndRising()
 		{
-			byte risingColorRedRGB = 0;
-			byte fallingColorGreenRGB = 255;
-			byte fallingColorBlueRGB = 255;
-
-			if (risingColorRedRGB != 255)
+			
+			if (BTCSettings.risingColorRedRGB != 255)
 			{
-				risingColorRedRGB += 25;
+				BTCSettings.risingColorRedRGB += 25;
 
-				if (risingColorRedRGB == 255)
+				if (BTCSettings.risingColorRedRGB == 255)
 				{
-					risingColorRedRGB = 0;
+					BTCSettings.risingColorRedRGB = 0;
 				}
 			}
 
-			if (fallingColorGreenRGB != 0)
+			if (BTCSettings.fallingColorGreenRGB != 0)
 			{
-				fallingColorGreenRGB -= 25;
+				BTCSettings.fallingColorGreenRGB -= 25;
 
-				if (fallingColorGreenRGB == 0)
+				if (BTCSettings.fallingColorGreenRGB == 0)
 				{
-					fallingColorGreenRGB = 255;
+					BTCSettings.fallingColorGreenRGB = 255;
 				}
 
 			}
 
-			if (fallingColorBlueRGB != 0)
+			if (BTCSettings.fallingColorBlueRGB != 0)
 			{
-				fallingColorBlueRGB -= 25;
+				BTCSettings.fallingColorBlueRGB -= 25;
 
-				if (fallingColorBlueRGB == 0)
+				if (BTCSettings.fallingColorBlueRGB == 0)
 				{
-					fallingColorBlueRGB = 255;
+					BTCSettings.fallingColorBlueRGB = 255;
 				}
 
 			}
 			MagickColor colorFallingAndRising;
-			colorFallingAndRising = MagickColor.FromRgb(risingColorRedRGB, fallingColorGreenRGB, fallingColorBlueRGB);
+			colorFallingAndRising = MagickColor.FromRgb(BTCSettings.risingColorRedRGB, BTCSettings.fallingColorGreenRGB, BTCSettings.fallingColorBlueRGB);
 
 			return colorFallingAndRising;
 		}
@@ -165,8 +162,8 @@ namespace Bulk_Thumbnail_Creator
 				FontPointsize = 175,
 				FontWeight = FontWeight.Bold,
 				BackgroundColor = MagickColors.Transparent,
-				Height = 1850, // height of text box
-				Width = 1700, // width of text box
+				//Height = 1850, // height of text box
+				//Width = 1700, // width of text box
 			};
 
 			return settingsTextRandom;

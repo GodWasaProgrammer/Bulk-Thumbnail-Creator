@@ -1,5 +1,6 @@
 ﻿using ImageMagick;
 using System.Collections.Generic;
+using System.Dynamic;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -15,14 +16,20 @@ namespace Bulk_Thumbnail_Creator
 
 		public static string YoutubeLink { get; set; }
 
-		public static Gravity PositionOfText = Gravity.Northwest;
+		public static Gravity PositionOfText { get; set; } = Gravity.Southwest;
+
+		public static byte risingColorRedRGB { get; set; } = 0;
+
+		public static byte fallingColorGreenRGB { get; set; } = 175;
+
+		public static byte fallingColorBlueRGB { get; set; } = 135;
 
 		public static string TextToAdd { get; set; } = "The Mandalorian";
 		public static int MaxRGB { get; set; } = 256;
 
 		public static List<string> ListOfText { get; set; } = new List<string>();
 
-		public static int NumberOfThumbnails { get; set; } = 25;
+		public static int NumberOfThumbnails { get; set; } = 100;
 
 		// path to the video to take thumbnails from
 		public static string PathToVideo { get; set; }

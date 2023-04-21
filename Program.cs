@@ -19,7 +19,7 @@ namespace Bulk_Thumbnail_Creator
 			};
 			//---------------------------------------------
 
-			BTCSettings.YoutubeLink = "https://www.youtube.com/watch?v=b627luXmC1E&t=";
+			BTCSettings.YoutubeLink = "https://www.youtube.com/watch?v=tqBZuxid-XU&t=12s";
 			// downloads specified video from youtube if it does not already exist.
 
 			if (!File.Exists(BTCSettings.YoutubeLink))
@@ -46,10 +46,18 @@ namespace Bulk_Thumbnail_Creator
 			// loops foreach file in list of filepaths, generate some settings, return the settings, add em to our listofsettingsfortext.
 			for (int i = 0; i < BTCSettings.FileNames.Count; i++)
 			{
-				Logic.ListOfSettingsForText.Add(Logic.GenerateLinearProgressionColorSettings());
+				// if integer under the number of thumbnails split by 2
+				if (i < BTCSettings.NumberOfThumbnails / 2 )
+				{
+					Logic.ListOfSettingsForText.Add(Logic.GenerateLinearProgressionColorSettings());
+				}
+				else
+				{
+					Logic.ListOfSettingsForText.Add(Logic.GenerateRandomColorSettings());
+				}
+
 			}
 
-			/// dev area
 			Logic.TextAdder(BTCSettings.TextToAdd);
 			// Logic.MemeStashDirectories(); not used at the moment but fully functional
 			Logic.AddTextComposite(BTCSettings.PositionOfText);
