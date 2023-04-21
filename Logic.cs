@@ -200,9 +200,9 @@ namespace Bulk_Thumbnail_Creator
 			BTCSettings.IntervalBetweenThumbnails += 5;
 		}
 
-		public static void TextAdder()
+		public static void TextAdder(string TextToPrintOnImage)
 		{
-			BTCSettings.ListOfText.Add("The Mandalorian");
+			BTCSettings.ListOfText.Add(TextToPrintOnImage);
 		}
 
 	}

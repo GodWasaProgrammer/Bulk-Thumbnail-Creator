@@ -50,7 +50,7 @@ namespace Bulk_Thumbnail_Creator
 			}
 
 			/// dev area
-			Logic.TextAdder();
+			Logic.TextAdder(BTCSettings.TextToAdd);
 			Logic.MemeStashDirectories();
 			Logic.AddTextComposite(BTCSettings.PositionOfText);
 		}
