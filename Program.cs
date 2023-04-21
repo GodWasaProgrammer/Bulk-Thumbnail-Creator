@@ -51,7 +51,7 @@ namespace Bulk_Thumbnail_Creator
 
 			/// dev area
 			Logic.TextAdder(BTCSettings.TextToAdd);
-			Logic.MemeStashDirectories();
+			// Logic.MemeStashDirectories(); not used at the moment but fully functional
 			Logic.AddTextComposite(BTCSettings.PositionOfText);
 		}
 

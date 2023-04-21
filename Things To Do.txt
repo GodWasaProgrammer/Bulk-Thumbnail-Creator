@@ -1,15 +1,27 @@
-﻿be consistent
+﻿~~~~~~be consistent~~~~~~
 
-Make faces be composited over just like text. /
 Make so you can use vertical text aswell. -
-Allow text to stack in corners if wanted/needed /
 
-implement youtube-dl to allow download of specified url to work on // still to do
+after user picks one they like, give them suggestions based from this so + and - of the range // still to do but on a scale of [] array
 
-after user picks one they like, give them suggestions based from this so + and - of the range // linear progression added
+facedetection lib <--- important
+
+List of Done
+-----------------------------------------
+
 
 uncompressed data - check quality settings // fixed
-placement imagemagick write a wrapper method for pixel handling
-facedetection lib
 
-change the colorgrading of the random to a linear method instead of a random one // done
+change the colorgrading of the random to a linear method instead of a random one // done but not satisfactory
+
+
+placement imagemagick write a wrapper method for pixel handling // redundant as i moved to gravitybased location
+
+
+implement youtube-dl to allow download of specified url to work on // fully implemented and working well
+
+
+Allow text to stack in corners if wanted/needed / Done
+
+
+Make faces be composited over just like text. / done
