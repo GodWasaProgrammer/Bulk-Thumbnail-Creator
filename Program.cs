@@ -20,7 +20,7 @@ namespace Bulk_Thumbnail_Creator
 			//---------------------------------------------
 
 			BTCSettings.YoutubeLink = "https://www.youtube.com/watch?v=b627luXmC1E&t=";
-			// downloads specified video from youtube
+			// downloads specified video from youtube if it does not already exist.
 
 			if (!File.Exists(BTCSettings.YoutubeLink))
 			{
