@@ -85,13 +85,15 @@ namespace Bulk_Thumbnail_Creator
 			return colorRNGPicked;
 		}
 
-		static byte risingColorRedRGB = 0;
-		static byte fallingColorGreenRGB = 255;
-		static byte fallingColorBlueRGB = 255;
+		
 
 		// attempt at making some sort of semi-linear coloring function
 		internal static MagickColor ColorsFallingAndRising()
 		{
+			byte risingColorRedRGB = 0;
+			byte fallingColorGreenRGB = 255;
+			byte fallingColorBlueRGB = 255;
+
 			if (risingColorRedRGB != 255)
 			{
 				risingColorRedRGB += 25;
