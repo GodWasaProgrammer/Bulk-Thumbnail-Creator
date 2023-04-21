@@ -85,8 +85,6 @@ namespace Bulk_Thumbnail_Creator
 			return colorRNGPicked;
 		}
 
-		
-
 		// attempt at making some sort of semi-linear coloring function
 		internal static MagickColor ColorsFallingAndRising()
 		{
