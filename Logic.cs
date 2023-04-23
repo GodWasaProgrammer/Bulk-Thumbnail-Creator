@@ -89,39 +89,39 @@ namespace Bulk_Thumbnail_Creator
 		internal static MagickColor ColorsFallingAndRising()
 		{
 			
-			if (BTCSettings.risingColorRedRGB != 255)
+			if (BTCSettings.RisingColorRedRGB != 255)
 			{
-				BTCSettings.risingColorRedRGB += 25;
+				BTCSettings.RisingColorRedRGB += 25;
 
-				if (BTCSettings.risingColorRedRGB == 255)
+				if (BTCSettings.RisingColorRedRGB == 255)
 				{
-					BTCSettings.risingColorRedRGB = 0;
+					BTCSettings.RisingColorRedRGB = 0;
 				}
 			}
 
-			if (BTCSettings.fallingColorGreenRGB != 0)
+			if (BTCSettings.FallingColorGreenRGB != 0)
 			{
-				BTCSettings.fallingColorGreenRGB -= 25;
+				BTCSettings.FallingColorGreenRGB -= 25;
 
-				if (BTCSettings.fallingColorGreenRGB == 0)
+				if (BTCSettings.FallingColorGreenRGB == 0)
 				{
-					BTCSettings.fallingColorGreenRGB = 255;
+					BTCSettings.FallingColorGreenRGB = 255;
 				}
 
 			}
 
-			if (BTCSettings.fallingColorBlueRGB != 0)
+			if (BTCSettings.FallingColorBlueRGB != 0)
 			{
-				BTCSettings.fallingColorBlueRGB -= 25;
+				BTCSettings.FallingColorBlueRGB -= 25;
 
-				if (BTCSettings.fallingColorBlueRGB == 0)
+				if (BTCSettings.FallingColorBlueRGB == 0)
 				{
-					BTCSettings.fallingColorBlueRGB = 255;
+					BTCSettings.FallingColorBlueRGB = 255;
 				}
 
 			}
 			MagickColor colorFallingAndRising;
-			colorFallingAndRising = MagickColor.FromRgb(BTCSettings.risingColorRedRGB, BTCSettings.fallingColorGreenRGB, BTCSettings.fallingColorBlueRGB);
+			colorFallingAndRising = MagickColor.FromRgb(BTCSettings.RisingColorRedRGB, BTCSettings.FallingColorGreenRGB, BTCSettings.FallingColorBlueRGB);
 
 			return colorFallingAndRising;
 		}

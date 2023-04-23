@@ -18,11 +18,11 @@ namespace Bulk_Thumbnail_Creator
 
 		public static Gravity PositionOfText { get; set; } = Gravity.Southwest;
 
-		public static byte risingColorRedRGB { get; set; } = 0;
+		public static byte RisingColorRedRGB { get; set; } = 0;
 
-		public static byte fallingColorGreenRGB { get; set; } = 175;
+		public static byte FallingColorGreenRGB { get; set; } = 175;
 
-		public static byte fallingColorBlueRGB { get; set; } = 135;
+		public static byte FallingColorBlueRGB { get; set; } = 135;
 
 		public static string TextToAdd { get; set; } = "The Mandalorian";
 		public static int MaxRGB { get; set; } = 256;
