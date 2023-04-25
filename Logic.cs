@@ -11,7 +11,7 @@ namespace Bulk_Thumbnail_Creator
 
 	internal class Logic
 	{
-		public static void AddTextComposite(ImageMagick.Gravity PositionOfText)
+		public static void AddTextComposite(Gravity PositionOfText)
 		{
 			for (int i = 0; i < BTCSettings.FileNames.Count; i++)
 			{
@@ -27,7 +27,7 @@ namespace Bulk_Thumbnail_Creator
 
 					{
 						// Add the caption layer on top of the background image
-						// gravity will dictate position of your text instead of x/y
+						// gravity will dictate position of your text instead of x/y by a settings var
 						outputImage.Composite(caption,PositionOfText, CompositeOperator.Over);
 						outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
 						outputImage.Quality = 100;
@@ -142,7 +142,7 @@ namespace Bulk_Thumbnail_Creator
 				FontWeight = FontWeight.Bold,
 				BackgroundColor = MagickColors.Transparent,
 				//Height = 1850, // height of text box
-				//Width = 1700, // width of text box
+				Width = 1700, // width of text box
 			};
 
 			return settingsTextRandom;
@@ -163,7 +163,7 @@ namespace Bulk_Thumbnail_Creator
 				FontWeight = FontWeight.Bold,
 				BackgroundColor = MagickColors.Transparent,
 				//Height = 1850, // height of text box
-				//Width = 1700, // width of text box
+				Width = 1700, // width of text box
 			};
 
 			return settingsTextRandom;
