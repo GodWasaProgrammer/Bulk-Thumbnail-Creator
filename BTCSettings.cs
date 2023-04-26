@@ -17,6 +17,10 @@ namespace Bulk_Thumbnail_Creator
 		public static string TextAddedDir { get { return _TextAddedDir; } set { _TextAddedDir = value; } }
 
 
+		private static string _FaceDetectionDir = "face Detected";
+		public static string FaceDetectionDir { get { return _FaceDetectionDir; } set { _FaceDetectionDir = value; } }
+
+
 		private static string _YoutubeDLDir = "YTDL";
 		public static string YoutubeDLDir { get { return _YoutubeDLDir; } set { _YoutubeDLDir = value; } }
 
@@ -53,7 +57,7 @@ namespace Bulk_Thumbnail_Creator
 		public static List<string> ListOfText { get { return _ListOfText; } set { _ListOfText = value; } }
 
 
-		private static int _NumberOfThumbnails = 5;
+		private static int _NumberOfThumbnails = 50;
 		public static int NumberOfThumbnails { get { return _NumberOfThumbnails; } set { _NumberOfThumbnails = value; } }
 
 
