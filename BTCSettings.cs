@@ -53,7 +53,7 @@ namespace Bulk_Thumbnail_Creator
 		public static List<string> ListOfText { get { return _ListOfText; } set { _ListOfText = value; } }
 
 
-		private static int _NumberOfThumbnails = 5;
+		private static int _NumberOfThumbnails = 50;
 		public static int NumberOfThumbnails { get { return _NumberOfThumbnails; } set { _NumberOfThumbnails = value; } }
 
 
