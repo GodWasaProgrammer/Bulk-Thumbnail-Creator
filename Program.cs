@@ -80,7 +80,7 @@ namespace Bulk_Thumbnail_Creator
 
 			Console.WriteLine($"Processing {files.Length} images");
 
-			foreach (var file in files)
+			foreach (string file in files)
 			{
 				var bitmap = new Bitmap(file);
 				var output = faceDetector.Forward(bitmap);
@@ -100,6 +100,7 @@ namespace Bulk_Thumbnail_Creator
 				bitmap.Save(Path.Combine(BTCSettings.FaceDetectionDir, filename));
 				Console.WriteLine($"Image: [{filename}] --> detected [{output.Length}] faces");
 			}
+
 		}
 
 	}

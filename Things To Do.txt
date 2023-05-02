@@ -4,11 +4,41 @@ Make so you can use vertical text aswell. -
 
 after user picks one they like, give them suggestions based from this so + and - of the range // still to do but on a scale of [] array
 
-facedetection lib <--- important
+make text be placed outside positional data of face detection boxes
+
+collision check between textbox and facebox
+
+serialize color schemes by bytes
+
+
+detect different scenes
+
+incrementally getting user feeback and adapting images from that
+
+
+after scene picked generate 5 color schemes
+create differnt text placement - select
+
+check youtubeDL quality
+
+figure out RSV / HSV
+
+bounding boxes
+
+
+fitting text inside boxes
+
+look at color spaces
+
+coordinate system revamp
+
+
+
+
 
 List of Done
 -----------------------------------------
-
+facedetection lib <--- important
 
 uncompressed data - check quality settings // fixed
 
