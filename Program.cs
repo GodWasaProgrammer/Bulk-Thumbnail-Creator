@@ -5,6 +5,7 @@ using FaceONNX;
 using System.Drawing;
 using System;
 using UMapx.Visualization;
+using FFMpegCore;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -29,16 +30,19 @@ namespace Bulk_Thumbnail_Creator
 			if (!File.Exists(BTCSettings.YoutubeLink))
 			{
 				var res = await ytdl.RunVideoDownload(url: BTCSettings.YoutubeLink);
+				
 				// sets BTC to run on the recently downloaded file res.data is the returned path.
 				BTCSettings.PathToVideo = res.Data;
 			};
-			
+
 			// creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
 			Directory.CreateDirectory(BTCSettings.OutputDir);
 			Directory.CreateDirectory(BTCSettings.TextAddedDir);
 			Directory.CreateDirectory(BTCSettings.YoutubeDLDir);
 
-			BTCSettings.IntervalBetweenThumbnails = Logic.SplitMetaDataIntoInterValsForThumbNailCreation();
+
+
+			BTCSettings.IntervalBetweenThumbnails = Logic.ReturnTotalDurationOfClip();
 
 			// creates x images from a mediafile
 			for (int i = 0; i < BTCSettings.NumberOfThumbnails; i++)
@@ -65,7 +69,6 @@ namespace Bulk_Thumbnail_Creator
 			Logic.TextAdder(BTCSettings.TextToAdd);
 			// Logic.MemeStashDirectories(); not used at the moment but fully functional
 			Logic.AddTextComposite(BTCSettings.PositionOfText);
-
 
 			var files = Directory.GetFiles(BTCSettings.TextAddedDir, "*.*", SearchOption.AllDirectories);
 

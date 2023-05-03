@@ -58,7 +58,7 @@ namespace Bulk_Thumbnail_Creator
 			using (var engine = new Engine())
 			{
 				engine.GetMetadata(inputFile);
-
+				
 				var options = new ConversionOptions { Seek = TimeSpan.FromSeconds(intervalBetweenPictures), };
 
 				// fetches image, creates it.
@@ -174,22 +174,19 @@ namespace Bulk_Thumbnail_Creator
 			BTCSettings.MemeStashFilePaths = Directory.GetFiles("..\\..\\DankMemeStash");
 		}
 
-		public static int SplitMetaDataIntoInterValsForThumbNailCreation()
+		public static int ReturnTotalDurationOfClip()
 		{
-			double intervalBetweenThumbnailsBased;
+			double totalMinutesOfClip;
 
 			var inputFile = new MediaFile { Filename = BTCSettings.PathToVideo };
 
 			using (var engine = new Engine())
 			{
 				engine.GetMetadata(inputFile);
-				var durationOfMediaFile = inputFile.Metadata.Duration.TotalMinutes;
-
-
-				intervalBetweenThumbnailsBased = durationOfMediaFile;
-
+				totalMinutesOfClip = inputFile.Metadata.Duration.TotalMinutes;
+				
 			}
-			return (int)intervalBetweenThumbnailsBased;
+			return (int)totalMinutesOfClip;
 		}
 
 		public static void IncreaseInterval()
