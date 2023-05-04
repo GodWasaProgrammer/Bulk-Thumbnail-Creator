@@ -42,9 +42,9 @@ namespace Bulk_Thumbnail_Creator
 
 			processFFMpeg.StartInfo.FileName = "cmd.exe";
 			// processFFMpeg.StartInfo.Arguments = $"-i {BTCSettings.PathToVideo}" + @"-vf select=gt(scene\,0.5)," + "-vsync vfr " + $"YTDL/%03d.png";
-			string ffmpegpath = ("ffmpeg.exe");
-			string v = $" -i Ukrainian.webm " + @"select=gt(scene,0.5)" + "\", scale=640:360 " + "-vsync vfr" + " %03d.png";
-			processFFMpeg.StartInfo.Arguments = "/k " + ffmpegpath + v;
+			string ffmpeg = ("ffmpeg.exe");
+			string v = $" -i ukraine.webm " + "-vf " + @"""select=gt(scene\,0.1)\ """ + " -vsync vfr " + " %03d.png";
+			processFFMpeg.StartInfo.Arguments = "/k " + ffmpeg + v;
 			processFFMpeg.StartInfo.WorkingDirectory = BTCSettings.YoutubeDLDir;
 			processFFMpeg.StartInfo.CreateNoWindow = false;
 			processFFMpeg.Start();
@@ -89,7 +89,6 @@ namespace Bulk_Thumbnail_Creator
 
 
 		//	var files = Directory.GetFiles(BTCSettings.TextAddedDir, "*.*", SearchOption.AllDirectories);
-			var files = Directory.GetFiles(BTCSettings.TextAddedDir, "*.*", SearchOption.AllDirectories);
 
 		//	Directory.CreateDirectory(BTCSettings.FaceDetectionDir);
 
