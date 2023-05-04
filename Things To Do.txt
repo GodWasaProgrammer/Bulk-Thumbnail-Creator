@@ -32,6 +32,8 @@ look at color spaces
 
 coordinate system revamp
 
+cmd line for ffmpeg
+ffmpeg -i yosemiteA.mp4 -vf  "select=gt(scene\,0.5), scale=640:360" -vsync vfr yosemiteThumb%03d.png
 
 
 
