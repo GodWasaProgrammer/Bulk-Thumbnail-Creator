@@ -59,9 +59,11 @@ namespace Bulk_Thumbnail_Creator
 			Process processFFMpeg = new Process();
 
 			processFFMpeg.StartInfo.FileName = "cmd.exe";
+
+			string ExtractedFileName = Path.GetFileName(BTCSettings.PathToVideo);
 			// processFFMpeg.StartInfo.Arguments = $"-i {BTCSettings.PathToVideo}" + @"-vf select=gt(scene\,0.5)," + "-vsync vfr " + $"YTDL/%03d.png";
 			string ffmpeg = ("ffmpeg.exe");
-			string v = $" -i ukraine.webm " + "-vf " + @"""select=gt(scene\,0.1)\ """ + " -vsync vfr " + " %03d.png";
+			string v = $" -i " + $@"""{ExtractedFileName}"" " + "-vf " + @"""select=gt(scene\,0.1)\ """ + " -vsync vfr " + " %03d.png";
 			processFFMpeg.StartInfo.Arguments = "/k" + ffmpeg + v;
 			processFFMpeg.StartInfo.WorkingDirectory = BTCSettings.YoutubeDLDir;
 			processFFMpeg.StartInfo.CreateNoWindow = false;
