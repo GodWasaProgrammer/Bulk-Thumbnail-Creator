@@ -7,6 +7,8 @@ using System;
 using UMapx.Visualization;
 using System.Diagnostics;
 using FFMpegCore;
+using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -25,18 +27,34 @@ namespace Bulk_Thumbnail_Creator
 			};
 			//---------------------------------------------
 
-			BTCSettings.YoutubeLink = "https://www.youtube.com/watch?v=o02f4Ck8F7M";
+				BTCSettings.YoutubeLink = "https://www.youtube.com/watch?v=o02f4Ck8F7M";
 			// downloads specified video from youtube if it does not already exist.
 
+			XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
+
+			if (File.Exists(BTCSettings.PathToXMLListOfDownloadedVideos))
+			{
+				using (FileStream file = File.OpenRead(BTCSettings.PathToXMLListOfDownloadedVideos))
+				{
+					BTCSettings.DownloadedVideosList = (List<string>)serializer.Deserialize(file);
+				}
+			}
+			// not working correctly as the youtubelink is not the name of the file itself...
 			if (!File.Exists(BTCSettings.YoutubeLink))
 			{
 				var res = await ytdl.RunVideoDownload(url: BTCSettings.YoutubeLink);
 				
 				// sets BTC to run on the recently downloaded file res.data is the returned path.
 				BTCSettings.PathToVideo = res.Data;
+
+				if (!BTCSettings.DownloadedVideosList.Contains(BTCSettings.PathToVideo))
+				{ 
+				BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
+				}
+
 			};
 
-
+			//BTCSettings.DownloadedVideosList = Directory.GetFiles(BTCSettings.YoutubeDLDir);
 
 			Process processFFMpeg = new Process();
 
@@ -44,12 +62,16 @@ namespace Bulk_Thumbnail_Creator
 			// processFFMpeg.StartInfo.Arguments = $"-i {BTCSettings.PathToVideo}" + @"-vf select=gt(scene\,0.5)," + "-vsync vfr " + $"YTDL/%03d.png";
 			string ffmpeg = ("ffmpeg.exe");
 			string v = $" -i ukraine.webm " + "-vf " + @"""select=gt(scene\,0.1)\ """ + " -vsync vfr " + " %03d.png";
-			processFFMpeg.StartInfo.Arguments = "/k " + ffmpeg + v;
+			processFFMpeg.StartInfo.Arguments = "/k" + ffmpeg + v;
 			processFFMpeg.StartInfo.WorkingDirectory = BTCSettings.YoutubeDLDir;
 			processFFMpeg.StartInfo.CreateNoWindow = false;
 			processFFMpeg.Start();
 			processFFMpeg.WaitForExit();
 
+			using (FileStream file = File.Create(BTCSettings.PathToXMLListOfDownloadedVideos))
+			{
+				serializer.Serialize(file, BTCSettings.DownloadedVideosList);
+			}
 
 			// creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
 			Directory.CreateDirectory(BTCSettings.OutputDir);

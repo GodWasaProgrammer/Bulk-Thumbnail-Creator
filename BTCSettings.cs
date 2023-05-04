@@ -79,6 +79,12 @@ namespace Bulk_Thumbnail_Creator
 		// an array of file paths of the dankmemestashfolder
 		private static string[] _MemeStashPaths;
 		public static string[] MemeStashFilePaths { get { return _MemeStashPaths; } set { _MemeStashPaths = value; } }
+
+		private static List<string> _DownloadedVideosList = new List<string>();
+		public static List<string> DownloadedVideosList {get { return _DownloadedVideosList; } set { _DownloadedVideosList = value;} }
+
+		private static string _PathToXMLListOfDownloadedVideos = "ListOfDownloadedVideos.xml";
+		public static string PathToXMLListOfDownloadedVideos { get { return _PathToXMLListOfDownloadedVideos; } }
 	}
 
 }
