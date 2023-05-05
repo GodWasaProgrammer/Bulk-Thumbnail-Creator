@@ -1,7 +1,4 @@
 ﻿using ImageMagick;
-using MediaToolkit.Model;
-using MediaToolkit.Options;
-using MediaToolkit;
 using System;
 using System.Collections.Generic;
 using System.IO;
