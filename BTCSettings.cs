@@ -57,8 +57,8 @@ namespace Bulk_Thumbnail_Creator
 		public static List<string> ListOfText { get { return _ListOfText; } set { _ListOfText = value; } }
 
 
-		private static int _NumberOfThumbnails = 50;
-		public static int NumberOfThumbnails { get { return _NumberOfThumbnails; } set { _NumberOfThumbnails = value; } }
+		//private static int _NumberOfThumbnails = 50;
+		//public static int NumberOfThumbnails { get { return _NumberOfThumbnails; } set { _NumberOfThumbnails = value; } }
 
 
 		// path to the video to take thumbnails from
@@ -72,8 +72,8 @@ namespace Bulk_Thumbnail_Creator
 
 
 		// filenames of our outputted thumbnails
-		private static List<string> _Filenames = new List<string>();
-		public static List<string> FileNames { get { return _Filenames; } set { _Filenames = value; } }
+		private static string[] _Filenames;
+		public static string[] FileNames { get { return _Filenames; } set { _Filenames = value; } }
 
 
 		// an array of file paths of the dankmemestashfolder

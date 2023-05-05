@@ -6,9 +6,9 @@ using System.Drawing;
 using System;
 using UMapx.Visualization;
 using System.Diagnostics;
-using FFMpegCore;
 using System.Xml.Serialization;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -54,21 +54,21 @@ namespace Bulk_Thumbnail_Creator
 
 			};
 
-			//BTCSettings.DownloadedVideosList = Directory.GetFiles(BTCSettings.YoutubeDLDir);
-
 			Process processFFMpeg = new Process();
 
 			processFFMpeg.StartInfo.FileName = "cmd.exe";
 
 			string ExtractedFileName = Path.GetFileName(BTCSettings.PathToVideo);
-			// processFFMpeg.StartInfo.Arguments = $"-i {BTCSettings.PathToVideo}" + @"-vf select=gt(scene\,0.5)," + "-vsync vfr " + $"YTDL/%03d.png";
+			string outputPath = Path.GetFullPath(BTCSettings.OutputDir);
+
 			string ffmpeg = ("ffmpeg.exe");
-			string v = $" -i " + $@"""{ExtractedFileName}"" " + "-vf " + @"""select=gt(scene\,0.1)\ """ + " -vsync vfr " + " %03d.png";
+			string v = $" -i " + $@"""{ExtractedFileName}"" " + "-vf " + @"""select=gt(scene\,0.1)\ """ + " -vsync vfr " + $"{outputPath}/%03d.png";
+
 			processFFMpeg.StartInfo.Arguments = "/k" + ffmpeg + v;
 			processFFMpeg.StartInfo.WorkingDirectory = BTCSettings.YoutubeDLDir;
 			processFFMpeg.StartInfo.CreateNoWindow = false;
 			processFFMpeg.Start();
-			processFFMpeg.WaitForExit();
+			processFFMpeg.WaitForExit(5500);
 
 			using (FileStream file = File.Create(BTCSettings.PathToXMLListOfDownloadedVideos))
 			{
@@ -80,71 +80,62 @@ namespace Bulk_Thumbnail_Creator
 			Directory.CreateDirectory(BTCSettings.TextAddedDir);
 			Directory.CreateDirectory(BTCSettings.YoutubeDLDir);
 
-		//	BTCSettings.IntervalBetweenThumbnails = Logic.SplitMetaDataIntoInterValsForThumbNailCreation();
+			string[] SceneFrames = Directory.GetFiles(outputPath);
 
+			BTCSettings.FileNames = SceneFrames;
 
-			BTCSettings.IntervalBetweenThumbnails = Logic.ReturnTotalDurationOfClip();
+			// loops foreach file in list of filepaths, generate some settings, return the settings, add em to our listofsettingsfortext.
+			for (int i = 0; i < BTCSettings.FileNames.Count(); i++)
+			{
+				// if integer under the number of thumbnails split by 2
+				if (i < SceneFrames.Count() / 2)
+				{
+					Logic.ListOfSettingsForText.Add(Logic.GenerateLinearProgressionColorSettings());
+				}
+				else
+				{
+					Logic.ListOfSettingsForText.Add(Logic.GenerateRandomColorSettings());
+				}
 
-		//	// creates x images from a mediafile
-		//	for (int i = 0; i < BTCSettings.NumberOfThumbnails; i++)
-		//	{
-		//		Logic.ExtractThumbnails(i);
-		//		Logic.IncreaseInterval();
-		//	}
+			}
 
-		//	// loops foreach file in list of filepaths, generate some settings, return the settings, add em to our listofsettingsfortext.
-		//	for (int i = 0; i < BTCSettings.FileNames.Count; i++)
-		//	{
-		//		// if integer under the number of thumbnails split by 2
-		//		if (i < BTCSettings.NumberOfThumbnails / 2 )
-		//		{
-		//			Logic.ListOfSettingsForText.Add(Logic.GenerateLinearProgressionColorSettings());
-		//		}
-		//		else
-		//		{
-		//			Logic.ListOfSettingsForText.Add(Logic.GenerateRandomColorSettings());
-		//		}
+			Logic.TextAdder(BTCSettings.TextToAdd);
+			// Logic.MemeStashDirectories(); not used at the moment but fully functional
+			Logic.AddTextComposite(BTCSettings.PositionOfText);
 
-		//	}
+			//	var files = Directory.GetFiles(BTCSettings.TextAddedDir, "*.*", SearchOption.AllDirectories);
 
-		//	Logic.TextAdder(BTCSettings.TextToAdd);
-		//	// Logic.MemeStashDirectories(); not used at the moment but fully functional
-		//	Logic.AddTextComposite(BTCSettings.PositionOfText);
+			//	Directory.CreateDirectory(BTCSettings.FaceDetectionDir);
 
+			//	var faceDetector = new FaceDetector(0.95f, 0.5f);
+			//	var painter = new Painter()
+			//	{
+			//		BoxPen = new Pen(Color.Yellow, 4),
+			//		Transparency = 0,
+			//	};
 
-		//	var files = Directory.GetFiles(BTCSettings.TextAddedDir, "*.*", SearchOption.AllDirectories);
+			//	Console.WriteLine($"Processing {files.Length} images");
 
-		//	Directory.CreateDirectory(BTCSettings.FaceDetectionDir);
+			//	foreach (string file in files)
+			//	{
+			//		var bitmap = new Bitmap(file);
+			//		var output = faceDetector.Forward(bitmap);
 
-		//	var faceDetector = new FaceDetector(0.95f, 0.5f);
-		//	var painter = new Painter()
-		//	{
-		//		BoxPen = new Pen(Color.Yellow, 4),
-		//		Transparency = 0,
-		//	};
+			//		foreach (var rectangle in output)
+			//		{
+			//			var paintData = new PaintData()
+			//			{
+			//				Rectangle = rectangle,
+			//				Title = string.Empty
+			//			};
+			//			var graphics = Graphics.FromImage(bitmap);
+			//			painter.Draw(graphics, paintData);
+			//		}
 
-		//	Console.WriteLine($"Processing {files.Length} images");
-
-		//	foreach (string file in files)
-		//	{
-		//		var bitmap = new Bitmap(file);
-		//		var output = faceDetector.Forward(bitmap);
-
-		//		foreach (var rectangle in output)
-		//		{
-		//			var paintData = new PaintData()
-		//			{
-		//				Rectangle = rectangle,
-		//				Title = string.Empty
-		//			};
-		//			var graphics = Graphics.FromImage(bitmap);
-		//			painter.Draw(graphics, paintData);
-		//		}
-
-		//		var filename = Path.GetFileName(file);
-		//		bitmap.Save(Path.Combine(BTCSettings.FaceDetectionDir, filename));
-		//		Console.WriteLine($"Image: [{filename}] --> detected [{output.Length}] faces");
-		//	}
+			//		var filename = Path.GetFileName(file);
+			//		bitmap.Save(Path.Combine(BTCSettings.FaceDetectionDir, filename));
+			//		Console.WriteLine($"Image: [{filename}] --> detected [{output.Length}] faces");
+			//	}
 
 		}
 
