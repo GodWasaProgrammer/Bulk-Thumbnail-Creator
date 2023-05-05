@@ -25,9 +25,8 @@ namespace Bulk_Thumbnail_Creator
 				FFmpegPath = "..\\..\\ffmpeg.exe",
 				OutputFolder = "YTDL"
 			};
-			//---------------------------------------------
 
-				BTCSettings.YoutubeLink = "https://www.youtube.com/watch?v=o02f4Ck8F7M";
+			BTCSettings.YoutubeLink = "https://www.youtube.com/watch?v=o02f4Ck8F7M";
 			// downloads specified video from youtube if it does not already exist.
 
 			XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
@@ -38,18 +37,20 @@ namespace Bulk_Thumbnail_Creator
 				{
 					BTCSettings.DownloadedVideosList = (List<string>)serializer.Deserialize(file);
 				}
+
 			}
+
 			// not working correctly as the youtubelink is not the name of the file itself...
 			if (!File.Exists(BTCSettings.YoutubeLink))
 			{
 				var res = await ytdl.RunVideoDownload(url: BTCSettings.YoutubeLink);
-				
+
 				// sets BTC to run on the recently downloaded file res.data is the returned path.
 				BTCSettings.PathToVideo = res.Data;
 
 				if (!BTCSettings.DownloadedVideosList.Contains(BTCSettings.PathToVideo))
-				{ 
-				BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
+				{
+					BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
 				}
 
 			};

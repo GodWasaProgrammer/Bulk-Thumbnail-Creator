@@ -10,7 +10,7 @@ namespace Bulk_Thumbnail_Creator
 		// 
 
 		private static string _outputDir = "output";
-		public static string OutputDir { get { return _outputDir; }  set { _outputDir = value; } }
+		public static string OutputDir { get { return _outputDir; } set { _outputDir = value; } }
 
 
 		private static string _TextAddedDir = "text added";
@@ -80,11 +80,14 @@ namespace Bulk_Thumbnail_Creator
 		private static string[] _MemeStashPaths;
 		public static string[] MemeStashFilePaths { get { return _MemeStashPaths; } set { _MemeStashPaths = value; } }
 
-		private static List<string> _DownloadedVideosList = new List<string>();
-		public static List<string> DownloadedVideosList {get { return _DownloadedVideosList; } set { _DownloadedVideosList = value;} }
 
-		private static string _PathToXMLListOfDownloadedVideos = "ListOfDownloadedVideos.xml";
+		private static List<string> _DownloadedVideosList = new List<string>();
+		public static List<string> DownloadedVideosList { get { return _DownloadedVideosList; } set { _DownloadedVideosList = value; } }
+
+
+		private static readonly string _PathToXMLListOfDownloadedVideos = "ListOfDownloadedVideos.xml";
 		public static string PathToXMLListOfDownloadedVideos { get { return _PathToXMLListOfDownloadedVideos; } }
+
 	}
 
 }

@@ -27,7 +27,7 @@ namespace Bulk_Thumbnail_Creator
 					{
 						// Add the caption layer on top of the background image
 						// gravity will dictate position of your text instead of x/y by a settings var
-						outputImage.Composite(caption,PositionOfText, CompositeOperator.Over);
+						outputImage.Composite(caption, PositionOfText, CompositeOperator.Over);
 						outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
 						outputImage.Quality = 100;
 						// outputs the file to the provided path and name
@@ -63,7 +63,7 @@ namespace Bulk_Thumbnail_Creator
 		// attempt at making some sort of semi-linear coloring function
 		internal static MagickColor ColorsFallingAndRising()
 		{
-			
+
 			if (BTCSettings.RisingColorRedRGB != 255)
 			{
 				BTCSettings.RisingColorRedRGB += 25;
@@ -103,7 +103,7 @@ namespace Bulk_Thumbnail_Creator
 
 		public static MagickReadSettings GenerateLinearProgressionColorSettings()
 		{
-			
+
 			MagickReadSettings settingsTextRandom = new MagickReadSettings
 			{
 				Font = "italic",
