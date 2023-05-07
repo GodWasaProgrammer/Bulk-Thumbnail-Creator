@@ -45,7 +45,7 @@ namespace Bulk_Thumbnail_Creator
 		public static byte FallingColorBlueRGB { get { return _FallingColorBlueRGB; } set { _FallingColorBlueRGB = value; } }
 
 
-		private static string _TextToAdd = "The Mandalorian";
+		private static string _TextToAdd = "Bulk Thumbnail Creator";
 		public static string TextToAdd { get { return _TextToAdd; } set { _TextToAdd = value; } }
 
 
@@ -55,10 +55,6 @@ namespace Bulk_Thumbnail_Creator
 
 		private static List<string> _ListOfText = new List<string>();
 		public static List<string> ListOfText { get { return _ListOfText; } set { _ListOfText = value; } }
-
-
-		//private static int _NumberOfThumbnails = 50;
-		//public static int NumberOfThumbnails { get { return _NumberOfThumbnails; } set { _NumberOfThumbnails = value; } }
 
 
 		// path to the video to take thumbnails from

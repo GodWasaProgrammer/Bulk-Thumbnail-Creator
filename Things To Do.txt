@@ -10,16 +10,10 @@ collision check between textbox and facebox
 
 serialize color schemes by bytes
 
-
-detect different scenes
-
 incrementally getting user feeback and adapting images from that
-
 
 after scene picked generate 5 color schemes
 create differnt text placement - select
-
-check youtubeDL quality
 
 figure out RSV / HSV
 
@@ -40,6 +34,9 @@ ffmpeg -i yosemiteA.mp4 -vf  "select=gt(scene\,0.5), scale=640:360" -vsync vfr y
 
 List of Done
 -----------------------------------------
+
+detect different scenes
+
 facedetection lib <--- important
 
 uncompressed data - check quality settings // fixed
@@ -57,3 +54,5 @@ Allow text to stack in corners if wanted/needed / Done
 
 
 Make faces be composited over just like text. / done
+
+check youtubeDL quality

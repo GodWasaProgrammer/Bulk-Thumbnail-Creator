@@ -2,45 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Drawing;
 
 namespace Bulk_Thumbnail_Creator
 {
 
 	internal class Logic
 	{
-		public static void AddTextComposite(Gravity PositionOfText)
-		{
-			for (int i = 0; i < BTCSettings.FileNames.Count(); i++)
-			{
-				string fileName = Path.GetFileName(BTCSettings.FileNames[i]);
-
-				string textAddedOutPutFile = Path.GetFullPath(BTCSettings.TextAddedDir) + $"/{fileName}";
-				string screenCaptureFile = $"{BTCSettings.FileNames[i]}";
-
-
-				using (MagickImage outputImage = new MagickImage(screenCaptureFile))
-				{
-					MagickReadSettings settings = Logic.ListOfSettingsForText[i];
-					using (var caption = new MagickImage($"caption:{BTCSettings.ListOfText[0]}", settings))
-
-					{
-						// Add the caption layer on top of the background image
-						// gravity will dictate position of your text instead of x/y by a settings var
-						outputImage.Composite(caption, PositionOfText, CompositeOperator.Over);
-						outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
-						outputImage.Quality = 100;
-						// outputs the file to the provided path and name
-						outputImage.Write(textAddedOutPutFile);
-
-					}
-
-				}
-
-			}
-
-		}
-
 
 		// list of created Presets for printing text to image
 		public static List<MagickReadSettings> ListOfSettingsForText { get; set; } = new List<MagickReadSettings>();
@@ -60,61 +28,43 @@ namespace Bulk_Thumbnail_Creator
 			return colorRNGPicked;
 		}
 
-		// attempt at making some sort of semi-linear coloring function
-		internal static MagickColor ColorsFallingAndRising()
+		public static MagickReadSettings AdaptableSizeText()
 		{
+			int FontPointSize = 75;
+			string path = $"{Path.GetFullPath(BTCSettings.OutputDir)}/001.png";
+			Image img = Image.FromFile(path);
 
-			if (BTCSettings.RisingColorRedRGB != 255)
+			if (img.Width == 1280 || img.Height == 720)
 			{
-				BTCSettings.RisingColorRedRGB += 25;
-
-				if (BTCSettings.RisingColorRedRGB == 255)
-				{
-					BTCSettings.RisingColorRedRGB = 0;
-				}
+				FontPointSize = 100;
 			}
 
-			if (BTCSettings.FallingColorGreenRGB != 0)
+			if (img.Width == 1920 || img.Height == 1080)
 			{
-				BTCSettings.FallingColorGreenRGB -= 25;
-
-				if (BTCSettings.FallingColorGreenRGB == 0)
-				{
-					BTCSettings.FallingColorGreenRGB = 255;
-				}
-
+				FontPointSize = 175;
 			}
 
-			if (BTCSettings.FallingColorBlueRGB != 0)
+			if (img.Width > 1920)
 			{
-				BTCSettings.FallingColorBlueRGB -= 25;
-
-				if (BTCSettings.FallingColorBlueRGB == 0)
-				{
-					BTCSettings.FallingColorBlueRGB = 255;
-				}
-
+				FontPointSize = 275;
 			}
-			MagickColor colorFallingAndRising;
-			colorFallingAndRising = MagickColor.FromRgb(BTCSettings.RisingColorRedRGB, BTCSettings.FallingColorGreenRGB, BTCSettings.FallingColorBlueRGB);
 
-			return colorFallingAndRising;
-		}
-
-		public static MagickReadSettings GenerateLinearProgressionColorSettings()
-		{
+			if (img.Width < 1280)
+			{
+				FontPointSize = 75;
+			}
 
 			MagickReadSettings settingsTextRandom = new MagickReadSettings
 			{
 				Font = "italic",
-				FillColor = ColorsFallingAndRising(),
-				StrokeColor = ColorsFallingAndRising(),
-				BorderColor = ColorsFallingAndRising(),
+				FillColor = MagickColor.FromRgb(210, 255, 0),
+				StrokeColor = MagickColor.FromRgb(255, 45, 0),
+				BorderColor = MagickColor.FromRgb(38, 0, 255),
 				FontStyle = FontStyleType.Bold,
 				StrokeAntiAlias = true,
-				StrokeWidth = 10,
-				FontPointsize = 200,
+				StrokeWidth = 4,
 				FontWeight = FontWeight.Bold,
+				FontPointsize = FontPointSize,
 				BackgroundColor = MagickColors.Transparent,
 				//Height = 1850, // height of text box
 				Width = 1700, // width of text box
@@ -133,8 +83,8 @@ namespace Bulk_Thumbnail_Creator
 				BorderColor = RandomizeColor(),
 				FontStyle = FontStyleType.Bold,
 				StrokeAntiAlias = true,
-				StrokeWidth = 10,
-				FontPointsize = 175,
+				StrokeWidth = 6,
+				//FontPointsize = 100,
 				FontWeight = FontWeight.Bold,
 				BackgroundColor = MagickColors.Transparent,
 				//Height = 1850, // height of text box
@@ -142,16 +92,6 @@ namespace Bulk_Thumbnail_Creator
 			};
 
 			return settingsTextRandom;
-		}
-
-		public static void MemeStashDirectories()
-		{
-			BTCSettings.MemeStashFilePaths = Directory.GetFiles("..\\..\\DankMemeStash");
-		}
-
-		public static void TextAdder(string TextToPrintOnImage)
-		{
-			BTCSettings.ListOfText.Add(TextToPrintOnImage);
 		}
 
 	}
