@@ -32,7 +32,6 @@ namespace Bulk_Thumbnail_Creator
 				OutputFolder = "YTDL"
 			};
 
-
 			XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
 
 			if (File.Exists(BTCSettings.PathToXMLListOfDownloadedVideos))
@@ -57,7 +56,7 @@ namespace Bulk_Thumbnail_Creator
 				BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
 			}
 
-			FFmpegHandler.RunFFMpeg(BTCSettings.PathToVideo, 0.4F, BTCSettings.OutputDir);
+			FFmpegHandler.RunFFMpeg(BTCSettings.PathToVideo, 4, BTCSettings.OutputDir);
 
 			using (FileStream file = File.Create(BTCSettings.PathToXMLListOfDownloadedVideos))
 			{
