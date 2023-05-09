@@ -32,19 +32,6 @@ namespace Bulk_Thumbnail_Creator
 		private static Gravity _PositionOfText = Gravity.Southwest;
 		public static Gravity PositionOfText { get { return _PositionOfText; } set { _PositionOfText = value; } }
 
-
-		private static byte _RisingColorRedRGB = 0;
-		public static byte RisingColorRedRGB { get { return _RisingColorRedRGB; } set { _RisingColorRedRGB = value; } }
-
-
-		private static byte _FallingColorGreenRGB = 175;
-		public static byte FallingColorGreenRGB { get { return _FallingColorGreenRGB; } set { _FallingColorGreenRGB = value; } }
-
-
-		private static byte _FallingColorBlueRGB = 135;
-		public static byte FallingColorBlueRGB { get { return _FallingColorBlueRGB; } set { _FallingColorBlueRGB = value; } }
-
-
 		private static string _TextToAdd = "Bulk Thumbnail Creator";
 		public static string TextToAdd { get { return _TextToAdd; } set { _TextToAdd = value; } }
 
@@ -60,12 +47,6 @@ namespace Bulk_Thumbnail_Creator
 		// path to the video to take thumbnails from
 		private static string _PathToVideo;
 		public static string PathToVideo { get { return _PathToVideo; } set { _PathToVideo = value; } }
-
-
-		// the number of seconds between each thumbnail
-		private static int _IntervalBetweenThumbnails;
-		public static int IntervalBetweenThumbnails { get { return _IntervalBetweenThumbnails; } set { _IntervalBetweenThumbnails = value; } }
-
 
 		// filenames of our outputted thumbnails
 		private static string[] _Filenames;

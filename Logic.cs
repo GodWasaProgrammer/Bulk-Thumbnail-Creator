@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -67,7 +68,7 @@ namespace Bulk_Thumbnail_Creator
 				FontPointsize = FontPointSize,
 				BackgroundColor = MagickColors.Transparent,
 				//Height = 1850, // height of text box
-				Width = 1700, // width of text box
+				//Width = 1700, // width of text box
 			};
 
 			return settingsTextRandom;
