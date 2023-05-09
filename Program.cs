@@ -57,25 +57,14 @@ namespace Bulk_Thumbnail_Creator
 				BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
 			}
 
-			string ExtractedFileName = Path.GetFileName(BTCSettings.PathToVideo);
-			string outputPath = Path.GetFullPath(BTCSettings.OutputDir);
-
-			string Parameters = $" -i " + $@"""{ExtractedFileName}"" " + "-vf " + @"""select=gt(scene\,0.4)\ """ + " -vsync vfr " + $"{outputPath}/%03d.png";
-
-			Process processFFMpeg = new Process();
-			processFFMpeg.StartInfo.FileName = "ffmpeg.exe";
-			processFFMpeg.StartInfo.Arguments = Parameters;
-			processFFMpeg.StartInfo.WorkingDirectory = BTCSettings.YoutubeDLDir;
-			processFFMpeg.StartInfo.CreateNoWindow = true;
-			processFFMpeg.Start();
-			processFFMpeg.WaitForExit();
+			FFmpegHandler.RunFFMpeg(BTCSettings.PathToVideo, 0.4F, BTCSettings.OutputDir);
 
 			using (FileStream file = File.Create(BTCSettings.PathToXMLListOfDownloadedVideos))
 			{
 				serializer.Serialize(file, BTCSettings.DownloadedVideosList);
 			}
 
-			string[] SceneFrames = Directory.GetFiles(outputPath);
+			string[] SceneFrames = Directory.GetFiles(BTCSettings.OutputDir);
 
 			BTCSettings.FileNames = SceneFrames;
 
