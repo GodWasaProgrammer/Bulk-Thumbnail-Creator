@@ -10,6 +10,8 @@ using System.Linq;
 using ImageMagick;
 using Xabe.FFmpeg;
 using Xabe.FFmpeg.Downloader;
+using UMapx.Visualization;
+using System.Drawing;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -17,6 +19,9 @@ namespace Bulk_Thumbnail_Creator
 	{
 		public static async Task Main()
 		{
+
+			//FFmpegHandler.RunFFMPG(parameters);
+
 			// creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
 			Directory.CreateDirectory(BTCSettings.OutputDir);
 			Directory.CreateDirectory(BTCSettings.TextAddedDir);
@@ -56,7 +61,14 @@ namespace Bulk_Thumbnail_Creator
 				BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
 			}
 
-			FFmpegHandler.RunFFMpeg(BTCSettings.PathToVideo, 4, BTCSettings.OutputDir);
+			//FFmpegHandler.GrabSceneScreenshots(BTCSettings.PathToVideo, 4, BTCSettings.OutputDir);
+
+			var parameters = new Dictionary<string, string>();
+			parameters["i"] = $"{BTCSettings.PathToVideo}";
+			parameters["vf"] = @"select=gt(scene\,0.3)";
+			parameters["vsync"] = "vfr";
+
+			FFmpegHandler.RunFFMPG(parameters);
 
 			using (FileStream file = File.Create(BTCSettings.PathToXMLListOfDownloadedVideos))
 			{
@@ -91,6 +103,7 @@ namespace Bulk_Thumbnail_Creator
 						// Add the caption layer on top of the background image
 						// gravity will dictate position of your text instead of x/y by a settings var
 						outputImage.Composite(caption, BTCSettings.PositionOfText, CompositeOperator.Over);
+					
 						outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
 						outputImage.Quality = 100;
 						// outputs the file to the provided path and name
@@ -100,39 +113,49 @@ namespace Bulk_Thumbnail_Creator
 
 					//await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official);
 
-					//	var files = Directory.GetFiles(BTCSettings.TextAddedDir, "*.*", SearchOption.AllDirectories);
+					var files = Directory.GetFiles(BTCSettings.TextAddedDir, "*.*", SearchOption.AllDirectories);
 
-					//	Directory.CreateDirectory(BTCSettings.FaceDetectionDir);
+					Directory.CreateDirectory(BTCSettings.FaceDetectionDir);
 
-					//	var faceDetector = new FaceDetector(0.95f, 0.5f);
-					//	var painter = new Painter()
-					//	{
-					//		BoxPen = new Pen(Color.Yellow, 4),
-					//		Transparency = 0,
-					//	};
+					var faceDetector = new FaceDetector(0.95f, 0.5f);
+					var painter = new Painter()
+					{
+						BoxPen = new Pen(Color.Yellow, 4),
+						Transparency = 0,
+					};
 
-					//	Console.WriteLine($"Processing {files.Length} images");
+					Console.WriteLine($"Processing {files.Length} images");
 
-					//	foreach (string file in files)
-					//	{
-					//		var bitmap = new Bitmap(file);
-					//		var output = faceDetector.Forward(bitmap);
+					foreach (string file in files)
+					{
+						var bitmap = new Bitmap(file);
+						var output = faceDetector.Forward(bitmap);
 
-					//		foreach (var rectangle in output)
-					//		{
-					//			var paintData = new PaintData()
-					//			{
-					//				Rectangle = rectangle,
-					//				Title = string.Empty
-					//			};
-					//			var graphics = Graphics.FromImage(bitmap);
-					//			painter.Draw(graphics, paintData);
-					//		}
+						foreach (var rectangle in output)
+						{
+							//var imgWidth = 640;
+							//var imgHeight = 480;
 
-					//		var filename = Path.GetFileName(file);
-					//		bitmap.Save(Path.Combine(BTCSettings.FaceDetectionDir, filename));
-					//		Console.WriteLine($"Image: [{filename}] --> detected [{output.Length}] faces");
-					//	}
+							//var Width = rectangle.Location;
+
+							//var originX = rectangle.X;
+							//var originY = rectangle.Y; //20
+
+							//var height = rectangle.Height; //100
+
+							var paintData = new PaintData()
+							{
+								Rectangle = rectangle,
+								Title = string.Empty
+							};
+							var graphics = Graphics.FromImage(bitmap);
+							painter.Draw(graphics, paintData);
+						}
+
+						var filename = Path.GetFileName(file);
+						bitmap.Save(Path.Combine(BTCSettings.FaceDetectionDir, filename));
+						Console.WriteLine($"Image: [{filename}] --> detected [{output.Length}] faces");
+					}
 
 				}
 
