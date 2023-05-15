@@ -64,7 +64,10 @@ namespace Bulk_Thumbnail_Creator
 			//FFmpegHandler.GrabSceneScreenshots(BTCSettings.PathToVideo, 4, BTCSettings.OutputDir);
 
 			var parameters = new Dictionary<string, string>();
-			parameters["i"] = $"{BTCSettings.PathToVideo}";
+
+			string extractedfilename = Path.GetFileName(BTCSettings.PathToVideo);
+
+			parameters["i"] = $@"""{extractedfilename}""";
 			parameters["vf"] = @"select=gt(scene\,0.3)";
 			parameters["vsync"] = "vfr";
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -9,19 +10,29 @@ namespace Bulk_Thumbnail_Creator
 	{
 		public static void GrabSceneScreenshots(string parameters)
 		{
-			//string ExtractedFileName = Path.GetFileName(filename);
-			//outputfolder = Path.GetFullPath(outputfolder);
+			string ExtractedFileName = Path.GetFileName(BTCSettings.PathToVideo);
+			string fulloutpath = Path.GetFullPath(BTCSettings.OutputDir);
 			
-			// string OGParameters = $" -i " + $@"""{ExtractedFileName}"" " + "-vf " + $@"""select=gt(scene\,0.{scenedetection})\ """ + " -vsync vfr " + $@"""{outputfolder}/%03d.png""";
-
+			string OGParameters = $" -i " + $@"""{ExtractedFileName}"" " + "-vf " + $@"""select=gt(scene\,0.3)\ """ + " -vsync vfr " + $@"""{fulloutpath}/%03d.png""";
 
 			Process processFFMpeg = new Process();
+
 			processFFMpeg.StartInfo.FileName = "ffmpeg.exe";
-			processFFMpeg.StartInfo.Arguments = parameters;
 			processFFMpeg.StartInfo.WorkingDirectory = BTCSettings.YoutubeDLDir;
+			processFFMpeg.StartInfo.Arguments = parameters;
+			//processFFMpeg.StartInfo.UseShellExecute = false;
 			processFFMpeg.StartInfo.CreateNoWindow = false;
+			//processFFMpeg.StartInfo.RedirectStandardOutput = true;
+
 			processFFMpeg.Start();
 			processFFMpeg.WaitForExit();
+
+			//while (!processFFMpeg.StandardOutput.EndOfStream)
+			//{
+			//	string line = processFFMpeg.StandardOutput.ReadLine();
+			//	Console.WriteLine(line);
+			//	// do something with line
+			//}
 
 		}
 
@@ -31,11 +42,14 @@ namespace Bulk_Thumbnail_Creator
 			foreach (var parameter in parameters) 
 			{
 				exePars += "-" + parameter.Key;
-				exePars +=  " " + parameter.Value;
+				exePars +=  " " + parameter.Value + " ";
 			}
 			var outpath = Path.GetFullPath(BTCSettings.OutputDir);
 
-			exePars += $" {outpath}/%03d.png";
+			string path = $@"""{outpath}/%03d.png""";
+			exePars += path;
+			exePars.TrimEnd(' ');
+			// string dontcloseconsole = "/k ";
 
 			GrabSceneScreenshots(exePars);
 		}
