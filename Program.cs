@@ -123,7 +123,7 @@ namespace Bulk_Thumbnail_Creator
 					var faceDetector = new FaceDetector(0.95f, 0.5f);
 					var painter = new Painter()
 					{
-						BoxPen = new Pen(Color.Yellow, 4),
+						BoxPen = new Pen(System.Drawing.Color.Yellow, 4),
 						Transparency = 0,
 					};
 

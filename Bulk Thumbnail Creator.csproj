@@ -329,6 +329,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BTCSettings.cs" />
+    <Compile Include="Color.cs" />
     <Compile Include="FFmpegHandler.cs" />
     <Compile Include="Logic.cs" />
     <Compile Include="Program.cs" />
