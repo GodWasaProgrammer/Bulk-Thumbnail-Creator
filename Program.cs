@@ -27,6 +27,8 @@ namespace Bulk_Thumbnail_Creator
 			Directory.CreateDirectory(BTCSettings.TextAddedDir);
 			Directory.CreateDirectory(BTCSettings.YoutubeDLDir);
 
+			Logic.LinearColorGeneration();
+
 			// YT-DL
 			// declare instance of youtubeDL
 			var ytdl = new YoutubeDL
@@ -116,49 +118,49 @@ namespace Bulk_Thumbnail_Creator
 
 					//await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official);
 
-					var files = Directory.GetFiles(BTCSettings.TextAddedDir, "*.*", SearchOption.AllDirectories);
+					//var files = Directory.GetFiles(BTCSettings.TextAddedDir, "*.*", SearchOption.AllDirectories);
 
-					Directory.CreateDirectory(BTCSettings.FaceDetectionDir);
+					//Directory.CreateDirectory(BTCSettings.FaceDetectionDir);
 
-					var faceDetector = new FaceDetector(0.95f, 0.5f);
-					var painter = new Painter()
-					{
-						BoxPen = new Pen(System.Drawing.Color.Yellow, 4),
-						Transparency = 0,
-					};
+					//var faceDetector = new FaceDetector(0.95f, 0.5f);
+					//var painter = new Painter()
+					//{
+					//	BoxPen = new Pen(System.Drawing.Color.Yellow, 4),
+					//	Transparency = 0,
+					//};
 
-					Console.WriteLine($"Processing {files.Length} images");
+					//Console.WriteLine($"Processing {files.Length} images");
 
-					foreach (string file in files)
-					{
-						var bitmap = new Bitmap(file);
-						var output = faceDetector.Forward(bitmap);
+					//foreach (string file in files)
+					//{
+					//	var bitmap = new Bitmap(file);
+					//	var output = faceDetector.Forward(bitmap);
 
-						foreach (var rectangle in output)
-						{
-							//var imgWidth = 640;
-							//var imgHeight = 480;
+					//	foreach (var rectangle in output)
+					//	{
+					//		//var imgWidth = 640;
+					//		//var imgHeight = 480;
 
-							//var Width = rectangle.Location;
+					//		//var Width = rectangle.Location;
 
-							//var originX = rectangle.X;
-							//var originY = rectangle.Y; //20
+					//		//var originX = rectangle.X;
+					//		//var originY = rectangle.Y; //20
 
-							//var height = rectangle.Height; //100
+					//		//var height = rectangle.Height; //100
 
-							var paintData = new PaintData()
-							{
-								Rectangle = rectangle,
-								Title = string.Empty
-							};
-							var graphics = Graphics.FromImage(bitmap);
-							painter.Draw(graphics, paintData);
-						}
+					//		var paintData = new PaintData()
+					//		{
+					//			Rectangle = rectangle,
+					//			Title = string.Empty
+					//		};
+					//		var graphics = Graphics.FromImage(bitmap);
+					//		painter.Draw(graphics, paintData);
+					//	}
 
-						var filename = Path.GetFileName(file);
-						bitmap.Save(Path.Combine(BTCSettings.FaceDetectionDir, filename));
-						Console.WriteLine($"Image: [{filename}] --> detected [{output.Length}] faces");
-					}
+					//	var filename = Path.GetFileName(file);
+					//	bitmap.Save(Path.Combine(BTCSettings.FaceDetectionDir, filename));
+					//	Console.WriteLine($"Image: [{filename}] --> detected [{output.Length}] faces");
+					//}
 
 				}
 

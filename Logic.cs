@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Drawing;
 using System.Diagnostics;
+using UMapx.Imaging;
+using UMapx.Colorspace;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -93,6 +95,28 @@ namespace Bulk_Thumbnail_Creator
 			};
 
 			return settingsTextRandom;
+		}
+
+		public static MagickReadSettings Linear()
+		{
+			MagickReadSettings SettingsTextLinear = new MagickReadSettings
+			{
+				Font = "linear",
+			};
+
+			return SettingsTextLinear;
+		}
+
+		public static void LinearColorGeneration()
+		{
+			ColorItem item = new ColorItem();
+
+			int hue = 5;
+			float saturation = 0.36F;
+			float lightness = 0.25F;
+
+			item.SetByHSL(hue, saturation, lightness);
+
 		}
 
 	}

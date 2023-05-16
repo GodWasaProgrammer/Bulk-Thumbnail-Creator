@@ -11,7 +11,7 @@ namespace Bulk_Thumbnail_Creator
 			string ExtractedFileName = Path.GetFileName(BTCSettings.PathToVideo);
 			string fulloutpath = Path.GetFullPath(BTCSettings.OutputDir);
 			
-			string OGParameters = $" -i " + $@"""{ExtractedFileName}"" " + "-vf " + $@"""select=gt(scene\,0.3)\ """ + " -vsync vfr " + $@"""{fulloutpath}/%03d.png""";
+			// string OGParameters = $" -i " + $@"""{ExtractedFileName}"" " + "-vf " + $@"""select=gt(scene\,0.3)\ """ + " -vsync vfr " + $@"""{fulloutpath}/%03d.png""";
 
 			Process processFFMpeg = new Process();
 
