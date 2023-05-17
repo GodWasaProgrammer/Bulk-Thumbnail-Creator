@@ -80,7 +80,41 @@ namespace Bulk_Thumbnail_Creator
 			// loops foreach file in list of filepaths, generate some settings, return the settings, add em to our listofsettingsfortext.
 			for (int i = 0; i < BTCSettings.FileNames.Count(); i++)
 			{
-				Logic.ListOfSettingsForText.Add(Logic.AdaptableSizeText());
+				float hueFillColor = 0F;
+				float saturationFillColor = 1F;
+				float lightnessFillColor = 0.61F;
+
+				float hueStrokeColor = 125F;
+				float saturationStrokeColor = 1F;
+				float lightnessStrokeColor = 0.61F;
+
+				float hueBorderColor = 51F;
+				float saturationBorderColor = 1F;
+				float lightnessBorderColor = 0.61F;
+
+				TextScheme scheme = new TextScheme();
+
+				if (i > 1)
+				{
+					hueFillColor += +25F;
+
+					hueStrokeColor = hueStrokeColor + 25;
+
+					scheme.FillColor.SetByHSL(hueFillColor, saturationFillColor, lightnessFillColor);
+
+					scheme.StrokeColor.SetByHSL(hueStrokeColor, saturationStrokeColor, lightnessStrokeColor);
+
+					scheme.BorderColor.SetByHSL(hueBorderColor,saturationBorderColor, lightnessBorderColor);
+
+				}
+				else
+				{
+					scheme.FillColor.SetByHSL(hueFillColor, saturationFillColor, lightnessFillColor);
+					scheme.StrokeColor.SetByHSL(hueStrokeColor,saturationStrokeColor, lightnessStrokeColor);
+					scheme.BorderColor.SetByHSL(hueBorderColor, saturationBorderColor, lightnessBorderColor);
+				}
+
+				Logic.ListOfSettingsForText.Add(Logic.Linear(scheme));
 			}
 
 			BTCSettings.ListOfText.Add(BTCSettings.TextToAdd);
