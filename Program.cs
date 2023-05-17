@@ -3,15 +3,12 @@ using System.Threading.Tasks;
 using YoutubeDLSharp;
 using FaceONNX;
 using System;
-using System.Diagnostics;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Linq;
 using ImageMagick;
 using Xabe.FFmpeg;
 using Xabe.FFmpeg.Downloader;
-using UMapx.Visualization;
-using System.Drawing;
 
 namespace Bulk_Thumbnail_Creator
 {
