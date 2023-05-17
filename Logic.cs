@@ -3,10 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Drawing;
-using System.Diagnostics;
-using UMapx.Imaging;
-using UMapx.Colorspace;
-using Microsoft.Graph.Models.ExternalConnectors;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -18,7 +14,10 @@ namespace Bulk_Thumbnail_Creator
 		public static List<MagickReadSettings> ListOfSettingsForText { get; set; } = new List<MagickReadSettings>();
 
 		static readonly Random colorRandom = new Random();
-
+		/// <summary>
+		/// Generates random colors in bytes
+		/// </summary>
+		/// <returns>returns a MagickColor Object which is basically RGB</returns>
 		internal static MagickColor RandomizeColor()
 		{
 			byte pickedColorRedRGB = (byte)colorRandom.Next(BTCSettings.MaxRGB);
@@ -114,6 +113,11 @@ namespace Bulk_Thumbnail_Creator
 			return settingsTextRandom;
 		}
 
+		/// <summary>
+		/// Generates MagickReadSettings with completely randomized color values for Fill/stroke/border colors
+		/// ALso generates the other necessary settings for ImageMagick necessary to put text on the screenshots
+		/// </summary>
+		/// <returns>returns the randomized MagickReadSettings object</returns>
 		public static MagickReadSettings GenerateRandomColorSettings()
 		{
 			MagickReadSettings settingsTextRandom = new MagickReadSettings
@@ -135,6 +139,12 @@ namespace Bulk_Thumbnail_Creator
 			return settingsTextRandom;
 		}
 
+		/// <summary>
+		/// Creates TextSettings in the form of MagickReadSettings
+		/// which includes information retrieved from a schemeobject which in turn uses Coloritems
+		/// </summary>
+		/// <param name="scheme"></param>
+		/// <returns>Returns the generated MagickReadSettings</returns>
 		public static MagickReadSettings Linear(TextScheme scheme)
 		{
 			int FontPointSize = SetTextSizeAfterSizeofScreens();
@@ -157,18 +167,6 @@ namespace Bulk_Thumbnail_Creator
 
 			return SettingsTextLinear;
 		}
-
-		//public static void LinearColorGeneration()
-		//{
-		//	TextScheme item = new TextScheme();
-
-		//	int hue = 5;
-		//	float saturation = 0.36F;
-		//	float lightness = 0.25F;
-
-		//	// item.SetByHSL(hue, saturation, lightness);
-
-		//}
 
 	}
 
