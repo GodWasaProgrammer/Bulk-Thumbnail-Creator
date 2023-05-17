@@ -15,23 +15,16 @@ namespace Bulk_Thumbnail_Creator
 
 			Process processFFMpeg = new Process();
 
-			processFFMpeg.StartInfo.FileName = "ffmpeg.exe";
+			processFFMpeg.StartInfo.FileName = Path.GetFullPath("ffmpeg.exe");
 			processFFMpeg.StartInfo.WorkingDirectory = BTCSettings.YoutubeDLDir;
 			processFFMpeg.StartInfo.Arguments = parameters;
-			//processFFMpeg.StartInfo.UseShellExecute = false;
+			processFFMpeg.StartInfo.UseShellExecute = false;
 			processFFMpeg.StartInfo.CreateNoWindow = false;
-			//processFFMpeg.StartInfo.RedirectStandardOutput = true;
-
+			processFFMpeg.StartInfo.RedirectStandardOutput = true;
+			
 			processFFMpeg.Start();
 			processFFMpeg.WaitForExit();
-
-			//while (!processFFMpeg.StandardOutput.EndOfStream)
-			//{
-			//	string line = processFFMpeg.StandardOutput.ReadLine();
-			//	Console.WriteLine(line);
-			//	// do something with line
-			//}
-
+			System.Console.WriteLine("Ffmpeg finished producing pictures");
 		}
 
 		public static void RunFFMPG(Dictionary<string,string> parameters) 
