@@ -19,8 +19,13 @@ namespace Bulk_Thumbnail_Creator
 		public byte Blue { get { return blue; } }
 
 		private int hue;
+		public int Hue {get { return hue; } }
+
 		private float saturation;
+		public float Saturation { get { return saturation; } }
+
 		private float luminance;
+		public float Luminance { get { return luminance; } }
 
 
 		// should take HSL and set the correlating RGB values of the object

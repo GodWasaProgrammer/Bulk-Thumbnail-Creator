@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Diagnostics;
 using UMapx.Imaging;
 using UMapx.Colorspace;
+using Microsoft.Graph.Models.ExternalConnectors;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -57,12 +58,17 @@ namespace Bulk_Thumbnail_Creator
 				FontPointSize = 75;
 			}
 
+			TextScheme scheme = new TextScheme();
+			scheme.FillColor.SetByHSL(47, 50, 041);
+			scheme.StrokeColor.SetByHSL(80, 25, 25);
+			scheme.BorderColor.SetByHSL(85, 25, 30);
+
 			MagickReadSettings settingsTextRandom = new MagickReadSettings
 			{
 				Font = "italic",
-				FillColor = MagickColor.FromRgb(210, 255, 0),
-				StrokeColor = MagickColor.FromRgb(255, 45, 0),
-				BorderColor = MagickColor.FromRgb(38, 0, 255),
+				FillColor = MagickColor.FromRgb(scheme.FillColor.Red, scheme.FillColor.Green, scheme.FillColor.Blue),
+				StrokeColor = MagickColor.FromRgb(scheme.StrokeColor.Red, scheme.StrokeColor.Green, scheme.StrokeColor.Blue),
+				BorderColor = MagickColor.FromRgb(scheme.BorderColor.Red, scheme.BorderColor.Green, scheme.BorderColor.Blue),
 				FontStyle = FontStyleType.Bold,
 				StrokeAntiAlias = true,
 				StrokeWidth = 4,
@@ -99,25 +105,38 @@ namespace Bulk_Thumbnail_Creator
 
 		public static MagickReadSettings Linear()
 		{
+			TextScheme scheme = new TextScheme();
+
 			MagickReadSettings SettingsTextLinear = new MagickReadSettings
 			{
 				Font = "linear",
+				FillColor = MagickColor.FromRgb(scheme.FillColor.Red, scheme.FillColor.Green, scheme.FillColor.Blue),
+				StrokeColor = MagickColor.FromRgb(scheme.FillColor.Red, scheme.FillColor.Green, scheme.FillColor.Blue),
+				BorderColor = MagickColor.FromRgb(scheme.FillColor.Red, scheme.FillColor.Green, scheme.FillColor.Blue),
+				FontStyle = FontStyleType.Bold,
+				StrokeAntiAlias = true,
+				StrokeWidth = 6,
+				//FontPointsize = 100,
+				FontWeight = FontWeight.Bold,
+				BackgroundColor = MagickColors.Transparent,
+				//Height = 1850, // height of text box
+				Width = 1700, // width of text box
 			};
 
 			return SettingsTextLinear;
 		}
 
-		public static void LinearColorGeneration()
-		{
-			ColorItem item = new ColorItem();
+		//public static void LinearColorGeneration()
+		//{
+		//	TextScheme item = new TextScheme();
 
-			int hue = 5;
-			float saturation = 0.36F;
-			float lightness = 0.25F;
+		//	int hue = 5;
+		//	float saturation = 0.36F;
+		//	float lightness = 0.25F;
 
-			item.SetByHSL(hue, saturation, lightness);
+		//	// item.SetByHSL(hue, saturation, lightness);
 
-		}
+		//}
 
 	}
 

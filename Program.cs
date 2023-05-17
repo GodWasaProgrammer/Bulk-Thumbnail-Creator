@@ -19,15 +19,10 @@ namespace Bulk_Thumbnail_Creator
 	{
 		public static async Task Main()
 		{
-
-			//FFmpegHandler.RunFFMPG(parameters);
-
 			// creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
 			Directory.CreateDirectory(BTCSettings.OutputDir);
 			Directory.CreateDirectory(BTCSettings.TextAddedDir);
 			Directory.CreateDirectory(BTCSettings.YoutubeDLDir);
-
-			Logic.LinearColorGeneration();
 
 			// YT-DL
 			// declare instance of youtubeDL
@@ -62,8 +57,6 @@ namespace Bulk_Thumbnail_Creator
 			{
 				BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
 			}
-
-			//FFmpegHandler.GrabSceneScreenshots(BTCSettings.PathToVideo, 4, BTCSettings.OutputDir);
 
 			var parameters = new Dictionary<string, string>();
 
