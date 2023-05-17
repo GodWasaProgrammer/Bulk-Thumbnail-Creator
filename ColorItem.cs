@@ -28,8 +28,11 @@ namespace Bulk_Thumbnail_Creator
 		public float Luminance { get { return luminance; } }
 
 
-		// should take HSL and set the correlating RGB values of the object
-		void ColorToRGB(HSL inputHSL)
+		/// <summary>
+		/// takes HSL as input and set the correlating RGB values of the object
+		/// </summary>
+		/// <param name="inputHSL">Your HSL object input</param>
+		private void ColorToRGB(HSL inputHSL)
 		{
 			RGB colorInRGB;
 			colorInRGB = inputHSL.ToRGB;
@@ -40,8 +43,11 @@ namespace Bulk_Thumbnail_Creator
 
 		}
 
-		// should take RGB and set the correlating HSL values of the object
-		void ColorToHSL(RGB inputRGB)
+		/// <summary>
+		/// should take RGB and set the correlating HSL values of the object
+		/// </summary>
+		/// <param name="inputRGB">Your RGB object input</param>
+		private void ColorToHSL(RGB inputRGB)
 		{
 			HSL colorInHSL = HSL.FromRGB(inputRGB);
 
@@ -50,7 +56,13 @@ namespace Bulk_Thumbnail_Creator
 			colorInHSL.Lightness = luminance;
 		}
 
-		// set color object by RGB input
+		/// <summary>
+		/// set color object by RGB input, also sets correlating HSL values on object on the fly
+		/// </summary>
+		/// <param name="inputRed"></param>
+		/// <param name="inputGreen"></param>
+		/// <param name="inputBlue"></param>
+		/// <returns>returns a RGB object</returns>
 		public RGB SetByRGB(byte inputRed, byte inputGreen, byte inputBlue)
 		{
 			red = inputRed;
@@ -63,7 +75,13 @@ namespace Bulk_Thumbnail_Creator
 			return outputRGB;
 		}
 
-		// set color by HSL input
+		/// <summary>
+		/// set color object by HSL input, also sets correlating RGB values of the object via ColorToRGB
+		/// </summary>
+		/// <param name="inputHue"></param>
+		/// <param name="inputSaturation"></param>
+		/// <param name="inputLuminance"></param>
+		/// <returns>returns a HSL object</returns>
 		public HSL SetByHSL(float inputHue, float inputSaturation, float inputLuminance)
 		{
 			hue = inputHue;
