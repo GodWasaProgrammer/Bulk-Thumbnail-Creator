@@ -18,8 +18,8 @@ namespace Bulk_Thumbnail_Creator
 		private byte blue;
 		public byte Blue { get { return blue; } }
 
-		private int hue;
-		public int Hue {get { return hue; } }
+		private float hue;
+		public float Hue {get { return hue; } }
 
 		private float saturation;
 		public float Saturation { get { return saturation; } }
@@ -31,11 +31,13 @@ namespace Bulk_Thumbnail_Creator
 		// should take HSL and set the correlating RGB values of the object
 		void ColorToRGB(HSL inputHSL)
 		{
-			RGB colorInRGB = inputHSL.ToRGB;
+			RGB colorInRGB;
+			colorInRGB = inputHSL.ToRGB;
 
 			red = colorInRGB.Red;
 			green = colorInRGB.Green;
 			blue = colorInRGB.Blue;
+
 		}
 
 		// should take RGB and set the correlating HSL values of the object
@@ -62,7 +64,7 @@ namespace Bulk_Thumbnail_Creator
 		}
 
 		// set color by HSL input
-		public HSL SetByHSL(int inputHue, float inputSaturation, float inputLuminance)
+		public HSL SetByHSL(float inputHue, float inputSaturation, float inputLuminance)
 		{
 			hue = inputHue;
 			saturation = inputSaturation;

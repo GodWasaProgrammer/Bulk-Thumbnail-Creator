@@ -59,9 +59,9 @@ namespace Bulk_Thumbnail_Creator
 			}
 
 			TextScheme scheme = new TextScheme();
-			scheme.FillColor.SetByHSL(47, 50, 041);
-			scheme.StrokeColor.SetByHSL(80, 25, 25);
-			scheme.BorderColor.SetByHSL(85, 25, 30);
+			scheme.FillColor.SetByHSL(0.50F, 0.35F, 0.25F);
+			scheme.StrokeColor.SetByHSL(0.13F, 0.15F, 0.40F);
+			scheme.BorderColor.SetByHSL(0.75F, 0.15F, 0.50F);
 
 			MagickReadSettings settingsTextRandom = new MagickReadSettings
 			{

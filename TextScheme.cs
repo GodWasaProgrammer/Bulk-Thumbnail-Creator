@@ -18,15 +18,6 @@ namespace Bulk_Thumbnail_Creator
 		ColorItem borderColor = new ColorItem();
 		public ColorItem BorderColor { get { return borderColor; } set { borderColor = BorderColor; } }
 
-		public TextScheme() 
-		{
-			FillColor.SetByHSL(360, 100F, 41F);
-			StrokeColor.SetByHSL(120, 100F, 41F);
-			BorderColor.SetByHSL(47, 100F, 41F);
-		}
-
-		
-
 	}
 
 
