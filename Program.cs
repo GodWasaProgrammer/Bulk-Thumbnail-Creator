@@ -63,7 +63,7 @@ namespace Bulk_Thumbnail_Creator
 			parameters["vf"] = @"select=gt(scene\,0.3)";
 			parameters["vsync"] = "vfr";
 
-			FFmpegHandler.RunFFMPG(parameters);
+			FFmpegHandler.RunFFMPG(parameters, Path.GetFullPath(BTCSettings.OutputDir));
 
 			using (FileStream file = File.Create(BTCSettings.PathToXMLListOfDownloadedVideos))
 			{
@@ -74,28 +74,49 @@ namespace Bulk_Thumbnail_Creator
 
 			BTCSettings.FileNames = SceneFrames;
 
+			float hueFillColor = 0F;
+			float saturationFillColor = 1F;
+			float lightnessFillColor = 0.50F;
+
+			float hueStrokeColor = 125F;
+			float saturationStrokeColor = 1F;
+			float lightnessStrokeColor = 0.50F;
+
+			float hueBorderColor = 28F;
+			float saturationBorderColor = 1F;
+			float lightnessBorderColor = 0.50F;
+
 			// loops foreach file in list of filepaths, generate some settings, return the settings, add em to our listofsettingsfortext.
 			for (int i = 0; i < BTCSettings.FileNames.Count(); i++)
 			{
-				float hueFillColor = 0F;
-				float saturationFillColor = 1F;
-				float lightnessFillColor = 0.61F;
-
-				float hueStrokeColor = 125F;
-				float saturationStrokeColor = 1F;
-				float lightnessStrokeColor = 0.61F;
-
-				float hueBorderColor = 51F;
-				float saturationBorderColor = 1F;
-				float lightnessBorderColor = 0.61F;
-
 				TextScheme scheme = new TextScheme();
 
 				if (i > 1)
 				{
-					hueFillColor += +25F;
+					hueFillColor += +12.5F;
+					hueStrokeColor += +12.5F;
 
-					hueStrokeColor = hueStrokeColor + 25;
+					if (i > 5)
+					{
+						hueBorderColor += 10F;
+					}
+
+					if (hueFillColor > 360)
+					{
+						hueFillColor = 0F;
+					}
+
+					if (hueStrokeColor > 360)
+					{
+						hueStrokeColor = 0F;
+					}
+
+					if (hueBorderColor > 360)
+					{
+						hueBorderColor = 0F;
+					}
+
+					// hueStrokeColor = hueStrokeColor + 25;
 
 					scheme.FillColor.SetByHSL(hueFillColor, saturationFillColor, lightnessFillColor);
 

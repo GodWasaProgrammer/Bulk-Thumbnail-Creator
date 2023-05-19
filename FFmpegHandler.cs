@@ -8,8 +8,8 @@ namespace Bulk_Thumbnail_Creator
 	{
 		public static void GrabSceneScreenshots(string parameters)
 		{
-			string ExtractedFileName = Path.GetFileName(BTCSettings.PathToVideo);
-			string fulloutpath = Path.GetFullPath(BTCSettings.OutputDir);
+			//string ExtractedFileName = Path.GetFileName(BTCSettings.PathToVideo);
+			//string fulloutpath = Path.GetFullPath(BTCSettings.OutputDir);
 			
 			// string OGParameters = $" -i " + $@"""{ExtractedFileName}"" " + "-vf " + $@"""select=gt(scene\,0.3)\ """ + " -vsync vfr " + $@"""{fulloutpath}/%03d.png""";
 
@@ -27,7 +27,7 @@ namespace Bulk_Thumbnail_Creator
 			System.Console.WriteLine("Ffmpeg finished producing pictures");
 		}
 
-		public static void RunFFMPG(Dictionary<string,string> parameters) 
+		public static void RunFFMPG(Dictionary<string,string> parameters, string outPath) 
 		{
 			var exePars = "";
 			foreach (var parameter in parameters) 
@@ -35,9 +35,9 @@ namespace Bulk_Thumbnail_Creator
 				exePars += "-" + parameter.Key;
 				exePars +=  " " + parameter.Value + " ";
 			}
-			var outpath = Path.GetFullPath(BTCSettings.OutputDir);
+		
 
-			string path = $@"""{outpath}/%03d.png""";
+			string path = $@"""{outPath}/%03d.png""";
 			exePars += path;
 			exePars.TrimEnd(' ');
 			// string dontcloseconsole = "/k ";

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UMapx.Colorspace;
+﻿using UMapx.Colorspace;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -18,15 +13,45 @@ namespace Bulk_Thumbnail_Creator
 		private byte blue;
 		public byte Blue { get { return blue; } }
 
-		private float hue;
-		public float Hue {get { return hue; } }
+		/// <summary>
+		/// Returns you the Saturation of the ColorItem by calling GetHSLValuesFrom RGB and giving you the hue value of coloritem
+		/// </summary>
+		public float Hue 
+		{
+			get 
+			{
+				HSL CurrentHSL = GetHSLValuesFromRGB(red, green, blue);
 
-		private float saturation;
-		public float Saturation { get { return saturation; } }
+				return CurrentHSL.Hue; 
+			} 
 
-		private float luminance;
-		public float Luminance { get { return luminance; } }
+		}
 
+		/// <summary>
+		/// Returns you the Saturation of the ColorItem by calling GetHSLValuesFrom RGB and giving you the Saturation value of coloritem
+		/// </summary>
+		public float Saturation 
+		{ 
+			get 
+			{
+				HSL CurrentHSL = GetHSLValuesFromRGB(red, green, blue);
+				return CurrentHSL.Saturation; 
+			} 
+
+		}
+
+		/// <summary>
+		/// Returns you the luminance by calling GETHSLValuesFromRGB and and giving you the luminance value of coloritem
+		/// </summary>
+		public float Luminance 
+		{ 
+			get 
+			{
+				HSL CurrentHSL = GetHSLValuesFromRGB(red, green, blue);
+				return CurrentHSL.Lightness; 
+			} 
+
+		}
 
 		/// <summary>
 		/// takes HSL as input and set the correlating RGB values of the object
@@ -34,26 +59,11 @@ namespace Bulk_Thumbnail_Creator
 		/// <param name="inputHSL">Your HSL object input</param>
 		private void ColorToRGB(HSL inputHSL)
 		{
-			RGB colorInRGB;
-			colorInRGB = inputHSL.ToRGB;
+			RGB colorInRGB = inputHSL.ToRGB;
 
 			red = colorInRGB.Red;
 			green = colorInRGB.Green;
 			blue = colorInRGB.Blue;
-
-		}
-
-		/// <summary>
-		/// should take RGB and set the correlating HSL values of the object
-		/// </summary>
-		/// <param name="inputRGB">Your RGB object input</param>
-		private void ColorToHSL(RGB inputRGB)
-		{
-			HSL colorInHSL = HSL.FromRGB(inputRGB);
-
-			colorInHSL.Hue = hue;
-			colorInHSL.Saturation = saturation;
-			colorInHSL.Lightness = luminance;
 		}
 
 		/// <summary>
@@ -71,7 +81,6 @@ namespace Bulk_Thumbnail_Creator
 
 			RGB outputRGB = new RGB(red, green, blue);
 
-			ColorToHSL(outputRGB);
 			return outputRGB;
 		}
 
@@ -84,14 +93,25 @@ namespace Bulk_Thumbnail_Creator
 		/// <returns>returns a HSL object</returns>
 		public HSL SetByHSL(float inputHue, float inputSaturation, float inputLuminance)
 		{
-			hue = inputHue;
-			saturation = inputSaturation;
-			luminance = inputLuminance;
-
-			HSL outputHSL = new HSL(hue, saturation, luminance);
+			HSL outputHSL = new HSL(inputHue, inputSaturation, inputLuminance);
 
 			ColorToRGB(outputHSL);
+
 			return outputHSL;
+		}
+
+		public static HSL GetHSLValuesFromRGB(byte inputred, byte inputgreen, byte inputblue)
+		{
+			RGB inputRGB = new RGB
+			{
+				Red = inputred,
+				Green = inputgreen,
+				Blue = inputblue
+			};
+
+			HSL CurrentHSL = HSL.FromRGB(inputRGB);
+
+			return CurrentHSL;
 		}
 
 	}
