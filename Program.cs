@@ -85,11 +85,11 @@ namespace Bulk_Thumbnail_Creator
 
 			Console.WriteLine($"Processing {files.Length} images");
 
+
 			foreach (string file in files)
 			{
 				var bitmap = new Bitmap(file);
 				var output = faceDetector.Forward(bitmap);
-
 
 				// if rectangle didnt output anything, will put text default
 				// otherwise foreach rectangle determine where to put text
@@ -106,12 +106,14 @@ namespace Bulk_Thumbnail_Creator
 
 					// var bmpheightminusrectYpos = bitmap.Height - locationofrectangleY;
 
+
 					Point PosOfText = new Point();
 
 					if (locationofrectangleY > bmpheightsplitintwo)
 					{
 						// make text appear on lower half
-
+						// need to be fed to the Textadding function
+						// create a list of the detected faces, output pos of text to list, then read from textadding function
 						PosOfText = new Point(0, 0 + BTCSettings.FontPointSize);
 
 						BTCSettings.PositionOfText = PosOfText; // feed position
@@ -120,6 +122,7 @@ namespace Bulk_Thumbnail_Creator
 					if (locationofrectangleY < bmpheightsplitintwo)
 					{
 						// make text appear on upper half
+						// need to be fed to the TextAdding function
 						BTCSettings.PositionOfText = PosOfText; // feed position
 					}
 
@@ -128,6 +131,7 @@ namespace Bulk_Thumbnail_Creator
 						Rectangle = rectangle,
 						Title = string.Empty
 					};
+
 					var graphics = Graphics.FromImage(bitmap);
 					painter.Draw(graphics, paintData);
 				}
@@ -136,7 +140,6 @@ namespace Bulk_Thumbnail_Creator
 				bitmap.Save(Path.Combine(BTCSettings.FaceDetectionDir, filename));
 				Console.WriteLine($"Image: [{filename}] --> detected [{output.Length}] faces");
 			}
-
 
 			string[] SceneFrames = Directory.GetFiles(BTCSettings.OutputDir);
 
