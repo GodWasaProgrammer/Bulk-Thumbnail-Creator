@@ -7,11 +7,14 @@ namespace Bulk_Thumbnail_Creator
 		private byte red;
 		public byte Red { get { return red; } }
 
+
 		private byte green;
 		public byte Green { get { return green; } }
 
+
 		private byte blue;
 		public byte Blue { get { return blue; } }
+
 
 		/// <summary>
 		/// Returns you the Saturation of the ColorItem by calling GetHSLValuesFrom RGB and giving you the hue value of coloritem

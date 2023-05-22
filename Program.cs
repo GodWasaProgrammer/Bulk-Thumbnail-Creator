@@ -9,6 +9,8 @@ using System.Linq;
 using ImageMagick;
 using Xabe.FFmpeg;
 using Xabe.FFmpeg.Downloader;
+using UMapx.Visualization;
+using System.Drawing;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -43,7 +45,7 @@ namespace Bulk_Thumbnail_Creator
 			}
 
 			// downloads specified video from youtube if it does not already exist.
-			BTCSettings.YoutubeLink = "https://www.youtube.com/watch?v=B66lqt0K2I0";
+			BTCSettings.YoutubeLink = "https://www.youtube.com/watch?v=yppOGpXT998";
 			var res = await ytdl.RunVideoDownload(url: BTCSettings.YoutubeLink);
 			await Console.Out.WriteLineAsync("Download Success:" + res.Success.ToString());
 
@@ -69,6 +71,72 @@ namespace Bulk_Thumbnail_Creator
 			{
 				serializer.Serialize(file, BTCSettings.DownloadedVideosList);
 			}
+
+			var files = Directory.GetFiles(BTCSettings.OutputDir, "*.*", SearchOption.AllDirectories);
+
+			Directory.CreateDirectory(BTCSettings.FaceDetectionDir);
+
+			var faceDetector = new FaceDetector(0.95f, 0.5f);
+			var painter = new Painter()
+			{
+				BoxPen = new Pen(Color.Yellow, 4),
+				Transparency = 0,
+			};
+
+			Console.WriteLine($"Processing {files.Length} images");
+
+			foreach (string file in files)
+			{
+				var bitmap = new Bitmap(file);
+				var output = faceDetector.Forward(bitmap);
+
+
+				// if rectangle didnt output anything, will put text default
+				// otherwise foreach rectangle determine where to put text
+
+				foreach (var rectangle in output)
+				{
+					var LocationOfRectangle = rectangle.Location;
+
+					// should calculate distance between position of the rectangle with a face in it and the 0,0 pos
+
+					var locationofrectangleY = LocationOfRectangle.Y;
+
+					var bmpheightsplitintwo = bitmap.Height / 2;
+
+					// var bmpheightminusrectYpos = bitmap.Height - locationofrectangleY;
+
+					Point PosOfText = new Point();
+
+					if (locationofrectangleY > bmpheightsplitintwo)
+					{
+						// make text appear on lower half
+
+						PosOfText = new Point(0, 0 + BTCSettings.FontPointSize);
+
+						BTCSettings.PositionOfText = PosOfText; // feed position
+					}
+
+					if (locationofrectangleY < bmpheightsplitintwo)
+					{
+						// make text appear on upper half
+						BTCSettings.PositionOfText = PosOfText; // feed position
+					}
+
+					var paintData = new PaintData()
+					{
+						Rectangle = rectangle,
+						Title = string.Empty
+					};
+					var graphics = Graphics.FromImage(bitmap);
+					painter.Draw(graphics, paintData);
+				}
+
+				var filename = Path.GetFileName(file);
+				bitmap.Save(Path.Combine(BTCSettings.FaceDetectionDir, filename));
+				Console.WriteLine($"Image: [{filename}] --> detected [{output.Length}] faces");
+			}
+
 
 			string[] SceneFrames = Directory.GetFiles(BTCSettings.OutputDir);
 
@@ -122,13 +190,13 @@ namespace Bulk_Thumbnail_Creator
 
 					scheme.StrokeColor.SetByHSL(hueStrokeColor, saturationStrokeColor, lightnessStrokeColor);
 
-					scheme.BorderColor.SetByHSL(hueBorderColor,saturationBorderColor, lightnessBorderColor);
+					scheme.BorderColor.SetByHSL(hueBorderColor, saturationBorderColor, lightnessBorderColor);
 
 				}
 				else
 				{
 					scheme.FillColor.SetByHSL(hueFillColor, saturationFillColor, lightnessFillColor);
-					scheme.StrokeColor.SetByHSL(hueStrokeColor,saturationStrokeColor, lightnessStrokeColor);
+					scheme.StrokeColor.SetByHSL(hueStrokeColor, saturationStrokeColor, lightnessStrokeColor);
 					scheme.BorderColor.SetByHSL(hueBorderColor, saturationBorderColor, lightnessBorderColor);
 				}
 
@@ -152,8 +220,9 @@ namespace Bulk_Thumbnail_Creator
 					{
 						// Add the caption layer on top of the background image
 						// gravity will dictate position of your text instead of x/y by a settings var
-						outputImage.Composite(caption, BTCSettings.PositionOfText, CompositeOperator.Over);
-					
+
+						outputImage.Composite(caption, BTCSettings.PositionOfText.X,BTCSettings.PositionOfText.Y, CompositeOperator.Over);
+
 						outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
 						outputImage.Quality = 100;
 						// outputs the file to the provided path and name
@@ -161,56 +230,14 @@ namespace Bulk_Thumbnail_Creator
 
 					}
 
-					//await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official);
-
-					//var files = Directory.GetFiles(BTCSettings.TextAddedDir, "*.*", SearchOption.AllDirectories);
-
-					//Directory.CreateDirectory(BTCSettings.FaceDetectionDir);
-
-					//var faceDetector = new FaceDetector(0.95f, 0.5f);
-					//var painter = new Painter()
-					//{
-					//	BoxPen = new Pen(System.Drawing.Color.Yellow, 4),
-					//	Transparency = 0,
-					//};
-
-					//Console.WriteLine($"Processing {files.Length} images");
-
-					//foreach (string file in files)
-					//{
-					//	var bitmap = new Bitmap(file);
-					//	var output = faceDetector.Forward(bitmap);
-
-					//	foreach (var rectangle in output)
-					//	{
-					//		//var imgWidth = 640;
-					//		//var imgHeight = 480;
-
-					//		//var Width = rectangle.Location;
-
-					//		//var originX = rectangle.X;
-					//		//var originY = rectangle.Y; //20
-
-					//		//var height = rectangle.Height; //100
-
-					//		var paintData = new PaintData()
-					//		{
-					//			Rectangle = rectangle,
-					//			Title = string.Empty
-					//		};
-					//		var graphics = Graphics.FromImage(bitmap);
-					//		painter.Draw(graphics, paintData);
-					//	}
-
-					//	var filename = Path.GetFileName(file);
-					//	bitmap.Save(Path.Combine(BTCSettings.FaceDetectionDir, filename));
-					//	Console.WriteLine($"Image: [{filename}] --> detected [{output.Length}] faces");
-					//}
+					await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official);
 
 				}
 
 			}
 
 		}
+
 	}
+
 }

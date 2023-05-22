@@ -1,5 +1,6 @@
 ﻿using ImageMagick;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -29,8 +30,11 @@ namespace Bulk_Thumbnail_Creator
 		public static string YoutubeLink { get { return _YoutubeLink; } set { _YoutubeLink = value; } }
 
 
-		private static Gravity _PositionOfText = Gravity.Southwest;
-		public static Gravity PositionOfText { get { return _PositionOfText; } set { _PositionOfText = value; } }
+		private static Point _PositionOfText = (Point)new Point(0, 0);
+		public static Point PositionOfText { get { return _PositionOfText; } set { _PositionOfText = value; } }
+
+		private static int _FontPointSize = 70;
+		public static int FontPointSize {get { return _FontPointSize; } set { _FontPointSize = value; } }
 
 		private static string _TextToAdd = "Bulk Thumbnail Creator";
 		public static string TextToAdd { get { return _TextToAdd; } set { _TextToAdd = value; } }
