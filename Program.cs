@@ -7,9 +7,6 @@ using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Linq;
 using ImageMagick;
-using Xabe.FFmpeg;
-using Xabe.FFmpeg.Downloader;
-using UMapx.Visualization;
 using System.Drawing;
 
 namespace Bulk_Thumbnail_Creator
@@ -22,6 +19,9 @@ namespace Bulk_Thumbnail_Creator
 			Directory.CreateDirectory(BTCSettings.OutputDir);
 			Directory.CreateDirectory(BTCSettings.TextAddedDir);
 			Directory.CreateDirectory(BTCSettings.YoutubeDLDir);
+
+			// adds a single string to the list of text to be printed
+			BTCSettings.ListOfText.Add(BTCSettings.TextToAdd);
 
 			// YT-DL
 			// declare instance of youtubeDL
@@ -78,148 +78,74 @@ namespace Bulk_Thumbnail_Creator
 
 			var faceDetector = new FaceDetector(0.95f, 0.5f);
 
-
 			Console.WriteLine($"Processing {files.Length} images");
 
-
-			foreach (string file in files)
+			// main loop for detecting faces, placing text where face is not
+			// outputting file
+			for (int i = 0; i < files.Length; i++)
 			{
+				string file = files[i];
 				var bitmap = new Bitmap(file);
 				var detectedFacesRect = faceDetector.Forward(bitmap);
 
 				ParamForTextCreation currentParameters = new ParamForTextCreation();
 
-				// if rectangle didnt output anything, will put text default
-				// otherwise foreach rectangle determine where to put text
+				Point PosOfText = new Point(0, 0);
 
-				var faceRect = detectedFacesRect.First();
+				Rectangle faceRect;
 
-				var LocationOfRectangleCenterYpos = faceRect.Y + faceRect.Height / 2;
+				if (detectedFacesRect.Length > 0)
+				{
+					faceRect = detectedFacesRect.First();
+
+					var LocationOfRectangleCenterYpos = faceRect.Y + faceRect.Height / 2;
+
+					var sourceIMGMiddleY = bitmap.Height / 2;
+
+					// var bmpheightminusrectYpos = bitmap.Height - locationofrectangleY;
+
+					if (sourceIMGMiddleY > LocationOfRectangleCenterYpos)
+					{
+						// make text appear on lower half
+						PosOfText = new Point(0, bitmap.Height - 300);
+					}
+					else
+					{
+						// make text appear on upper half
+						// need to be fed to the TextAdding function
+						PosOfText = new Point(0, sourceIMGMiddleY);
+					}
+
+				}
 
 				// should calculate distance between position of the rectangle with a face in it and the 0,0 pos and max pos
 
-				var sourceIMGMiddleY = bitmap.Height / 2;
-
-				// var bmpheightminusrectYpos = bitmap.Height - locationofrectangleY;
-
-				Point PosOfText;
-
-				if (LocationOfRectangleCenterYpos > sourceIMGMiddleY)
-				{
-					// make text appear on lower half
-					// need to be fed to the Textadding function
-					// create a list of the detected faces, output pos of text to list, then read from textadding function
-					PosOfText = new Point(0, 0);	
-				}
-				else
-				{
-					// make text appear on upper half
-					// need to be fed to the TextAdding function
-					PosOfText = new Point(0, sourceIMGMiddleY);
-				}
-
 				currentParameters.PositionOfText = PosOfText;
-				BTCSettings.PositionOfText = PosOfText; // feed position
+
+				currentParameters = Logic.DecideColorGeneration(currentParameters, i);
+
+				Logic.ListOfSettingsForText.Add(Logic.Linear(currentParameters));
 
 				#region draw face boundary
-				var paintData = new PaintData()
-				{
-					Rectangle = faceRect,
-					Title = string.Empty
-				};
-				var painter = new Painter()
-				{
-					BoxPen = new Pen(Color.Yellow, 4),
-					Transparency = 0,
-				};
-				var graphics = Graphics.FromImage(bitmap);
-				painter.Draw(graphics, paintData);
+				//var paintData = new PaintData()
+				//{
+				//	Rectangle = faceRect,
+				//	Title = string.Empty
+				//};
+				//var painter = new Painter()
+				//{
+				//	BoxPen = new Pen(Color.Yellow, 4),
+				//	Transparency = 0,
+				//};
+				//var graphics = Graphics.FromImage(bitmap);
+				//painter.Draw(graphics, paintData);
 				#endregion
 
-				var filename = Path.GetFileName(file);
-				bitmap.Save(Path.Combine(BTCSettings.FaceDetectionDir, filename));
-				Console.WriteLine($"Image: [{filename}] --> detected [{detectedFacesRect.Length}] faces");
-			}
-
-			string[] SceneFrames = Directory.GetFiles(BTCSettings.OutputDir);
-
-			BTCSettings.FileNames = SceneFrames;
-
-			float hueFillColor = 0F;
-			float saturationFillColor = 1F;
-			float lightnessFillColor = 0.50F;
-
-			float hueStrokeColor = 125F;
-			float saturationStrokeColor = 1F;
-			float lightnessStrokeColor = 0.50F;
-
-			float hueBorderColor = 28F;
-			float saturationBorderColor = 1F;
-			float lightnessBorderColor = 0.50F;
-
-			// loops for each file in filenames, generate some settings, return the settings, add em to our listofsettingsfortext.
-			for (int i = 0; i < BTCSettings.FileNames.Count(); i++)
-			{
-
-				ParamForTextCreation imageObject = new ParamForTextCreation
-				{
-					Filename = BTCSettings.FileNames[i],
-					DirectoryOfFile = BTCSettings.FileNames[i]
-
-				};
-
-				if (i > 1)
-				{
-					hueFillColor += +12.5F;
-					hueStrokeColor += +12.5F;
-
-					if (i > 5)
-					{
-						hueBorderColor += 10F;
-					}
-
-					if (hueFillColor > 360)
-					{
-						hueFillColor = 0F;
-					}
-
-					if (hueStrokeColor > 360)
-					{
-						hueStrokeColor = 0F;
-					}
-
-					if (hueBorderColor > 360)
-					{
-						hueBorderColor = 0F;
-					}
-
-					// hueStrokeColor = hueStrokeColor + 25;
-
-					imageObject.FillColor.SetByHSL(hueFillColor, saturationFillColor, lightnessFillColor);
-
-					imageObject.StrokeColor.SetByHSL(hueStrokeColor, saturationStrokeColor, lightnessStrokeColor);
-
-					imageObject.BorderColor.SetByHSL(hueBorderColor, saturationBorderColor, lightnessBorderColor);
-
-				}
-				else
-				{
-					imageObject.FillColor.SetByHSL(hueFillColor, saturationFillColor, lightnessFillColor);
-					imageObject.StrokeColor.SetByHSL(hueStrokeColor, saturationStrokeColor, lightnessStrokeColor);
-					imageObject.BorderColor.SetByHSL(hueBorderColor, saturationBorderColor, lightnessBorderColor);
-				}
-
-				Logic.ListOfSettingsForText.Add(Logic.Linear(imageObject));
-			}
-
-			BTCSettings.ListOfText.Add(BTCSettings.TextToAdd);
-
-			for (int i = 0; i < BTCSettings.FileNames.Count(); i++)
-			{
-				string imageName = Path.GetFileName(BTCSettings.FileNames[i]);
+				string imageName = Path.GetFileName(file);
 
 				string outputFullPath = Path.GetFullPath(BTCSettings.TextAddedDir) + $"/{imageName}";
-				string screenCaptureFile = $"{BTCSettings.FileNames[i]}";
+
+				string screenCaptureFile = $"{file}";
 
 				using (MagickImage outputImage = new MagickImage(screenCaptureFile))
 				{
@@ -227,14 +153,12 @@ namespace Bulk_Thumbnail_Creator
 					using (var caption = new MagickImage($"caption:{BTCSettings.ListOfText[0]}", settings))
 					{
 						// Add the caption layer on top of the background image
-
-						outputImage.Composite(caption, BTCSettings.PositionOfText.X, BTCSettings.PositionOfText.Y, CompositeOperator.Over);
+						outputImage.Composite(caption, PosOfText.X, PosOfText.Y, CompositeOperator.Over);
 
 						outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
 						outputImage.Quality = 100;
 						// outputs the file to the provided path and name
 						outputImage.Write(outputFullPath);
-
 					}
 
 				}

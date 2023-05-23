@@ -63,6 +63,62 @@ namespace Bulk_Thumbnail_Creator
 			return FontPointSize;
 		}
 
+		static float hueFillColor = 0F;
+		static float saturationFillColor = 1F;
+		static float lightnessFillColor = 0.50F;
+
+		static float hueStrokeColor = 125F;
+		static float saturationStrokeColor = 1F;
+		static float lightnessStrokeColor = 0.50F;
+
+		static float hueBorderColor = 28F;
+		static float saturationBorderColor = 1F;
+		static float lightnessBorderColor = 0.50F;
+
+		public static ParamForTextCreation DecideColorGeneration(ParamForTextCreation InputParameter, int currentelement)
+		{
+			if (currentelement > 1)
+			{
+				hueFillColor += +12.5F;
+				hueStrokeColor += +12.5F;
+
+				if (currentelement > 5)
+				{
+					hueBorderColor += 10F;
+				}
+
+				if (hueFillColor > 360)
+				{
+					hueFillColor = 0F;
+				}
+
+				if (hueStrokeColor > 360)
+				{
+					hueStrokeColor = 0F;
+				}
+
+				if (hueBorderColor > 360)
+				{
+					hueBorderColor = 0F;
+				}
+
+				InputParameter.FillColor.SetByHSL(hueFillColor, saturationFillColor, lightnessFillColor);
+
+				InputParameter.StrokeColor.SetByHSL(hueStrokeColor, saturationStrokeColor, lightnessStrokeColor);
+
+				InputParameter.BorderColor.SetByHSL(hueBorderColor, saturationBorderColor, lightnessBorderColor);
+
+			}
+			else
+			{
+				InputParameter.FillColor.SetByHSL(hueFillColor, saturationFillColor, lightnessFillColor);
+				InputParameter.StrokeColor.SetByHSL(hueStrokeColor, saturationStrokeColor, lightnessStrokeColor);
+				InputParameter.BorderColor.SetByHSL(hueBorderColor, saturationBorderColor, lightnessBorderColor);
+			}
+
+			return InputParameter;
+		}
+
 		/// <summary>
 		/// Generates MagickReadSettings with completely randomized color values for Fill/stroke/border colors
 		/// ALso generates the other necessary settings for ImageMagick necessary to put text on the screenshots
