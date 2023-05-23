@@ -3,13 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Drawing;
+using System.Xml.Serialization;
 
 namespace Bulk_Thumbnail_Creator
 {
-
 	internal class Logic
 	{
-
 		// list of created Presets for printing text to image
 		public static List<MagickReadSettings> ListOfSettingsForText { get; set; } = new List<MagickReadSettings>();
 
@@ -29,38 +28,6 @@ namespace Bulk_Thumbnail_Creator
 			colorRNGPicked = MagickColor.FromRgb(pickedColorRedRGB, pickedColorGreenRGB, pickedColorBlueRGB);
 
 			return colorRNGPicked;
-		}
-		/// <summary>
-		/// Detect the current resolution to set the correct fontsize on the text
-		/// </summary>
-		/// <returns></returns>
-		private static int SetTextSizeAfterSizeofScreens()
-		{
-			int FontPointSize = 75;
-			string path = $"{Path.GetFullPath(BTCSettings.OutputDir)}/001.png";
-			Image img = Image.FromFile(path);
-
-			if (img.Width == 1280 || img.Height == 720)
-			{
-				FontPointSize = 100;
-			}
-
-			if (img.Width == 1920 || img.Height == 1080)
-			{
-				FontPointSize = 175;
-			}
-
-			if (img.Width > 1920)
-			{
-				FontPointSize = 275;
-			}
-
-			if (img.Width < 1280)
-			{
-				FontPointSize = 75;
-			}
-
-			return FontPointSize;
 		}
 
 		static float hueFillColor = 0F;
@@ -119,6 +86,28 @@ namespace Bulk_Thumbnail_Creator
 			return InputParameter;
 		}
 
+		static XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
+
+		public static void DeSerializeDownloadedVideosList()
+		{
+			if (File.Exists(BTCSettings.PathToXMLListOfDownloadedVideos))
+			{
+				using (FileStream file = File.OpenRead(BTCSettings.PathToXMLListOfDownloadedVideos))
+				{
+					BTCSettings.DownloadedVideosList = (List<string>)serializer.Deserialize(file);
+				}
+
+			}
+		}
+
+		public static void SerializeDownloadedVideosList()
+		{
+			using (FileStream file = File.Create(BTCSettings.PathToXMLListOfDownloadedVideos))
+			{
+				serializer.Serialize(file, BTCSettings.DownloadedVideosList);
+			}
+		}
+
 		/// <summary>
 		/// Generates MagickReadSettings with completely randomized color values for Fill/stroke/border colors
 		/// ALso generates the other necessary settings for ImageMagick necessary to put text on the screenshots
@@ -153,8 +142,7 @@ namespace Bulk_Thumbnail_Creator
 		/// <returns>Returns the generated MagickReadSettings</returns>
 		public static MagickReadSettings Linear(ParamForTextCreation scheme)
 		{
-			int FontPointSize = SetTextSizeAfterSizeofScreens();
-
+			
 			MagickReadSettings SettingsTextLinear = new MagickReadSettings
 			{
 				Font = "linear",

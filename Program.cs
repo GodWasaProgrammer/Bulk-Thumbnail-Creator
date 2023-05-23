@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using YoutubeDLSharp;
 using FaceONNX;
 using System;
-using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Linq;
 using ImageMagick;
@@ -33,16 +32,7 @@ namespace Bulk_Thumbnail_Creator
 				OutputFolder = "YTDL"
 			};
 
-			XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
-
-			if (File.Exists(BTCSettings.PathToXMLListOfDownloadedVideos))
-			{
-				using (FileStream file = File.OpenRead(BTCSettings.PathToXMLListOfDownloadedVideos))
-				{
-					BTCSettings.DownloadedVideosList = (List<string>)serializer.Deserialize(file);
-				}
-
-			}
+			Logic.DeSerializeDownloadedVideosList();
 
 			// downloads specified video from youtube if it does not already exist.
 			BTCSettings.YoutubeLink = "https://www.youtube.com/watch?v=yppOGpXT998";
@@ -67,14 +57,9 @@ namespace Bulk_Thumbnail_Creator
 
 			FFmpegHandler.RunFFMPG(parameters, Path.GetFullPath(BTCSettings.OutputDir));
 
-			using (FileStream file = File.Create(BTCSettings.PathToXMLListOfDownloadedVideos))
-			{
-				serializer.Serialize(file, BTCSettings.DownloadedVideosList);
-			}
+			Logic.SerializeDownloadedVideosList();
 
 			var files = Directory.GetFiles(BTCSettings.OutputDir, "*.*", SearchOption.AllDirectories);
-
-			Directory.CreateDirectory(BTCSettings.FaceDetectionDir);
 
 			var faceDetector = new FaceDetector(0.95f, 0.5f);
 
@@ -118,28 +103,11 @@ namespace Bulk_Thumbnail_Creator
 
 				}
 
-				// should calculate distance between position of the rectangle with a face in it and the 0,0 pos and max pos
-
 				currentParameters.PositionOfText = PosOfText;
 
 				currentParameters = Logic.DecideColorGeneration(currentParameters, i);
 
 				Logic.ListOfSettingsForText.Add(Logic.Linear(currentParameters));
-
-				#region draw face boundary
-				//var paintData = new PaintData()
-				//{
-				//	Rectangle = faceRect,
-				//	Title = string.Empty
-				//};
-				//var painter = new Painter()
-				//{
-				//	BoxPen = new Pen(Color.Yellow, 4),
-				//	Transparency = 0,
-				//};
-				//var graphics = Graphics.FromImage(bitmap);
-				//painter.Draw(graphics, paintData);
-				#endregion
 
 				string imageName = Path.GetFileName(file);
 
