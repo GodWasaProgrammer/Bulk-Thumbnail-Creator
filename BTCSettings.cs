@@ -1,5 +1,4 @@
-﻿using ImageMagick;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 
 namespace Bulk_Thumbnail_Creator
@@ -33,9 +32,6 @@ namespace Bulk_Thumbnail_Creator
 		private static Point _PositionOfText = (Point)new Point(0, 0);
 		public static Point PositionOfText { get { return _PositionOfText; } set { _PositionOfText = value; } }
 
-		private static int _FontPointSize = 70;
-		public static int FontPointSize {get { return _FontPointSize; } set { _FontPointSize = value; } }
-
 		private static string _TextToAdd = "Bulk Thumbnail Creator";
 		public static string TextToAdd { get { return _TextToAdd; } set { _TextToAdd = value; } }
 
@@ -52,6 +48,7 @@ namespace Bulk_Thumbnail_Creator
 		private static string _PathToVideo;
 		public static string PathToVideo { get { return _PathToVideo; } set { _PathToVideo = value; } }
 
+
 		// filenames of our outputted thumbnails
 		private static string[] _Filenames;
 		public static string[] FileNames { get { return _Filenames; } set { _Filenames = value; } }
@@ -60,6 +57,10 @@ namespace Bulk_Thumbnail_Creator
 		// an array of file paths of the dankmemestashfolder
 		private static string[] _MemeStashPaths;
 		public static string[] MemeStashFilePaths { get { return _MemeStashPaths; } set { _MemeStashPaths = value; } }
+
+
+		private static List<ParamForTextCreation> _Images;
+		public static List<ParamForTextCreation> ImageObjects {get {return _Images;} set { _Images = value; } }
 
 
 		private static List<string> _DownloadedVideosList = new List<string>();

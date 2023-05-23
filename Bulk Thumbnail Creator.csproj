@@ -334,7 +334,7 @@
     <Compile Include="Logic.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TextScheme.cs" />
+    <Compile Include="ParamForTextCreation.cs" />
     <Compile Include="UI.cs" />
   </ItemGroup>
   <ItemGroup>
