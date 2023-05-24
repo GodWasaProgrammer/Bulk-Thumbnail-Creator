@@ -15,15 +15,14 @@ namespace Bulk_Thumbnail_Creator
 		public static async Task Main()
 		{
 			// creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
-			Directory.CreateDirectory(BTCSettings.OutputDir);
-			Directory.CreateDirectory(BTCSettings.TextAddedDir);
-			Directory.CreateDirectory(BTCSettings.YoutubeDLDir);
+			Logic.CreateDirectories();
 
 			// adds a single string to the list of text to be printed
 			BTCSettings.ListOfText.Add(BTCSettings.TextToAdd);
 
 			// YT-DL
 			// declare instance of youtubeDL
+			#region YTDL
 			var ytdl = new YoutubeDL
 			{
 				// set paths
@@ -31,22 +30,26 @@ namespace Bulk_Thumbnail_Creator
 				FFmpegPath = "YTDL/ffmpeg.exe",
 				OutputFolder = "YTDL"
 			};
-
+			///
 			Logic.DeSerializeDownloadedVideosList();
 
 			// downloads specified video from youtube if it does not already exist.
 			BTCSettings.YoutubeLink = "https://www.youtube.com/watch?v=yppOGpXT998";
 			var res = await ytdl.RunVideoDownload(url: BTCSettings.YoutubeLink);
 			await Console.Out.WriteLineAsync("Download Success:" + res.Success.ToString());
-
+			
 			// sets BTC to run on the recently downloaded file res.data is the returned path.
 			BTCSettings.PathToVideo = res.Data;
-
+			#endregion
+			// Adds To DownloadedVideosList if it is not already containing it
+			#region Add To List If it doesnt exist
 			if (!BTCSettings.DownloadedVideosList.Contains(BTCSettings.PathToVideo))
 			{
 				BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
 			}
+			#endregion
 
+			#region Run FfMpeg
 			var parameters = new Dictionary<string, string>();
 
 			string extractedfilename = Path.GetFileName(BTCSettings.PathToVideo);
@@ -56,9 +59,10 @@ namespace Bulk_Thumbnail_Creator
 			parameters["vsync"] = "vfr";
 
 			FFmpegHandler.RunFFMPG(parameters, Path.GetFullPath(BTCSettings.OutputDir));
+			#endregion
 
 			Logic.SerializeDownloadedVideosList();
-
+			
 			var files = Directory.GetFiles(BTCSettings.OutputDir, "*.*", SearchOption.AllDirectories);
 
 			var faceDetector = new FaceDetector(0.95f, 0.5f);
@@ -83,11 +87,9 @@ namespace Bulk_Thumbnail_Creator
 				{
 					faceRect = detectedFacesRect.First();
 
-					var LocationOfRectangleCenterYpos = faceRect.Y + faceRect.Height / 2;
+					int LocationOfRectangleCenterYpos = faceRect.Y + faceRect.Height / 2;
 
-					var sourceIMGMiddleY = bitmap.Height / 2;
-
-					// var bmpheightminusrectYpos = bitmap.Height - locationofrectangleY;
+					int sourceIMGMiddleY = bitmap.Height / 2;
 
 					if (sourceIMGMiddleY > LocationOfRectangleCenterYpos)
 					{

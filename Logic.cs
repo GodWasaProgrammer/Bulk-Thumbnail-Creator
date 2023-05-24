@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Drawing;
 using System.Xml.Serialization;
 
 namespace Bulk_Thumbnail_Creator
@@ -138,21 +137,21 @@ namespace Bulk_Thumbnail_Creator
 		/// Creates TextSettings in the form of MagickReadSettings
 		/// which includes information retrieved from a schemeobject which in turn uses Coloritems
 		/// </summary>
-		/// <param name="scheme"></param>
+		/// <param name="Parameters"></param>
 		/// <returns>Returns the generated MagickReadSettings</returns>
-		public static MagickReadSettings Linear(ParamForTextCreation scheme)
+		public static MagickReadSettings Linear(ParamForTextCreation Parameters)
 		{
 			
 			MagickReadSettings SettingsTextLinear = new MagickReadSettings
 			{
 				Font = "linear",
-				FillColor = MagickColor.FromRgb(scheme.FillColor.Red, scheme.FillColor.Green, scheme.FillColor.Blue),
-				StrokeColor = MagickColor.FromRgb(scheme.StrokeColor.Red, scheme.StrokeColor.Green, scheme.StrokeColor.Blue),
-				BorderColor = MagickColor.FromRgb(scheme.BorderColor.Red, scheme.BorderColor.Green, scheme.BorderColor.Blue),
+				FillColor = MagickColor.FromRgb(Parameters.FillColor.Red, Parameters.FillColor.Green, Parameters.FillColor.Blue),
+				StrokeColor = MagickColor.FromRgb(Parameters.StrokeColor.Red, Parameters.StrokeColor.Green, Parameters.StrokeColor.Blue),
+				BorderColor = MagickColor.FromRgb(Parameters.BorderColor.Red, Parameters.BorderColor.Green, Parameters.BorderColor.Blue),
 				FontStyle = FontStyleType.Bold,
 				StrokeAntiAlias = true,
 				StrokeWidth = 6,
-				FontPointsize = scheme.FontPointSize,
+				FontPointsize = Parameters.FontPointSize,
 				FontWeight = FontWeight.UltraBold,
 				BackgroundColor = MagickColors.Transparent,
 				//Height = 1850, // height of text box
@@ -160,6 +159,13 @@ namespace Bulk_Thumbnail_Creator
 			};
 
 			return SettingsTextLinear;
+		}
+
+		public static void CreateDirectories()
+		{
+			Directory.CreateDirectory(BTCSettings.OutputDir);
+			Directory.CreateDirectory(BTCSettings.TextAddedDir);
+			Directory.CreateDirectory(BTCSettings.YoutubeDLDir);
 		}
 
 	}

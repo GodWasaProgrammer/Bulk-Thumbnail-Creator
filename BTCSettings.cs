@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -24,7 +23,9 @@ namespace Bulk_Thumbnail_Creator
 		private static string _YoutubeDLDir = "YTDL";
 		public static string YoutubeDLDir { get { return _YoutubeDLDir; } set { _YoutubeDLDir = value; } }
 
-
+		/// <summary>
+		/// Link to the provided Youtube Link
+		/// </summary>
 		private static string _YoutubeLink;
 		public static string YoutubeLink { get { return _YoutubeLink; } set { _YoutubeLink = value; } }
 
@@ -32,7 +33,9 @@ namespace Bulk_Thumbnail_Creator
 		private static string _TextToAdd = "Bulk Thumbnail Creator";
 		public static string TextToAdd { get { return _TextToAdd; } set { _TextToAdd = value; } }
 
-
+		/// <summary>
+		/// Exists only to limit randomization to a 255 correct RGB end value
+		/// </summary>
 		private const int _MaxRGB = 256;
 		public static int MaxRGB { get { return _MaxRGB; } }
 
@@ -41,7 +44,9 @@ namespace Bulk_Thumbnail_Creator
 		public static List<string> ListOfText { get { return _ListOfText; } set { _ListOfText = value; } }
 
 
-		// path to the video to take thumbnails from
+		/// <summary>
+		/// path to the video to take thumbnails from
+		/// </summary>
 		private static string _PathToVideo;
 		public static string PathToVideo { get { return _PathToVideo; } set { _PathToVideo = value; } }
 
