@@ -1,6 +1,7 @@
 ﻿using ImageMagick;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Xml.Serialization;
 
@@ -73,7 +74,6 @@ namespace Bulk_Thumbnail_Creator
 				InputParameter.StrokeColor.SetByHSL(hueStrokeColor, saturationStrokeColor, lightnessStrokeColor);
 
 				InputParameter.BorderColor.SetByHSL(hueBorderColor, saturationBorderColor, lightnessBorderColor);
-
 			}
 			else
 			{
@@ -97,6 +97,7 @@ namespace Bulk_Thumbnail_Creator
 				}
 
 			}
+
 		}
 
 		public static void SerializeDownloadedVideosList()
@@ -105,6 +106,7 @@ namespace Bulk_Thumbnail_Creator
 			{
 				serializer.Serialize(file, BTCSettings.DownloadedVideosList);
 			}
+
 		}
 
 		/// <summary>
@@ -141,10 +143,10 @@ namespace Bulk_Thumbnail_Creator
 		/// <returns>Returns the generated MagickReadSettings</returns>
 		public static MagickReadSettings Linear(ParamForTextCreation Parameters)
 		{
-			
 			MagickReadSettings SettingsTextLinear = new MagickReadSettings
+
 			{
-				Font = "linear",
+				Font = "Times New Roman",
 				FillColor = MagickColor.FromRgb(Parameters.FillColor.Red, Parameters.FillColor.Green, Parameters.FillColor.Blue),
 				StrokeColor = MagickColor.FromRgb(Parameters.StrokeColor.Red, Parameters.StrokeColor.Green, Parameters.StrokeColor.Blue),
 				BorderColor = MagickColor.FromRgb(Parameters.BorderColor.Red, Parameters.BorderColor.Green, Parameters.BorderColor.Blue),
