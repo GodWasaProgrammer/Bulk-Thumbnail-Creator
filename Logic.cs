@@ -31,16 +31,16 @@ namespace Bulk_Thumbnail_Creator
 		}
 
 		static float hueFillColor = 0F;
-		static float saturationFillColor = 1F;
-		static float lightnessFillColor = 0.50F;
+		static readonly float saturationFillColor = 1F;
+		static readonly float lightnessFillColor = 0.50F;
 
 		static float hueStrokeColor = 125F;
-		static float saturationStrokeColor = 1F;
-		static float lightnessStrokeColor = 0.50F;
+		static readonly float saturationStrokeColor = 1F;
+		static readonly float lightnessStrokeColor = 0.50F;
 
 		static float hueBorderColor = 28F;
-		static float saturationBorderColor = 1F;
-		static float lightnessBorderColor = 0.50F;
+		static readonly float saturationBorderColor = 1F;
+		static readonly float lightnessBorderColor = 0.50F;
 
 		public static ParamForTextCreation DecideColorGeneration(ParamForTextCreation InputParameter, int currentelement)
 		{
@@ -86,7 +86,7 @@ namespace Bulk_Thumbnail_Creator
 			return InputParameter;
 		}
 
-		static XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
+		static readonly XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
 
 		public static void DeSerializeDownloadedVideosList()
 		{

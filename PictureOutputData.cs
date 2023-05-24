@@ -9,11 +9,11 @@
 		public ParamForTextCreation ParamForTextCreation { get { return _ParamForTextCreation;} set { _ParamForTextCreation= value; } }
 
 
-		public PictureOutputData(string name, string fileName, ParamForTextCreation paramForTextCreation, ParamForTextCreation ParamForTextCreation)
+		public PictureOutputData(string name, string fileName,ParamForTextCreation ParamForTextCreation)
 		{
 			_name = name;
 			FileName = fileName;
-			ParamForTextCreation = _ParamForTextCreation;
+			_ParamForTextCreation = ParamForTextCreation;
 		}
 
 	}
