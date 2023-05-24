@@ -12,6 +12,10 @@ namespace Bulk_Thumbnail_Creator
 		public  int FontPointSize { get { return _FontPointSize; } set { _FontPointSize = value; } }
 
 
+		private int _WidthOfBox;
+		public int WidthOfBox {get { return _WidthOfBox; } set { _WidthOfBox = value; } }
+
+
 		ColorItem fillColor = new ColorItem();
 		public ColorItem FillColor { get { return fillColor; } set { fillColor = FillColor; } }
 

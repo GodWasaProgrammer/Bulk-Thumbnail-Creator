@@ -94,7 +94,10 @@ namespace Bulk_Thumbnail_Creator
 					if (sourceIMGMiddleY > LocationOfRectangleCenterYpos)
 					{
 						// make text appear on lower half
-						PosOfText = new Point(0, bitmap.Height - 300);
+
+						int relativePosition = bitmap.Height - bitmap.Height / 8;
+
+						PosOfText = new Point(0,relativePosition);
 					}
 					else
 					{
@@ -107,7 +110,11 @@ namespace Bulk_Thumbnail_Creator
 
 				currentParameters.PositionOfText = PosOfText;
 
+				currentParameters.WidthOfBox = bitmap.Width;
+
 				currentParameters = Logic.DecideColorGeneration(currentParameters, i);
+
+				currentParameters.FontPointSize = Logic.CalculateFontSize(bitmap.Height);
 
 				Logic.ListOfSettingsForText.Add(Logic.Linear(currentParameters));
 

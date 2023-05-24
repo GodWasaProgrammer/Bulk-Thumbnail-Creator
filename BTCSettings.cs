@@ -2,7 +2,6 @@
 
 namespace Bulk_Thumbnail_Creator
 {
-
 	public class BTCSettings
 	{
 		// directories to create
@@ -49,6 +48,7 @@ namespace Bulk_Thumbnail_Creator
 		/// </summary>
 		private static string _PathToVideo;
 		public static string PathToVideo { get { return _PathToVideo; } set { _PathToVideo = value; } }
+
 
 		private static List<string> _DownloadedVideosList = new List<string>();
 		public static List<string> DownloadedVideosList { get { return _DownloadedVideosList; } set { _DownloadedVideosList = value; } }

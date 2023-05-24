@@ -1,7 +1,6 @@
 ﻿using ImageMagick;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Xml.Serialization;
 
@@ -84,6 +83,16 @@ namespace Bulk_Thumbnail_Creator
 
 			return InputParameter;
 		}
+		/// <summary>
+		/// Take width, calculate the fontsize for your output
+		/// </summary>
+		/// <param name="Height"></param>
+		public static int CalculateFontSize(int Height)
+		{
+			int FontSize = Height / 8;
+
+			return FontSize;
+		}
 
 		static readonly XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
 
@@ -146,18 +155,18 @@ namespace Bulk_Thumbnail_Creator
 			MagickReadSettings SettingsTextLinear = new MagickReadSettings
 
 			{
-				Font = "Times New Roman",
+				Font = "BTC Magic",
 				FillColor = MagickColor.FromRgb(Parameters.FillColor.Red, Parameters.FillColor.Green, Parameters.FillColor.Blue),
 				StrokeColor = MagickColor.FromRgb(Parameters.StrokeColor.Red, Parameters.StrokeColor.Green, Parameters.StrokeColor.Blue),
 				BorderColor = MagickColor.FromRgb(Parameters.BorderColor.Red, Parameters.BorderColor.Green, Parameters.BorderColor.Blue),
-				FontStyle = FontStyleType.Bold,
+				FontStyle = FontStyleType.Normal,
 				StrokeAntiAlias = true,
-				StrokeWidth = 6,
+				StrokeWidth = 5,
 				FontPointsize = Parameters.FontPointSize,
-				FontWeight = FontWeight.UltraBold,
+				FontWeight = FontWeight.Black,
 				BackgroundColor = MagickColors.Transparent,
 				//Height = 1850, // height of text box
-				// Width = 1700, // width of text box
+				Width = Parameters.WidthOfBox, // width of text box
 			};
 
 			return SettingsTextLinear;
