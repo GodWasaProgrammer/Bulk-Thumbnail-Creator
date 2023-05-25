@@ -22,32 +22,15 @@ namespace Bulk_Thumbnail_Creator
 
 			// YT-DL
 			// declare instance of youtubeDL
-			#region YTDL
-			var ytdl = new YoutubeDL
-			{
-				// set paths
-				YoutubeDLPath = "..\\..\\yt-dlp.exe",
-				FFmpegPath = "YTDL/ffmpeg.exe",
-				OutputFolder = "YTDL"
-			};
-			///
-			Logic.DeSerializeDownloadedVideosList();
-
-			// downloads specified video from youtube if it does not already exist.
-			BTCSettings.YoutubeLink = "https://www.youtube.com/watch?v=yppOGpXT998";
-			var res = await ytdl.RunVideoDownload(url: BTCSettings.YoutubeLink);
-			await Console.Out.WriteLineAsync("Download Success:" + res.Success.ToString());
-			
-			// sets BTC to run on the recently downloaded file res.data is the returned path.
-			BTCSettings.PathToVideo = res.Data;
-			#endregion
+			//downloads the specified url
+			string URL = "https://www.youtube.com/watch?v=yppOGpXT998";
+			await Logic.YouTubeDL(URL);
 			// Adds To DownloadedVideosList if it is not already containing it
-			#region Add To List If it doesnt exist
+
 			if (!BTCSettings.DownloadedVideosList.Contains(BTCSettings.PathToVideo))
 			{
 				BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
 			}
-			#endregion
 
 			#region Run FfMpeg
 			var parameters = new Dictionary<string, string>();
@@ -62,7 +45,7 @@ namespace Bulk_Thumbnail_Creator
 			#endregion
 
 			Logic.SerializeDownloadedVideosList();
-			
+
 			var files = Directory.GetFiles(BTCSettings.OutputDir, "*.*", SearchOption.AllDirectories);
 
 			var faceDetector = new FaceDetector(0.95f, 0.5f);
@@ -97,7 +80,7 @@ namespace Bulk_Thumbnail_Creator
 
 						int relativePosition = bitmap.Height - bitmap.Height / 6;
 
-						PosOfText = new Point(0,relativePosition);
+						PosOfText = new Point(0, relativePosition);
 					}
 					else
 					{

@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
+using YoutubeDLSharp;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -116,6 +118,27 @@ namespace Bulk_Thumbnail_Creator
 				serializer.Serialize(file, BTCSettings.DownloadedVideosList);
 			}
 
+		}
+
+		public static async Task YouTubeDL(string URL)
+		{
+			var ytdl = new YoutubeDL
+			{
+				// set paths
+				YoutubeDLPath = "..\\..\\yt-dlp.exe",
+				FFmpegPath = "YTDL/ffmpeg.exe",
+				OutputFolder = "YTDL"
+			};
+			///
+			Logic.DeSerializeDownloadedVideosList();
+
+			// downloads specified video from youtube if it does not already exist.
+			BTCSettings.YoutubeLink = URL;
+			var res = await ytdl.RunVideoDownload(url: BTCSettings.YoutubeLink);
+			await Console.Out.WriteLineAsync("Download Success:" + res.Success.ToString());
+
+			// sets BTC to run on the recently downloaded file res.data is the returned path.
+			BTCSettings.PathToVideo = res.Data;
 		}
 
 		/// <summary>
