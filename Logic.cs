@@ -15,7 +15,7 @@ namespace Bulk_Thumbnail_Creator
 		/// <summary>
 		/// Generates random colors in bytes
 		/// </summary>
-		/// <returns>returns a MagickColor Object which is basically RGB</returns>
+		/// <returns>returns a MagickColor Object which is RGB</returns>
 		internal static MagickColor RandomizeColor()
 		{
 			byte pickedColorRedRGB = (byte)colorRandom.Next(BTCSettings.MaxRGB);

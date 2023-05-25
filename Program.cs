@@ -95,7 +95,7 @@ namespace Bulk_Thumbnail_Creator
 					{
 						// make text appear on lower half
 
-						int relativePosition = bitmap.Height - bitmap.Height / 8;
+						int relativePosition = bitmap.Height - bitmap.Height / 6;
 
 						PosOfText = new Point(0,relativePosition);
 					}
