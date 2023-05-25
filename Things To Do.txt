@@ -4,36 +4,31 @@ Make so you can use vertical text aswell. -
 
 after user picks one they like, give them suggestions based from this so + and - of the range // still to do but on a scale of [] array
 
-make text be placed outside positional data of face detection boxes
-
-collision check between textbox and facebox
-
-serialize color schemes by bytes
-
 incrementally getting user feeback and adapting images from that
 
 after scene picked generate 5 color schemes
+
 create differnt text placement - select
-
-figure out RSV / HSV
-
-bounding boxes
-
-
-fitting text inside boxes
-
-look at color spaces
-
-coordinate system revamp
 
 cmd line for ffmpeg
 ffmpeg -i yosemiteA.mp4 -vf  "select=gt(scene\,0.5), scale=640:360" -vsync vfr yosemiteThumb%03d.png
 
-
-
-
 List of Done
 -----------------------------------------
+
+coordinate system revamp
+
+look at color spaces
+
+bounding boxes
+
+fitting text inside boxes
+
+figure out RSV / HSV
+
+make text be placed outside positional data of face detection boxes
+
+collision check between textbox and facebox
 
 detect different scenes
 

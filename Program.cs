@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using YoutubeDLSharp;
 using FaceONNX;
 using System;
 using System.Collections.Generic;
@@ -15,16 +14,17 @@ namespace Bulk_Thumbnail_Creator
 		public static async Task Main()
 		{
 			// creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
-			Logic.CreateDirectories();
+			Logic.CreateDirectories(BTCSettings.OutputDir, BTCSettings.TextAddedDir, BTCSettings.YoutubeDLDir);
 
 			// adds a single string to the list of text to be printed
 			BTCSettings.ListOfText.Add(BTCSettings.TextToAdd);
 
-			// YT-DL
-			// declare instance of youtubeDL
+			BTCSettings.DownloadedVideosList = Logic.DeSerializeXMLToListOfStrings(BTCSettings.PathToXMLListOfDownloadedVideos);
+			
 			//downloads the specified url
 			string URL = "https://www.youtube.com/watch?v=yppOGpXT998";
-			await Logic.YouTubeDL(URL);
+			BTCSettings.PathToVideo = await Logic.YouTubeDL(URL);
+
 			// Adds To DownloadedVideosList if it is not already containing it
 
 			if (!BTCSettings.DownloadedVideosList.Contains(BTCSettings.PathToVideo))
@@ -44,7 +44,7 @@ namespace Bulk_Thumbnail_Creator
 			FFmpegHandler.RunFFMPG(parameters, Path.GetFullPath(BTCSettings.OutputDir));
 			#endregion
 
-			Logic.SerializeDownloadedVideosList();
+			Logic.SerializeListOfStringsToXML(BTCSettings.PathToXMLListOfDownloadedVideos, BTCSettings.DownloadedVideosList);
 
 			var files = Directory.GetFiles(BTCSettings.OutputDir, "*.*", SearchOption.AllDirectories);
 
@@ -69,26 +69,7 @@ namespace Bulk_Thumbnail_Creator
 				if (detectedFacesRect.Length > 0)
 				{
 					faceRect = detectedFacesRect.First();
-
-					int LocationOfRectangleCenterYpos = faceRect.Y + faceRect.Height / 2;
-
-					int sourceIMGMiddleY = bitmap.Height / 2;
-
-					if (sourceIMGMiddleY > LocationOfRectangleCenterYpos)
-					{
-						// make text appear on lower half
-
-						int relativePosition = bitmap.Height - bitmap.Height / 6;
-
-						PosOfText = new Point(0, relativePosition);
-					}
-					else
-					{
-						// make text appear on upper half
-						// need to be fed to the TextAdding function
-						PosOfText = new Point(0, sourceIMGMiddleY);
-					}
-
+					PosOfText = Logic.GettextPosition(bitmap, faceRect);
 				}
 
 				currentParameters.PositionOfText = PosOfText;

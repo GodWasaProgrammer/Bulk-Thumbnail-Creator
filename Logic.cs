@@ -1,10 +1,12 @@
 ﻿using ImageMagick;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using YoutubeDLSharp;
+using YoutubeDLSharp.Metadata;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -91,36 +93,65 @@ namespace Bulk_Thumbnail_Creator
 		/// <param name="Height"></param>
 		public static int CalculateFontSize(int Height)
 		{
-			int FontSize = Height / 8;
+			// this is 8 because it achieves a good ratio of text to the height of the picture
+			int NumberToSplitBy = 8;
+
+			int FontSize = Height / NumberToSplitBy;
 
 			return FontSize;
 		}
 
 		static readonly XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
 
-		public static void DeSerializeDownloadedVideosList()
+		public static List<string> DeSerializeXMLToListOfStrings(string pathtoXMLToDeSerialize)
 		{
-			if (File.Exists(BTCSettings.PathToXMLListOfDownloadedVideos))
+			List<string> ListofStringsToDeSerialize = BTCSettings.DownloadedVideosList;
+
+			if (File.Exists(pathtoXMLToDeSerialize))
 			{
-				using (FileStream file = File.OpenRead(BTCSettings.PathToXMLListOfDownloadedVideos))
+				using (FileStream file = File.OpenRead(pathtoXMLToDeSerialize))
 				{
-					BTCSettings.DownloadedVideosList = (List<string>)serializer.Deserialize(file);
+					ListofStringsToDeSerialize = (List<string>)serializer.Deserialize(file);
 				}
-
+				
 			}
-
+			return ListofStringsToDeSerialize;
 		}
 
-		public static void SerializeDownloadedVideosList()
+		public static void SerializeListOfStringsToXML(string PathToXML, List<string> ListOfStringsToSerialize)
 		{
-			using (FileStream file = File.Create(BTCSettings.PathToXMLListOfDownloadedVideos))
+			using (FileStream file = File.Create(PathToXML))
 			{
-				serializer.Serialize(file, BTCSettings.DownloadedVideosList);
+				serializer.Serialize(file, ListOfStringsToSerialize);
 			}
 
 		}
 
-		public static async Task YouTubeDL(string URL)
+		/// <summary>
+		/// This isnt working, it throws a major exception for whatever reason
+		/// </summary>
+		/// <param name="URL"></param>
+		/// <returns>Returns the name of the video of the specified URL</returns>
+		public static async Task<string> FetchURLTitleOfVideo(string URL)
+		{
+			var ytdl = new YoutubeDL
+			{
+				// set paths
+				YoutubeDLPath = "..\\..\\yt-dlp.exe",
+				FFmpegPath = "YTDL/ffmpeg.exe",
+				OutputFolder = "YTDL"
+			};
+			var res = await ytdl.RunVideoDataFetch(URL);
+			// get some video information
+			VideoData video = res.Data;
+			string title = video.Title;
+			string uploader = video.Uploader;
+			long? views = video.ViewCount;
+
+			return title;
+		}
+
+		public static async Task<string> YouTubeDL(string URL)
 		{
 			var ytdl = new YoutubeDL
 			{
@@ -130,15 +161,14 @@ namespace Bulk_Thumbnail_Creator
 				OutputFolder = "YTDL"
 			};
 			///
-			Logic.DeSerializeDownloadedVideosList();
-
+			
 			// downloads specified video from youtube if it does not already exist.
 			BTCSettings.YoutubeLink = URL;
 			var res = await ytdl.RunVideoDownload(url: BTCSettings.YoutubeLink);
 			await Console.Out.WriteLineAsync("Download Success:" + res.Success.ToString());
 
 			// sets BTC to run on the recently downloaded file res.data is the returned path.
-			BTCSettings.PathToVideo = res.Data;
+			return res.Data;
 		}
 
 		/// <summary>
@@ -178,7 +208,7 @@ namespace Bulk_Thumbnail_Creator
 			MagickReadSettings SettingsTextLinear = new MagickReadSettings
 
 			{
-				Font = "BTC Magic",
+				Font = "Bauhaus 93",
 				FillColor = MagickColor.FromRgb(Parameters.FillColor.Red, Parameters.FillColor.Green, Parameters.FillColor.Blue),
 				StrokeColor = MagickColor.FromRgb(Parameters.StrokeColor.Red, Parameters.StrokeColor.Green, Parameters.StrokeColor.Blue),
 				BorderColor = MagickColor.FromRgb(Parameters.BorderColor.Red, Parameters.BorderColor.Green, Parameters.BorderColor.Blue),
@@ -188,20 +218,43 @@ namespace Bulk_Thumbnail_Creator
 				FontPointsize = Parameters.FontPointSize,
 				FontWeight = FontWeight.Black,
 				BackgroundColor = MagickColors.Transparent,
-				//Height = 1850, // height of text box
+				Height = Parameters.FontPointSize, // height of text box
 				Width = Parameters.WidthOfBox, // width of text box
 			};
 
 			return SettingsTextLinear;
 		}
 
-		public static void CreateDirectories()
+		public static void CreateDirectories(string outputDir, string TextAdded,string YTDL)
 		{
-			Directory.CreateDirectory(BTCSettings.OutputDir);
-			Directory.CreateDirectory(BTCSettings.TextAddedDir);
-			Directory.CreateDirectory(BTCSettings.YoutubeDLDir);
+			Directory.CreateDirectory(outputDir);
+			Directory.CreateDirectory(TextAdded);
+			Directory.CreateDirectory(YTDL);
 		}
 
+		public static Point GettextPosition(Bitmap bitmap, Rectangle faceRect)
+		{
+			Point PosOfText;
+			int LocationOfRectangleCenterYpos = faceRect.Y + faceRect.Height / 2;
+
+			int sourceIMGMiddleY = bitmap.Height / 2;
+
+			if (sourceIMGMiddleY > LocationOfRectangleCenterYpos)
+			{
+				// make text appear on lower half
+
+				int relativePosition = bitmap.Height - bitmap.Height / 6;
+
+				PosOfText = new Point(0, relativePosition);
+			}
+			else
+			{
+				// make text appear on upper half
+				PosOfText = new Point(0, sourceIMGMiddleY);
+			}
+
+			return PosOfText;
+		}
 	}
 
 }

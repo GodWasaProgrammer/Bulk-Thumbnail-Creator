@@ -9,13 +9,6 @@
 		public ParamForTextCreation ParamForTextCreation { get { return _ParamForTextCreation;} set { _ParamForTextCreation= value; } }
 
 
-		public PictureOutputData(string name, string fileName,ParamForTextCreation ParamForTextCreation)
-		{
-			_name = name;
-			FileName = fileName;
-			_ParamForTextCreation = ParamForTextCreation;
-		}
-
 	}
 
 }
