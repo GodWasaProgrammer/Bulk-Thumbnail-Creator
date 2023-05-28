@@ -38,6 +38,7 @@ namespace Bulk_Thumbnail_Creator
 			get 
 			{
 				HSL CurrentHSL = GetHSLValuesFromRGB(red, green, blue);
+
 				return CurrentHSL.Saturation; 
 			} 
 
@@ -51,6 +52,7 @@ namespace Bulk_Thumbnail_Creator
 			get 
 			{
 				HSL CurrentHSL = GetHSLValuesFromRGB(red, green, blue);
+
 				return CurrentHSL.Lightness; 
 			} 
 

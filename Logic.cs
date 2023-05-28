@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using YoutubeDLSharp;
@@ -255,6 +256,86 @@ namespace Bulk_Thumbnail_Creator
 
 			return PosOfText;
 		}
+
+		public static void ProduceTextPictures(int i, Point PosOfText, string outputFullPath, string screenCaptureFile)
+		{
+			using (MagickImage outputImage = new MagickImage(screenCaptureFile))
+			{
+				MagickReadSettings settings = Logic.ListOfSettingsForText[i];
+
+				using (var caption = new MagickImage($"caption:{BTCSettings.ListOfText[0]}", settings))
+				{
+					// Add the caption layer on top of the background image
+					outputImage.Composite(caption, PosOfText.X, PosOfText.Y, CompositeOperator.Over);
+
+					outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
+
+					outputImage.Quality = 100;
+
+					// outputs the file to the provided path and name
+					outputImage.Write(outputFullPath);
+				}
+
+			}
+		}
+
+		//public static void CreateVariety(PictureData PictureInputData)
+		//{
+		//	string PathToFile = Path.GetFileName(PictureInputData.FileName);
+		//	float fillcolorHue = PictureInputData.ParamForTextCreation.FillColor.Hue;
+		//	float fillcolorSaturation = PictureInputData.ParamForTextCreation.FillColor.Saturation;
+		//	float fillcolorLuminance = PictureInputData.ParamForTextCreation.FillColor.Luminance;
+
+		//	float strokecolorHue = PictureInputData.ParamForTextCreation.StrokeColor.Hue;
+		//	float strokecolorSaturation = PictureInputData.ParamForTextCreation.StrokeColor.Saturation;
+		//	float strokecolorLuminance = PictureInputData.ParamForTextCreation.StrokeColor.Luminance;
+
+		//	float bordercolorHue = PictureInputData.ParamForTextCreation.BorderColor.Hue;
+		//	float bordercolorSaturation = PictureInputData.ParamForTextCreation.BorderColor.Saturation;
+		//	float bordercolorLuminance = PictureInputData.ParamForTextCreation.BorderColor.Luminance;
+
+		//	// create variety based on the current value
+		//	// default output value is 1F
+
+		//	List<float> VarietyList = new List<float>();
+
+		//	float Variety1 = 0.15F;
+		//	VarietyList.Add(Variety1);
+
+		//	float Variety2 = 0.35F;
+		//	VarietyList.Add(Variety2);
+
+		//	float Variety3 = 0.55F;
+		//	VarietyList.Add(Variety3);
+
+		//	float Variety4 = 0.75F;
+		//	VarietyList.Add(Variety4);
+
+		//	float Variety5 = 0.85F;
+		//	VarietyList.Add(Variety5);
+
+		//	foreach(float variety in VarietyList)
+		//	{
+		//		PictureInputData.ParamForTextCreation.FillColor.SetByHSL(fillcolorHue, Variety1, fillcolorLuminance);
+
+		//		// string outpath = $"{Path.GetFullPath(PictureInputData.FileName)}";
+		//		Directory.CreateDirectory("variety of " + PictureInputData.FileName);
+		//		string outpath = "variety of" + PictureInputData.FileName + "1";
+
+		//		// string path = Path.GetFullPath(PictureInputData.FileName);
+
+		//		string imageName = Path.GetFileName(PictureInputData.FileName);
+
+		//		string inputPath = Path.GetFullPath(BTCSettings.TextAddedDir) + $"/{imageName}";
+
+		//		int IndexOfFile = Array.IndexOf(BTCSettings.Files, PictureInputData.FileName);
+
+		//		ProduceTextPictures(IndexOfFile,PictureInputData.ParamForTextCreation.PositionOfText, outpath, inputPath);
+		//	}
+			
+			
+		//}
+
 	}
 
 }

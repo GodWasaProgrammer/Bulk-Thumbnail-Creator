@@ -46,18 +46,20 @@ namespace Bulk_Thumbnail_Creator
 
 			Logic.SerializeListOfStringsToXML(BTCSettings.PathToXMLListOfDownloadedVideos, BTCSettings.DownloadedVideosList);
 
-			var files = Directory.GetFiles(BTCSettings.OutputDir, "*.*", SearchOption.AllDirectories);
+			BTCSettings.Files = Directory.GetFiles(BTCSettings.OutputDir, "*.*", SearchOption.AllDirectories);
 
 			var faceDetector = new FaceDetector(0.95f, 0.5f);
 
-			Console.WriteLine($"Processing {files.Length} images");
+			Console.WriteLine($"Processing {BTCSettings.Files.Length} images");
 
 			// main loop for detecting faces, placing text where face is not
 			// outputting file
-			for (int i = 0; i < files.Length; i++)
+			for (int i = 0; i < BTCSettings.Files.Length; i++)
 			{
-				string file = files[i];
+				string file = BTCSettings.Files[i];
+
 				var bitmap = new Bitmap(file);
+
 				var detectedFacesRect = faceDetector.Forward(bitmap);
 
 				ParamForTextCreation currentParameters = new ParamForTextCreation();
@@ -82,29 +84,25 @@ namespace Bulk_Thumbnail_Creator
 
 				Logic.ListOfSettingsForText.Add(Logic.Linear(currentParameters));
 
+				PictureData SavePictureData = new PictureData();
+				SavePictureData.FileName = file;
+				SavePictureData.ParamForTextCreation = currentParameters;
+				SavePictureData.IndexOfFile = i;
+				BTCSettings.PictureDatas.Add(SavePictureData);
+
 				string imageName = Path.GetFileName(file);
 
 				string outputFullPath = Path.GetFullPath(BTCSettings.TextAddedDir) + $"/{imageName}";
 
 				string screenCaptureFile = $"{file}";
-
-				using (MagickImage outputImage = new MagickImage(screenCaptureFile))
-				{
-					MagickReadSettings settings = Logic.ListOfSettingsForText[i];
-					using (var caption = new MagickImage($"caption:{BTCSettings.ListOfText[0]}", settings))
-					{
-						// Add the caption layer on top of the background image
-						outputImage.Composite(caption, PosOfText.X, PosOfText.Y, CompositeOperator.Over);
-
-						outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
-						outputImage.Quality = 100;
-						// outputs the file to the provided path and name
-						outputImage.Write(outputFullPath);
-					}
-
-				}
-
+				Logic.ProduceTextPictures(i, PosOfText, outputFullPath, screenCaptureFile);
 			}
+
+			//for (int i = 0; i < BTCSettings.Files.Length; i++)
+			//{
+			//	var input = BTCSettings.PictureDatas[i];
+			//	Logic.CreateVariety(input);
+			//}
 
 		}
 

@@ -4,9 +4,6 @@ namespace Bulk_Thumbnail_Creator
 {
 	public class BTCSettings
 	{
-		// directories to create
-		// 
-
 		private static string _outputDir = "output";
 		public static string OutputDir { get { return _outputDir; } set { _outputDir = value; } }
 
@@ -21,6 +18,14 @@ namespace Bulk_Thumbnail_Creator
 
 		private static string _YoutubeDLDir = "YTDL";
 		public static string YoutubeDLDir { get { return _YoutubeDLDir; } set { _YoutubeDLDir = value; } }
+
+		private static string[] files;
+		public static string[] Files { get { return files; } set { files = value; } }
+
+
+		public static List<PictureData> _PictureDatas = new List<PictureData>();
+		public static List<PictureData> PictureDatas { get { return _PictureDatas; } set { _PictureDatas = value; } }
+
 
 		/// <summary>
 		/// Link to the provided Youtube Link
