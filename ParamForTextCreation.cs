@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using Microsoft.Graph.Models.TermStore;
+using System.Drawing;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -7,6 +8,8 @@ namespace Bulk_Thumbnail_Creator
 		private Point positionOfText;
 		public Point PositionOfText { get {  return positionOfText; } set {  positionOfText = value; } }
 
+		private string _Font;
+		public string Font {get { return _Font; }set { _Font = value; } }
 
 		private int _FontPointSize = 70;
 		public  int FontPointSize { get { return _FontPointSize; } set { _FontPointSize = value; } }

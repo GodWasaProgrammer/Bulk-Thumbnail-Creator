@@ -34,17 +34,17 @@ namespace Bulk_Thumbnail_Creator
 			return colorRNGPicked;
 		}
 
-		static float hueFillColor = 0F;
-		static readonly float saturationFillColor = 1F;
-		static readonly float lightnessFillColor = 0.50F;
+		static float hueFillColor = 23F;
+		static readonly float saturationFillColor = 0.25F;
+		static readonly float lightnessFillColor = 0.25F;
 
 		static float hueStrokeColor = 125F;
-		static readonly float saturationStrokeColor = 1F;
-		static readonly float lightnessStrokeColor = 0.50F;
+		static readonly float saturationStrokeColor = 0.25F;
+		static readonly float lightnessStrokeColor = 0.25F;
 
 		static float hueBorderColor = 28F;
-		static readonly float saturationBorderColor = 1F;
-		static readonly float lightnessBorderColor = 0.50F;
+		static readonly float saturationBorderColor = 0.25F;
+		static readonly float lightnessBorderColor = 0.25F;
 
 		public static ParamForTextCreation DecideColorGeneration(ParamForTextCreation InputParameter, int currentelement)
 		{
@@ -204,21 +204,37 @@ namespace Bulk_Thumbnail_Creator
 		/// </summary>
 		/// <param name="Parameters"></param>
 		/// <returns>Returns the generated MagickReadSettings</returns>
-		public static MagickReadSettings Linear(ParamForTextCreation Parameters)
+		/// 
+
+		public static string PickRandomFont()
+		{
+			
+			var fontNames = Directory.GetFiles("Fonts", "*.TTF*");
+			
+			Random randompicker = new Random();
+
+			int randommax = fontNames.Length;
+
+			int fontChosen = randompicker.Next(randommax + 1);
+
+			return fontNames[fontChosen].ToString();
+		}
+
+		public static MagickReadSettings TextSettingsGeneration(ParamForTextCreation Parameters)
 		{
 			MagickReadSettings SettingsTextLinear = new MagickReadSettings
 
 			{
-				Font = "C://WINDOWS/FONTS/BAUHS93.TTF",
+				Font = Parameters.Font,
 				FillColor = MagickColor.FromRgb(Parameters.FillColor.Red, Parameters.FillColor.Green, Parameters.FillColor.Blue),
 				StrokeColor = MagickColor.FromRgb(Parameters.StrokeColor.Red, Parameters.StrokeColor.Green, Parameters.StrokeColor.Blue),
 				BorderColor = MagickColor.FromRgb(Parameters.BorderColor.Red, Parameters.BorderColor.Green, Parameters.BorderColor.Blue),
 				FontStyle = FontStyleType.Normal,
 				StrokeAntiAlias = true,
-				StrokeWidth = 2,
+				StrokeWidth = 3,
 				FontPointsize = Parameters.FontPointSize,
-				FontWeight = FontWeight.Black,
-				BackgroundColor = MagickColors.DarkGoldenrod,
+				FontWeight = FontWeight.ExtraBold,
+				BackgroundColor = MagickColors.Transparent,
 				Height = Parameters.FontPointSize + 50, // height of text box
 				Width = Parameters.WidthOfBox, // width of text box
 			};
@@ -263,7 +279,6 @@ namespace Bulk_Thumbnail_Creator
 			{
 				MagickReadSettings settings = Logic.ListOfSettingsForText[i];
 
-
 				using (var caption = new MagickImage($"caption:{BTCSettings.ListOfText[0]}", settings))
 				{
 					// Add the caption layer on top of the background image
@@ -284,43 +299,43 @@ namespace Bulk_Thumbnail_Creator
 		{
 			float fillcolorHue = PictureInputData.ParamForTextCreation.FillColor.Hue;
 			// float fillcolorSaturation = PictureInputData.ParamForTextCreation.FillColor.Saturation;
-			float fillcolorLuminance = PictureInputData.ParamForTextCreation.FillColor.Luminance;
+			float fillcolorLuminance = 0.50F;
 
 			float strokecolorHue = PictureInputData.ParamForTextCreation.StrokeColor.Hue;
 			// float strokecolorSaturation = PictureInputData.ParamForTextCreation.StrokeColor.Saturation;
-			float strokecolorLuminance = PictureInputData.ParamForTextCreation.StrokeColor.Luminance;
+			float strokecolorLuminance = 0.50F;
 
 			float bordercolorHue = PictureInputData.ParamForTextCreation.BorderColor.Hue;
 			// float bordercolorSaturation = PictureInputData.ParamForTextCreation.BorderColor.Saturation;
-			float bordercolorLuminance = PictureInputData.ParamForTextCreation.BorderColor.Luminance;
+			float bordercolorLuminance = 0.50F;
 
 			// create variety based on the current value
-			// default output value is 1F
+			// default output value is 0.25F
 
 			List<float> VarietyList = new List<float>();
 
-			float Variety1 = 0.15F;
+			float Variety1 = 0.10F;
 			VarietyList.Add(Variety1);
 
-			float Variety2 = 0.35F;
+			float Variety2 = 0.45F;
 			VarietyList.Add(Variety2);
 
 			float Variety3 = 0.55F;
 			VarietyList.Add(Variety3);
 
-			float Variety4 = 0.75F;
+			float Variety4 = 0.85F;
 			VarietyList.Add(Variety4);
 
-			float Variety5 = 0.85F;
+			float Variety5 = 1F;
 			VarietyList.Add(Variety5);
 
 			foreach (float variety in VarietyList)
 			{
-				PictureInputData.ParamForTextCreation.FillColor.SetByHSL(fillcolorHue, variety, variety);
+				PictureInputData.ParamForTextCreation.FillColor.SetByHSL(fillcolorHue, variety, fillcolorLuminance);
 
-				PictureInputData.ParamForTextCreation.StrokeColor.SetByHSL(strokecolorHue,variety,variety);
+				PictureInputData.ParamForTextCreation.StrokeColor.SetByHSL(strokecolorHue,variety,strokecolorLuminance);
 
-				PictureInputData.ParamForTextCreation.BorderColor.SetByHSL(bordercolorHue, variety, variety);
+				PictureInputData.ParamForTextCreation.BorderColor.SetByHSL(bordercolorHue, variety, bordercolorLuminance);
 
 				// string outpath = $"{Path.GetFullPath(PictureInputData.FileName)}";
 
@@ -330,11 +345,17 @@ namespace Bulk_Thumbnail_Creator
 
 				// string path = Path.GetFullPath(PictureInputData.FileName);
 
+				// modify magicreadsettings 
+
+				MagickReadSettings settings = TextSettingsGeneration(PictureInputData.ParamForTextCreation);
+
+				int IndexOfFile = PictureInputData.IndexOfFile;
+
+				Logic.ListOfSettingsForText[IndexOfFile] = settings;
+
 				string imageName = Path.GetFileName(PictureInputData.FileName);
 
 				string inputPath = Path.GetFullPath(BTCSettings.OutputDir) + $"/{imageName}";
-
-				int IndexOfFile = PictureInputData.IndexOfFile;
 
 				ProduceTextPictures(IndexOfFile, PictureInputData.ParamForTextCreation.PositionOfText, outpath, inputPath);
 			}

@@ -22,7 +22,7 @@ namespace Bulk_Thumbnail_Creator
 			BTCSettings.DownloadedVideosList = Logic.DeSerializeXMLToListOfStrings(BTCSettings.PathToXMLListOfDownloadedVideos);
 			
 			//downloads the specified url
-			string URL = "https://www.youtube.com/watch?v=yppOGpXT998";
+			string URL = "https://www.youtube.com/watch?v=vwfr3YM0fSg";
 			BTCSettings.PathToVideo = await Logic.YouTubeDL(URL);
 
 			// Adds To DownloadedVideosList if it is not already containing it
@@ -82,7 +82,9 @@ namespace Bulk_Thumbnail_Creator
 
 				currentParameters.FontPointSize = Logic.CalculateFontSize(bitmap.Height);
 
-				Logic.ListOfSettingsForText.Add(Logic.Linear(currentParameters));
+				currentParameters.Font = Logic.PickRandomFont();
+
+				Logic.ListOfSettingsForText.Add(Logic.TextSettingsGeneration(currentParameters));
 
 				PictureData SavePictureData = new PictureData
 				{
