@@ -128,29 +128,29 @@ namespace Bulk_Thumbnail_Creator
 
 		}
 
-		/// <summary>
-		/// This isnt working, it throws a major exception for whatever reason
-		/// </summary>
-		/// <param name="URL"></param>
-		/// <returns>Returns the name of the video of the specified URL</returns>
-		public static async Task<string> FetchURLTitleOfVideo(string URL)
-		{
-			var ytdl = new YoutubeDL
-			{
-				// set paths
-				YoutubeDLPath = "..\\..\\yt-dlp.exe",
-				FFmpegPath = "YTDL/ffmpeg.exe",
-				OutputFolder = "YTDL"
-			};
-			var res = await ytdl.RunVideoDataFetch(URL);
-			// get some video information
-			VideoData video = res.Data;
-			string title = video.Title;
-			string uploader = video.Uploader;
-			long? views = video.ViewCount;
+		///// <summary>
+		///// This isnt working, it throws a major exception for whatever reason
+		///// </summary>
+		///// <param name="URL"></param>
+		///// <returns>Returns the name of the video of the specified URL</returns>
+		//public static async Task<string> FetchURLTitleOfVideo(string URL)
+		//{
+		//	var ytdl = new YoutubeDL
+		//	{
+		//		// set paths
+		//		YoutubeDLPath = "..\\..\\yt-dlp.exe",
+		//		FFmpegPath = "YTDL/ffmpeg.exe",
+		//		OutputFolder = "YTDL"
+		//	};
+		//	var res = await ytdl.RunVideoDataFetch(URL);
+		//	// get some video information
+		//	VideoData video = res.Data;
+		//	string title = video.Title;
+		//	string uploader = video.Uploader;
+		//	long? views = video.ViewCount;
 
-			return title;
-		}
+		//	return title;
+		//}
 
 		public static async Task<string> YouTubeDL(string URL)
 		{
@@ -209,17 +209,17 @@ namespace Bulk_Thumbnail_Creator
 			MagickReadSettings SettingsTextLinear = new MagickReadSettings
 
 			{
-				Font = "Bauhaus 93",
+				Font = "C://WINDOWS/FONTS/BAUHS93.TTF",
 				FillColor = MagickColor.FromRgb(Parameters.FillColor.Red, Parameters.FillColor.Green, Parameters.FillColor.Blue),
 				StrokeColor = MagickColor.FromRgb(Parameters.StrokeColor.Red, Parameters.StrokeColor.Green, Parameters.StrokeColor.Blue),
 				BorderColor = MagickColor.FromRgb(Parameters.BorderColor.Red, Parameters.BorderColor.Green, Parameters.BorderColor.Blue),
 				FontStyle = FontStyleType.Normal,
 				StrokeAntiAlias = true,
-				StrokeWidth = 5,
+				StrokeWidth = 2,
 				FontPointsize = Parameters.FontPointSize,
 				FontWeight = FontWeight.Black,
-				BackgroundColor = MagickColors.Transparent,
-				Height = Parameters.FontPointSize, // height of text box
+				BackgroundColor = MagickColors.DarkGoldenrod,
+				Height = Parameters.FontPointSize + 50, // height of text box
 				Width = Parameters.WidthOfBox, // width of text box
 			};
 
@@ -263,6 +263,7 @@ namespace Bulk_Thumbnail_Creator
 			{
 				MagickReadSettings settings = Logic.ListOfSettingsForText[i];
 
+
 				using (var caption = new MagickImage($"caption:{BTCSettings.ListOfText[0]}", settings))
 				{
 					// Add the caption layer on top of the background image
@@ -279,62 +280,67 @@ namespace Bulk_Thumbnail_Creator
 			}
 		}
 
-		//public static void CreateVariety(PictureData PictureInputData)
-		//{
-		//	string PathToFile = Path.GetFileName(PictureInputData.FileName);
-		//	float fillcolorHue = PictureInputData.ParamForTextCreation.FillColor.Hue;
-		//	float fillcolorSaturation = PictureInputData.ParamForTextCreation.FillColor.Saturation;
-		//	float fillcolorLuminance = PictureInputData.ParamForTextCreation.FillColor.Luminance;
+		public static void CreateVariety(PictureData PictureInputData)
+		{
+			float fillcolorHue = PictureInputData.ParamForTextCreation.FillColor.Hue;
+			// float fillcolorSaturation = PictureInputData.ParamForTextCreation.FillColor.Saturation;
+			float fillcolorLuminance = PictureInputData.ParamForTextCreation.FillColor.Luminance;
 
-		//	float strokecolorHue = PictureInputData.ParamForTextCreation.StrokeColor.Hue;
-		//	float strokecolorSaturation = PictureInputData.ParamForTextCreation.StrokeColor.Saturation;
-		//	float strokecolorLuminance = PictureInputData.ParamForTextCreation.StrokeColor.Luminance;
+			float strokecolorHue = PictureInputData.ParamForTextCreation.StrokeColor.Hue;
+			// float strokecolorSaturation = PictureInputData.ParamForTextCreation.StrokeColor.Saturation;
+			float strokecolorLuminance = PictureInputData.ParamForTextCreation.StrokeColor.Luminance;
 
-		//	float bordercolorHue = PictureInputData.ParamForTextCreation.BorderColor.Hue;
-		//	float bordercolorSaturation = PictureInputData.ParamForTextCreation.BorderColor.Saturation;
-		//	float bordercolorLuminance = PictureInputData.ParamForTextCreation.BorderColor.Luminance;
+			float bordercolorHue = PictureInputData.ParamForTextCreation.BorderColor.Hue;
+			// float bordercolorSaturation = PictureInputData.ParamForTextCreation.BorderColor.Saturation;
+			float bordercolorLuminance = PictureInputData.ParamForTextCreation.BorderColor.Luminance;
 
-		//	// create variety based on the current value
-		//	// default output value is 1F
+			// create variety based on the current value
+			// default output value is 1F
 
-		//	List<float> VarietyList = new List<float>();
+			List<float> VarietyList = new List<float>();
 
-		//	float Variety1 = 0.15F;
-		//	VarietyList.Add(Variety1);
+			float Variety1 = 0.15F;
+			VarietyList.Add(Variety1);
 
-		//	float Variety2 = 0.35F;
-		//	VarietyList.Add(Variety2);
+			float Variety2 = 0.35F;
+			VarietyList.Add(Variety2);
 
-		//	float Variety3 = 0.55F;
-		//	VarietyList.Add(Variety3);
+			float Variety3 = 0.55F;
+			VarietyList.Add(Variety3);
 
-		//	float Variety4 = 0.75F;
-		//	VarietyList.Add(Variety4);
+			float Variety4 = 0.75F;
+			VarietyList.Add(Variety4);
 
-		//	float Variety5 = 0.85F;
-		//	VarietyList.Add(Variety5);
+			float Variety5 = 0.85F;
+			VarietyList.Add(Variety5);
 
-		//	foreach(float variety in VarietyList)
-		//	{
-		//		PictureInputData.ParamForTextCreation.FillColor.SetByHSL(fillcolorHue, Variety1, fillcolorLuminance);
+			foreach (float variety in VarietyList)
+			{
+				PictureInputData.ParamForTextCreation.FillColor.SetByHSL(fillcolorHue, variety, variety);
 
-		//		// string outpath = $"{Path.GetFullPath(PictureInputData.FileName)}";
-		//		Directory.CreateDirectory("variety of " + PictureInputData.FileName);
-		//		string outpath = "variety of" + PictureInputData.FileName + "1";
+				PictureInputData.ParamForTextCreation.StrokeColor.SetByHSL(strokecolorHue,variety,variety);
 
-		//		// string path = Path.GetFullPath(PictureInputData.FileName);
+				PictureInputData.ParamForTextCreation.BorderColor.SetByHSL(bordercolorHue, variety, variety);
 
-		//		string imageName = Path.GetFileName(PictureInputData.FileName);
+				// string outpath = $"{Path.GetFullPath(PictureInputData.FileName)}";
 
-		//		string inputPath = Path.GetFullPath(BTCSettings.TextAddedDir) + $"/{imageName}";
+				Directory.CreateDirectory(BTCSettings.TextAddedDir + "//" + "variety of " + Path.GetFileName(PictureInputData.FileName));
 
-		//		int IndexOfFile = Array.IndexOf(BTCSettings.Files, PictureInputData.FileName);
+				string outpath = BTCSettings.TextAddedDir + "//" + "variety of " + Path.GetFileName(PictureInputData.FileName) + $"//{variety}" + ".png";
 
-		//		ProduceTextPictures(IndexOfFile,PictureInputData.ParamForTextCreation.PositionOfText, outpath, inputPath);
-		//	}
-			
-			
-		//}
+				// string path = Path.GetFullPath(PictureInputData.FileName);
+
+				string imageName = Path.GetFileName(PictureInputData.FileName);
+
+				string inputPath = Path.GetFullPath(BTCSettings.OutputDir) + $"/{imageName}";
+
+				int IndexOfFile = PictureInputData.IndexOfFile;
+
+				ProduceTextPictures(IndexOfFile, PictureInputData.ParamForTextCreation.PositionOfText, outpath, inputPath);
+			}
+
+
+		}
 
 	}
 

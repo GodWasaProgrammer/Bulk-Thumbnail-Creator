@@ -2,7 +2,7 @@
 
 Make so you can use vertical text aswell. -
 
-after user picks one they like, give them suggestions based from this so + and - of the range // still to do but on a scale of [] array
+after user picks one they like, give them suggestions based from this so + and - of the range // still to do but on a scale of [] array 
 
 incrementally getting user feeback and adapting images from that
 

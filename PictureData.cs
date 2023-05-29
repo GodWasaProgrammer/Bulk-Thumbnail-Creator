@@ -2,8 +2,8 @@
 {
 	public class PictureData
 	{
-		private string _name;
-		public string FileName { get { return _name; }set { _name = value; } }
+		private string _FileName;
+		public string FileName { get { return _FileName; }set { _FileName = value; } }
 
 		private int _IndexOfFile;
 		public int IndexOfFile { get { return _IndexOfFile; } set {_IndexOfFile= value; } }

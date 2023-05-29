@@ -84,10 +84,13 @@ namespace Bulk_Thumbnail_Creator
 
 				Logic.ListOfSettingsForText.Add(Logic.Linear(currentParameters));
 
-				PictureData SavePictureData = new PictureData();
-				SavePictureData.FileName = file;
-				SavePictureData.ParamForTextCreation = currentParameters;
-				SavePictureData.IndexOfFile = i;
+				PictureData SavePictureData = new PictureData
+				{
+					FileName = file,
+					ParamForTextCreation = currentParameters,
+					IndexOfFile = i
+				};
+
 				BTCSettings.PictureDatas.Add(SavePictureData);
 
 				string imageName = Path.GetFileName(file);
@@ -98,11 +101,11 @@ namespace Bulk_Thumbnail_Creator
 				Logic.ProduceTextPictures(i, PosOfText, outputFullPath, screenCaptureFile);
 			}
 
-			//for (int i = 0; i < BTCSettings.Files.Length; i++)
-			//{
-			//	var input = BTCSettings.PictureDatas[i];
-			//	Logic.CreateVariety(input);
-			//}
+			for (int i = 0; i < BTCSettings.Files.Length; i++)
+			{
+				var input = BTCSettings.PictureDatas[i];
+				Logic.CreateVariety(input);
+			}
 
 		}
 
