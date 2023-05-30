@@ -3,11 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using YoutubeDLSharp;
-using YoutubeDLSharp.Metadata;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -34,7 +32,7 @@ namespace Bulk_Thumbnail_Creator
 			return colorRNGPicked;
 		}
 
-		static float hueFillColor = 23F;
+		static float hueFillColor = 55F;
 		static readonly float saturationFillColor = 0.25F;
 		static readonly float lightnessFillColor = 0.25F;
 
@@ -82,7 +80,9 @@ namespace Bulk_Thumbnail_Creator
 			else
 			{
 				InputParameter.FillColor.SetByHSL(hueFillColor, saturationFillColor, lightnessFillColor);
+
 				InputParameter.StrokeColor.SetByHSL(hueStrokeColor, saturationStrokeColor, lightnessStrokeColor);
+
 				InputParameter.BorderColor.SetByHSL(hueBorderColor, saturationBorderColor, lightnessBorderColor);
 			}
 
@@ -161,8 +161,7 @@ namespace Bulk_Thumbnail_Creator
 				FFmpegPath = "YTDL/ffmpeg.exe",
 				OutputFolder = "YTDL"
 			};
-			///
-			
+
 			// downloads specified video from youtube if it does not already exist.
 			BTCSettings.YoutubeLink = URL;
 			var res = await ytdl.RunVideoDownload(url: BTCSettings.YoutubeLink);
@@ -197,14 +196,6 @@ namespace Bulk_Thumbnail_Creator
 
 			return settingsTextRandom;
 		}
-
-		/// <summary>
-		/// Creates TextSettings in the form of MagickReadSettings
-		/// which includes information retrieved from a schemeobject which in turn uses Coloritems
-		/// </summary>
-		/// <param name="Parameters"></param>
-		/// <returns>Returns the generated MagickReadSettings</returns>
-		/// 
 
 		public static string PickRandomFont()
 		{
@@ -273,16 +264,14 @@ namespace Bulk_Thumbnail_Creator
 			return PosOfText;
 		}
 
-		public static void ProduceTextPictures(int i, Point PosOfText, string outputFullPath, string screenCaptureFile)
+		public static void ProduceTextPictures(PictureData PicData, string outputFullPath)
 		{
-			using (MagickImage outputImage = new MagickImage(screenCaptureFile))
+			using (MagickImage outputImage = new MagickImage(PicData.FileName))
 			{
-				MagickReadSettings settings = Logic.ListOfSettingsForText[i];
-
-				using (var caption = new MagickImage($"caption:{BTCSettings.ListOfText[0]}", settings))
+				using (var caption = new MagickImage($"caption:{PicData.ParamForTextCreation.Text}", PicData.ReadSettings))
 				{
 					// Add the caption layer on top of the background image
-					outputImage.Composite(caption, PosOfText.X, PosOfText.Y, CompositeOperator.Over);
+					outputImage.Composite(caption, PicData.ParamForTextCreation.PositionOfText.X, PicData.ParamForTextCreation.PositionOfText.Y, CompositeOperator.Over);
 
 					outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
 
@@ -293,9 +282,10 @@ namespace Bulk_Thumbnail_Creator
 				}
 
 			}
+
 		}
 
-		public static void CreateVariety(PictureData PictureInputData)
+		public static void CreateVariety(PictureData PictureInputData, string TargetFolder)
 		{
 			float fillcolorHue = PictureInputData.ParamForTextCreation.FillColor.Hue;
 			// float fillcolorSaturation = PictureInputData.ParamForTextCreation.FillColor.Saturation;
@@ -331,35 +321,31 @@ namespace Bulk_Thumbnail_Creator
 
 			foreach (float variety in VarietyList)
 			{
-				PictureInputData.ParamForTextCreation.FillColor.SetByHSL(fillcolorHue, variety, fillcolorLuminance);
+				PictureData VarietyData = new PictureData
+				{
+					ParamForTextCreation = PictureInputData.ParamForTextCreation
+				};
 
-				PictureInputData.ParamForTextCreation.StrokeColor.SetByHSL(strokecolorHue,variety,strokecolorLuminance);
+				VarietyData.ParamForTextCreation.FillColor.SetByHSL(fillcolorHue, variety, fillcolorLuminance);
 
-				PictureInputData.ParamForTextCreation.BorderColor.SetByHSL(bordercolorHue, variety, bordercolorLuminance);
+				VarietyData.ParamForTextCreation.StrokeColor.SetByHSL(strokecolorHue,variety,strokecolorLuminance);
 
-				// string outpath = $"{Path.GetFullPath(PictureInputData.FileName)}";
+				VarietyData.ParamForTextCreation.BorderColor.SetByHSL(bordercolorHue, variety, bordercolorLuminance);
 
-				Directory.CreateDirectory(BTCSettings.TextAddedDir + "//" + "variety of " + Path.GetFileName(PictureInputData.FileName));
+				VarietyData.FileName = PictureInputData.FileName;
 
-				string outpath = BTCSettings.TextAddedDir + "//" + "variety of " + Path.GetFileName(PictureInputData.FileName) + $"//{variety}" + ".png";
+				Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(VarietyData.FileName));
 
-				// string path = Path.GetFullPath(PictureInputData.FileName);
+				string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(VarietyData.FileName) + $"//{variety}" + ".png";
 
-				// modify magicreadsettings 
+				MagickReadSettings settings = TextSettingsGeneration(VarietyData.ParamForTextCreation);
 
-				MagickReadSettings settings = TextSettingsGeneration(PictureInputData.ParamForTextCreation);
+				VarietyData.ReadSettings = settings;
 
-				int IndexOfFile = PictureInputData.IndexOfFile;
+				PictureInputData.Varieties.Add(VarietyData);
 
-				Logic.ListOfSettingsForText[IndexOfFile] = settings;
-
-				string imageName = Path.GetFileName(PictureInputData.FileName);
-
-				string inputPath = Path.GetFullPath(BTCSettings.OutputDir) + $"/{imageName}";
-
-				ProduceTextPictures(IndexOfFile, PictureInputData.ParamForTextCreation.PositionOfText, outpath, inputPath);
+				ProduceTextPictures(VarietyData, outpath);
 			}
-
 
 		}
 

@@ -22,7 +22,7 @@ namespace Bulk_Thumbnail_Creator
 			BTCSettings.DownloadedVideosList = Logic.DeSerializeXMLToListOfStrings(BTCSettings.PathToXMLListOfDownloadedVideos);
 			
 			//downloads the specified url
-			string URL = "https://www.youtube.com/watch?v=vwfr3YM0fSg";
+			string URL = "https://www.youtube.com/watch?v=PN7f341NHvc";
 			BTCSettings.PathToVideo = await Logic.YouTubeDL(URL);
 
 			// Adds To DownloadedVideosList if it is not already containing it
@@ -84,29 +84,31 @@ namespace Bulk_Thumbnail_Creator
 
 				currentParameters.Font = Logic.PickRandomFont();
 
-				Logic.ListOfSettingsForText.Add(Logic.TextSettingsGeneration(currentParameters));
+				// placeholder.
+				currentParameters.Text = BTCSettings.ListOfText[0];
 
-				PictureData SavePictureData = new PictureData
+				MagickReadSettings settings = Logic.TextSettingsGeneration(currentParameters);
+
+				PictureData PassPictureData = new PictureData
 				{
 					FileName = file,
 					ParamForTextCreation = currentParameters,
-					IndexOfFile = i
+					ReadSettings= settings,
 				};
 
-				BTCSettings.PictureDatas.Add(SavePictureData);
+				BTCSettings.PictureDatas.Add(PassPictureData);
 
 				string imageName = Path.GetFileName(file);
 
 				string outputFullPath = Path.GetFullPath(BTCSettings.TextAddedDir) + $"/{imageName}";
 
-				string screenCaptureFile = $"{file}";
-				Logic.ProduceTextPictures(i, PosOfText, outputFullPath, screenCaptureFile);
+				Logic.ProduceTextPictures(PassPictureData, outputFullPath);
 			}
 
 			for (int i = 0; i < BTCSettings.Files.Length; i++)
 			{
 				var input = BTCSettings.PictureDatas[i];
-				Logic.CreateVariety(input);
+				Logic.CreateVariety(input,BTCSettings.TextAddedDir);
 			}
 
 		}

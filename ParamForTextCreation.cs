@@ -5,11 +5,17 @@ namespace Bulk_Thumbnail_Creator
 {
 	public class ParamForTextCreation
 	{
+		private string _Text;
+		public string Text {get { return _Text; } set { _Text = value; } }
+
+
 		private Point positionOfText;
 		public Point PositionOfText { get {  return positionOfText; } set {  positionOfText = value; } }
 
+
 		private string _Font;
 		public string Font {get { return _Font; }set { _Font = value; } }
+
 
 		private int _FontPointSize = 70;
 		public  int FontPointSize { get { return _FontPointSize; } set { _FontPointSize = value; } }
