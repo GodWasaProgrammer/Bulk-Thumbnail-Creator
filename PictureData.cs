@@ -1,4 +1,7 @@
-﻿namespace Bulk_Thumbnail_Creator
+﻿using ImageMagick;
+using System.Collections.Generic;
+
+namespace Bulk_Thumbnail_Creator
 {
 	public class PictureData
 	{
@@ -10,6 +13,10 @@
 
 		private ParamForTextCreation _ParamForTextCreation;
 		public ParamForTextCreation ParamForTextCreation { get { return _ParamForTextCreation;} set { _ParamForTextCreation= value; } }
+
+		public MagickReadSettings ReadSettings { get; set; }
+
+		public List<PictureData> Varieties { get; set; }
 
 	}
 

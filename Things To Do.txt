@@ -1,5 +1,11 @@
 ﻿~~~~~~be consistent~~~~~~
 
+Clean out globals 
+
+Make methods do only one thing
+
+Happy Days
+
 Make so you can use vertical text aswell. -
 
 after user picks one they like, give them suggestions based from this so + and - of the range // still to do but on a scale of [] array 
