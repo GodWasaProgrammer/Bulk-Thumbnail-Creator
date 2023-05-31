@@ -33,16 +33,16 @@ namespace Bulk_Thumbnail_Creator
 		}
 
 		static float hueFillColor = 55F;
-		static readonly float saturationFillColor = 0.25F;
-		static readonly float lightnessFillColor = 0.25F;
+		static readonly float saturationFillColor = 1F;
+		static readonly float lightnessFillColor = 0.50F;
 
 		static float hueStrokeColor = 125F;
-		static readonly float saturationStrokeColor = 0.25F;
-		static readonly float lightnessStrokeColor = 0.25F;
+		static readonly float saturationStrokeColor = 1F;
+		static readonly float lightnessStrokeColor = 0.50F;
 
 		static float hueBorderColor = 28F;
-		static readonly float saturationBorderColor = 0.25F;
-		static readonly float lightnessBorderColor = 0.25F;
+		static readonly float saturationBorderColor = 1F;
+		static readonly float lightnessBorderColor = 0.50F;
 
 		public static ParamForTextCreation DecideColorGeneration(ParamForTextCreation InputParameter, int currentelement)
 		{
@@ -304,7 +304,7 @@ namespace Bulk_Thumbnail_Creator
 
 			List<float> VarietyList = new List<float>();
 
-			float Variety1 = 0.10F;
+			float Variety1 = 0.30F;
 			VarietyList.Add(Variety1);
 
 			float Variety2 = 0.45F;

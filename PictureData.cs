@@ -9,11 +9,10 @@ namespace Bulk_Thumbnail_Creator
 		private string _FileName;
 		public string FileName { get { return _FileName; }set { _FileName = value; } }
 
-		//private int _IndexOfFile;
-		//public int IndexOfFile { get { return _IndexOfFile; } set {_IndexOfFile= value; } }
-
+		
 		private ParamForTextCreation _ParamForTextCreation;
 		public ParamForTextCreation ParamForTextCreation { get { return _ParamForTextCreation;} set { _ParamForTextCreation = value; } }
+
 
 		private MagickReadSettings _ReadSettings;
 		public MagickReadSettings ReadSettings { get { return _ReadSettings; } set { _ReadSettings = value; } }

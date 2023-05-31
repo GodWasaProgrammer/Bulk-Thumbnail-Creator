@@ -72,7 +72,7 @@ namespace Bulk_Thumbnail_Creator
 		}
 
 		/// <summary>
-		/// set color object by RGB input, also sets correlating HSL values on object on the fly
+		/// set color object by RGB input
 		/// </summary>
 		/// <param name="inputRed"></param>
 		/// <param name="inputGreen"></param>
