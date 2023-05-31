@@ -58,20 +58,23 @@ namespace Bulk_Thumbnail_Creator
 			{
 				string file = BTCSettings.Files[i];
 
-				var bitmap = new Bitmap(file);
+				Bitmap bitmap = new Bitmap(file);
 
-				var detectedFacesRect = faceDetector.Forward(bitmap);
+				Rectangle[] detectedFacesRect = faceDetector.Forward(bitmap);
 
 				ParamForTextCreation currentParameters = new ParamForTextCreation();
 
-				Point PosOfText = new Point(0, 0);
-
-				Rectangle faceRect;
-
+				
+				Point PosOfText;
 				if (detectedFacesRect.Length > 0)
 				{
-					faceRect = detectedFacesRect.First();
+					Rectangle faceRect = detectedFacesRect.First();
 					PosOfText = Logic.GettextPosition(bitmap, faceRect);
+				}
+				else
+				{
+					Rectangle EmptyRectangle = new Rectangle(bitmap.Width,bitmap.Height,50,50);
+					PosOfText = Logic.GettextPosition(bitmap, EmptyRectangle);
 				}
 
 				currentParameters.PositionOfText = PosOfText;
@@ -104,7 +107,7 @@ namespace Bulk_Thumbnail_Creator
 
 				Logic.ProduceTextPictures(PassPictureData, outputFullPath);
 			}
-
+			// just to try out variety will be on interaction/choice of pic
 			for (int i = 0; i < BTCSettings.Files.Length; i++)
 			{
 				var input = BTCSettings.PictureDatas[i];

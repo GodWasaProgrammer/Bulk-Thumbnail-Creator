@@ -1,5 +1,4 @@
 ﻿using ImageMagick;
-using Microsoft.Graph.Reports.GetPrinterArchivedPrintJobsWithPrinterIdWithStartDateTimeWithEndDateTime;
 using System.Collections.Generic;
 
 namespace Bulk_Thumbnail_Creator

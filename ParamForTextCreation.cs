@@ -1,5 +1,4 @@
-﻿using Microsoft.Graph.Models.TermStore;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace Bulk_Thumbnail_Creator
 {

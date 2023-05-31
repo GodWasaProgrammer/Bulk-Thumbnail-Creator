@@ -11,10 +11,7 @@ namespace Bulk_Thumbnail_Creator
 {
 	internal class Logic
 	{
-		// list of created Presets for printing text to image
-		public static List<MagickReadSettings> ListOfSettingsForText { get; set; } = new List<MagickReadSettings>();
-
-		static readonly Random colorRandom = new Random();
+		private static readonly Random colorRandom = new Random();
 		/// <summary>
 		/// Generates random colors in bytes
 		/// </summary>
@@ -50,12 +47,8 @@ namespace Bulk_Thumbnail_Creator
 			{
 				hueFillColor += +12.5F;
 				hueStrokeColor += +12.5F;
-
-				if (currentelement > 5)
-				{
-					hueBorderColor += 10F;
-				}
-
+				hueBorderColor += 12.5F;
+				
 				if (hueFillColor > 360)
 				{
 					hueFillColor = 0F;
@@ -114,7 +107,7 @@ namespace Bulk_Thumbnail_Creator
 				{
 					ListofStringsToDeSerialize = (List<string>)serializer.Deserialize(file);
 				}
-				
+
 			}
 			return ListofStringsToDeSerialize;
 		}
@@ -199,14 +192,14 @@ namespace Bulk_Thumbnail_Creator
 
 		public static string PickRandomFont()
 		{
-			
+
 			var fontNames = Directory.GetFiles("Fonts", "*.TTF*");
-			
+
 			Random randompicker = new Random();
 
 			int randommax = fontNames.Length;
 
-			int fontChosen = randompicker.Next(randommax + 1);
+			int fontChosen = randompicker.Next(randommax);
 
 			return fontNames[fontChosen].ToString();
 		}
@@ -233,7 +226,7 @@ namespace Bulk_Thumbnail_Creator
 			return SettingsTextLinear;
 		}
 
-		public static void CreateDirectories(string outputDir, string TextAdded,string YTDL)
+		public static void CreateDirectories(string outputDir, string TextAdded, string YTDL)
 		{
 			Directory.CreateDirectory(outputDir);
 			Directory.CreateDirectory(TextAdded);
@@ -328,7 +321,7 @@ namespace Bulk_Thumbnail_Creator
 
 				VarietyData.ParamForTextCreation.FillColor.SetByHSL(fillcolorHue, variety, fillcolorLuminance);
 
-				VarietyData.ParamForTextCreation.StrokeColor.SetByHSL(strokecolorHue,variety,strokecolorLuminance);
+				VarietyData.ParamForTextCreation.StrokeColor.SetByHSL(strokecolorHue, variety, strokecolorLuminance);
 
 				VarietyData.ParamForTextCreation.BorderColor.SetByHSL(bordercolorHue, variety, bordercolorLuminance);
 
