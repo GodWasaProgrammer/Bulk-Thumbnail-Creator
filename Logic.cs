@@ -238,20 +238,23 @@ namespace Bulk_Thumbnail_Creator
 			Point PosOfText;
 			int LocationOfRectangleCenterYpos = faceRect.Y + faceRect.Height / 2;
 
-			int sourceIMGMiddleY = bitmap.Height / 2;
+			// sets the position to the middle of the picture, mid point at X = 0
+			int sourceIMGMiddleY = bitmap.Height / 2; 
 
+			// if middle of image is more then the location of the rectangle height position 
 			if (sourceIMGMiddleY > LocationOfRectangleCenterYpos)
 			{
 				// make text appear on lower half
-
+				// the integer relative position is the height of the image split by 6, which gives a percentage of 
+				// 
 				int relativePosition = bitmap.Height - bitmap.Height / 6;
 
 				PosOfText = new Point(0, relativePosition);
 			}
 			else
 			{
-				// make text appear on upper half
-				PosOfText = new Point(0, sourceIMGMiddleY);
+				// make text appear on upper half at the 0,0 initial point 
+				PosOfText = new Point(0,0);
 			}
 
 			return PosOfText;
