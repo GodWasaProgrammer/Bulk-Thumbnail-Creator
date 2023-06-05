@@ -23,14 +23,29 @@ namespace Bulk_Thumbnail_Creator
 			
 			//downloads the specified url
 			string URL = "https://www.youtube.com/watch?v=ZnQdseqFjj0";
-			BTCSettings.PathToVideo = await Logic.YouTubeDL(URL);
 
-			// Adds To DownloadedVideosList if it is not already containing it
+			string TitleOfVideo = await Logic.FetchURLTitleOfVideo(URL);
 
-			if (!BTCSettings.DownloadedVideosList.Contains(BTCSettings.PathToVideo))
+			if (BTCSettings.DownloadedVideosList.Contains(TitleOfVideo))
 			{
+				if (File.Exists(BTCSettings.YoutubeDLDir + "//" + TitleOfVideo))
+				{ 
+				Console.WriteLine($"list Contains {URL} already and file exists in {BTCSettings.YoutubeDLDir}, skipping download");
+				}
+
+			}
+			else
+			{
+				BTCSettings.PathToVideo = await Logic.YouTubeDL(URL);
 				BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
 			}
+			
+			//// Adds To DownloadedVideosList if it is not already containing it
+
+			//if (!BTCSettings.DownloadedVideosList.Contains(BTCSettings.PathToVideo))
+			//{
+			//	BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
+			//}
 
 			#region Run FfMpeg
 			var parameters = new Dictionary<string, string>();
