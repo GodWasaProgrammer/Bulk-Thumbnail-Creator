@@ -42,28 +42,48 @@ namespace Bulk_Thumbnail_Creator
 		static readonly float saturationBorderColor = 1F;
 		static readonly float lightnessBorderColor = 0.50F;
 
+		//public static void BorderColorInvertedFromFillColor(PictureData InputPicData)
+		//{
+		//	currentcolorInputPicData.ParamForTextCreation.FillColor;
+		//}
+		public static float ColorWheelSpinner(float inputHue)
+		{
+
+			if (inputHue < 180F)
+			{
+				inputHue += 180F;
+			}
+			else
+			{
+				inputHue -= 180F;
+			}
+
+			return inputHue;
+		}
 		public static ParamForTextCreation DecideColorGeneration(ParamForTextCreation InputParameter, int currentelement)
 		{
 			if (currentelement > 1)
 			{
 				hueFillColor += +12.5F;
-				hueStrokeColor += +12.5F;
-				hueBorderColor += 12.5F;
+
+
+				hueStrokeColor = ColorWheelSpinner(hueFillColor);
+				hueBorderColor = ColorWheelSpinner(hueFillColor);
 				
 				if (hueFillColor > 360)
 				{
 					hueFillColor = 0F;
 				}
 
-				if (hueStrokeColor > 360)
-				{
-					hueStrokeColor = 0F;
-				}
+				//if (hueStrokeColor > 360)
+				//{
+				//	hueStrokeColor = 0F;
+				//}
 
-				if (hueBorderColor > 360)
-				{
-					hueBorderColor = 0F;
-				}
+				//if (hueBorderColor > 360)
+				//{
+				//	hueBorderColor = 0F;
+				//}
 
 				InputParameter.FillColor.SetByHSL(hueFillColor, saturationFillColor, lightnessFillColor);
 
@@ -215,7 +235,7 @@ namespace Bulk_Thumbnail_Creator
 				BorderColor = MagickColor.FromRgb(Parameters.BorderColor.Red, Parameters.BorderColor.Green, Parameters.BorderColor.Blue),
 				FontStyle = FontStyleType.Normal,
 				StrokeAntiAlias = true,
-				StrokeWidth = 3,
+				StrokeWidth = 6,
 				FontPointsize = Parameters.FontPointSize,
 				FontWeight = FontWeight.ExtraBold,
 				BackgroundColor = MagickColors.Transparent,

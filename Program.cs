@@ -108,12 +108,12 @@ namespace Bulk_Thumbnail_Creator
 				Logic.ProduceTextPictures(PassPictureData, outputFullPath);
 			}
 
-			// just to try out variety will be on interaction/choice of pic
-			for (int i = 0; i < BTCSettings.Files.Length; i++)
-			{
-				var input = BTCSettings.PictureDatas[i];
-				Logic.CreateVariety(input, BTCSettings.TextAddedDir);
-			}
+			//// just to try out variety will be on interaction/choice of pic
+			//for (int i = 0; i < BTCSettings.Files.Length; i++)
+			//{
+			//	var input = BTCSettings.PictureDatas[i];
+			//	Logic.CreateVariety(input, BTCSettings.TextAddedDir);
+			//}
 
 		}
 
