@@ -20,32 +20,18 @@ namespace Bulk_Thumbnail_Creator
 			BTCSettings.ListOfText.Add(BTCSettings.TextToAdd);
 
 			BTCSettings.DownloadedVideosList = Logic.DeSerializeXMLToListOfStrings(BTCSettings.PathToXMLListOfDownloadedVideos);
-			
+
 			//downloads the specified url
 			string URL = "https://www.youtube.com/watch?v=ZnQdseqFjj0";
 
-			string TitleOfVideo = await Logic.FetchURLTitleOfVideo(URL);
+			BTCSettings.PathToVideo = await Logic.YouTubeDL(URL);
+			BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
 
-			if (BTCSettings.DownloadedVideosList.Contains(TitleOfVideo))
+			// Adds To DownloadedVideosList if it is not already containing it
+			if (!BTCSettings.DownloadedVideosList.Contains(BTCSettings.PathToVideo))
 			{
-				if (File.Exists(BTCSettings.YoutubeDLDir + "//" + TitleOfVideo))
-				{ 
-				Console.WriteLine($"list Contains {URL} already and file exists in {BTCSettings.YoutubeDLDir}, skipping download");
-				}
-
-			}
-			else
-			{
-				BTCSettings.PathToVideo = await Logic.YouTubeDL(URL);
 				BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
 			}
-			
-			//// Adds To DownloadedVideosList if it is not already containing it
-
-			//if (!BTCSettings.DownloadedVideosList.Contains(BTCSettings.PathToVideo))
-			//{
-			//	BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
-			//}
 
 			#region Run FfMpeg
 			var parameters = new Dictionary<string, string>();
@@ -79,7 +65,6 @@ namespace Bulk_Thumbnail_Creator
 
 				ParamForTextCreation currentParameters = new ParamForTextCreation();
 
-				
 				Point PosOfText;
 				if (detectedFacesRect.Length > 0)
 				{
@@ -88,7 +73,7 @@ namespace Bulk_Thumbnail_Creator
 				}
 				else
 				{
-					Rectangle EmptyRectangle = new Rectangle(bitmap.Width,bitmap.Height,50,50);
+					Rectangle EmptyRectangle = new Rectangle(bitmap.Width, bitmap.Height, 50, 50);
 					PosOfText = Logic.GettextPosition(bitmap, EmptyRectangle);
 				}
 
@@ -111,7 +96,7 @@ namespace Bulk_Thumbnail_Creator
 				{
 					FileName = file,
 					ParamForTextCreation = currentParameters,
-					ReadSettings= settings,
+					ReadSettings = settings,
 				};
 
 				BTCSettings.PictureDatas.Add(PassPictureData);
@@ -122,11 +107,12 @@ namespace Bulk_Thumbnail_Creator
 
 				Logic.ProduceTextPictures(PassPictureData, outputFullPath);
 			}
+
 			// just to try out variety will be on interaction/choice of pic
 			for (int i = 0; i < BTCSettings.Files.Length; i++)
 			{
 				var input = BTCSettings.PictureDatas[i];
-				Logic.CreateVariety(input,BTCSettings.TextAddedDir);
+				Logic.CreateVariety(input, BTCSettings.TextAddedDir);
 			}
 
 		}

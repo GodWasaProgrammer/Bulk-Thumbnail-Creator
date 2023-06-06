@@ -88,7 +88,7 @@ namespace Bulk_Thumbnail_Creator
 		/// <param name="Height"></param>
 		public static int CalculateFontSize(int Height)
 		{
-			// this is 8 because it achieves a good ratio of text to the height of the picture
+			// this is 8 because it achieves a good ratio of text to the height of the picture (determined empirically)
 			int NumberToSplitBy = 8;
 
 			int FontSize = Height / NumberToSplitBy;
@@ -127,23 +127,23 @@ namespace Bulk_Thumbnail_Creator
 		///// </summary>
 		///// <param name="URL"></param>
 		///// <returns>Returns the name of the video of the specified URL</returns>
-		public static async Task<string> FetchURLTitleOfVideo(string URL)
-		{
-			var ytdl = new YoutubeDL
-			{
-				// set paths
-				YoutubeDLPath = "..\\..\\yt-dlp.exe",
-				FFmpegPath = "YTDL/ffmpeg.exe",
-			};
-			var res = await ytdl.RunVideoDataFetch(URL);
-			// get some video information
-			VideoData video = res.Data;
-			string title = video.Title;
-			string uploader = video.Uploader;
-			long? views = video.ViewCount;
+		//public static async Task<string> FetchURLTitleOfVideo(string URL)
+		//{
+		//	var ytdl = new YoutubeDL
+		//	{
+		//		// set paths
+		//		YoutubeDLPath = "..\\..\\yt-dlp.exe",
+		//		FFmpegPath = "YTDL/ffmpeg.exe",
+		//	};
+		//	var res = await ytdl.RunVideoDataFetch(URL);
+		//	// get some video information
+		//	VideoData video = res.Data;
+		//	string title = video.Title;
+		//	string uploader = video.Uploader;
+		//	long? views = video.ViewCount;
 
-			return title;
-		}
+		//	return title;
+		//}
 
 		public static async Task<string> YouTubeDL(string URL)
 		{

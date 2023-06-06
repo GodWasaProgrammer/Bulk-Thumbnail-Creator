@@ -6,6 +6,20 @@ Make methods do only one thing
 
 Happy Days
 
+work on color detection, output, use a variety of different videos that would be used with this program
+and try to see what annoys you
+
+be more strict on font selection
+
+have default fonts
+
+have selection for fonts by user
+
+generate color settings that have a variety of colors aswell as luminance
+
+if fillcolor < this > invert bordercolor
+
+
 Make so you can use vertical text aswell. -
 
 after user picks one they like, give them suggestions based from this so + and - of the range // still to do but on a scale of [] array 
