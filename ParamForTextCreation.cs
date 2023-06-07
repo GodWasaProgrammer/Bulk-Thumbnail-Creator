@@ -5,7 +5,7 @@ namespace Bulk_Thumbnail_Creator
 	public class ParamForTextCreation
 	{
 		private string _Text;
-		public string Text {get { return _Text; } set { _Text = value; } }
+		public string Text { get { return _Text; } set { _Text = value; } }
 
 
 		private Point positionOfText;
@@ -13,7 +13,7 @@ namespace Bulk_Thumbnail_Creator
 
 
 		private string _Font;
-		public string Font {get { return _Font; }set { _Font = value; } }
+		public string Font { get { return _Font; }set { _Font = value; } }
 
 
 		private int _FontPointSize = 70;
@@ -21,7 +21,7 @@ namespace Bulk_Thumbnail_Creator
 
 
 		private int _WidthOfBox;
-		public int WidthOfBox {get { return _WidthOfBox; } set { _WidthOfBox = value; } }
+		public int WidthOfBox { get { return _WidthOfBox; } set { _WidthOfBox = value; } }
 
 
 		ColorItem fillColor = new ColorItem();

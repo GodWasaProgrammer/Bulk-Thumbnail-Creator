@@ -6,7 +6,6 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using YoutubeDLSharp;
-using YoutubeDLSharp.Metadata;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -42,10 +41,6 @@ namespace Bulk_Thumbnail_Creator
 		static readonly float saturationBorderColor = 1F;
 		static readonly float lightnessBorderColor = 0.50F;
 
-		//public static void BorderColorInvertedFromFillColor(PictureData InputPicData)
-		//{
-		//	currentcolorInputPicData.ParamForTextCreation.FillColor;
-		//}
 		public static float ColorWheelSpinner(float inputHue)
 		{
 			float fullSpin = 180F;
@@ -61,18 +56,23 @@ namespace Bulk_Thumbnail_Creator
 
 			return inputHue;
 		}
+
 		public static ParamForTextCreation DecideColorGeneration(ParamForTextCreation InputParameter, int currentelement)
 		{
+			const float maxHueValue = 360F;
+			const float incrementalColor = 12.5F;
+			const float resetFromMaxToMin = 0F;
+
 			if (currentelement > 0)
 			{
-				hueFillColor += +12.5F;
+				hueFillColor += incrementalColor;
 
 				hueStrokeColor = ColorWheelSpinner(hueFillColor);
 				hueBorderColor = ColorWheelSpinner(hueFillColor);
 				
-				if (hueFillColor > 360)
+				if (hueFillColor > maxHueValue)
 				{
-					hueFillColor = 0F;
+					hueFillColor = resetFromMaxToMin;
 				}
 
 				InputParameter.FillColor.SetByHSL(hueFillColor, saturationFillColor, lightnessFillColor);
@@ -92,6 +92,7 @@ namespace Bulk_Thumbnail_Creator
 
 			return InputParameter;
 		}
+
 		/// <summary>
 		/// Take width, calculate the fontsize for your output
 		/// </summary>
@@ -99,7 +100,7 @@ namespace Bulk_Thumbnail_Creator
 		public static int CalculateFontSize(int Height)
 		{
 			// this is 8 because it achieves a good ratio of text to the height of the picture (determined empirically)
-			int NumberToSplitBy = 8;
+			const int NumberToSplitBy = 8;
 
 			int FontSize = Height / NumberToSplitBy;
 
@@ -244,19 +245,21 @@ namespace Bulk_Thumbnail_Creator
 
 		public static Point GettextPosition(Bitmap bitmap, Rectangle faceRect)
 		{
+			const int splitByHalf = 2;
 			Point PosOfText;
-			int LocationOfRectangleCenterYpos = faceRect.Y + faceRect.Height / 2;
+			int LocationOfRectangleCenterYpos = faceRect.Y + faceRect.Height / splitByHalf;
 
 			// sets the position to the middle of the picture, mid point at X = 0
-			int sourceIMGMiddleY = bitmap.Height / 2; 
+			int sourceIMGMiddleY = bitmap.Height / splitByHalf; 
 
 			// if middle of image is more then the location of the rectangle height position 
 			if (sourceIMGMiddleY > LocationOfRectangleCenterYpos)
 			{
 				// make text appear on lower half
 				// the integer relative position is the height of the image split by 6, which gives a percentage of 
-				// 
-				int relativePosition = bitmap.Height - bitmap.Height / 6;
+				// the composed image box relative location
+				const int splitByPercent = 6;
+				int relativePosition = bitmap.Height - (bitmap.Height / splitByPercent);
 
 				PosOfText = new Point(0, relativePosition);
 			}
@@ -292,21 +295,17 @@ namespace Bulk_Thumbnail_Creator
 
 		public static void CreateVariety(PictureData PictureInputData, string TargetFolder)
 		{
+			const float baseLuminanceValue = 0.50F;
 			float fillcolorHue = PictureInputData.ParamForTextCreation.FillColor.Hue;
-			// float fillcolorSaturation = PictureInputData.ParamForTextCreation.FillColor.Saturation;
-			float fillcolorLuminance = 0.50F;
+			float fillcolorLuminance = baseLuminanceValue;
 
 			float strokecolorHue = PictureInputData.ParamForTextCreation.StrokeColor.Hue;
-			// float strokecolorSaturation = PictureInputData.ParamForTextCreation.StrokeColor.Saturation;
-			float strokecolorLuminance = 0.50F;
+			float strokecolorLuminance = baseLuminanceValue;
 
 			float bordercolorHue = PictureInputData.ParamForTextCreation.BorderColor.Hue;
-			// float bordercolorSaturation = PictureInputData.ParamForTextCreation.BorderColor.Saturation;
-			float bordercolorLuminance = 0.50F;
+			float bordercolorLuminance = baseLuminanceValue;
 
 			// create variety based on the current value
-			// default output value is 0.25F
-
 			List<float> VarietyList = new List<float>();
 
 			float Variety1 = 0.30F;
