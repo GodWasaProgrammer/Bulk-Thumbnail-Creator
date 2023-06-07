@@ -22,7 +22,7 @@ namespace Bulk_Thumbnail_Creator
 			BTCSettings.DownloadedVideosList = Logic.DeSerializeXMLToListOfStrings(BTCSettings.PathToXMLListOfDownloadedVideos);
 
 			//downloads the specified url
-			string URL = "https://www.youtube.com/watch?v=ZnQdseqFjj0";
+			string URL = "https://www.youtube.com/watch?v=ih5SInZ93k4";
 
 			BTCSettings.PathToVideo = await Logic.YouTubeDL(URL);
 			BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);

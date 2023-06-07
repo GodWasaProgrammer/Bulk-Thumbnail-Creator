@@ -30,7 +30,7 @@ namespace Bulk_Thumbnail_Creator
 			return colorRNGPicked;
 		}
 
-		static float hueFillColor = 55F;
+		static float hueFillColor = 0F;
 		static readonly float saturationFillColor = 1F;
 		static readonly float lightnessFillColor = 0.50F;
 
@@ -48,24 +48,24 @@ namespace Bulk_Thumbnail_Creator
 		//}
 		public static float ColorWheelSpinner(float inputHue)
 		{
+			float fullSpin = 180F;
 
 			if (inputHue < 180F)
 			{
-				inputHue += 180F;
+				inputHue += fullSpin;
 			}
 			else
 			{
-				inputHue -= 180F;
+				inputHue -= fullSpin;
 			}
 
 			return inputHue;
 		}
 		public static ParamForTextCreation DecideColorGeneration(ParamForTextCreation InputParameter, int currentelement)
 		{
-			if (currentelement > 1)
+			if (currentelement > 0)
 			{
 				hueFillColor += +12.5F;
-
 
 				hueStrokeColor = ColorWheelSpinner(hueFillColor);
 				hueBorderColor = ColorWheelSpinner(hueFillColor);
@@ -74,16 +74,6 @@ namespace Bulk_Thumbnail_Creator
 				{
 					hueFillColor = 0F;
 				}
-
-				//if (hueStrokeColor > 360)
-				//{
-				//	hueStrokeColor = 0F;
-				//}
-
-				//if (hueBorderColor > 360)
-				//{
-				//	hueBorderColor = 0F;
-				//}
 
 				InputParameter.FillColor.SetByHSL(hueFillColor, saturationFillColor, lightnessFillColor);
 
@@ -212,7 +202,6 @@ namespace Bulk_Thumbnail_Creator
 
 		public static string PickRandomFont()
 		{
-
 			var fontNames = Directory.GetFiles("Fonts", "*.TTF*");
 
 			Random randompicker = new Random();
@@ -235,7 +224,7 @@ namespace Bulk_Thumbnail_Creator
 				BorderColor = MagickColor.FromRgb(Parameters.BorderColor.Red, Parameters.BorderColor.Green, Parameters.BorderColor.Blue),
 				FontStyle = FontStyleType.Normal,
 				StrokeAntiAlias = true,
-				StrokeWidth = 6,
+				StrokeWidth = 4,
 				FontPointsize = Parameters.FontPointSize,
 				FontWeight = FontWeight.ExtraBold,
 				BackgroundColor = MagickColors.Transparent,
