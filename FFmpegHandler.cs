@@ -6,9 +6,12 @@ namespace Bulk_Thumbnail_Creator
 {
 	internal class FFmpegHandler
 	{
-		public static void GrabSceneScreenshots(string parameters)
-		{	// string OGParameters = $" -i " + $@"""{ExtractedFileName}"" " + "-vf " + $@"""select=gt(scene\,0.3)\ """ + " -vsync vfr " + $@"""{fulloutpath}/%03d.png""";
-
+		/// <summary>
+		/// This runs the process of ffmpeg and feeds it with parameters for file extraction
+		/// </summary>
+		/// <param name="parameters"></param>
+		private static void GrabSceneScreenshots(string parameters)
+		{
 			Process processFFMpeg = new Process();
 
 			processFFMpeg.StartInfo.FileName = Path.GetFullPath("ffmpeg.exe");
@@ -17,12 +20,17 @@ namespace Bulk_Thumbnail_Creator
 			processFFMpeg.StartInfo.UseShellExecute = false;
 			processFFMpeg.StartInfo.CreateNoWindow = false;
 			processFFMpeg.StartInfo.RedirectStandardOutput = true;
-			
+
 			processFFMpeg.Start();
 			processFFMpeg.WaitForExit();
 			System.Console.WriteLine("Ffmpeg finished producing pictures");
 		}
 
+		/// <summary>
+		/// This runs FFMpeg.exe and extracts the files requested based on the CLI input
+		/// </summary>
+		/// <param name="parameters"></param>
+		/// <param name="outPath"></param>
 		public static void RunFFMPG(Dictionary<string,string> parameters, string outPath) 
 		{
 			var exePars = "";
@@ -32,11 +40,9 @@ namespace Bulk_Thumbnail_Creator
 				exePars +=  " " + parameter.Value + " ";
 			}
 		
-
 			string path = $@"""{outPath}/%03d.png""";
 			exePars += path;
 			exePars.TrimEnd(' ');
-			// string dontcloseconsole = "/k ";
 
 			GrabSceneScreenshots(exePars);
 		}

@@ -104,8 +104,14 @@ namespace Bulk_Thumbnail_Creator
 
 			return outputHSL;
 		}
-
-		public static HSL GetHSLValuesFromRGB(byte inputred, byte inputgreen, byte inputblue)
+		/// <summary>
+		/// Allows you to get a HSL object back based of the current objects RGB values
+		/// </summary>
+		/// <param name="inputred">your Red RGB value input</param>
+		/// <param name="inputgreen">your Green RGB value input</param>
+		/// <param name="inputblue">your Blue RGB value input</param>
+		/// <returns></returns>
+		private static HSL GetHSLValuesFromRGB(byte inputred, byte inputgreen, byte inputblue)
 		{
 			RGB inputRGB = new RGB
 			{

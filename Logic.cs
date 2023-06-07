@@ -12,6 +12,7 @@ namespace Bulk_Thumbnail_Creator
 	internal class Logic
 	{
 		private static readonly Random colorRandom = new Random();
+
 		/// <summary>
 		/// Generates random colors in bytes
 		/// </summary>
@@ -41,6 +42,11 @@ namespace Bulk_Thumbnail_Creator
 		static readonly float saturationBorderColor = 1F;
 		static readonly float lightnessBorderColor = 0.50F;
 
+		/// <summary>
+		/// Allows you to "spin" the HSL "globe" to "invert" colors
+		/// </summary>
+		/// <param name="inputHue">The Hue input Value to invert</param>
+		/// <returns>the inverted hue value spun 180 degrees(float)</returns>
 		public static float ColorWheelSpinner(float inputHue)
 		{
 			float fullSpin = 180F;
@@ -57,6 +63,12 @@ namespace Bulk_Thumbnail_Creator
 			return inputHue;
 		}
 
+		/// <summary>
+		/// Generates Color output to be used in a PictureData Object to generate text colors
+		/// </summary>
+		/// <param name="InputParameter">ParamForTextcreation Object to Generate Colors for</param>
+		/// <param name="currentelement">the current index of the object being passed</param>
+		/// <returns>returns the ParamForTextCreation object with the modified Color Values</returns>
 		public static ParamForTextCreation DecideColorGeneration(ParamForTextCreation InputParameter, int currentelement)
 		{
 			const float maxHueValue = 360F;
@@ -109,6 +121,11 @@ namespace Bulk_Thumbnail_Creator
 
 		static readonly XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
 
+		/// <summary>
+		/// General DeSerializer for List of Strings
+		/// </summary>
+		/// <param name="pathtoXMLToDeSerialize">The XML to be deserialized</param>
+		/// <returns>The Deserialized List of Strings</returns>
 		public static List<string> DeSerializeXMLToListOfStrings(string pathtoXMLToDeSerialize)
 		{
 			List<string> ListofStringsToDeSerialize = BTCSettings.DownloadedVideosList;
@@ -124,6 +141,11 @@ namespace Bulk_Thumbnail_Creator
 			return ListofStringsToDeSerialize;
 		}
 
+		/// <summary>
+		///  General Serializer for list of strings
+		/// </summary>
+		/// <param name="PathToXML">Your Path to the XML to be written to</param>
+		/// <param name="ListOfStringsToSerialize">The List of Strings to Serialize</param>
 		public static void SerializeListOfStringsToXML(string PathToXML, List<string> ListOfStringsToSerialize)
 		{
 			using (FileStream file = File.Create(PathToXML))
@@ -133,29 +155,11 @@ namespace Bulk_Thumbnail_Creator
 
 		}
 
-		///// <summary>
-		///// This isnt working, it throws a major exception for whatever reason
-		///// </summary>
-		///// <param name="URL"></param>
-		///// <returns>Returns the name of the video of the specified URL</returns>
-		//public static async Task<string> FetchURLTitleOfVideo(string URL)
-		//{
-		//	var ytdl = new YoutubeDL
-		//	{
-		//		// set paths
-		//		YoutubeDLPath = "..\\..\\yt-dlp.exe",
-		//		FFmpegPath = "YTDL/ffmpeg.exe",
-		//	};
-		//	var res = await ytdl.RunVideoDataFetch(URL);
-		//	// get some video information
-		//	VideoData video = res.Data;
-		//	string title = video.Title;
-		//	string uploader = video.Uploader;
-		//	long? views = video.ViewCount;
-
-		//	return title;
-		//}
-
+		/// <summary>
+		/// Instantiates a YoutubeDL and downloads the specified string
+		/// </summary>
+		/// <param name="URL">the specified link URL to download</param>
+		/// <returns>returns the path to the downloaded video</returns>
 		public static async Task<string> YouTubeDL(string URL)
 		{
 			var ytdl = new YoutubeDL
@@ -201,6 +205,10 @@ namespace Bulk_Thumbnail_Creator
 			return settingsTextRandom;
 		}
 
+		/// <summary>
+		/// Picks a random font from the provided font folder
+		/// </summary>
+		/// <returns></returns>
 		public static string PickRandomFont()
 		{
 			var fontNames = Directory.GetFiles("Fonts", "*.TTF*");
@@ -214,6 +222,11 @@ namespace Bulk_Thumbnail_Creator
 			return fontNames[fontChosen].ToString();
 		}
 
+		/// <summary>
+		/// Generates MagickReadSettings to be used in a PicturedataObject to decide how text will look
+		/// </summary>
+		/// <param name="Parameters">The passed Parameters for text creation</param>
+		/// <returns></returns>
 		public static MagickReadSettings TextSettingsGeneration(ParamForTextCreation Parameters)
 		{
 			MagickReadSettings SettingsTextLinear = new MagickReadSettings
@@ -236,6 +249,12 @@ namespace Bulk_Thumbnail_Creator
 			return SettingsTextLinear;
 		}
 
+		/// <summary>
+		/// Creates our directories for operations
+		/// </summary>
+		/// <param name="outputDir"></param>
+		/// <param name="TextAdded"></param>
+		/// <param name="YTDL"></param>
 		public static void CreateDirectories(string outputDir, string TextAdded, string YTDL)
 		{
 			Directory.CreateDirectory(outputDir);
@@ -243,6 +262,12 @@ namespace Bulk_Thumbnail_Creator
 			Directory.CreateDirectory(YTDL);
 		}
 
+		/// <summary>
+		/// Decides if there is a face detected on upper half or lower half of the image
+		/// </summary>
+		/// <param name="bitmap">the picture to detect faces on</param>
+		/// <param name="faceRect">the returned rectangle with the faceposition</param>
+		/// <returns></returns>
 		public static Point GettextPosition(Bitmap bitmap, Rectangle faceRect)
 		{
 			const int splitByHalf = 2;
@@ -272,6 +297,11 @@ namespace Bulk_Thumbnail_Creator
 			return PosOfText;
 		}
 
+		/// <summary>
+		/// Produces Picture using the ImageMagick Library
+		/// </summary>
+		/// <param name="PicData">PictureDataObject Containing everything needed to create an image</param>
+		/// <param name="outputFullPath">The Directory where the output images goes</param>
 		public static void ProduceTextPictures(PictureData PicData, string outputFullPath)
 		{
 			using (MagickImage outputImage = new MagickImage(PicData.FileName))
@@ -293,6 +323,11 @@ namespace Bulk_Thumbnail_Creator
 
 		}
 
+		/// <summary>
+		/// Creates Variety from an existing image, this will be on user interaction
+		/// </summary>
+		/// <param name="PictureInputData">The Image to create variety of</param>
+		/// <param name="TargetFolder">The Folder where you want the results to go</param>
 		public static void CreateVariety(PictureData PictureInputData, string TargetFolder)
 		{
 			const float baseLuminanceValue = 0.50F;
@@ -352,6 +387,29 @@ namespace Bulk_Thumbnail_Creator
 			}
 
 		}
+
+		///// <summary>
+		///// This isnt working, it throws a major exception for whatever reason
+		///// </summary>
+		///// <param name="URL"></param>
+		///// <returns>Returns the name of the video of the specified URL</returns>
+		//public static async Task<string> FetchURLTitleOfVideo(string URL)
+		//{
+		//	var ytdl = new YoutubeDL
+		//	{
+		//		// set paths
+		//		YoutubeDLPath = "..\\..\\yt-dlp.exe",
+		//		FFmpegPath = "YTDL/ffmpeg.exe",
+		//	};
+		//	var res = await ytdl.RunVideoDataFetch(URL);
+		//	// get some video information
+		//	VideoData video = res.Data;
+		//	string title = video.Title;
+		//	string uploader = video.Uploader;
+		//	long? views = video.ViewCount;
+
+		//	return title;
+		//}
 
 	}
 
