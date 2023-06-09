@@ -40,8 +40,8 @@ namespace Bulk_Thumbnail_Creator
 				exePars +=  " " + parameter.Value + " ";
 			}
 		
-			string path = $@"""{outPath}/%03d.png""";
-			exePars += path;
+			//string path = $@"""{outPath}/%03d.png""";
+			exePars += outPath;
 			exePars.TrimEnd(' ');
 
 			GrabSceneScreenshots(exePars);
