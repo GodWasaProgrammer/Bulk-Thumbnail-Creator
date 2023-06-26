@@ -409,18 +409,18 @@ namespace Bulk_Thumbnail_Creator
 		//	return title;
 		//}
 
-		public static void AddNewLineToString(string stringToVerticalize)
-		{
-			char[] arrayedText = stringToVerticalize.ToCharArray();
+		//public static void AddNewLineToString(string stringToVerticalize)
+		//{
+		//	char[] arrayedText = stringToVerticalize.ToCharArray();
 			
-			string newLinedText;
+		//	string newLinedText;
 
-			foreach(char c in arrayedText)
-			{
-				newLinedText = c + "\n";
-			}
+		//	foreach(char c in arrayedText)
+		//	{
+		//		// newLinedText.Insert(c + "\n");
+		//	}
 
-		}
+		//}
 
 	}
 

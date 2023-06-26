@@ -18,7 +18,7 @@ namespace Bulk_Thumbnail_Creator
 
 			// adds a single string to the list of text to be printed
 			string textToPrint = "Diablo 4 Server Slam! Fresh Meat!";
-			Logic.AddNewLineToString(textToPrint);
+			// Logic.AddNewLineToString(textToPrint);
 			BTCSettings.ListOfText.Add(textToPrint);
 
 			BTCSettings.DownloadedVideosList = Logic.DeSerializeXMLToListOfStrings(BTCSettings.PathToXMLListOfDownloadedVideos);
