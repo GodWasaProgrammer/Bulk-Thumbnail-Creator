@@ -236,13 +236,11 @@ namespace Bulk_Thumbnail_Creator
 				FillColor = MagickColor.FromRgb(Parameters.FillColor.Red, Parameters.FillColor.Green, Parameters.FillColor.Blue),
 				StrokeColor = MagickColor.FromRgb(Parameters.StrokeColor.Red, Parameters.StrokeColor.Green, Parameters.StrokeColor.Blue),
 				BorderColor = MagickColor.FromRgb(Parameters.BorderColor.Red, Parameters.BorderColor.Green, Parameters.BorderColor.Blue),
-				FontStyle = FontStyleType.Normal,
-				StrokeAntiAlias = true,
-				StrokeWidth = 4,
+				StrokeWidth = 5,
 				FontPointsize = Parameters.FontPointSize,
-				FontWeight = FontWeight.ExtraBold,
+				FontWeight = FontWeight.UltraBold,
 				BackgroundColor = MagickColors.Transparent,
-				Height = Parameters.FontPointSize + 50, // height of text box
+				// Height = Parameters.FontPointSize + 50, // height of text box
 				Width = Parameters.WidthOfBox, // width of text box
 			};
 
@@ -410,6 +408,19 @@ namespace Bulk_Thumbnail_Creator
 
 		//	return title;
 		//}
+
+		public static void AddNewLineToString(string stringToVerticalize)
+		{
+			char[] arrayedText = stringToVerticalize.ToCharArray();
+			
+			string newLinedText;
+
+			foreach(char c in arrayedText)
+			{
+				newLinedText = c + "\n";
+			}
+
+		}
 
 	}
 

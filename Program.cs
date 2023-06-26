@@ -17,12 +17,14 @@ namespace Bulk_Thumbnail_Creator
 			Logic.CreateDirectories(BTCSettings.OutputDir, BTCSettings.TextAddedDir, BTCSettings.YoutubeDLDir);
 
 			// adds a single string to the list of text to be printed
-			BTCSettings.ListOfText.Add(BTCSettings.TextToAdd);
+			string textToPrint = "Diablo 4 Server Slam! Fresh Meat!";
+			Logic.AddNewLineToString(textToPrint);
+			BTCSettings.ListOfText.Add(textToPrint);
 
 			BTCSettings.DownloadedVideosList = Logic.DeSerializeXMLToListOfStrings(BTCSettings.PathToXMLListOfDownloadedVideos);
 
 			//downloads the specified url
-			string URL = "https://www.youtube.com/watch?v=bTIoqVjWIXc";
+			string URL = "https://youtube.com/live/tqsYO976zTU";
 
 			BTCSettings.PathToVideo = await Logic.YouTubeDL(URL);
 			BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
@@ -110,13 +112,12 @@ namespace Bulk_Thumbnail_Creator
 				Logic.ProduceTextPictures(PassPictureData, outputFullPath);
 			}
 
-			Dictionary<string,string> paramToMakeVideoOfResult = new Dictionary<string,string>();
+			Dictionary<string, string> paramToMakeVideoOfResult = new Dictionary<string, string>();
 
 			paramToMakeVideoOfResult["framerate"] = "2";
 			paramToMakeVideoOfResult["i"] = $@"""{Path.GetFullPath(BTCSettings.TextAddedDir)}/%03d.png""";
 			string getTruePath = Path.GetFullPath(BTCSettings.TextAddedDir);
 			string showCaseVideoOutPut = $@"""{getTruePath}/showcase.mp4""";
-			//paramToMakeVideoOfResult[$"{BTCSettings.TextAddedDir}/"] = "showcase.mp4";
 
 			FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
 

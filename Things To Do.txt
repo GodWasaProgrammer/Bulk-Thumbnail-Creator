@@ -1,24 +1,13 @@
 ﻿~~~~~~be consistent~~~~~~
 
-Clean out globals 
+~~~~~~Happy Days~~~~~~
 
-Make methods do only one thing
-
-Happy Days
+targeted variations 
 
 work on color detection, output, use a variety of different videos that would be used with this program
 and try to see what annoys you
 
-be more strict on font selection
-
-have default fonts
-
-have selection for fonts by user
-
-generate color settings that have a variety of colors aswell as luminance
-
 if fillcolor < this > invert bordercolor
-
 
 Make so you can use vertical text aswell. -
 
@@ -28,46 +17,4 @@ incrementally getting user feeback and adapting images from that
 
 after scene picked generate 5 color schemes
 
-create differnt text placement - select
-
-cmd line for ffmpeg
-ffmpeg -i yosemiteA.mp4 -vf  "select=gt(scene\,0.5), scale=640:360" -vsync vfr yosemiteThumb%03d.png
-
-List of Done
------------------------------------------
-
-coordinate system revamp
-
-look at color spaces
-
-bounding boxes
-
-fitting text inside boxes
-
-figure out RSV / HSV
-
-make text be placed outside positional data of face detection boxes
-
-collision check between textbox and facebox
-
-detect different scenes
-
-facedetection lib <--- important
-
-uncompressed data - check quality settings // fixed
-
-change the colorgrading of the random to a linear method instead of a random one // done but not satisfactory
-
-
-placement imagemagick write a wrapper method for pixel handling // redundant as i moved to gravitybased location
-
-
-implement youtube-dl to allow download of specified url to work on // fully implemented and working well
-
-
-Allow text to stack in corners if wanted/needed / Done
-
-
-Make faces be composited over just like text. / done
-
-check youtubeDL quality
+create different text placement - select
