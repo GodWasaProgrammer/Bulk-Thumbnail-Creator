@@ -266,7 +266,7 @@ namespace Bulk_Thumbnail_Creator
 		/// <param name="bitmap">the picture to detect faces on</param>
 		/// <param name="faceRect">the returned rectangle with the faceposition</param>
 		/// <returns></returns>
-		public static Point GettextPosition(Bitmap bitmap, Rectangle faceRect)
+		public static ParamForTextCreation GettextPosition(ParamForTextCreation parameters, Bitmap bitmap, Rectangle faceRect)
 		{
 			List<Point> BoxPositions = new List<Point>();
 
@@ -300,33 +300,49 @@ namespace Bulk_Thumbnail_Creator
 			Point bottomRightCornerBox = new Point(bottomRightCornerBoxValueX, bottomRightCornerBoxValueY);
 			BoxPositions.Add(bottomRightCornerBox);
 
+			// const int splitByHalf = 2;
+			
+			// Point PosOfText;
+			
+			Random randomizeBoxPosition = new Random();
+			int chosenBoxPosition = randomizeBoxPosition.Next(6);
 
-			const int splitByHalf = 2;
-			Point PosOfText;
+			parameters.PositionOfText = BoxPositions[chosenBoxPosition];
 
-			int LocationOfRectangleCenterYpos = faceRect.Y + faceRect.Height / splitByHalf;
-
-			// sets the position to the middle of the picture, mid point at X = 0
-			int sourceIMGMiddleY = bitmap.Height / splitByHalf; 
-
-			// if middle of image is more then the location of the rectangle height position 
-			if (sourceIMGMiddleY > LocationOfRectangleCenterYpos)
+			if (chosenBoxPosition < 2)
 			{
-				// make text appear on lower half
-				// the integer relative position is the height of the image split by 6, which gives a percentage of 
-				// the composed image box relative location
-				const int splitByPercent = 6;
-				int relativePosition = bitmap.Height - (bitmap.Height / splitByPercent);
-
-				PosOfText = new Point(0, relativePosition);
+				parameters.WidthOfBox = bitmap.Width;
+				parameters.HeightOfBox = bitmap.Height / 2;
 			}
 			else
 			{
-				// make text appear on upper half at the 0,0 initial point 
-				PosOfText = new Point(0,0);
+				parameters.WidthOfBox = bitmap.Width / 2;
+				parameters.HeightOfBox = bitmap.Height / 2;
 			}
+			
+			//int LocationOfRectangleCenterYpos = faceRect.Y + faceRect.Height / splitByHalf;
 
-			return PosOfText;
+			//// sets the position to the middle of the picture, mid point at X = 0
+			//int sourceIMGMiddleY = bitmap.Height / splitByHalf; 
+
+			//// if middle of image is more then the location of the rectangle height position 
+			//if (sourceIMGMiddleY > LocationOfRectangleCenterYpos)
+			//{
+			//	// make text appear on lower half
+			//	// the integer relative position is the height of the image split by 6, which gives a percentage of 
+			//	// the composed image box relative location
+			//	const int splitByPercent = 6;
+			//	int relativePosition = bitmap.Height - (bitmap.Height / splitByPercent);
+
+			//	PosOfText = new Point(0, relativePosition);
+			//}
+			//else
+			//{
+			//	// make text appear on upper half at the 0,0 initial point 
+			////	PosOfText = new Point(0,0);
+			//}
+
+			return parameters;
 		}
 
 		/// <summary>

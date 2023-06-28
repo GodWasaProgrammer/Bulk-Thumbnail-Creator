@@ -73,12 +73,12 @@ namespace Bulk_Thumbnail_Creator
 				if (detectedFacesRect.Length > 0)
 				{
 					Rectangle faceRect = detectedFacesRect.First();
-					PosOfText = Logic.GettextPosition(bitmap, faceRect);
+					currentParameters = Logic.GettextPosition(currentParameters	,bitmap, faceRect);
 				}
 				else
 				{
 					Rectangle EmptyRectangle = new Rectangle(bitmap.Width, bitmap.Height, 50, 50);
-					PosOfText = Logic.GettextPosition(bitmap, EmptyRectangle);
+					currentParameters = Logic.GettextPosition(currentParameters,bitmap, EmptyRectangle);
 				}
 
 				//int toprightboxvalueX = bitmap.Width / 2;
@@ -86,16 +86,27 @@ namespace Bulk_Thumbnail_Creator
 
 				//PosOfText = new Point(toprightboxvalueX, toprightboxvalueY);
 
-				currentParameters.PositionOfText = PosOfText;
 
-				// only correct for BorderBoxes
-				currentParameters.WidthOfBox = bitmap.Width / 2;
+				//currentParameters.PositionOfText = PosOfText;
 
-				currentParameters.HeightOfBox = bitmap.Height / 2;
+				// only correct for CornerBoxes
+
+				//currentParameters.WidthOfBox = bitmap.Width / 2;
+
+				//if (PosOfText.X == 0 && PosOfText.Y == 0 || PosOfText.X == 0 && PosOfText.Y == bitmap.Height / 2)
+				//{
+				//	currentParameters.WidthOfBox = bitmap.Width;
+				//	currentParameters.HeightOfBox = bitmap.Height / 2;
+				//}
+				//else
+				//{
+				//	currentParameters.HeightOfBox = bitmap.Height / 2;
+				//	currentParameters.WidthOfBox = bitmap.Width / 2;
+				//}
 
 				currentParameters = Logic.DecideColorGeneration(currentParameters, i);
 
-				currentParameters.FontPointSize = Logic.CalculateFontSize(bitmap.Height);
+				// currentParameters.FontPointSize = Logic.CalculateFontSize(bitmap.Height);
 
 				currentParameters.Font = Logic.PickRandomFont();
 
