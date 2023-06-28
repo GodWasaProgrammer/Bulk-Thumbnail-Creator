@@ -268,8 +268,42 @@ namespace Bulk_Thumbnail_Creator
 		/// <returns></returns>
 		public static Point GettextPosition(Bitmap bitmap, Rectangle faceRect)
 		{
+			List<Point> BoxPositions = new List<Point>();
+
+			int borderBoxTopValueX = 0;
+			int borderBoxTopValueY = 0;
+			Point borderBoxTop = new Point(borderBoxTopValueX, borderBoxTopValueY);
+			BoxPositions.Add(borderBoxTop);
+
+			int borderBoxBottomValueX = 0;
+			int borderBoxBottomValueY = bitmap.Height / 2;
+			Point BorderBoxBottom = new Point(borderBoxBottomValueX, borderBoxBottomValueY);
+			BoxPositions.Add(BorderBoxBottom);
+
+			int topLeftCornerBoxValueX = 0;
+			int topLeftCornerBoxValueY = 0;
+			Point TopLeftCornerBox = new Point(topLeftCornerBoxValueX, topLeftCornerBoxValueY);
+			BoxPositions.Add(TopLeftCornerBox);
+
+			int topRightCornerBoxValueX = bitmap.Width / 2;
+			int topRightCornerBoxValueY = 0;
+			Point topRightCornerBox = new Point(topRightCornerBoxValueX, topRightCornerBoxValueY);
+			BoxPositions.Add(topRightCornerBox);
+
+			int bottomLeftCornerBoxValueX = 0;
+			int bottomLeftCornerBoxValueY = bitmap.Height / 2;
+			Point bottomLeftCornerBox = new Point(bottomLeftCornerBoxValueX, bottomLeftCornerBoxValueY);
+			BoxPositions.Add(bottomLeftCornerBox);
+
+			int bottomRightCornerBoxValueX = bitmap.Width / 2;
+			int bottomRightCornerBoxValueY = bitmap.Height / 2;
+			Point bottomRightCornerBox = new Point(bottomRightCornerBoxValueX, bottomRightCornerBoxValueY);
+			BoxPositions.Add(bottomRightCornerBox);
+
+
 			const int splitByHalf = 2;
 			Point PosOfText;
+
 			int LocationOfRectangleCenterYpos = faceRect.Y + faceRect.Height / splitByHalf;
 
 			// sets the position to the middle of the picture, mid point at X = 0
