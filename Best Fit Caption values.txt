@@ -1,0 +1,36 @@
+1920x1080P ( example size, needs to be general, math will be same)
+
+Box size Corner Boxes ---
+1920 / 2 = 480
+1080 / 2 = 270
+Box size Corner Boxes ---
+
+Top Left Corner Box
+X pos: 0
+Y pos: 0
+
+Top Right Corner Box
+X pos: Max X / 2
+Y pos: Y Max
+
+Bottom Left Corner Box
+X: 0
+Y: Y Max / 2
+
+bottom Right Corner Box
+X: Max X / 2
+Y: Y max / 2
+
+Box Size Border Boxes ---
+1920 / 2 = 960
+1080 / 2 = 540
+
+Upper Border Box
+width = X Max Width ( all the pictures length )
+height = height / 2 ( height split in two, where the lower half is excluded from text prints)
+
+Lower Border Box
+width = X max Width ( the full length of the picture )
+Height = height / 2,
+
+Initial positional value for box generation : X: 0, Y: height / 2

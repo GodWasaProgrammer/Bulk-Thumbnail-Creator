@@ -81,9 +81,16 @@ namespace Bulk_Thumbnail_Creator
 					PosOfText = Logic.GettextPosition(bitmap, EmptyRectangle);
 				}
 
+				int toprightboxvalueX = bitmap.Width / 2;
+				int toprightboxvalueY = bitmap.Height / 2;
+
+				PosOfText = new Point(toprightboxvalueX, toprightboxvalueY);
+
 				currentParameters.PositionOfText = PosOfText;
 
-				currentParameters.WidthOfBox = bitmap.Width;
+				currentParameters.WidthOfBox = bitmap.Width / 2;
+
+				currentParameters.HeightOfBox = bitmap.Height / 2;
 
 				currentParameters = Logic.DecideColorGeneration(currentParameters, i);
 

@@ -237,10 +237,10 @@ namespace Bulk_Thumbnail_Creator
 				StrokeColor = MagickColor.FromRgb(Parameters.StrokeColor.Red, Parameters.StrokeColor.Green, Parameters.StrokeColor.Blue),
 				BorderColor = MagickColor.FromRgb(Parameters.BorderColor.Red, Parameters.BorderColor.Green, Parameters.BorderColor.Blue),
 				StrokeWidth = 5,
-				FontPointsize = Parameters.FontPointSize,
+				// FontPointsize = Parameters.FontPointSize,
 				FontWeight = FontWeight.UltraBold,
 				BackgroundColor = MagickColors.Transparent,
-				// Height = Parameters.FontPointSize + 50, // height of text box
+				Height = Parameters.HeightOfBox, // height of text box
 				Width = Parameters.WidthOfBox, // width of text box
 			};
 
@@ -308,6 +308,9 @@ namespace Bulk_Thumbnail_Creator
 				{
 					// Add the caption layer on top of the background image
 					outputImage.Composite(caption, PicData.ParamForTextCreation.PositionOfText.X, PicData.ParamForTextCreation.PositionOfText.Y, CompositeOperator.Over);
+					//outputImage.Composite(caption, 0, PicData.ParamForTextCreation.HeightOfBox / 2, CompositeOperator.Over);
+					//outputImage.Composite(caption, PicData.ParamForTextCreation.WidthOfBox / 2, PicData.ParamForTextCreation.HeightOfBox, CompositeOperator.Over);
+					//outputImage.Composite(caption, PicData.ParamForTextCreation.WidthOfBox / 2, PicData.ParamForTextCreation.HeightOfBox / 2, CompositeOperator.Over);
 
 					outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
 

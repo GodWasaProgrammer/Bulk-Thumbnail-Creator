@@ -353,8 +353,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="channels4_profile___kopia_aP1_icon.ico" />
-    <Content Include="Dependencies.txt" />
-    <Content Include="Things To Do.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DankMemeStash\" />

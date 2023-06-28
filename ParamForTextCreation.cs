@@ -34,6 +34,9 @@ namespace Bulk_Thumbnail_Creator
 		private int _WidthOfBox;
 		public int WidthOfBox { get { return _WidthOfBox; } set { _WidthOfBox = value; } }
 
+		private int _HeightOfBox;
+		public int HeightOfBox { get { return _HeightOfBox; } set { _HeightOfBox = value; } }
+
 		/// <summary>
 		/// The Fillcolor for textoutput
 		/// </summary>
@@ -50,6 +53,8 @@ namespace Bulk_Thumbnail_Creator
 		/// bordercolor for textoutput
 		/// </summary>
 		ColorItem borderColor = new ColorItem();
+		
+
 		public ColorItem BorderColor { get { return borderColor; } set { borderColor = BorderColor; } }
 	}
 
