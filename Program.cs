@@ -16,10 +16,17 @@ namespace Bulk_Thumbnail_Creator
 			// creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
 			Logic.CreateDirectories(BTCSettings.OutputDir, BTCSettings.TextAddedDir, BTCSettings.YoutubeDLDir);
 
-			// adds a single string to the list of text to be printed
-			string textToPrint = "Diablo 4 Server Slam! Fresh Meat!";
-			// Logic.AddNewLineToString(textToPrint);
+			// adds a few strings to the list of text to be printed
+			string textToPrint = "Diablo 4\nButchers Darling\nButcher be like:FRESH MEAT!";
 			BTCSettings.ListOfText.Add(textToPrint);
+			string textToPrint2 = "Diablo 4\nServer Slam!\nFresh Meat!";
+			BTCSettings.ListOfText.Add(textToPrint2);
+			string textToPrint3 = "Diablo 4\nThe Latest Hack'N'Slash!\nPlay now!";
+			BTCSettings.ListOfText.Add(textToPrint3);
+			string textToPrint4 = "Bulk Thumbnail Creator\nYour Personalized Thumbnails on the fly!\nTry it, its free forever!";
+			BTCSettings.ListOfText.Add(textToPrint4);
+
+			// Logic.AddNewLineToString(textToPrint);
 
 			BTCSettings.DownloadedVideosList = Logic.DeSerializeXMLToListOfStrings(BTCSettings.PathToXMLListOfDownloadedVideos);
 
@@ -69,7 +76,7 @@ namespace Bulk_Thumbnail_Creator
 
 				ParamForTextCreation currentParameters = new ParamForTextCreation();
 
-				Point PosOfText;
+				
 				if (detectedFacesRect.Length > 0)
 				{
 					Rectangle faceRect = detectedFacesRect.First();
@@ -81,37 +88,14 @@ namespace Bulk_Thumbnail_Creator
 					currentParameters = Logic.GettextPosition(currentParameters,bitmap, EmptyRectangle);
 				}
 
-				//int toprightboxvalueX = bitmap.Width / 2;
-				//int toprightboxvalueY = bitmap.Height / 2;
-
-				//PosOfText = new Point(toprightboxvalueX, toprightboxvalueY);
-
-
-				//currentParameters.PositionOfText = PosOfText;
-
-				// only correct for CornerBoxes
-
-				//currentParameters.WidthOfBox = bitmap.Width / 2;
-
-				//if (PosOfText.X == 0 && PosOfText.Y == 0 || PosOfText.X == 0 && PosOfText.Y == bitmap.Height / 2)
-				//{
-				//	currentParameters.WidthOfBox = bitmap.Width;
-				//	currentParameters.HeightOfBox = bitmap.Height / 2;
-				//}
-				//else
-				//{
-				//	currentParameters.HeightOfBox = bitmap.Height / 2;
-				//	currentParameters.WidthOfBox = bitmap.Width / 2;
-				//}
-
 				currentParameters = Logic.DecideColorGeneration(currentParameters, i);
-
-				// currentParameters.FontPointSize = Logic.CalculateFontSize(bitmap.Height);
 
 				currentParameters.Font = Logic.PickRandomFont();
 
-				// placeholder.
-				currentParameters.Text = BTCSettings.ListOfText[0];
+				// picks a random string from the list
+				Random pickAString = new Random();
+				int pickedString = pickAString.Next(BTCSettings.ListOfText.Count);
+				currentParameters.Text = BTCSettings.ListOfText[pickedString];
 
 				MagickReadSettings settings = Logic.TextSettingsGeneration(currentParameters);
 
@@ -131,14 +115,15 @@ namespace Bulk_Thumbnail_Creator
 				Logic.ProduceTextPictures(PassPictureData, outputFullPath);
 			}
 
+			#region Make Showcase Video
 			Dictionary<string, string> paramToMakeVideoOfResult = new Dictionary<string, string>();
-
 			paramToMakeVideoOfResult["framerate"] = "2";
 			paramToMakeVideoOfResult["i"] = $@"""{Path.GetFullPath(BTCSettings.TextAddedDir)}/%03d.png""";
 			string getTruePath = Path.GetFullPath(BTCSettings.TextAddedDir);
 			string showCaseVideoOutPut = $@"""{getTruePath}/showcase.mp4""";
 
 			FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
+			#endregion
 
 			//// just to try out variety will be on interaction/choice of pic
 			//for (int i = 0; i < BTCSettings.Files.Length; i++) 

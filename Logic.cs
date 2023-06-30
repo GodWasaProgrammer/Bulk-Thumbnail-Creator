@@ -268,15 +268,11 @@ namespace Bulk_Thumbnail_Creator
 		/// <returns></returns>
 		public static ParamForTextCreation GettextPosition(ParamForTextCreation parameters, Bitmap sourcePicture, Rectangle faceRect)
 		{
-			List<Point> BoxPositions = new List<Point>();
-
 			Dictionary<string, Rectangle> Boxes = new Dictionary<string, Rectangle>();
 			
 			// top box
 			int borderBoxTopValueX = 0;
 			int borderBoxTopValueY = 0;
-			Point borderBoxTop = new Point(borderBoxTopValueX, borderBoxTopValueY);
-			BoxPositions.Add(borderBoxTop);
 			string topBox = "TopBox";
 
 			Rectangle borderBoxTopRectangle = new Rectangle
@@ -292,8 +288,6 @@ namespace Bulk_Thumbnail_Creator
 			// bottom box
 			int bottomBoxValueX = 0;
 			int bottomBoxValueY = sourcePicture.Height / 2;
-			Point bottomBoxPoint = new Point(bottomBoxValueX, bottomBoxValueY);
-			BoxPositions.Add(bottomBoxPoint);
 			string bottomBox = "BottomBox";
 
 			Rectangle bottomBoxRectangle = new Rectangle
@@ -309,8 +303,6 @@ namespace Bulk_Thumbnail_Creator
 			// top left box
 			int topLeftBoxValueX = 0;
 			int topLeftBoxValueY = 0;
-			Point topLeftBoxPoint = new Point(topLeftBoxValueX, topLeftBoxValueY);
-			BoxPositions.Add(topLeftBoxPoint);
 			string topLeftBox = "TopLeftBox";
 
 			Rectangle topLeftBoxRectangle = new Rectangle
@@ -326,8 +318,6 @@ namespace Bulk_Thumbnail_Creator
 			// top right box
 			int topRightBoxValueX = sourcePicture.Width / 2;
 			int topRightBoxValueY = 0;
-			Point topRightBoxPoint = new Point(topRightBoxValueX, topRightBoxValueY);
-			BoxPositions.Add(topRightBoxPoint);
 			string topRightBox = "TopRightBox";
 
 			Rectangle topRightBoxRectangle = new Rectangle
@@ -343,8 +333,6 @@ namespace Bulk_Thumbnail_Creator
 			// bottom left box
 			int bottomLeftBoxValueX = 0;
 			int bottomLeftBoxValueY = sourcePicture.Height / 2;
-			Point bottomLeftBoxPoint = new Point(bottomLeftBoxValueX, bottomLeftBoxValueY);
-			BoxPositions.Add(bottomLeftBoxPoint);
 			string bottomLeftBox = "BottomLeftBox";
 
 			Rectangle bottomleftBoxRectangle = new Rectangle
@@ -360,8 +348,6 @@ namespace Bulk_Thumbnail_Creator
 			// bottom right box
 			int bottomRightBoxValueX = sourcePicture.Width / 2;
 			int bottomRightBoxValueY = sourcePicture.Height / 2;
-			Point bottomRightBoxPoint = new Point(bottomRightBoxValueX, bottomRightBoxValueY);
-			BoxPositions.Add(bottomRightBoxPoint);
 			string bottomRightBox = "BottomRightBox";
 
 			Rectangle bottomRightBoxRectangle = new Rectangle
@@ -374,19 +360,11 @@ namespace Bulk_Thumbnail_Creator
 
 			Boxes.Add(bottomRightBox,bottomRightBoxRectangle);
 			
-			Random randomizeBoxPosition = new Random();
-			int chosenBoxPosition = randomizeBoxPosition.Next(6);
-
-			parameters.PositionOfText = BoxPositions[chosenBoxPosition];
-
-			// Point PosOfText;
-
 			List<string> BoxesWithNoFacesDetected = new List<string>();
 
 			// calculate position of face rectangle in relation to boxes
 
 			// top left cornerbox
-
 			if (faceRect.X < sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2)
 			{
 				// face is detected in top left corner box
@@ -398,7 +376,6 @@ namespace Bulk_Thumbnail_Creator
 			}
 			
 			// top right corner box
-
 			if (faceRect.X > sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2)
 			{
 				// face is detected in top right corner box
@@ -410,7 +387,6 @@ namespace Bulk_Thumbnail_Creator
 			}
 
 			// bottom left corner box
-
 			if (faceRect.X > sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height/ 2)
 			{
 				// face is detected in bottom left corner box
@@ -421,9 +397,7 @@ namespace Bulk_Thumbnail_Creator
 				BoxesWithNoFacesDetected.Add(bottomLeftBox);
 			}
 
-			
 			// bottom right corner box
-
 			if (faceRect.X > sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height / 2)
 			{
 				// face is detected in bottom right corner box
@@ -435,7 +409,7 @@ namespace Bulk_Thumbnail_Creator
 				BoxesWithNoFacesDetected.Add(bottomRightBox);
 			}
 
-			/////////////////////////// handles the calculation of faces if the boxes are top/bottom boxes
+			// handles the calculation of faces if the boxes are top/bottom boxes
 			int LocationOfRectangleCenterYpos = faceRect.Y + faceRect.Height / 2;
 
 			// sets the position to the middle of the picture, mid point at X = 0
@@ -444,41 +418,32 @@ namespace Bulk_Thumbnail_Creator
 			// if middle of image is more then the location of the rectangle height position 
 			if (sourceIMGMiddleY > LocationOfRectangleCenterYpos)
 			{
-				// make text appear on lower half
-				// the integer relative position is the height of the image split by 6, which gives a percentage of 
-				// the composed image box relative location
-				//const int splitByPercent = 6;
-				//int relativePosition = sourcePicture.Height - (sourcePicture.Height / splitByPercent);
-
+				// add bottom box to list of allowed boxes
 				BoxesWithNoFacesDetected.Add(bottomBox);
 
-				// PosOfText = new Point(0, relativePosition);
 			}
 			
+			// if middle of image is less then the location of the rectangle height position
 			if (sourceIMGMiddleY < LocationOfRectangleCenterYpos)
 			{
 				BoxesWithNoFacesDetected.Add(topBox);
 			}
 
 			// all calculations done, pick one box
-
+			Random randomizeBoxPosition = new Random();
 			int randomizedbox = randomizeBoxPosition.Next(BoxesWithNoFacesDetected.Count);
 
 			// picks a random box that has no face in it
 			string pickedBoxName = BoxesWithNoFacesDetected[randomizedbox];
 			
-			// makes a rectangle to read from the dictionary
-			Rectangle pickedBoxRectangle = new Rectangle();
-
 			// tries to read from dictionary
-			Boxes.TryGetValue(pickedBoxName, out pickedBoxRectangle);
+			Boxes.TryGetValue(pickedBoxName, out Rectangle pickedBoxRectangle);
 
 			// makes a point to feed to the parameters passed in
 			Point pickedBoxPoint = new Point(pickedBoxRectangle.X, pickedBoxRectangle.Y);
 			
 			// sets the position of the parameter objects point variable 
 			parameters.PositionOfText = pickedBoxPoint;
-
 
 			// passes the box width and height to the parameter passed to the method
 			// this is important to avoid boxes being juxtaposed outside of the image
@@ -510,10 +475,6 @@ namespace Bulk_Thumbnail_Creator
 				{
 					// Add the caption layer on top of the background image
 					outputImage.Composite(caption, PicData.ParamForTextCreation.PositionOfText.X, PicData.ParamForTextCreation.PositionOfText.Y, CompositeOperator.Over);
-					//outputImage.Composite(caption, 0, PicData.ParamForTextCreation.HeightOfBox / 2, CompositeOperator.Over);
-					//outputImage.Composite(caption, PicData.ParamForTextCreation.WidthOfBox / 2, PicData.ParamForTextCreation.HeightOfBox, CompositeOperator.Over);
-					//outputImage.Composite(caption, PicData.ParamForTextCreation.WidthOfBox / 2, PicData.ParamForTextCreation.HeightOfBox / 2, CompositeOperator.Over);
-
 					outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
 
 					outputImage.Quality = 100;
