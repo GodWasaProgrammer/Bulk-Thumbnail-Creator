@@ -263,107 +263,183 @@ namespace Bulk_Thumbnail_Creator
 		/// <summary>
 		/// Decides if there is a face detected on upper half or lower half of the image
 		/// </summary>
-		/// <param name="bitmap">the picture to detect faces on</param>
+		/// <param name="sourcePicture">the picture to detect faces on</param>
 		/// <param name="faceRect">the returned rectangle with the faceposition</param>
 		/// <returns></returns>
-		public static ParamForTextCreation GettextPosition(ParamForTextCreation parameters, Bitmap bitmap, Rectangle faceRect)
+		public static ParamForTextCreation GettextPosition(ParamForTextCreation parameters, Bitmap sourcePicture, Rectangle faceRect)
 		{
 			List<Point> BoxPositions = new List<Point>();
 
-			// Dictionary<string, Rectangle> Boxes = new();
+			Dictionary<string, Rectangle> Boxes = new Dictionary<string, Rectangle>();
 			
-
+			// top box
 			int borderBoxTopValueX = 0;
 			int borderBoxTopValueY = 0;
 			Point borderBoxTop = new Point(borderBoxTopValueX, borderBoxTopValueY);
 			BoxPositions.Add(borderBoxTop);
+			string topBox = "TopBox";
 
-			int borderBoxBottomValueX = 0;
-			int borderBoxBottomValueY = bitmap.Height / 2;
-			Point BorderBoxBottom = new Point(borderBoxBottomValueX, borderBoxBottomValueY);
-			BoxPositions.Add(BorderBoxBottom);
+			Rectangle borderBoxTopRectangle = new Rectangle
+			{
+				X = borderBoxTopValueX,
+				Y = borderBoxTopValueY,
+				Width = sourcePicture.Width,
+				Height = borderBoxTopValueY
+			};
 
-			int topLeftCornerBoxValueX = 0;
-			int topLeftCornerBoxValueY = 0;
-			Point TopLeftCornerBox = new Point(topLeftCornerBoxValueX, topLeftCornerBoxValueY);
-			BoxPositions.Add(TopLeftCornerBox);
+			Boxes.Add(topBox, borderBoxTopRectangle);
 
-			int topRightCornerBoxValueX = bitmap.Width / 2;
-			int topRightCornerBoxValueY = 0;
-			Point topRightCornerBox = new Point(topRightCornerBoxValueX, topRightCornerBoxValueY);
-			BoxPositions.Add(topRightCornerBox);
+			// bottom box
+			int bottomBoxValueX = 0;
+			int bottomBoxValueY = sourcePicture.Height / 2;
+			Point bottomBoxPoint = new Point(bottomBoxValueX, bottomBoxValueY);
+			BoxPositions.Add(bottomBoxPoint);
+			string bottomBox = "BottomBox";
 
-			int bottomLeftCornerBoxValueX = 0;
-			int bottomLeftCornerBoxValueY = bitmap.Height / 2;
-			Point bottomLeftCornerBox = new Point(bottomLeftCornerBoxValueX, bottomLeftCornerBoxValueY);
-			BoxPositions.Add(bottomLeftCornerBox);
+			Rectangle bottomBoxRectangle = new Rectangle
+			{
+				X = bottomBoxValueX,
+				Y = bottomBoxValueY,
+				Width = sourcePicture.Width,
+				Height = bottomBoxValueY
+			};
 
-			int bottomRightCornerBoxValueX = bitmap.Width / 2;
-			int bottomRightCornerBoxValueY = bitmap.Height / 2;
-			Point bottomRightCornerBox = new Point(bottomRightCornerBoxValueX, bottomRightCornerBoxValueY);
-			BoxPositions.Add(bottomRightCornerBox);
+			Boxes.Add(bottomBox, bottomBoxRectangle);
+
+			// top left box
+			int topLeftBoxValueX = 0;
+			int topLeftBoxValueY = 0;
+			Point topLeftBoxPoint = new Point(topLeftBoxValueX, topLeftBoxValueY);
+			BoxPositions.Add(topLeftBoxPoint);
+			string topLeftBox = "TopLeftBox";
+
+			Rectangle topLeftBoxRectangle = new Rectangle
+			{
+				X = topLeftBoxValueX,
+				Y = topLeftBoxValueY,
+				Width = sourcePicture.Width / 2,
+				Height = topLeftBoxValueY / 2
+			};
+
+			Boxes.Add(topLeftBox, topLeftBoxRectangle);
+
+			// top right box
+			int topRightBoxValueX = sourcePicture.Width / 2;
+			int topRightBoxValueY = 0;
+			Point topRightBoxPoint = new Point(topRightBoxValueX, topRightBoxValueY);
+			BoxPositions.Add(topRightBoxPoint);
+			string topRightBox = "TopRightBox";
+
+			Rectangle topRightBoxRectangle = new Rectangle
+			{
+				X = topRightBoxValueX,
+				Y = topRightBoxValueY,
+				Width = sourcePicture.Width / 2,
+				Height = sourcePicture.Height / 2
+			};
+
+			Boxes.Add(topRightBox, topRightBoxRectangle);
+
+			// bottom left box
+			int bottomLeftBoxValueX = 0;
+			int bottomLeftBoxValueY = sourcePicture.Height / 2;
+			Point bottomLeftBoxPoint = new Point(bottomLeftBoxValueX, bottomLeftBoxValueY);
+			BoxPositions.Add(bottomLeftBoxPoint);
+			string bottomLeftBox = "BottomLeftBox";
+
+			Rectangle bottomleftBoxRectangle = new Rectangle
+			{
+				X = bottomLeftBoxValueX,
+				Y = bottomLeftBoxValueY,
+				Width = sourcePicture.Width / 2,
+				Height = sourcePicture.Height / 2
+			};
+
+			Boxes.Add(bottomLeftBox, bottomleftBoxRectangle);
+
+			// bottom right box
+			int bottomRightBoxValueX = sourcePicture.Width / 2;
+			int bottomRightBoxValueY = sourcePicture.Height / 2;
+			Point bottomRightBoxPoint = new Point(bottomRightBoxValueX, bottomRightBoxValueY);
+			BoxPositions.Add(bottomRightBoxPoint);
+			string bottomRightBox = "BottomRightBox";
+
+			Rectangle bottomRightBoxRectangle = new Rectangle
+			{
+				X = bottomRightBoxValueX,
+				Y = bottomRightBoxValueY,
+				Width = sourcePicture.Width / 2,
+				Height = sourcePicture.Height / 2
+			};
+
+			Boxes.Add(bottomRightBox,bottomRightBoxRectangle);
 			
-
 			Random randomizeBoxPosition = new Random();
 			int chosenBoxPosition = randomizeBoxPosition.Next(6);
 
 			parameters.PositionOfText = BoxPositions[chosenBoxPosition];
 
-			if (chosenBoxPosition < 2)
-			{
-				parameters.WidthOfBox = bitmap.Width;
-				parameters.HeightOfBox = bitmap.Height / 2;
-			}
-			else
-			{
-				parameters.WidthOfBox = bitmap.Width / 2;
-				parameters.HeightOfBox = bitmap.Height / 2;
-			}
+			// Point PosOfText;
 
-			const int splitByHalf = 2;
-
-			Point PosOfText;
+			List<string> BoxesWithNoFacesDetected = new List<string>();
 
 			// calculate position of face rectangle in relation to boxes
 
 			// top left cornerbox
 
-			if (faceRect.X < bitmap.Width / 2 && faceRect.Y < bitmap.Height / 2)
+			if (faceRect.X < sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2)
 			{
 				// face is detected in top left corner box
 				// disallow box
 			}
+			else
+			{
+				BoxesWithNoFacesDetected.Add(topLeftBox);
+			}
 			
 			// top right corner box
 
-			if (faceRect.X > bitmap.Width / 2 && faceRect.Y < bitmap.Height / 2)
+			if (faceRect.X > sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2)
 			{
 				// face is detected in top right corner box
 				// disallow box
 			}
+			else
+			{
+				BoxesWithNoFacesDetected.Add(topRightBox);
+			}
 
 			// bottom left corner box
 
-			if (faceRect.X > bitmap.Width / 2 && faceRect.Y > bitmap.Height/ 2)
+			if (faceRect.X > sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height/ 2)
 			{
 				// face is detected in bottom left corner box
 				// disallow box
+			}
+			else
+			{
+				BoxesWithNoFacesDetected.Add(bottomLeftBox);
 			}
 
 			
 			// bottom right corner box
 
-			if (faceRect.X > bitmap.Width / 2 && faceRect.Y > bitmap.Height / 2)
+			if (faceRect.X > sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height / 2)
 			{
 				// face is detected in bottom right corner box
 				// disallow box
 
 			}
+			else
+			{
+				BoxesWithNoFacesDetected.Add(bottomRightBox);
+			}
 
+			/////////////////////////// handles the calculation of faces if the boxes are top/bottom boxes
 			int LocationOfRectangleCenterYpos = faceRect.Y + faceRect.Height / 2;
 
 			// sets the position to the middle of the picture, mid point at X = 0
-			int sourceIMGMiddleY = bitmap.Height / 2;
+			int sourceIMGMiddleY = sourcePicture.Height / 2;
 
 			// if middle of image is more then the location of the rectangle height position 
 			if (sourceIMGMiddleY > LocationOfRectangleCenterYpos)
@@ -371,17 +447,52 @@ namespace Bulk_Thumbnail_Creator
 				// make text appear on lower half
 				// the integer relative position is the height of the image split by 6, which gives a percentage of 
 				// the composed image box relative location
-				const int splitByPercent = 6;
-				int relativePosition = bitmap.Height - (bitmap.Height / splitByPercent);
+				//const int splitByPercent = 6;
+				//int relativePosition = sourcePicture.Height - (sourcePicture.Height / splitByPercent);
 
-				PosOfText = new Point(0, relativePosition);
+				BoxesWithNoFacesDetected.Add(bottomBox);
+
+				// PosOfText = new Point(0, relativePosition);
+			}
+			
+			if (sourceIMGMiddleY < LocationOfRectangleCenterYpos)
+			{
+				BoxesWithNoFacesDetected.Add(topBox);
+			}
+
+			// all calculations done, pick one box
+
+			int randomizedbox = randomizeBoxPosition.Next(BoxesWithNoFacesDetected.Count);
+
+			// picks a random box that has no face in it
+			string pickedBoxName = BoxesWithNoFacesDetected[randomizedbox];
+			
+			// makes a rectangle to read from the dictionary
+			Rectangle pickedBoxRectangle = new Rectangle();
+
+			// tries to read from dictionary
+			Boxes.TryGetValue(pickedBoxName, out pickedBoxRectangle);
+
+			// makes a point to feed to the parameters passed in
+			Point pickedBoxPoint = new Point(pickedBoxRectangle.X, pickedBoxRectangle.Y);
+			
+			// sets the position of the parameter objects point variable 
+			parameters.PositionOfText = pickedBoxPoint;
+
+
+			// passes the box width and height to the parameter passed to the method
+			// this is important to avoid boxes being juxtaposed outside of the image
+
+			if (pickedBoxName == "TopBox" || pickedBoxName == "BottomBox")
+			{
+				parameters.WidthOfBox = sourcePicture.Width;
+				parameters.HeightOfBox = sourcePicture.Height / 2;
 			}
 			else
 			{
-				// make text appear on upper half at the 0,0 initial point 
-				//	PosOfText = new Point(0,0);
+				parameters.WidthOfBox = sourcePicture.Width / 2;
+				parameters.HeightOfBox = sourcePicture.Height / 2;
 			}
-		
 
 			return parameters;
 		}
