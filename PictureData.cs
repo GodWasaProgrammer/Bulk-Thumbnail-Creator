@@ -28,6 +28,9 @@ namespace Bulk_Thumbnail_Creator
 		/// </summary>
 		private List<PictureData> _Varieties = new List<PictureData>();
 		public List<PictureData> Varieties { get { return _Varieties; } set { _Varieties = value; } }
+
+		public BTCSettings.BoxTypes Boxes;
+
 	}
 
 }

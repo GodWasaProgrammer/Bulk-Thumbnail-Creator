@@ -56,6 +56,7 @@ namespace Bulk_Thumbnail_Creator
 		
 
 		public ColorItem BorderColor { get { return borderColor; } set { borderColor = BorderColor; } }
+
 	}
 
 }

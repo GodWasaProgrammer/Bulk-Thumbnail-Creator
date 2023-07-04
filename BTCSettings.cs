@@ -76,6 +76,17 @@ namespace Bulk_Thumbnail_Creator
 		/// </summary>
 		private static readonly string _PathToXMLListOfDownloadedVideos = "ListOfDownloadedVideos.xml";
 		public static string PathToXMLListOfDownloadedVideos { get { return _PathToXMLListOfDownloadedVideos; } }
+
+		public enum BoxTypes
+		{
+			NotextBox = 0,
+			TopBox = 1,
+			BottomBox = 2,
+			TopRightBox = 3,
+			TopLeftBox = 4,
+			BottomLeftBox = 5,
+			BottomRightBox = 6,
+		}
 	}
 
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.IO.Ports;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using YoutubeDLSharp;
@@ -460,6 +461,54 @@ namespace Bulk_Thumbnail_Creator
 			}
 
 			return parameters;
+		}
+
+		public static void ProduceFontVarietyOnClick(PictureData PicToVarietize, string TargetFolder)
+		{
+			List<string> fontList = new List<string>();
+
+			fontList.Add(PicToVarietize.ParamForTextCreation.Font);
+
+			int FontsToPick = 5;
+
+			for (int i = 0; i < FontsToPick; i++)
+			{
+				string pickedFont = PickRandomFont();
+
+				// if the list doesnt contain this font already, add it.
+				if (!fontList.Contains(pickedFont))
+				{
+					fontList.Add(pickedFont);
+				}
+				else
+				{
+					i--;
+				}
+				
+			}
+			// variety selection finished, proceed to creating
+
+			// create the actual varieties
+
+			foreach (string font in fontList)
+			{
+				PictureData createFontVariety = new PictureData();
+				createFontVariety = PicToVarietize;
+				createFontVariety.ParamForTextCreation.Font = font;
+
+				Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(createFontVariety.FileName));
+				
+				// still to fix, the pathing turns out incorrect because Font returns Font//nameoffont  
+				string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(createFontVariety.FileName) + $"//{createFontVariety.ParamForTextCreation.Font}" + ".png";
+
+				ProduceTextPictures(createFontVariety, outpath);
+			}
+
+		}
+
+		public static void ProducePlacementOfTextVarietyOnClick(PictureData PicToVarietize, string TargetFolder)
+		{
+			
 		}
 
 		/// <summary>
