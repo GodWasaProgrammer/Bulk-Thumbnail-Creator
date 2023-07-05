@@ -549,7 +549,7 @@ namespace Bulk_Thumbnail_Creator
 				// dont do the box that is the original value
 				if (LocalDictionary.ContainsKey(boxToExclude))
 				{
-					LocalDictionary.Remove(boxToExclude);
+					// LocalDictionary.Remove(boxToExclude);
 				}
 				else
 				{
@@ -557,14 +557,30 @@ namespace Bulk_Thumbnail_Creator
 					PictureData CurrentPictureData = new PictureData();
 					CurrentPictureData = PicToVarietize;
 
-					// do some wtfbbq stuff
+					// lift triangle
 					Rectangle currentRectangle = LocalDictionary.ElementAt(CurrentBox).Value;
+					// write it to a pint
 					Point CurrentPoint = new Point(currentRectangle.X,currentRectangle.Y);
+					// feed it back into object
 					CurrentPictureData.ParamForTextCreation.PositionOfText = CurrentPoint;
 
 					// this needs correction -
-					CurrentPictureData.ParamForTextCreation.HeightOfBox = currentRectangle.Height;
-					CurrentPictureData.ParamForTextCreation.WidthOfBox = currentRectangle.Width;
+					//CurrentPictureData.ParamForTextCreation.HeightOfBox = currentRectangle.Height;
+					//CurrentPictureData.ParamForTextCreation.WidthOfBox = currentRectangle.Width;
+
+					Bitmap sourcePicture = new Bitmap(PicToVarietize.FileName);
+
+					if (LocalDictionary.ElementAt(CurrentBox).Key == "TopBox" || LocalDictionary.ElementAt(CurrentBox).Key == "BottomBox")
+					{
+						CurrentPictureData.ParamForTextCreation.WidthOfBox = sourcePicture.Width;
+						CurrentPictureData.ParamForTextCreation.HeightOfBox = sourcePicture.Height / 2;
+					}
+					else
+					{
+						CurrentPictureData.ParamForTextCreation.WidthOfBox = sourcePicture.Width / 2;
+						CurrentPictureData.ParamForTextCreation.HeightOfBox = sourcePicture.Height / 2;
+					}
+
 					// ----------------------------------------------------------------------------^-
 
 					CurrentPictureData.ParamForTextCreation.CurrentBox = LocalDictionary.ElementAt(CurrentBox).Key;
