@@ -23,10 +23,8 @@ namespace Bulk_Thumbnail_Creator
 			BTCSettings.ListOfText.Add(textToPrint2);
 			string textToPrint3 = "Diablo 4\nThe Latest Hack'N'Slash!\nPlay now!";
 			BTCSettings.ListOfText.Add(textToPrint3);
-			string textToPrint4 = "Bulk Thumbnail Creator\nYour Personalized Thumbnails on the fly!\nTry it, its free forever!";
+			string textToPrint4 = "Bulk Thumbnail Creator\nYour Personalized Thumbnails!\nTry it, its free forever!";
 			BTCSettings.ListOfText.Add(textToPrint4);
-
-			// Logic.AddNewLineToString(textToPrint);
 
 			BTCSettings.DownloadedVideosList = Logic.DeSerializeXMLToListOfStrings(BTCSettings.PathToXMLListOfDownloadedVideos);
 
@@ -76,7 +74,6 @@ namespace Bulk_Thumbnail_Creator
 
 				ParamForTextCreation currentParameters = new ParamForTextCreation();
 
-				
 				if (detectedFacesRect.Length > 0)
 				{
 					Rectangle faceRect = detectedFacesRect.First();
@@ -133,6 +130,8 @@ namespace Bulk_Thumbnail_Creator
 			//}
 
 			// Logic.ProduceFontVarietyOnClick(BTCSettings.PictureDatas[0], BTCSettings.TextAddedDir);
+
+			Logic.ProducePlacementOfTextVarietyOnClick(BTCSettings.PictureDatas[0], BTCSettings.TextAddedDir);
 
 		}
 

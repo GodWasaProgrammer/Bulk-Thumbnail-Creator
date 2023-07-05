@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.IO.Ports;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using YoutubeDLSharp;
@@ -365,50 +366,76 @@ namespace Bulk_Thumbnail_Creator
 
 			// calculate position of face rectangle in relation to boxes
 
-			// top left cornerbox
-			if (faceRect.X < sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2)
-			{
-				// face is detected in top left corner box
-				// disallow box
-			}
-			else
+			bool topleftbox = faceRect.X < sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2;
+
+			if (!topleftbox)
 			{
 				BoxesWithNoFacesDetected.Add(topLeftBox);
 			}
-			
-			// top right corner box
-			if (faceRect.X > sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2)
-			{
-				// face is detected in top right corner box
-				// disallow box
-			}
-			else
+
+			//// top left cornerbox
+			//if (faceRect.X < sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2)
+			//{
+			//	// face is detected in top left corner box
+			//	// disallow box
+			//}
+			//else
+			//{
+			//	BoxesWithNoFacesDetected.Add(topLeftBox);
+			//}
+
+			bool toprightbox = faceRect.X < sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height / 2;
+
+			if (!toprightbox)
 			{
 				BoxesWithNoFacesDetected.Add(topRightBox);
 			}
 
-			// bottom left corner box
-			if (faceRect.X > sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height/ 2)
-			{
-				// face is detected in bottom left corner box
-				// disallow box
-			}
-			else
+			//// top right corner box
+			//if (faceRect.X > sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2)
+			//{
+			//	// face is detected in top right corner box
+			//	// disallow box
+			//}
+			//else
+			//{
+			//	BoxesWithNoFacesDetected.Add(topRightBox);
+			//}
+
+			bool bottomleftbox = faceRect.X < sourcePicture.Width / 2 && faceRect.Y <= sourcePicture.Height / 2;
+			if (!bottomleftbox)
 			{
 				BoxesWithNoFacesDetected.Add(bottomLeftBox);
 			}
 
-			// bottom right corner box
-			if (faceRect.X > sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height / 2)
-			{
-				// face is detected in bottom right corner box
-				// disallow box
+			//// bottom left corner box
+			//if (faceRect.X > sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height/ 2)
+			//{
+			//	// face is detected in bottom left corner box
+			//	// disallow box
+			//}
+			//else
+			//{
+			//	BoxesWithNoFacesDetected.Add(bottomLeftBox);
+			//}
 
-			}
-			else
+			bool bottomrightbox = faceRect.X < sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height / 2;
+
+			if (!bottomrightbox)
 			{
 				BoxesWithNoFacesDetected.Add(bottomRightBox);
 			}
+			//// bottom right corner box
+			//if (faceRect.X > sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height / 2)
+			//{
+			//	// face is detected in bottom right corner box
+			//	// disallow box
+
+			//}
+			//else
+			//{
+			//	BoxesWithNoFacesDetected.Add(bottomRightBox);
+			//}
 
 			// handles the calculation of faces if the boxes are top/bottom boxes
 			int LocationOfRectangleCenterYpos = faceRect.Y + faceRect.Height / 2;
@@ -430,6 +457,9 @@ namespace Bulk_Thumbnail_Creator
 				BoxesWithNoFacesDetected.Add(topBox);
 			}
 
+			// write boxvalues and name to object
+			parameters.Boxes = Boxes;
+
 			// all calculations done, pick one box
 			Random randomizeBoxPosition = new Random();
 			int randomizedbox = randomizeBoxPosition.Next(BoxesWithNoFacesDetected.Count);
@@ -439,6 +469,8 @@ namespace Bulk_Thumbnail_Creator
 			
 			// tries to read from dictionary
 			Boxes.TryGetValue(pickedBoxName, out Rectangle pickedBoxRectangle);
+
+			parameters.CurrentBox = pickedBoxName;
 
 			// makes a point to feed to the parameters passed in
 			Point pickedBoxPoint = new Point(pickedBoxRectangle.X, pickedBoxRectangle.Y);
@@ -508,7 +540,46 @@ namespace Bulk_Thumbnail_Creator
 
 		public static void ProducePlacementOfTextVarietyOnClick(PictureData PicToVarietize, string TargetFolder)
 		{
-			
+			string boxToExclude = PicToVarietize.ParamForTextCreation.CurrentBox;
+
+			Dictionary<string, Rectangle> LocalDictionary = PicToVarietize.ParamForTextCreation.Boxes;
+
+			for (int CurrentBox = 0; CurrentBox < LocalDictionary.Count; CurrentBox++)
+			{
+				// dont do the box that is the original value
+				if (LocalDictionary.ContainsKey(boxToExclude))
+				{
+					LocalDictionary.Remove(boxToExclude);
+				}
+				else
+				{
+					// instantiate object to work on
+					PictureData CurrentPictureData = new PictureData();
+					CurrentPictureData = PicToVarietize;
+
+					// do some wtfbbq stuff
+					Rectangle currentRectangle = LocalDictionary.ElementAt(CurrentBox).Value;
+					Point CurrentPoint = new Point(currentRectangle.X,currentRectangle.Y);
+					CurrentPictureData.ParamForTextCreation.PositionOfText = CurrentPoint;
+
+					// this needs correction -
+					CurrentPictureData.ParamForTextCreation.HeightOfBox = currentRectangle.Height;
+					CurrentPictureData.ParamForTextCreation.WidthOfBox = currentRectangle.Width;
+					// ----------------------------------------------------------------------------^-
+
+					CurrentPictureData.ParamForTextCreation.CurrentBox = LocalDictionary.ElementAt(CurrentBox).Key;
+
+					// add it to list of objects created varieties
+					PicToVarietize.Varieties.Add(CurrentPictureData);
+
+					Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(CurrentPictureData.FileName));
+
+					string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(CurrentPictureData.FileName) + $"//{CurrentBox}" + ".png";
+					ProduceTextPictures(CurrentPictureData, outpath);
+				}
+
+			}
+
 		}
 
 		/// <summary>

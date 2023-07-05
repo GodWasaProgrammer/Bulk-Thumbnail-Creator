@@ -32,7 +32,7 @@ namespace Bulk_Thumbnail_Creator
 		/// List of PictureDataObject which is a complete recipe to output an 
 		/// image(or output an image again after the fact)
 		/// </summary>
-		public static List<PictureData> _PictureDatas = new List<PictureData>();
+		private static List<PictureData> _PictureDatas = new List<PictureData>();
 		public static List<PictureData> PictureDatas { get { return _PictureDatas; } set { _PictureDatas = value; } }
 
 
@@ -76,17 +76,6 @@ namespace Bulk_Thumbnail_Creator
 		/// </summary>
 		private static readonly string _PathToXMLListOfDownloadedVideos = "ListOfDownloadedVideos.xml";
 		public static string PathToXMLListOfDownloadedVideos { get { return _PathToXMLListOfDownloadedVideos; } }
-
-		public enum BoxTypes
-		{
-			NotextBox = 0,
-			TopBox = 1,
-			BottomBox = 2,
-			TopRightBox = 3,
-			TopLeftBox = 4,
-			BottomLeftBox = 5,
-			BottomRightBox = 6,
-		}
 	}
 
 }

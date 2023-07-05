@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -53,9 +54,12 @@ namespace Bulk_Thumbnail_Creator
 		/// bordercolor for textoutput
 		/// </summary>
 		ColorItem borderColor = new ColorItem();
-		
-
 		public ColorItem BorderColor { get { return borderColor; } set { borderColor = BorderColor; } }
+		
+		// store possible boxes
+		public Dictionary<string, Rectangle> Boxes = new Dictionary<string, Rectangle>();
+
+		public string CurrentBox;
 
 	}
 

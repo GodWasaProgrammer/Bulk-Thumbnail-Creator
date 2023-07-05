@@ -1,5 +1,6 @@
 ﻿using ImageMagick;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -28,9 +29,6 @@ namespace Bulk_Thumbnail_Creator
 		/// </summary>
 		private List<PictureData> _Varieties = new List<PictureData>();
 		public List<PictureData> Varieties { get { return _Varieties; } set { _Varieties = value; } }
-
-		public BTCSettings.BoxTypes Boxes;
-
 	}
 
 }
