@@ -521,9 +521,10 @@ namespace Bulk_Thumbnail_Creator
 			// variety selection finished, proceed to creating
 
 			// create the actual varieties
-
+			int counter = 0;
 			foreach (string font in fontList)
 			{
+				counter++;
 				PictureData createFontVariety = new PictureData();
 				createFontVariety = PicToVarietize;
 				createFontVariety.ParamForTextCreation.Font = font;
@@ -531,7 +532,8 @@ namespace Bulk_Thumbnail_Creator
 				Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(createFontVariety.FileName));
 				
 				// still to fix, the pathing turns out incorrect because Font returns Font//nameoffont  
-				string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(createFontVariety.FileName) + $"//{createFontVariety.ParamForTextCreation.Font}" + ".png";
+
+				string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(createFontVariety.FileName) + $"//variety of:{createFontVariety.FileName} + {Path.GetFileNameWithoutExtension(createFontVariety.ParamForTextCreation.Font)}" + $"{counter}" + ".png";
 
 				ProduceTextPictures(createFontVariety, outpath);
 			}
@@ -563,11 +565,6 @@ namespace Bulk_Thumbnail_Creator
 					Point CurrentPoint = new Point(currentRectangle.X,currentRectangle.Y);
 					// feed it back into object
 					CurrentPictureData.ParamForTextCreation.PositionOfText = CurrentPoint;
-
-					// this needs correction -
-					//CurrentPictureData.ParamForTextCreation.HeightOfBox = currentRectangle.Height;
-					//CurrentPictureData.ParamForTextCreation.WidthOfBox = currentRectangle.Width;
-
 					Bitmap sourcePicture = new Bitmap(PicToVarietize.FileName);
 
 					if (LocalDictionary.ElementAt(CurrentBox).Key == "TopBox" || LocalDictionary.ElementAt(CurrentBox).Key == "BottomBox")

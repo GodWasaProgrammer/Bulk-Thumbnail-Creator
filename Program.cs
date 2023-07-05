@@ -129,9 +129,9 @@ namespace Bulk_Thumbnail_Creator
 			//	Logic.CreateVariety(input, BTCSettings.TextAddedDir);
 			//}
 
-			// Logic.ProduceFontVarietyOnClick(BTCSettings.PictureDatas[0], BTCSettings.TextAddedDir);
+			Logic.ProduceFontVarietyOnClick(BTCSettings.PictureDatas[0], BTCSettings.TextAddedDir);
 
-			Logic.ProducePlacementOfTextVarietyOnClick(BTCSettings.PictureDatas[0], BTCSettings.TextAddedDir);
+			// Logic.ProducePlacementOfTextVarietyOnClick(BTCSettings.PictureDatas[0], BTCSettings.TextAddedDir);
 		}
 
 	}
