@@ -270,12 +270,12 @@ namespace Bulk_Thumbnail_Creator
 		/// <returns></returns>
 		public static ParamForTextCreation GettextPosition(ParamForTextCreation parameters, Bitmap sourcePicture, Rectangle faceRect)
 		{
-			Dictionary<string, Rectangle> Boxes = new Dictionary<string, Rectangle>();
+			Dictionary<Box, Rectangle> Boxes = new Dictionary<Box, Rectangle>();
 			
 			// top box
 			int borderBoxTopValueX = 0;
 			int borderBoxTopValueY = 0;
-			string topBox = "TopBox";
+			Box topBox = Box.TopBox;
 
 			Rectangle borderBoxTopRectangle = new Rectangle
 			{
@@ -290,7 +290,7 @@ namespace Bulk_Thumbnail_Creator
 			// bottom box
 			int bottomBoxValueX = 0;
 			int bottomBoxValueY = sourcePicture.Height / 2;
-			string bottomBox = "BottomBox";
+			Box bottomBox = Box.BottomBox;
 
 			Rectangle bottomBoxRectangle = new Rectangle
 			{
@@ -305,7 +305,7 @@ namespace Bulk_Thumbnail_Creator
 			// top left box
 			int topLeftBoxValueX = 0;
 			int topLeftBoxValueY = 0;
-			string topLeftBox = "TopLeftBox";
+			Box topLeftBox = Box.TopLeft;
 
 			Rectangle topLeftBoxRectangle = new Rectangle
 			{
@@ -320,7 +320,7 @@ namespace Bulk_Thumbnail_Creator
 			// top right box
 			int topRightBoxValueX = sourcePicture.Width / 2;
 			int topRightBoxValueY = 0;
-			string topRightBox = "TopRightBox";
+			Box topRightBox = Box.TopRight;
 
 			Rectangle topRightBoxRectangle = new Rectangle
 			{
@@ -335,7 +335,7 @@ namespace Bulk_Thumbnail_Creator
 			// bottom left box
 			int bottomLeftBoxValueX = 0;
 			int bottomLeftBoxValueY = sourcePicture.Height / 2;
-			string bottomLeftBox = "BottomLeftBox";
+			Box bottomLeftBox = Box.BottomLeft;
 
 			Rectangle bottomleftBoxRectangle = new Rectangle
 			{
@@ -350,7 +350,7 @@ namespace Bulk_Thumbnail_Creator
 			// bottom right box
 			int bottomRightBoxValueX = sourcePicture.Width / 2;
 			int bottomRightBoxValueY = sourcePicture.Height / 2;
-			string bottomRightBox = "BottomRightBox";
+			Box bottomRightBox = Box.BottomRight;
 
 			Rectangle bottomRightBoxRectangle = new Rectangle
 			{
@@ -362,27 +362,23 @@ namespace Bulk_Thumbnail_Creator
 
 			Boxes.Add(bottomRightBox,bottomRightBoxRectangle);
 			
-			List<string> BoxesWithNoFacesDetected = new List<string>();
+			List<Box> BoxesWithNoFacesDetected = new List<Box>();
 
 			// calculate position of face rectangle in relation to boxes
 
-			bool topleftbox = faceRect.X < sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2;
+			//bool topleftbox = faceRect.X < sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2;
 
-			if (!topleftbox)
-			{
-				BoxesWithNoFacesDetected.Add(topLeftBox);
-			}
-
-			//// top left cornerbox
-			//if (faceRect.X < sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2)
-			//{
-			//	// face is detected in top left corner box
-			//	// disallow box
-			//}
-			//else
+			//if (!topleftbox)
 			//{
 			//	BoxesWithNoFacesDetected.Add(topLeftBox);
 			//}
+
+			// top left cornerbox no face detected
+			if (!(faceRect.X < sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2))
+			{
+				BoxesWithNoFacesDetected.Add(topLeftBox);
+			}
+	
 
 			bool toprightbox = faceRect.X < sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height / 2;
 
@@ -465,7 +461,7 @@ namespace Bulk_Thumbnail_Creator
 			int randomizedbox = randomizeBoxPosition.Next(BoxesWithNoFacesDetected.Count);
 
 			// picks a random box that has no face in it
-			string pickedBoxName = BoxesWithNoFacesDetected[randomizedbox];
+			Box pickedBoxName = BoxesWithNoFacesDetected[randomizedbox];
 			
 			// tries to read from dictionary
 			Boxes.TryGetValue(pickedBoxName, out Rectangle pickedBoxRectangle);
@@ -480,7 +476,6 @@ namespace Bulk_Thumbnail_Creator
 
 			// passes the box width and height to the parameter passed to the method
 			// this is important to avoid boxes being juxtaposed outside of the image
-
 			parameters = CalculateBoxData(pickedBoxName, sourcePicture, parameters);
 
 			//if (pickedBoxName == "TopBox" || pickedBoxName == "BottomBox")
@@ -542,9 +537,9 @@ namespace Bulk_Thumbnail_Creator
 
 		}
 
-		public static ParamForTextCreation CalculateBoxData(string CurrentBox, Bitmap sourcePicture , ParamForTextCreation CurrentParamForText)
+		public static ParamForTextCreation CalculateBoxData(Box CurrentBox, Bitmap sourcePicture , ParamForTextCreation CurrentParamForText)
 		{
-			if (CurrentBox == "TopBox" || CurrentBox == "BottomBox")
+			if (CurrentBox == Box.TopBox || CurrentBox == Box.BottomBox)
 			{
 				CurrentParamForText.WidthOfBox = sourcePicture.Width;
 				CurrentParamForText.HeightOfBox = sourcePicture.Height / 2;
@@ -560,7 +555,7 @@ namespace Bulk_Thumbnail_Creator
 
 		public static void ProducePlacementOfTextVarietyOnClick(PictureData PicToVarietize, string TargetFolder)
 		{
-			string boxToExclude = PicToVarietize.ParamForTextCreation.CurrentBox;
+			Box boxToExclude = PicToVarietize.ParamForTextCreation.CurrentBox;
 
 			foreach (var CurrentBox in PicToVarietize.ParamForTextCreation.Boxes)
 			{

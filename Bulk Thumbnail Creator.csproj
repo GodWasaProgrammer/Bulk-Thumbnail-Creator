@@ -350,6 +350,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Box.cs" />
     <Compile Include="BTCSettings.cs" />
     <Compile Include="ColorItem.cs" />
     <Compile Include="FFmpegHandler.cs" />

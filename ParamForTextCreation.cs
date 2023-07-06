@@ -57,9 +57,9 @@ namespace Bulk_Thumbnail_Creator
 		public ColorItem BorderColor { get { return borderColor; } set { borderColor = BorderColor; } }
 		
 		// store possible boxes
-		public Dictionary<string, Rectangle> Boxes = new Dictionary<string, Rectangle>();
+		public Dictionary<Box, Rectangle> Boxes = new Dictionary<Box, Rectangle>();
 
-		public string CurrentBox;
+		public Box CurrentBox;
 
 	}
 
