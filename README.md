@@ -12,23 +12,30 @@
 
 - This is for the people that want awesome thumbnails but dont know how to.
 - This Piece of Software will allow you to create thumbnails as easy as breathing.
+- Includes the markets best ffmpeg 
 
 ### Getting Started/Requirements/Prerequisites/Dependencies
+
 - This requires standalone version of FFMPEG
+- This makes use of YoutubeDLSharp
 - more will be added here later as it is still fluent
 - 
 
-
 ### Contributing
+
 - Feel free to contribute if you so wish.
 
 ### TODO
+
 - Implementing UI in perhaps Blazor
 - Known bugs
 - Only calculates on a single face not on the full array of faces actually returned
+
 ### Contact
-- bwnils@gmail.c
-- Google Group/mailing list (if applicable)
-- IRC or Slack (if applicable)
+
+- bwnils@gmail.com
 
 ### License
+- Free to use and modify - Forever!
+
+
