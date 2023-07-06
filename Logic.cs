@@ -546,28 +546,27 @@ namespace Bulk_Thumbnail_Creator
 
 			Dictionary<string, Rectangle> LocalDictionary = PicToVarietize.ParamForTextCreation.Boxes;
 
-			for (int CurrentBox = 0; CurrentBox < LocalDictionary.Count; CurrentBox++)
+			foreach (var CurrentBox in LocalDictionary)
 			{
-				// dont do the box that is the original value
-				if (LocalDictionary.ContainsKey(boxToExclude))
-				{
-					// LocalDictionary.Remove(boxToExclude);
-				}
-				else
+				if (CurrentBox.Key != boxToExclude)
 				{
 					// instantiate object to work on
 					PictureData CurrentPictureData = new PictureData();
 					CurrentPictureData = PicToVarietize;
 
 					// lift triangle
-					Rectangle currentRectangle = LocalDictionary.ElementAt(CurrentBox).Value;
+					Rectangle currentRectangle = CurrentBox.Value;
+					
 					// write it to a pint
 					Point CurrentPoint = new Point(currentRectangle.X,currentRectangle.Y);
+					
 					// feed it back into object
 					CurrentPictureData.ParamForTextCreation.PositionOfText = CurrentPoint;
 					Bitmap sourcePicture = new Bitmap(PicToVarietize.FileName);
 
-					if (LocalDictionary.ElementAt(CurrentBox).Key == "TopBox" || LocalDictionary.ElementAt(CurrentBox).Key == "BottomBox")
+					CurrentPictureData.ParamForTextCreation.CurrentBox = CurrentBox.Key;
+
+					if (CurrentBox.Key == "TopBox" || CurrentBox.Key == "BottomBox")
 					{
 						CurrentPictureData.ParamForTextCreation.WidthOfBox = sourcePicture.Width;
 						CurrentPictureData.ParamForTextCreation.HeightOfBox = sourcePicture.Height / 2;
@@ -578,16 +577,15 @@ namespace Bulk_Thumbnail_Creator
 						CurrentPictureData.ParamForTextCreation.HeightOfBox = sourcePicture.Height / 2;
 					}
 
-					// ----------------------------------------------------------------------------^-
-
-					CurrentPictureData.ParamForTextCreation.CurrentBox = LocalDictionary.ElementAt(CurrentBox).Key;
-
 					// add it to list of objects created varieties
 					PicToVarietize.Varieties.Add(CurrentPictureData);
 
 					Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(CurrentPictureData.FileName));
 
-					string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(CurrentPictureData.FileName) + $"//{CurrentBox}" + ".png";
+					string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(CurrentPictureData.FileName) + $"//{CurrentBox.Key}" + ".png";
+
+					CurrentPictureData.ReadSettings = TextSettingsGeneration(CurrentPictureData.ParamForTextCreation);
+
 					ProduceTextPictures(CurrentPictureData, outpath);
 				}
 

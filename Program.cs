@@ -112,15 +112,15 @@ namespace Bulk_Thumbnail_Creator
 				Logic.ProduceTextPictures(PassPictureData, outputFullPath);
 			}
 
-			#region Make Showcase Video
-			Dictionary<string, string> paramToMakeVideoOfResult = new Dictionary<string, string>();
-			paramToMakeVideoOfResult["framerate"] = "2";
-			paramToMakeVideoOfResult["i"] = $@"""{Path.GetFullPath(BTCSettings.TextAddedDir)}/%03d.png""";
-			string getTruePath = Path.GetFullPath(BTCSettings.TextAddedDir);
-			string showCaseVideoOutPut = $@"""{getTruePath}/showcase.mp4""";
+			//#region Make Showcase Video
+			//Dictionary<string, string> paramToMakeVideoOfResult = new Dictionary<string, string>();
+			//paramToMakeVideoOfResult["framerate"] = "2";
+			//paramToMakeVideoOfResult["i"] = $@"""{Path.GetFullPath(BTCSettings.TextAddedDir)}/%03d.png""";
+			//string getTruePath = Path.GetFullPath(BTCSettings.TextAddedDir);
+			//string showCaseVideoOutPut = $@"""{getTruePath}/showcase.mp4""";
 
-			FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
-			#endregion
+			//FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
+			//#endregion
 
 			//// just to try out variety will be on interaction/choice of pic
 			//for (int i = 0; i < BTCSettings.Files.Length; i++) 
@@ -129,9 +129,9 @@ namespace Bulk_Thumbnail_Creator
 			//	Logic.CreateVariety(input, BTCSettings.TextAddedDir);
 			//}
 
-			Logic.ProduceFontVarietyOnClick(BTCSettings.PictureDatas[0], BTCSettings.TextAddedDir);
+			// Logic.ProduceFontVarietyOnClick(BTCSettings.PictureDatas[0], BTCSettings.TextAddedDir);
 
-			// Logic.ProducePlacementOfTextVarietyOnClick(BTCSettings.PictureDatas[0], BTCSettings.TextAddedDir);
+			Logic.ProducePlacementOfTextVarietyOnClick(BTCSettings.PictureDatas[0], BTCSettings.TextAddedDir);
 		}
 
 	}
