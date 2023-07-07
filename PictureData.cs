@@ -1,16 +1,19 @@
 ﻿using ImageMagick;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace Bulk_Thumbnail_Creator
 {
 	public class PictureData
+		
 	{
 		/// <summary>
 		/// The filename of this object, not a path, example : 001.png
 		/// </summary>
 		private string _FileName;
 		public string FileName { get { return _FileName; }set { _FileName = value; } }
+
+		private string _outPath;
+		public string OutPath {get { return _outPath; }set { _outPath = value; } }
 
 		/// <summary>
 		/// Parameters for text creation, contains all necessary info like font,position,colors
@@ -30,5 +33,6 @@ namespace Bulk_Thumbnail_Creator
 		private List<PictureData> _Varieties = new List<PictureData>();
 		public List<PictureData> Varieties { get { return _Varieties; } set { _Varieties = value; } }
 	}
+
 
 }

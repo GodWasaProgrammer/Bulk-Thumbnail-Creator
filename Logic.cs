@@ -122,6 +122,7 @@ namespace Bulk_Thumbnail_Creator
 		}
 
 		static readonly XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
+		// static readonly XmlSerializer serializePictureData = new XmlSerializer(typeof(List<PictureData>));
 
 		/// <summary>
 		/// General DeSerializer for List of Strings
@@ -156,6 +157,15 @@ namespace Bulk_Thumbnail_Creator
 			}
 
 		}
+
+		//public static void SerializeListOfObjectsToXML(string PathToXML, List<PictureData> ListOfPictureDatasToSerialize)
+		//{
+		//	using (FileStream file = File.Create(PathToXML))
+		//	{
+		//		serializePictureData.Serialize(file, ListOfPictureDatasToSerialize);
+		//	}
+
+		//}
 
 		/// <summary>
 		/// Instantiates a YoutubeDL and downloads the specified string
@@ -239,7 +249,6 @@ namespace Bulk_Thumbnail_Creator
 				StrokeColor = MagickColor.FromRgb(Parameters.StrokeColor.Red, Parameters.StrokeColor.Green, Parameters.StrokeColor.Blue),
 				BorderColor = MagickColor.FromRgb(Parameters.BorderColor.Red, Parameters.BorderColor.Green, Parameters.BorderColor.Blue),
 				StrokeWidth = 5,
-				// FontPointsize = Parameters.FontPointSize,
 				FontWeight = FontWeight.UltraBold,
 				BackgroundColor = MagickColors.Transparent,
 				Height = Parameters.HeightOfBox, // height of text box
@@ -421,18 +430,7 @@ namespace Bulk_Thumbnail_Creator
 			{
 				BoxesWithNoFacesDetected.Add(bottomRightBox);
 			}
-			//// bottom right corner box
-			//if (faceRect.X > sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height / 2)
-			//{
-			//	// face is detected in bottom right corner box
-			//	// disallow box
-
-			//}
-			//else
-			//{
-			//	BoxesWithNoFacesDetected.Add(bottomRightBox);
-			//}
-
+			
 			// handles the calculation of faces if the boxes are top/bottom boxes
 			int LocationOfRectangleCenterYpos = faceRect.Y + faceRect.Height / 2;
 
@@ -478,21 +476,10 @@ namespace Bulk_Thumbnail_Creator
 			// this is important to avoid boxes being juxtaposed outside of the image
 			parameters = CalculateBoxData(pickedBoxName, sourcePicture, parameters);
 
-			//if (pickedBoxName == "TopBox" || pickedBoxName == "BottomBox")
-			//{
-			//	parameters.WidthOfBox = sourcePicture.Width;
-			//	parameters.HeightOfBox = sourcePicture.Height / 2;
-			//}
-			//else
-			//{
-			//	parameters.WidthOfBox = sourcePicture.Width / 2;
-			//	parameters.HeightOfBox = sourcePicture.Height / 2;
-			//}
-
 			return parameters;
 		}
 
-		public static void ProduceFontVarietyOnClick(PictureData PicToVarietize, string TargetFolder)
+		public static void ProduceFontVarietyData(PictureData PicToVarietize, string TargetFolder)
 		{
 			List<string> fontList = new List<string>();
 
@@ -517,22 +504,22 @@ namespace Bulk_Thumbnail_Creator
 			}
 			// variety selection finished, proceed to creating
 
-			// create the actual varieties
-			int counter = 0;
 			foreach (string font in fontList)
 			{
-				counter++;
 				PictureData createFontVariety = new PictureData();
 				createFontVariety = PicToVarietize;
 				createFontVariety.ParamForTextCreation.Font = font;
-
-				Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(createFontVariety.FileName));
+				createFontVariety.ReadSettings = TextSettingsGeneration(createFontVariety.ParamForTextCreation);
 				
-				// still to fix, the pathing turns out incorrect because Font returns Font//nameoffont  
+				Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(createFontVariety.FileName));
 
-				string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(createFontVariety.FileName) + $"//variety of:{createFontVariety.FileName} + {Path.GetFileNameWithoutExtension(createFontVariety.ParamForTextCreation.Font)}" + $"{counter}" + ".png";
+				string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(createFontVariety.FileName) + "//" + "variety of" + Path.GetFileNameWithoutExtension(createFontVariety.FileName) + " " + Path.GetFileNameWithoutExtension(createFontVariety.ParamForTextCreation.Font) + ".png";
 
-				ProduceTextPictures(createFontVariety, outpath);
+				// ProduceTextPictures(createFontVariety, outpath);
+
+				createFontVariety.OutPath = outpath;
+
+				PicToVarietize.Varieties.Add(createFontVariety);
 			}
 
 		}
@@ -553,7 +540,7 @@ namespace Bulk_Thumbnail_Creator
 			return CurrentParamForText;
 		}
 
-		public static void ProducePlacementOfTextVarietyOnClick(PictureData PicToVarietize, string TargetFolder)
+		public static void ProducePlacementOfTextVarietyData(PictureData PicToVarietize, string TargetFolder)
 		{
 			Box boxToExclude = PicToVarietize.ParamForTextCreation.CurrentBox;
 
@@ -561,11 +548,10 @@ namespace Bulk_Thumbnail_Creator
 			{
 				if (CurrentBox.Key != boxToExclude)
 				{
-
 					// lift triangle
 					Rectangle currentRectangle = CurrentBox.Value;
 					
-					// write it to a pint
+					// write it to a Point
 					Point CurrentPoint = new Point(currentRectangle.X,currentRectangle.Y);
 					
 					// feed it back into object
@@ -580,14 +566,17 @@ namespace Bulk_Thumbnail_Creator
 
 					PicToVarietize.ReadSettings = TextSettingsGeneration(PicToVarietize.ParamForTextCreation);
 
-					// add it to list of objects created varieties
-					PicToVarietize.Varieties.Add(PicToVarietize);
-
 					Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(PicToVarietize.FileName));
 
 					string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(PicToVarietize.FileName) + $"//{CurrentBox.Key}" + ".png";
 
-					ProduceTextPictures(PicToVarietize, outpath);
+					PicToVarietize.OutPath = outpath;
+
+					// add it to list of objects created varieties
+					PicToVarietize.Varieties.Add(PicToVarietize);
+
+					// ProduceTextPictures(PicToVarietize, outpath);
+
 				}
 
 			}
@@ -624,7 +613,7 @@ namespace Bulk_Thumbnail_Creator
 		/// </summary>
 		/// <param name="PictureInputData">The Image to create variety of</param>
 		/// <param name="TargetFolder">The Folder where you want the results to go</param>
-		public static void CreateVariety(PictureData PictureInputData, string TargetFolder)
+		public static void ProduceLuminanceVarietyData(PictureData PictureInputData, string TargetFolder)
 		{
 			const float baseLuminanceValue = 0.50F;
 			float fillcolorHue = PictureInputData.ParamForTextCreation.FillColor.Hue;
@@ -677,9 +666,11 @@ namespace Bulk_Thumbnail_Creator
 
 				VarietyData.ReadSettings = settings;
 
+				VarietyData.OutPath = outpath;
+
 				PictureInputData.Varieties.Add(VarietyData);
 
-				ProduceTextPictures(VarietyData, outpath);
+				// ProduceTextPictures(VarietyData, outpath);
 			}
 
 		}

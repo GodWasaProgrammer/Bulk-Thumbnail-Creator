@@ -41,25 +41,29 @@ namespace Bulk_Thumbnail_Creator
 		/// <summary>
 		/// The Fillcolor for textoutput
 		/// </summary>
-		ColorItem fillColor = new ColorItem();
+		private ColorItem fillColor = new ColorItem();
 		public ColorItem FillColor { get { return fillColor; } set { fillColor = FillColor; } }
 
 		/// <summary>
 		/// StrokeColor for textoutput
 		/// </summary>
-		ColorItem strokeColor = new ColorItem();
+		private ColorItem strokeColor = new ColorItem();
 		public ColorItem StrokeColor { get { return strokeColor; } set { strokeColor = StrokeColor; } }
 
 		/// <summary>
 		/// bordercolor for textoutput
 		/// </summary>
-		ColorItem borderColor = new ColorItem();
+		private ColorItem borderColor = new ColorItem();
 		public ColorItem BorderColor { get { return borderColor; } set { borderColor = BorderColor; } }
 		
-		// store possible boxes
-		public Dictionary<Box, Rectangle> Boxes = new Dictionary<Box, Rectangle>();
 
-		public Box CurrentBox;
+		private Dictionary<Box,Rectangle> _Boxes = new Dictionary<Box,Rectangle>();
+		// store possible boxes
+		public Dictionary<Box, Rectangle> Boxes { get { return _Boxes; } set { _Boxes = value; } }
+
+
+		private Box _CurrentBox;
+		public Box CurrentBox { get { return _CurrentBox; } set { _CurrentBox = value; } }
 
 	}
 

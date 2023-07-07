@@ -122,16 +122,18 @@ namespace Bulk_Thumbnail_Creator
 			//FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
 			//#endregion
 
-			//// just to try out variety will be on interaction/choice of pic
-			//for (int i = 0; i < BTCSettings.Files.Length; i++) 
-			//{
-			//	var input = BTCSettings.PictureDatas[i];
-			//	Logic.CreateVariety(input, BTCSettings.TextAddedDir);
-			//}
+			// just to try out variety will be on interaction/choice of pic
+			for (int i = 0; i < BTCSettings.Files.Length; i++)
+			{
+				var input = BTCSettings.PictureDatas[i];
+				Logic.ProduceLuminanceVarietyData(input, BTCSettings.TextAddedDir);
 
-			// Logic.ProduceFontVarietyOnClick(BTCSettings.PictureDatas[0], BTCSettings.TextAddedDir);
+				Logic.ProduceFontVarietyData(input, Path.GetFullPath(BTCSettings.TextAddedDir));
 
-			Logic.ProducePlacementOfTextVarietyOnClick(BTCSettings.PictureDatas[0], BTCSettings.TextAddedDir);
+				Logic.ProducePlacementOfTextVarietyData(input, BTCSettings.TextAddedDir);
+			}
+
+				// Logic.SerializeListOfObjectsToXML("PictureDataListSerialized.xml", BTCSettings.PictureDatas);
 		}
 
 	}

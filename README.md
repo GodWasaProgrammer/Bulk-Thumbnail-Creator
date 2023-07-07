@@ -12,7 +12,7 @@
 
 - This is for the people that want awesome thumbnails but dont know how to.
 - This Piece of Software will allow you to create thumbnails as easy as breathing.
-- Includes the markets best ffmpeg 
+- Includes the markets best ffmpeg Wrapper - Mine!
 
 ### Getting Started/Requirements/Prerequisites/Dependencies
 
@@ -27,7 +27,7 @@
 
 ### TODO
 
-- Implementing UI in perhaps Blazor
+- Implementing UI in perhaps Blazor / MAUI
 - Known bugs
 - Only calculates on a single face not on the full array of faces actually returned
 

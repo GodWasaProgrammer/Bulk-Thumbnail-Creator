@@ -10,7 +10,7 @@ namespace Bulk_Thumbnail_Creator
 		/// This runs the process of ffmpeg and feeds it with parameters for file extraction
 		/// </summary>
 		/// <param name="parameters"></param>
-		private static void GrabSceneScreenshots(string parameters)
+		private static void ExecuteFFMPG(string parameters)
 		{
 			Process processFFMpeg = new Process();
 
@@ -44,7 +44,7 @@ namespace Bulk_Thumbnail_Creator
 			exePars += outPath;
 			exePars.TrimEnd(' ');
 
-			GrabSceneScreenshots(exePars);
+			ExecuteFFMPG(exePars);
 		}
 
 	}
