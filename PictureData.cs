@@ -32,6 +32,26 @@ namespace Bulk_Thumbnail_Creator
 		/// </summary>
 		private List<PictureData> _Varieties = new List<PictureData>();
 		public List<PictureData> Varieties { get { return _Varieties; } set { _Varieties = value; } }
+
+		/// <summary>
+		/// Copy Constructor 
+		/// </summary>
+		/// <param name="pictureDataToCopy"></param>
+		public PictureData(PictureData pictureDataToCopy) 
+		{
+			_FileName = pictureDataToCopy._FileName;
+			_outPath = pictureDataToCopy._outPath;
+			_ParamForTextCreation = pictureDataToCopy._ParamForTextCreation;
+			_ReadSettings = pictureDataToCopy._ReadSettings;
+
+		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public PictureData()
+		{
+
+		}
 	}
 
 

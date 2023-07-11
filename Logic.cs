@@ -280,19 +280,19 @@ namespace Bulk_Thumbnail_Creator
 			Dictionary<Box, Rectangle> Boxes = new Dictionary<Box, Rectangle>();
 
 			// top box
-			int borderBoxTopValueX = 0;
-			int borderBoxTopValueY = 0;
+			int TopBoxValueX = 0;
+			int TopBoxValueY = 0;
 			Box topBox = Box.TopBox;
 
-			Rectangle borderBoxTopRectangle = new Rectangle
+			Rectangle TopBoxRectangle = new Rectangle
 			{
-				X = borderBoxTopValueX,
-				Y = borderBoxTopValueY,
+				X = TopBoxValueX,
+				Y = TopBoxValueY,
 				Width = sourcePicture.Width,
-				Height = borderBoxTopValueY
+				Height = TopBoxValueY
 			};
 
-			Boxes.Add(topBox, borderBoxTopRectangle);
+			Boxes.Add(topBox, TopBoxRectangle);
 
 			// bottom box
 			int bottomBoxValueX = 0;
@@ -373,23 +373,22 @@ namespace Bulk_Thumbnail_Creator
 
 			// calculate position of face rectangle in relation to boxes
 
-			// make the statements consistent
 			// if top left cornerbox no face detected
 			if (!(faceRect.X < sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2))
 			{
 				BoxesWithNoFacesDetected.Add(topLeftBox);
 			}
-
+			// if toprightbox no face detected
 			if (!(faceRect.X < sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height / 2))
 			{
 				BoxesWithNoFacesDetected.Add(topRightBox);
 			}
-
+			// if bottomleftbox no face detected
 			if (!(faceRect.X < sourcePicture.Width / 2 && faceRect.Y <= sourcePicture.Height / 2))
 			{
 				BoxesWithNoFacesDetected.Add(bottomLeftBox);
 			}
-
+			// if bottomrightbox no face detected
 			if (!(faceRect.X < sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height / 2))
 			{
 				BoxesWithNoFacesDetected.Add(bottomRightBox);
@@ -474,10 +473,10 @@ namespace Bulk_Thumbnail_Creator
 
 			foreach (string font in fontList)
 			{
-				PictureData createFontVariety = new PictureData();
+				PictureData createFontVariety = new PictureData(PicToVarietize);
+				
+				// createFontVariety = PicToVarietize;
 
-				// this needs to change as its writing varietydata of object aswell which is not intended
-				createFontVariety = PicToVarietize;
 				createFontVariety.ParamForTextCreation.Font = font;
 				createFontVariety.ReadSettings = TextSettingsGeneration(createFontVariety.ParamForTextCreation);
 
@@ -522,9 +521,11 @@ namespace Bulk_Thumbnail_Creator
 		/// <param name="TargetFolder">The target folder to varietize</param>
 		public static void ProducePlacementOfTextVarietyData(PictureData PicToVarietize, string TargetFolder)
 		{
-			Box boxToExclude = PicToVarietize.ParamForTextCreation.CurrentBox;
+			PictureData CopiedPictureData = new PictureData(PicToVarietize);
 
-			foreach (var CurrentBox in PicToVarietize.ParamForTextCreation.Boxes)
+			Box boxToExclude = CopiedPictureData.ParamForTextCreation.CurrentBox;
+
+			foreach (var CurrentBox in CopiedPictureData.ParamForTextCreation.Boxes)
 			{
 				if (CurrentBox.Key != boxToExclude)
 				{
@@ -534,26 +535,26 @@ namespace Bulk_Thumbnail_Creator
 					// write it to a Point
 					Point CurrentPoint = new Point(currentRectangle.X, currentRectangle.Y);
 
-					// feed it back into object
-					PicToVarietize.ParamForTextCreation.PositionOfText = CurrentPoint;
-					Bitmap sourcePicture = new Bitmap(PicToVarietize.FileName);
+                    // feed it back into object
+                    CopiedPictureData.ParamForTextCreation.PositionOfText = CurrentPoint;
+					Bitmap sourcePicture = new Bitmap(CopiedPictureData.FileName);
 
 					// set the currentbox to the currentbox key
-					PicToVarietize.ParamForTextCreation.CurrentBox = CurrentBox.Key;
+					CopiedPictureData.ParamForTextCreation.CurrentBox = CurrentBox.Key;
 
 					// calculate box data, important for TextSettingsGeneration returning a correct ReadSettings object
-					PicToVarietize.ParamForTextCreation = CalculateBoxData(CurrentBox.Key, sourcePicture, PicToVarietize.ParamForTextCreation);
+					CopiedPictureData.ParamForTextCreation = CalculateBoxData(CurrentBox.Key, sourcePicture, CopiedPictureData.ParamForTextCreation);
 
-					PicToVarietize.ReadSettings = TextSettingsGeneration(PicToVarietize.ParamForTextCreation);
+					CopiedPictureData.ReadSettings = TextSettingsGeneration(CopiedPictureData.ParamForTextCreation);
 
-					Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(PicToVarietize.FileName));
+					Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(CopiedPictureData.FileName));
 
-					string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(PicToVarietize.FileName) + $"//{CurrentBox.Key}" + ".png";
+					string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(CopiedPictureData.FileName) + $"//{CurrentBox.Key}" + ".png";
 
-					PicToVarietize.OutPath = outpath;
+					CopiedPictureData.OutPath = outpath;
 
 					// add it to list of objects created varieties
-					PicToVarietize.Varieties.Add(PicToVarietize);
+					CopiedPictureData.Varieties.Add(PicToVarietize);
 				}
 
 			}
@@ -622,10 +623,7 @@ namespace Bulk_Thumbnail_Creator
 
 			foreach (float variety in VarietyList)
 			{
-				PictureData VarietyData = new PictureData
-				{
-					ParamForTextCreation = PictureInputData.ParamForTextCreation
-				};
+				PictureData VarietyData = new PictureData(PictureInputData);
 
 				VarietyData.ParamForTextCreation.FillColor.SetByHSL(fillcolorHue, variety, fillcolorLuminance);
 
