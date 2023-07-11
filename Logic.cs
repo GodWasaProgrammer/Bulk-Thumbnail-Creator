@@ -1,4 +1,5 @@
 ﻿using ImageMagick;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
@@ -446,7 +447,7 @@ namespace Bulk_Thumbnail_Creator
 		/// </summary>
 		/// <param name="PicToVarietize">Your input PictureData object to produce varieties of</param>
 		/// <param name="TargetFolder">The target folder of your object</param>
-		public static void ProduceFontVarietyData(PictureData PicToVarietize, string TargetFolder)
+		public static void ProduceFontVarietyData(PictureData PicToVarietize)
 		{
 			List<string> fontList = new List<string>();
 
@@ -480,13 +481,13 @@ namespace Bulk_Thumbnail_Creator
 				createFontVariety.ParamForTextCreation.Font = font;
 				createFontVariety.ReadSettings = TextSettingsGeneration(createFontVariety.ParamForTextCreation);
 
-				Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(createFontVariety.FileName));
+				// Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(createFontVariety.FileName));
 
-				string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(createFontVariety.FileName) + "//" + "variety of" + Path.GetFileNameWithoutExtension(createFontVariety.FileName) + " " + Path.GetFileNameWithoutExtension(createFontVariety.ParamForTextCreation.Font) + ".png";
+				// string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(createFontVariety.FileName) + "//" + "variety of" + Path.GetFileNameWithoutExtension(createFontVariety.FileName) + " " + Path.GetFileNameWithoutExtension(createFontVariety.ParamForTextCreation.Font) + ".png";
 
 				// ProduceTextPictures(createFontVariety, outpath);
 
-				createFontVariety.OutPath = outpath;
+				// createFontVariety.OutPath = outpath;
 
 				PicToVarietize.Varieties.Add(createFontVariety);
 			}
@@ -519,7 +520,7 @@ namespace Bulk_Thumbnail_Creator
 		/// </summary>
 		/// <param name="PicToVarietize">The Target picture to varietize</param>
 		/// <param name="TargetFolder">The target folder to varietize</param>
-		public static void ProducePlacementOfTextVarietyData(PictureData PicToVarietize, string TargetFolder)
+		public static void ProducePlacementOfTextVarietyData(PictureData PicToVarietize)
 		{
 			PictureData CopiedPictureData = new PictureData(PicToVarietize);
 
@@ -547,14 +548,14 @@ namespace Bulk_Thumbnail_Creator
 
 					CopiedPictureData.ReadSettings = TextSettingsGeneration(CopiedPictureData.ParamForTextCreation);
 
-					Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(CopiedPictureData.FileName));
+					// Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(CopiedPictureData.FileName));
 
-					string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(CopiedPictureData.FileName) + $"//{CurrentBox.Key}" + ".png";
+					// string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(CopiedPictureData.FileName) + $"//{CurrentBox.Key}" + ".png";
 
-					CopiedPictureData.OutPath = outpath;
+					// CopiedPictureData.OutPath = outpath;
 
 					// add it to list of objects created varieties
-					CopiedPictureData.Varieties.Add(PicToVarietize);
+					PicToVarietize.Varieties.Add(CopiedPictureData);
 				}
 
 			}
@@ -565,21 +566,36 @@ namespace Bulk_Thumbnail_Creator
 		/// Produces Picture using the ImageMagick Library
 		/// </summary>
 		/// <param name="PicData">PictureDataObject Containing everything needed to create an image</param>
-		/// <param name="outputFullPath">The Directory where the output images goes</param>
-		public static void ProduceTextPictures(PictureData PicData, string outputFullPath)
+		public static void ProduceTextPictures(PictureData PicData)
 		{
-			using (MagickImage outputImage = new MagickImage(PicData.FileName))
+            string imageName = Path.GetFileName(PicData.FileName);
+            string OutputPath = Path.GetFullPath(BTCSettings.TextAddedDir) + "//" + imageName;
+            // if file doesnt exist, make it, otherwise treat it as a variety
+
+            if (!File.Exists(OutputPath))
+			{ 
+				imageName = Path.GetFileName(PicData.FileName);
+				OutputPath = Path.GetFullPath(BTCSettings.TextAddedDir) + "//" + imageName;
+            }
+			else
+            {
+                Directory.CreateDirectory(Path.GetFullPath(BTCSettings.TextAddedDir) + "//" + "variety of " + Path.GetFileName(PicData.FileName));
+
+                OutputPath = Path.GetFullPath(BTCSettings.TextAddedDir) + "//" + "variety of " + Path.GetFileName(PicData.FileName) + $"//{PicData.ParamForTextCreation.CurrentBox}" + ".png";
+            }
+
+			using (MagickImage outputImage = new MagickImage(Path.GetFullPath(PicData.FileName)))
 			{
 				using (var caption = new MagickImage($"caption:{PicData.ParamForTextCreation.Text}", PicData.ReadSettings))
 				{
 					// Add the caption layer on top of the background image
-					outputImage.Composite(caption, PicData.ParamForTextCreation.PositionOfText.X, PicData.ParamForTextCreation.PositionOfText.Y, CompositeOperator.Over);
+					outputImage.Composite(caption, PicData.ParamForTextCreation.Boxes[PicData.ParamForTextCreation.CurrentBox].X, PicData.ParamForTextCreation.Boxes[PicData.ParamForTextCreation.CurrentBox].Y, CompositeOperator.Over);
 					outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
 
 					outputImage.Quality = 100;
 
 					// outputs the file to the provided path and name
-					outputImage.Write(outputFullPath);
+					outputImage.Write(OutputPath);
 				}
 
 			}
@@ -591,7 +607,7 @@ namespace Bulk_Thumbnail_Creator
 		/// </summary>
 		/// <param name="PictureInputData">The Image to create variety of</param>
 		/// <param name="TargetFolder">The Folder where you want the results to go</param>
-		public static void ProduceLuminanceVarietyData(PictureData PictureInputData, string TargetFolder)
+		public static void ProduceLuminanceVarietyData(PictureData PictureInputData)
 		{
 			const float baseLuminanceValue = 0.50F;
 			float fillcolorHue = PictureInputData.ParamForTextCreation.FillColor.Hue;
@@ -633,15 +649,15 @@ namespace Bulk_Thumbnail_Creator
 
 				VarietyData.FileName = PictureInputData.FileName;
 
-				Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(VarietyData.FileName));
+				// Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(VarietyData.FileName));
 
-				string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(VarietyData.FileName) + $"//{variety}" + ".png";
+				// string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(VarietyData.FileName) + $"//{variety}" + ".png";
 
-				MagickReadSettings settings = TextSettingsGeneration(VarietyData.ParamForTextCreation);
+				//MagickReadSettings settings = TextSettingsGeneration(VarietyData.ParamForTextCreation);
 
-				VarietyData.ReadSettings = settings;
+				//VarietyData.ReadSettings = settings;
 
-				VarietyData.OutPath = outpath;
+				// VarietyData.OutPath = outpath;
 
 				PictureInputData.Varieties.Add(VarietyData);
 			}

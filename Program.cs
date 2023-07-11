@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ImageMagick;
 using System.Drawing;
+using System.Xml.Schema;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -95,33 +96,38 @@ namespace Bulk_Thumbnail_Creator
 					ReadSettings = settings,
 				};
 
-				string imageName = Path.GetFileName(file);
-				string outputFullPath = Path.GetFullPath(BTCSettings.TextAddedDir) + $"/{imageName}";
-				PassPictureData.OutPath = outputFullPath;
+				//string imageName = Path.GetFileName(file);
+				//string outputFullPath = Path.GetFullPath(BTCSettings.TextAddedDir) + $"/{imageName}";
+				//PassPictureData.OutPath = outputFullPath;
 				BTCSettings.PictureDatas.Add(PassPictureData);
 			}
 
 			#region Make Showcase Video
-			Dictionary<string, string> paramToMakeVideoOfResult = new Dictionary<string, string>();
-			paramToMakeVideoOfResult["framerate"] = "2";
-			paramToMakeVideoOfResult["i"] = $@"""{Path.GetFullPath(BTCSettings.TextAddedDir)}/%03d.png""";
-			string getTruePath = Path.GetFullPath(BTCSettings.TextAddedDir);
-			string showCaseVideoOutPut = $@"""{getTruePath}/showcase.mp4""";
+			//Dictionary<string, string> paramToMakeVideoOfResult = new Dictionary<string, string>();
+			//paramToMakeVideoOfResult["framerate"] = "2";
+			//paramToMakeVideoOfResult["i"] = $@"""{Path.GetFullPath(BTCSettings.TextAddedDir)}/%03d.png""";
+			//string getTruePath = Path.GetFullPath(BTCSettings.TextAddedDir);
+			//string showCaseVideoOutPut = $@"""{getTruePath}/showcase.mp4""";
 
-			FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
+			//FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
 			#endregion
 
 			// just to try out variety will be on interaction/choice of pic
-			for (int i = 0; i < BTCSettings.Files.Length; i++)
+			for (int i = 0; i < BTCSettings.PictureDatas.Count; i++)
 			{
 				var input = BTCSettings.PictureDatas[i];
-				Logic.ProduceLuminanceVarietyData(input, BTCSettings.TextAddedDir);
+				Logic.ProduceLuminanceVarietyData(input);
 
-				Logic.ProduceFontVarietyData(input, Path.GetFullPath(BTCSettings.TextAddedDir));
+				Logic.ProduceFontVarietyData(input);
 
-				Logic.ProducePlacementOfTextVarietyData(input, BTCSettings.TextAddedDir);
+				Logic.ProducePlacementOfTextVarietyData(input);
+
+				// Logic.ProduceTextPictures(input);
 			}
 
+			Logic.ProduceTextPictures(BTCSettings.PictureDatas[0]);
+
+			Logic.ProduceTextPictures(BTCSettings.PictureDatas[0].Varieties[3]);
 		}
 
 	}
