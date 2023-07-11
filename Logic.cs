@@ -1,10 +1,9 @@
 ﻿using ImageMagick;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.IO;
-using System.IO.Ports;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using YoutubeDLSharp;
@@ -83,7 +82,7 @@ namespace Bulk_Thumbnail_Creator
 
 				hueStrokeColor = ColorWheelSpinner(hueFillColor);
 				hueBorderColor = ColorWheelSpinner(hueFillColor);
-				
+
 				if (hueFillColor > maxHueValue)
 				{
 					hueFillColor = resetFromMaxToMin;
@@ -157,15 +156,6 @@ namespace Bulk_Thumbnail_Creator
 			}
 
 		}
-
-		//public static void SerializeListOfObjectsToXML(string PathToXML, List<PictureData> ListOfPictureDatasToSerialize)
-		//{
-		//	using (FileStream file = File.Create(PathToXML))
-		//	{
-		//		serializePictureData.Serialize(file, ListOfPictureDatasToSerialize);
-		//	}
-
-		//}
 
 		/// <summary>
 		/// Instantiates a YoutubeDL and downloads the specified string
@@ -277,10 +267,18 @@ namespace Bulk_Thumbnail_Creator
 		/// <param name="sourcePicture">the picture to detect faces on</param>
 		/// <param name="faceRect">the returned rectangle with the faceposition</param>
 		/// <returns></returns>
+
 		public static ParamForTextCreation GettextPosition(ParamForTextCreation parameters, Bitmap sourcePicture, Rectangle faceRect)
 		{
+			// if the passed triangle is empty, set it outside of the image.
+			if (faceRect.IsEmpty)
+			{
+				Rectangle EmptyTriangleWasPassed = new Rectangle(sourcePicture.Width,sourcePicture.Height,50,50);
+				faceRect = EmptyTriangleWasPassed;
+			}
+
 			Dictionary<Box, Rectangle> Boxes = new Dictionary<Box, Rectangle>();
-			
+
 			// top box
 			int borderBoxTopValueX = 0;
 			int borderBoxTopValueY = 0;
@@ -369,68 +367,34 @@ namespace Bulk_Thumbnail_Creator
 				Height = sourcePicture.Height / 2
 			};
 
-			Boxes.Add(bottomRightBox,bottomRightBoxRectangle);
-			
+			Boxes.Add(bottomRightBox, bottomRightBoxRectangle);
+
 			List<Box> BoxesWithNoFacesDetected = new List<Box>();
 
 			// calculate position of face rectangle in relation to boxes
 
-			//bool topleftbox = faceRect.X < sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2;
-
-			//if (!topleftbox)
-			//{
-			//	BoxesWithNoFacesDetected.Add(topLeftBox);
-			//}
-
-			// top left cornerbox no face detected
+			// make the statements consistent
+			// if top left cornerbox no face detected
 			if (!(faceRect.X < sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2))
 			{
 				BoxesWithNoFacesDetected.Add(topLeftBox);
 			}
-	
 
-			bool toprightbox = faceRect.X < sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height / 2;
-
-			if (!toprightbox)
+			if (!(faceRect.X < sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height / 2))
 			{
 				BoxesWithNoFacesDetected.Add(topRightBox);
 			}
 
-			//// top right corner box
-			//if (faceRect.X > sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2)
-			//{
-			//	// face is detected in top right corner box
-			//	// disallow box
-			//}
-			//else
-			//{
-			//	BoxesWithNoFacesDetected.Add(topRightBox);
-			//}
-
-			bool bottomleftbox = faceRect.X < sourcePicture.Width / 2 && faceRect.Y <= sourcePicture.Height / 2;
-			if (!bottomleftbox)
+			if (!(faceRect.X < sourcePicture.Width / 2 && faceRect.Y <= sourcePicture.Height / 2))
 			{
 				BoxesWithNoFacesDetected.Add(bottomLeftBox);
 			}
 
-			//// bottom left corner box
-			//if (faceRect.X > sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height/ 2)
-			//{
-			//	// face is detected in bottom left corner box
-			//	// disallow box
-			//}
-			//else
-			//{
-			//	BoxesWithNoFacesDetected.Add(bottomLeftBox);
-			//}
-
-			bool bottomrightbox = faceRect.X < sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height / 2;
-
-			if (!bottomrightbox)
+			if (!(faceRect.X < sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height / 2))
 			{
 				BoxesWithNoFacesDetected.Add(bottomRightBox);
 			}
-			
+
 			// handles the calculation of faces if the boxes are top/bottom boxes
 			int LocationOfRectangleCenterYpos = faceRect.Y + faceRect.Height / 2;
 
@@ -444,7 +408,7 @@ namespace Bulk_Thumbnail_Creator
 				BoxesWithNoFacesDetected.Add(bottomBox);
 
 			}
-			
+
 			// if middle of image is less then the location of the rectangle height position
 			if (sourceIMGMiddleY < LocationOfRectangleCenterYpos)
 			{
@@ -460,7 +424,7 @@ namespace Bulk_Thumbnail_Creator
 
 			// picks a random box that has no face in it
 			Box pickedBoxName = BoxesWithNoFacesDetected[randomizedbox];
-			
+
 			// tries to read from dictionary
 			Boxes.TryGetValue(pickedBoxName, out Rectangle pickedBoxRectangle);
 
@@ -468,7 +432,7 @@ namespace Bulk_Thumbnail_Creator
 
 			// makes a point to feed to the parameters passed in
 			Point pickedBoxPoint = new Point(pickedBoxRectangle.X, pickedBoxRectangle.Y);
-			
+
 			// sets the position of the parameter objects point variable 
 			parameters.PositionOfText = pickedBoxPoint;
 
@@ -478,7 +442,11 @@ namespace Bulk_Thumbnail_Creator
 
 			return parameters;
 		}
-
+		/// <summary>
+		/// Produces 5 varieties of the first randomized font that hasnt already been chosen
+		/// </summary>
+		/// <param name="PicToVarietize">Your input PictureData object to produce varieties of</param>
+		/// <param name="TargetFolder">The target folder of your object</param>
 		public static void ProduceFontVarietyData(PictureData PicToVarietize, string TargetFolder)
 		{
 			List<string> fontList = new List<string>();
@@ -500,17 +468,19 @@ namespace Bulk_Thumbnail_Creator
 				{
 					i--;
 				}
-				
+
 			}
 			// variety selection finished, proceed to creating
 
 			foreach (string font in fontList)
 			{
 				PictureData createFontVariety = new PictureData();
+
+				// this needs to change as its writing varietydata of object aswell which is not intended
 				createFontVariety = PicToVarietize;
 				createFontVariety.ParamForTextCreation.Font = font;
 				createFontVariety.ReadSettings = TextSettingsGeneration(createFontVariety.ParamForTextCreation);
-				
+
 				Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(createFontVariety.FileName));
 
 				string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(createFontVariety.FileName) + "//" + "variety of" + Path.GetFileNameWithoutExtension(createFontVariety.FileName) + " " + Path.GetFileNameWithoutExtension(createFontVariety.ParamForTextCreation.Font) + ".png";
@@ -523,8 +493,14 @@ namespace Bulk_Thumbnail_Creator
 			}
 
 		}
-
-		public static ParamForTextCreation CalculateBoxData(Box CurrentBox, Bitmap sourcePicture , ParamForTextCreation CurrentParamForText)
+		/// <summary>
+		/// Support method to calculate where the box will be juxtaposed
+		/// </summary>
+		/// <param name="CurrentBox">The Box to calculate</param>
+		/// <param name="sourcePicture">The Picture where the box is to be placed</param>
+		/// <param name="CurrentParamForText">the current parameters for text creation input</param>
+		/// <returns></returns>
+		public static ParamForTextCreation CalculateBoxData(Box CurrentBox, Bitmap sourcePicture, ParamForTextCreation CurrentParamForText)
 		{
 			if (CurrentBox == Box.TopBox || CurrentBox == Box.BottomBox)
 			{
@@ -539,7 +515,11 @@ namespace Bulk_Thumbnail_Creator
 
 			return CurrentParamForText;
 		}
-
+		/// <summary>
+		/// Produces the remaining boxes of a picturedata object to create variety of choice
+		/// </summary>
+		/// <param name="PicToVarietize">The Target picture to varietize</param>
+		/// <param name="TargetFolder">The target folder to varietize</param>
 		public static void ProducePlacementOfTextVarietyData(PictureData PicToVarietize, string TargetFolder)
 		{
 			Box boxToExclude = PicToVarietize.ParamForTextCreation.CurrentBox;
@@ -550,10 +530,10 @@ namespace Bulk_Thumbnail_Creator
 				{
 					// lift triangle
 					Rectangle currentRectangle = CurrentBox.Value;
-					
+
 					// write it to a Point
-					Point CurrentPoint = new Point(currentRectangle.X,currentRectangle.Y);
-					
+					Point CurrentPoint = new Point(currentRectangle.X, currentRectangle.Y);
+
 					// feed it back into object
 					PicToVarietize.ParamForTextCreation.PositionOfText = CurrentPoint;
 					Bitmap sourcePicture = new Bitmap(PicToVarietize.FileName);
@@ -574,9 +554,6 @@ namespace Bulk_Thumbnail_Creator
 
 					// add it to list of objects created varieties
 					PicToVarietize.Varieties.Add(PicToVarietize);
-
-					// ProduceTextPictures(PicToVarietize, outpath);
-
 				}
 
 			}
@@ -669,9 +646,12 @@ namespace Bulk_Thumbnail_Creator
 				VarietyData.OutPath = outpath;
 
 				PictureInputData.Varieties.Add(VarietyData);
-
-				// ProduceTextPictures(VarietyData, outpath);
 			}
+
+		}
+
+		public static void ProduceSpecialEffectsVarietyData(PictureData pictureInputData, string TargetFolder)
+		{
 
 		}
 
@@ -701,7 +681,7 @@ namespace Bulk_Thumbnail_Creator
 		//public static void AddNewLineToString(string stringToVerticalize)
 		//{
 		//	char[] arrayedText = stringToVerticalize.ToCharArray();
-			
+
 		//	string newLinedText;
 
 		//	foreach(char c in arrayedText)

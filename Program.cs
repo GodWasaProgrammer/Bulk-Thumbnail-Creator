@@ -64,9 +64,9 @@ namespace Bulk_Thumbnail_Creator
 
 			// main loop for detecting faces, placing text where face is not
 			// outputting file
-			for (int i = 0; i < BTCSettings.Files.Length; i++)
+			for (int fileIndex = 0; fileIndex < BTCSettings.Files.Length; fileIndex++)
 			{
-				string file = BTCSettings.Files[i];
+				string file = BTCSettings.Files[fileIndex];
 
 				Bitmap bitmap = new Bitmap(file);
 
@@ -74,18 +74,10 @@ namespace Bulk_Thumbnail_Creator
 
 				ParamForTextCreation currentParameters = new ParamForTextCreation();
 
-				if (detectedFacesRect.Length > 0)
-				{
-					Rectangle faceRect = detectedFacesRect.First();
-					currentParameters = Logic.GettextPosition(currentParameters	,bitmap, faceRect);
-				}
-				else
-				{
-					Rectangle EmptyRectangle = new Rectangle(bitmap.Width, bitmap.Height, 50, 50);
-					currentParameters = Logic.GettextPosition(currentParameters,bitmap, EmptyRectangle);
-				}
+				Rectangle faceRect = detectedFacesRect.FirstOrDefault();
+				currentParameters = Logic.GettextPosition(currentParameters, bitmap, faceRect);
 
-				currentParameters = Logic.DecideColorGeneration(currentParameters, i);
+				currentParameters = Logic.DecideColorGeneration(currentParameters, fileIndex);
 
 				currentParameters.Font = Logic.PickRandomFont();
 
@@ -103,24 +95,21 @@ namespace Bulk_Thumbnail_Creator
 					ReadSettings = settings,
 				};
 
-				BTCSettings.PictureDatas.Add(PassPictureData);
-
 				string imageName = Path.GetFileName(file);
-
 				string outputFullPath = Path.GetFullPath(BTCSettings.TextAddedDir) + $"/{imageName}";
-
-				Logic.ProduceTextPictures(PassPictureData, outputFullPath);
+				PassPictureData.OutPath = outputFullPath;
+				BTCSettings.PictureDatas.Add(PassPictureData);
 			}
 
-			//#region Make Showcase Video
-			//Dictionary<string, string> paramToMakeVideoOfResult = new Dictionary<string, string>();
-			//paramToMakeVideoOfResult["framerate"] = "2";
-			//paramToMakeVideoOfResult["i"] = $@"""{Path.GetFullPath(BTCSettings.TextAddedDir)}/%03d.png""";
-			//string getTruePath = Path.GetFullPath(BTCSettings.TextAddedDir);
-			//string showCaseVideoOutPut = $@"""{getTruePath}/showcase.mp4""";
+			#region Make Showcase Video
+			Dictionary<string, string> paramToMakeVideoOfResult = new Dictionary<string, string>();
+			paramToMakeVideoOfResult["framerate"] = "2";
+			paramToMakeVideoOfResult["i"] = $@"""{Path.GetFullPath(BTCSettings.TextAddedDir)}/%03d.png""";
+			string getTruePath = Path.GetFullPath(BTCSettings.TextAddedDir);
+			string showCaseVideoOutPut = $@"""{getTruePath}/showcase.mp4""";
 
-			//FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
-			//#endregion
+			FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
+			#endregion
 
 			// just to try out variety will be on interaction/choice of pic
 			for (int i = 0; i < BTCSettings.Files.Length; i++)
@@ -133,7 +122,6 @@ namespace Bulk_Thumbnail_Creator
 				Logic.ProducePlacementOfTextVarietyData(input, BTCSettings.TextAddedDir);
 			}
 
-				// Logic.SerializeListOfObjectsToXML("PictureDataListSerialized.xml", BTCSettings.PictureDatas);
 		}
 
 	}

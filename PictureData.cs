@@ -7,7 +7,7 @@ namespace Bulk_Thumbnail_Creator
 		
 	{
 		/// <summary>
-		/// The filename of this object, not a path, example : 001.png
+		/// The filename of this object, with relative output path example : output//001.png
 		/// </summary>
 		private string _FileName;
 		public string FileName { get { return _FileName; }set { _FileName = value; } }
