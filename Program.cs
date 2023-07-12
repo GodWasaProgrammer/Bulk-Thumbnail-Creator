@@ -89,7 +89,7 @@ namespace Bulk_Thumbnail_Creator
 
 				MagickReadSettings settings = Logic.TextSettingsGeneration(currentParameters);
 
-				PictureData PassPictureData = new PictureData
+				PictureData PassPictureData = new PictureData()
 				{
 					FileName = file,
 					ParamForTextCreation = currentParameters,
@@ -100,6 +100,7 @@ namespace Bulk_Thumbnail_Creator
 				//string outputFullPath = Path.GetFullPath(BTCSettings.TextAddedDir) + $"/{imageName}";
 				//PassPictureData.OutPath = outputFullPath;
 				BTCSettings.PictureDatas.Add(PassPictureData);
+				// Logic.ProduceTextPictures(PassPictureData);
 			}
 
 			#region Make Showcase Video
@@ -116,18 +117,22 @@ namespace Bulk_Thumbnail_Creator
 			for (int i = 0; i < BTCSettings.PictureDatas.Count; i++)
 			{
 				var input = BTCSettings.PictureDatas[i];
-				Logic.ProduceLuminanceVarietyData(input);
+			//	Logic.ProduceSaturationVarietyData(input);
 
-				Logic.ProduceFontVarietyData(input);
+			//	Logic.ProduceFontVarietyData(input);
 
-				Logic.ProducePlacementOfTextVarietyData(input);
+				BTCSettings.PictureDatas[i] = Logic.ProducePlacementOfTextVarietyData(input);
 
 				// Logic.ProduceTextPictures(input);
 			}
 
 			Logic.ProduceTextPictures(BTCSettings.PictureDatas[0]);
 
-			Logic.ProduceTextPictures(BTCSettings.PictureDatas[0].Varieties[3]);
+			for (int IndexOfVariety = 0; IndexOfVariety < BTCSettings.PictureDatas[0].Varieties.Count; IndexOfVariety++)
+			{
+				Logic.ProduceTextPictures(BTCSettings.PictureDatas[0].Varieties[IndexOfVariety]);
+			}
+
 		}
 
 	}

@@ -355,6 +355,7 @@
     <Compile Include="ColorItem.cs" />
     <Compile Include="FFmpegHandler.cs" />
     <Compile Include="Logic.cs" />
+    <Compile Include="OutputType.cs" />
     <Compile Include="PictureData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

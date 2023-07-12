@@ -43,15 +43,17 @@ namespace Bulk_Thumbnail_Creator
 			_outPath = pictureDataToCopy._outPath;
 			_ParamForTextCreation = pictureDataToCopy._ParamForTextCreation;
 			_ReadSettings = pictureDataToCopy._ReadSettings;
-
+			_Varieties = pictureDataToCopy._Varieties;
 		}
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public PictureData()
-		{
+		public PictureData() 
+		{ 
 
 		}
+
+		public OutputType OutputType;
 	}
 
 

@@ -406,7 +406,6 @@ namespace Bulk_Thumbnail_Creator
 			{
 				// add bottom box to list of allowed boxes
 				BoxesWithNoFacesDetected.Add(bottomBox);
-
 			}
 
 			// if middle of image is less then the location of the rectangle height position
@@ -481,14 +480,12 @@ namespace Bulk_Thumbnail_Creator
 				createFontVariety.ParamForTextCreation.Font = font;
 				createFontVariety.ReadSettings = TextSettingsGeneration(createFontVariety.ParamForTextCreation);
 
-				// Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(createFontVariety.FileName));
-
-				// string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(createFontVariety.FileName) + "//" + "variety of" + Path.GetFileNameWithoutExtension(createFontVariety.FileName) + " " + Path.GetFileNameWithoutExtension(createFontVariety.ParamForTextCreation.Font) + ".png";
+				
 
 				// ProduceTextPictures(createFontVariety, outpath);
 
 				// createFontVariety.OutPath = outpath;
-
+				createFontVariety.OutputType = OutputType.FontVariety;
 				PicToVarietize.Varieties.Add(createFontVariety);
 			}
 
@@ -520,7 +517,7 @@ namespace Bulk_Thumbnail_Creator
 		/// </summary>
 		/// <param name="PicToVarietize">The Target picture to varietize</param>
 		/// <param name="TargetFolder">The target folder to varietize</param>
-		public static void ProducePlacementOfTextVarietyData(PictureData PicToVarietize)
+		public static PictureData ProducePlacementOfTextVarietyData(PictureData PicToVarietize)
 		{
 			PictureData CopiedPictureData = new PictureData(PicToVarietize);
 
@@ -555,11 +552,12 @@ namespace Bulk_Thumbnail_Creator
 					// CopiedPictureData.OutPath = outpath;
 
 					// add it to list of objects created varieties
+					CopiedPictureData.OutputType = OutputType.BoxPositionVariety;
 					PicToVarietize.Varieties.Add(CopiedPictureData);
 				}
-
+				
 			}
-
+			return PicToVarietize;
 		}
 
 		/// <summary>
@@ -568,21 +566,35 @@ namespace Bulk_Thumbnail_Creator
 		/// <param name="PicData">PictureDataObject Containing everything needed to create an image</param>
 		public static void ProduceTextPictures(PictureData PicData)
 		{
-            string imageName = Path.GetFileName(PicData.FileName);
-            string OutputPath = Path.GetFullPath(BTCSettings.TextAddedDir) + "//" + imageName;
-            // if file doesnt exist, make it, otherwise treat it as a variety
+			string imageName;
+			string OutputPath = Path.GetFullPath(BTCSettings.TextAddedDir);
+			Directory.CreateDirectory(OutputPath + "//" + "variety of " + Path.GetFileName(PicData.FileName));
+			// if file doesnt exist, make it, otherwise treat it as a variety
 
-            if (!File.Exists(OutputPath))
+			if (PicData.OutputType == OutputType.Main)
 			{ 
-				imageName = Path.GetFileName(PicData.FileName);
-				OutputPath = Path.GetFullPath(BTCSettings.TextAddedDir) + "//" + imageName;
+				 imageName = Path.GetFileName(PicData.FileName);
+				 OutputPath += "//" + imageName;
             }
-			else
+			if (PicData.OutputType == OutputType.BoxPositionVariety)
             {
-                Directory.CreateDirectory(Path.GetFullPath(BTCSettings.TextAddedDir) + "//" + "variety of " + Path.GetFileName(PicData.FileName));
+               // Directory.CreateDirectory(OutputPath + "//" + "variety of " + Path.GetFileName(PicData.FileName));
 
-                OutputPath = Path.GetFullPath(BTCSettings.TextAddedDir) + "//" + "variety of " + Path.GetFileName(PicData.FileName) + $"//{PicData.ParamForTextCreation.CurrentBox}" + ".png";
+                OutputPath +=  "//" + "variety of " + Path.GetFileName(PicData.FileName) + $"//{PicData.ParamForTextCreation.CurrentBox}" + ".png";
             }
+			if (PicData.OutputType == OutputType.SaturationVariety)
+			{
+				//Directory.CreateDirectory(OutputPath + "//" + "variety of " + Path.GetFileName(PicData.FileName));
+
+				OutputPath += "//" + "variety of " + Path.GetFileName(PicData.FileName) + $"//luminance{PicData.ParamForTextCreation.BorderColor.Saturation}" + ".png";
+			}
+			if (PicData.OutputType == OutputType.FontVariety)
+			{
+				// Directory.CreateDirectory(OutputPath + "//" + "variety of " + Path.GetFileName(PicData.FileName));
+
+				OutputPath += "//" + "variety of " + Path.GetFileName(PicData.FileName) + "//" + Path.GetFileNameWithoutExtension(PicData.FileName) + " " + Path.GetFileNameWithoutExtension(PicData.ParamForTextCreation.Font) + ".png";
+			}
+
 
 			using (MagickImage outputImage = new MagickImage(Path.GetFullPath(PicData.FileName)))
 			{
@@ -607,7 +619,7 @@ namespace Bulk_Thumbnail_Creator
 		/// </summary>
 		/// <param name="PictureInputData">The Image to create variety of</param>
 		/// <param name="TargetFolder">The Folder where you want the results to go</param>
-		public static void ProduceLuminanceVarietyData(PictureData PictureInputData)
+		public static void ProduceSaturationVarietyData(PictureData PictureInputData)
 		{
 			const float baseLuminanceValue = 0.50F;
 			float fillcolorHue = PictureInputData.ParamForTextCreation.FillColor.Hue;
@@ -636,10 +648,10 @@ namespace Bulk_Thumbnail_Creator
 
 			float Variety5 = 1F;
 			VarietyList.Add(Variety5);
-
+			PictureData VarietyData = new PictureData(PictureInputData);
 			foreach (float variety in VarietyList)
 			{
-				PictureData VarietyData = new PictureData(PictureInputData);
+				// PictureData VarietyData = new PictureData(PictureInputData);
 
 				VarietyData.ParamForTextCreation.FillColor.SetByHSL(fillcolorHue, variety, fillcolorLuminance);
 
@@ -649,25 +661,21 @@ namespace Bulk_Thumbnail_Creator
 
 				VarietyData.FileName = PictureInputData.FileName;
 
-				// Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(VarietyData.FileName));
-
-				// string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(VarietyData.FileName) + $"//{variety}" + ".png";
-
 				//MagickReadSettings settings = TextSettingsGeneration(VarietyData.ParamForTextCreation);
 
 				//VarietyData.ReadSettings = settings;
 
 				// VarietyData.OutPath = outpath;
-
+				VarietyData.OutputType = OutputType.SaturationVariety;
 				PictureInputData.Varieties.Add(VarietyData);
 			}
 
 		}
 
-		public static void ProduceSpecialEffectsVarietyData(PictureData pictureInputData, string TargetFolder)
-		{
+		//public static void ProduceSpecialEffectsVarietyData(PictureData pictureInputData, string TargetFolder)
+		//{
 
-		}
+		//}
 
 		///// <summary>
 		///// This isnt working, it throws a major exception for whatever reason
