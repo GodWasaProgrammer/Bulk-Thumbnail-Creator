@@ -4,6 +4,16 @@ namespace Bulk_Thumbnail_Creator
 {
 	public class ColorItem
 	{
+		public ColorItem(ColorItem colorItemToCopy)
+		{
+			red = colorItemToCopy.red;
+			green = colorItemToCopy.green;
+			blue = colorItemToCopy.blue;
+		}
+		public ColorItem() 
+		{
+
+		}
 		private byte red;
 		public byte Red { get { return red; } }
 

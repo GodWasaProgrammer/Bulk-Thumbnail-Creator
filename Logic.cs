@@ -475,14 +475,12 @@ namespace Bulk_Thumbnail_Creator
 			{
 				PictureData createFontVariety = new PictureData(PicToVarietize);
 
-				ParamForTextCreation paramForTextCreation = new ParamForTextCreation(createFontVariety.ParamForTextCreation)
-				{
-					Font = font
-				};
+				ParamForTextCreation paramForTextCreation = new ParamForTextCreation(createFontVariety.ParamForTextCreation);
 
-				// createFontVariety.ParamForTextCreation.Font = font;
+                paramForTextCreation.Font = font;
 
 				createFontVariety.ReadSettings = TextSettingsGeneration(paramForTextCreation);
+				// set textsettingsgen to set Font of param
 				createFontVariety.ParamForTextCreation.Font = createFontVariety.ReadSettings.Font;
 				createFontVariety.OutputType = OutputType.FontVariety;
 				PicToVarietize.Varieties.Add(createFontVariety);
@@ -525,10 +523,11 @@ namespace Bulk_Thumbnail_Creator
 
 			foreach (var CurrentBox in PicToVarietize.ParamForTextCreation.Boxes)
 			{
-				PictureData CopiedPictureData = new PictureData();
-				CopiedPictureData.ParamForTextCreation = PicToVarietize.ParamForTextCreation;
-				CopiedPictureData.FileName = PicToVarietize.FileName;
-				CopiedPictureData.ReadSettings = PicToVarietize.ReadSettings;
+				PictureData CopiedPictureData = new PictureData(PicToVarietize);
+				
+				//CopiedPictureData.ParamForTextCreation = PicToVarietize.ParamForTextCreation;
+				//CopiedPictureData.FileName = PicToVarietize.FileName;
+				//CopiedPictureData.ReadSettings = PicToVarietize.ReadSettings;
 				
 				//ParamForTextCreation forTextCreation = new ParamForTextCreation();
 
@@ -565,8 +564,6 @@ namespace Bulk_Thumbnail_Creator
 					
 					PicToVarietize.Varieties.Add(CopiedPictureData);
 
-
-
 					DebugData.Add(CopiedPictureData);
 				}
 				
@@ -591,20 +588,15 @@ namespace Bulk_Thumbnail_Creator
             }
 			if (PicData.OutputType == OutputType.BoxPositionVariety)
             {
-               // Directory.CreateDirectory(OutputPath + "//" + "variety of " + Path.GetFileName(PicData.FileName));
-
                 OutputPath +=  "//" + "variety of " + Path.GetFileName(PicData.FileName) + $"//{PicData.ParamForTextCreation.CurrentBox}" + ".png";
             }
 			if (PicData.OutputType == OutputType.SaturationVariety)
 			{
-				//Directory.CreateDirectory(OutputPath + "//" + "variety of " + Path.GetFileName(PicData.FileName));
-
-				OutputPath += "//" + "variety of " + Path.GetFileName(PicData.FileName) + $"//{PicData.ReadSettings.FillColor}" + ".png";
+				var ReadValue = PicData.ReadSettings.FillColor;
+				OutputPath += "//" + "variety of " + Path.GetFileName(PicData.FileName) + $"//{ReadValue} " + ".png";
 			}
 			if (PicData.OutputType == OutputType.FontVariety)
 			{
-				// Directory.CreateDirectory(OutputPath + "//" + "variety of " + Path.GetFileName(PicData.FileName));
-
 				OutputPath += "//" + "variety of " + Path.GetFileName(PicData.FileName) + "//" + Path.GetFileNameWithoutExtension(PicData.ReadSettings.Font) + ".png";
 			}
 

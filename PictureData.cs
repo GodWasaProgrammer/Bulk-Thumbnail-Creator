@@ -40,9 +40,10 @@ namespace Bulk_Thumbnail_Creator
 		public PictureData(PictureData pictureDataToCopy) 
 		{
 			_FileName = pictureDataToCopy.FileName;
-			_ParamForTextCreation = pictureDataToCopy.ParamForTextCreation;
+			_ParamForTextCreation = new ParamForTextCreation(pictureDataToCopy.ParamForTextCreation);
 			_ReadSettings = pictureDataToCopy.ReadSettings;
-			// _Varieties = new List<PictureData>();
+			_Varieties = new List<PictureData>();
+			_outPath = pictureDataToCopy.OutPath;
 		}
 		/// <summary>
 		/// Constructor

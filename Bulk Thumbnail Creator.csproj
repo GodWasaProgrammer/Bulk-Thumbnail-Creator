@@ -345,6 +345,9 @@
     <Reference Include="Xabe.FFmpeg.Downloader, Version=5.2.6.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Xabe.FFmpeg.Downloader.5.2.6\lib\netstandard2.0\Xabe.FFmpeg.Downloader.dll</HintPath>
     </Reference>
+    <Reference Include="xunit.assert, Version=2.5.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>packages\xunit.assert.2.5.0\lib\netstandard1.1\xunit.assert.dll</HintPath>
+    </Reference>
     <Reference Include="YoutubeDLSharp, Version=0.4.3.22324, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\YoutubeDLSharp.0.4.3\lib\net45\YoutubeDLSharp.dll</HintPath>
     </Reference>

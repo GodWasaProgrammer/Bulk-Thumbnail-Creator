@@ -125,7 +125,7 @@ namespace Bulk_Thumbnail_Creator
 			{
 				Logic.ProduceTextPictures(BTCSettings.PictureDatas[0].Varieties[i]);
 			}
-			
+
 		}
 
 	}
