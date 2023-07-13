@@ -474,17 +474,16 @@ namespace Bulk_Thumbnail_Creator
 			foreach (string font in fontList)
 			{
 				PictureData createFontVariety = new PictureData(PicToVarietize);
-				
-				// createFontVariety = PicToVarietize;
 
-				createFontVariety.ParamForTextCreation.Font = font;
-				createFontVariety.ReadSettings = TextSettingsGeneration(createFontVariety.ParamForTextCreation);
+				ParamForTextCreation paramForTextCreation = new ParamForTextCreation(createFontVariety.ParamForTextCreation)
+				{
+					Font = font
+				};
 
-				
+				// createFontVariety.ParamForTextCreation.Font = font;
 
-				// ProduceTextPictures(createFontVariety, outpath);
-
-				// createFontVariety.OutPath = outpath;
+				createFontVariety.ReadSettings = TextSettingsGeneration(paramForTextCreation);
+				createFontVariety.ParamForTextCreation.Font = createFontVariety.ReadSettings.Font;
 				createFontVariety.OutputType = OutputType.FontVariety;
 				PicToVarietize.Varieties.Add(createFontVariety);
 			}
@@ -517,47 +516,61 @@ namespace Bulk_Thumbnail_Creator
 		/// </summary>
 		/// <param name="PicToVarietize">The Target picture to varietize</param>
 		/// <param name="TargetFolder">The target folder to varietize</param>
-		public static PictureData ProducePlacementOfTextVarietyData(PictureData PicToVarietize)
+		public static void ProducePlacementOfTextVarietyData(PictureData PicToVarietize)
 		{
-			PictureData CopiedPictureData = new PictureData(PicToVarietize);
+			
+			List<PictureData> DebugData = new List<PictureData>();
 
-			Box boxToExclude = CopiedPictureData.ParamForTextCreation.CurrentBox;
+			Box boxToExclude = PicToVarietize.ParamForTextCreation.CurrentBox;
 
-			foreach (var CurrentBox in CopiedPictureData.ParamForTextCreation.Boxes)
+			foreach (var CurrentBox in PicToVarietize.ParamForTextCreation.Boxes)
 			{
+				PictureData CopiedPictureData = new PictureData();
+				CopiedPictureData.ParamForTextCreation = PicToVarietize.ParamForTextCreation;
+				CopiedPictureData.FileName = PicToVarietize.FileName;
+				CopiedPictureData.ReadSettings = PicToVarietize.ReadSettings;
+				
+				//ParamForTextCreation forTextCreation = new ParamForTextCreation();
+
 				if (CurrentBox.Key != boxToExclude)
 				{
-					// lift triangle
+					// PictureData CopiedPictureData = new PictureData(PicToVarietize);
+
+					// lift Rectangle
 					Rectangle currentRectangle = CurrentBox.Value;
 
 					// write it to a Point
 					Point CurrentPoint = new Point(currentRectangle.X, currentRectangle.Y);
 
+					//forTextCreation.PositionOfText = CurrentPoint;
+					//forTextCreation.CurrentBox = CurrentBox.Key;
+					//Bitmap srcpic = new Bitmap(CopiedPictureData.FileName);
+					//forTextCreation = CalculateBoxData(CurrentBox.Key, srcpic, forTextCreation);
+					
                     // feed it back into object
-                    CopiedPictureData.ParamForTextCreation.PositionOfText = CurrentPoint;
-					Bitmap sourcePicture = new Bitmap(CopiedPictureData.FileName);
+                    //CopiedPictureData.ParamForTextCreation.PositionOfText = CurrentPoint;
 
 					// set the currentbox to the currentbox key
 					CopiedPictureData.ParamForTextCreation.CurrentBox = CurrentBox.Key;
+
+					Bitmap sourcePicture = new Bitmap(CopiedPictureData.FileName);
 
 					// calculate box data, important for TextSettingsGeneration returning a correct ReadSettings object
 					CopiedPictureData.ParamForTextCreation = CalculateBoxData(CurrentBox.Key, sourcePicture, CopiedPictureData.ParamForTextCreation);
 
 					CopiedPictureData.ReadSettings = TextSettingsGeneration(CopiedPictureData.ParamForTextCreation);
 
-					// Directory.CreateDirectory(TargetFolder + "//" + "variety of " + Path.GetFileName(CopiedPictureData.FileName));
-
-					// string outpath = TargetFolder + "//" + "variety of " + Path.GetFileName(CopiedPictureData.FileName) + $"//{CurrentBox.Key}" + ".png";
-
-					// CopiedPictureData.OutPath = outpath;
-
-					// add it to list of objects created varieties
+					// add it to list of created varieties
 					CopiedPictureData.OutputType = OutputType.BoxPositionVariety;
+					
 					PicToVarietize.Varieties.Add(CopiedPictureData);
+
+
+
+					DebugData.Add(CopiedPictureData);
 				}
 				
 			}
-			return PicToVarietize;
 		}
 
 		/// <summary>
@@ -586,13 +599,13 @@ namespace Bulk_Thumbnail_Creator
 			{
 				//Directory.CreateDirectory(OutputPath + "//" + "variety of " + Path.GetFileName(PicData.FileName));
 
-				OutputPath += "//" + "variety of " + Path.GetFileName(PicData.FileName) + $"//luminance{PicData.ParamForTextCreation.BorderColor.Saturation}" + ".png";
+				OutputPath += "//" + "variety of " + Path.GetFileName(PicData.FileName) + $"//{PicData.ReadSettings.FillColor}" + ".png";
 			}
 			if (PicData.OutputType == OutputType.FontVariety)
 			{
 				// Directory.CreateDirectory(OutputPath + "//" + "variety of " + Path.GetFileName(PicData.FileName));
 
-				OutputPath += "//" + "variety of " + Path.GetFileName(PicData.FileName) + "//" + Path.GetFileNameWithoutExtension(PicData.FileName) + " " + Path.GetFileNameWithoutExtension(PicData.ParamForTextCreation.Font) + ".png";
+				OutputPath += "//" + "variety of " + Path.GetFileName(PicData.FileName) + "//" + Path.GetFileNameWithoutExtension(PicData.ReadSettings.Font) + ".png";
 			}
 
 
@@ -648,10 +661,10 @@ namespace Bulk_Thumbnail_Creator
 
 			float Variety5 = 1F;
 			VarietyList.Add(Variety5);
-			PictureData VarietyData = new PictureData(PictureInputData);
+			
 			foreach (float variety in VarietyList)
 			{
-				// PictureData VarietyData = new PictureData(PictureInputData);
+				PictureData VarietyData = new PictureData(PictureInputData);
 
 				VarietyData.ParamForTextCreation.FillColor.SetByHSL(fillcolorHue, variety, fillcolorLuminance);
 
@@ -661,58 +674,21 @@ namespace Bulk_Thumbnail_Creator
 
 				VarietyData.FileName = PictureInputData.FileName;
 
-				//MagickReadSettings settings = TextSettingsGeneration(VarietyData.ParamForTextCreation);
+				Bitmap src = new Bitmap(VarietyData.FileName);
 
-				//VarietyData.ReadSettings = settings;
+				VarietyData.ParamForTextCreation = CalculateBoxData(VarietyData.ParamForTextCreation.CurrentBox, src, VarietyData.ParamForTextCreation);
 
-				// VarietyData.OutPath = outpath;
+				MagickReadSettings settings = TextSettingsGeneration(VarietyData.ParamForTextCreation);
+
+				
+
+				VarietyData.ReadSettings = settings;
+
 				VarietyData.OutputType = OutputType.SaturationVariety;
 				PictureInputData.Varieties.Add(VarietyData);
 			}
 
 		}
-
-		//public static void ProduceSpecialEffectsVarietyData(PictureData pictureInputData, string TargetFolder)
-		//{
-
-		//}
-
-		///// <summary>
-		///// This isnt working, it throws a major exception for whatever reason
-		///// </summary>
-		///// <param name="URL"></param>
-		///// <returns>Returns the name of the video of the specified URL</returns>
-		//public static async Task<string> FetchURLTitleOfVideo(string URL)
-		//{
-		//	var ytdl = new YoutubeDL
-		//	{
-		//		// set paths
-		//		YoutubeDLPath = "..\\..\\yt-dlp.exe",
-		//		FFmpegPath = "YTDL/ffmpeg.exe",
-		//	};
-		//	var res = await ytdl.RunVideoDataFetch(URL);
-		//	// get some video information
-		//	VideoData video = res.Data;
-		//	string title = video.Title;
-		//	string uploader = video.Uploader;
-		//	long? views = video.ViewCount;
-
-		//	return title;
-		//}
-
-		//public static void AddNewLineToString(string stringToVerticalize)
-		//{
-		//	char[] arrayedText = stringToVerticalize.ToCharArray();
-
-		//	string newLinedText;
-
-		//	foreach(char c in arrayedText)
-		//	{
-		//		// newLinedText.Insert(c + "\n");
-		//	}
-
-		//}
-
 	}
 
 }

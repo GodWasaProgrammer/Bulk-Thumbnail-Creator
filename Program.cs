@@ -96,11 +96,8 @@ namespace Bulk_Thumbnail_Creator
 					ReadSettings = settings,
 				};
 
-				//string imageName = Path.GetFileName(file);
-				//string outputFullPath = Path.GetFullPath(BTCSettings.TextAddedDir) + $"/{imageName}";
-				//PassPictureData.OutPath = outputFullPath;
 				BTCSettings.PictureDatas.Add(PassPictureData);
-				// Logic.ProduceTextPictures(PassPictureData);
+				//Logic.ProduceTextPictures(PassPictureData);
 			}
 
 			#region Make Showcase Video
@@ -117,22 +114,18 @@ namespace Bulk_Thumbnail_Creator
 			for (int i = 0; i < BTCSettings.PictureDatas.Count; i++)
 			{
 				var input = BTCSettings.PictureDatas[i];
-			//	Logic.ProduceSaturationVarietyData(input);
+				Logic.ProduceSaturationVarietyData(input);
 
-			//	Logic.ProduceFontVarietyData(input);
+				Logic.ProduceFontVarietyData(input);
 
-				BTCSettings.PictureDatas[i] = Logic.ProducePlacementOfTextVarietyData(input);
-
-				// Logic.ProduceTextPictures(input);
+				Logic.ProducePlacementOfTextVarietyData(input);
 			}
 
-			Logic.ProduceTextPictures(BTCSettings.PictureDatas[0]);
-
-			for (int IndexOfVariety = 0; IndexOfVariety < BTCSettings.PictureDatas[0].Varieties.Count; IndexOfVariety++)
+			for (int i = 0; i < BTCSettings.PictureDatas[0].Varieties.Count; i++)
 			{
-				Logic.ProduceTextPictures(BTCSettings.PictureDatas[0].Varieties[IndexOfVariety]);
+				Logic.ProduceTextPictures(BTCSettings.PictureDatas[0].Varieties[i]);
 			}
-
+			
 		}
 
 	}

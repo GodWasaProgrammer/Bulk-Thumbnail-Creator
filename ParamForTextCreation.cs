@@ -66,19 +66,23 @@ namespace Bulk_Thumbnail_Creator
 		public Box CurrentBox { get { return _CurrentBox; } set { _CurrentBox = value; } }
 
 
-		//public ParamForTextCreation(ParamForTextCreation paramForTextCreationToCopy)
-		//{
-		//	_Text = paramForTextCreationToCopy.Text;
-		//	positionOfText = paramForTextCreationToCopy.PositionOfText;
-		//	_Font = paramForTextCreationToCopy.Font;
-		//	_WidthOfBox = paramForTextCreationToCopy.WidthOfBox;
-		//	_HeightOfBox = paramForTextCreationToCopy.HeightOfBox;
-		//	fillColor = paramForTextCreationToCopy.FillColor;
-		//	strokeColor = paramForTextCreationToCopy.StrokeColor;
-		//	borderColor = paramForTextCreationToCopy.BorderColor;
-		//	_Boxes = paramForTextCreationToCopy._Boxes;
-		//	_CurrentBox = paramForTextCreationToCopy._CurrentBox;
-		//}
+		public ParamForTextCreation(ParamForTextCreation paramForTextCreationToCopy)
+		{
+			_Text = paramForTextCreationToCopy.Text;
+			positionOfText = paramForTextCreationToCopy.PositionOfText;
+			// _Font = paramForTextCreationToCopy.Font;
+			_WidthOfBox = paramForTextCreationToCopy.WidthOfBox;
+			_HeightOfBox = paramForTextCreationToCopy.HeightOfBox;
+			fillColor = paramForTextCreationToCopy.FillColor;
+			strokeColor = paramForTextCreationToCopy.StrokeColor;
+			borderColor = paramForTextCreationToCopy.BorderColor;
+			_Boxes = paramForTextCreationToCopy._Boxes;
+			_CurrentBox = paramForTextCreationToCopy._CurrentBox;
+		}
+		public ParamForTextCreation()
+		{
+
+		}
 	}
 
 }

@@ -39,11 +39,10 @@ namespace Bulk_Thumbnail_Creator
 		/// <param name="pictureDataToCopy"></param>
 		public PictureData(PictureData pictureDataToCopy) 
 		{
-			_FileName = pictureDataToCopy._FileName;
-			_outPath = pictureDataToCopy._outPath;
-			_ParamForTextCreation = pictureDataToCopy._ParamForTextCreation;
-			_ReadSettings = pictureDataToCopy._ReadSettings;
-			_Varieties = pictureDataToCopy._Varieties;
+			_FileName = pictureDataToCopy.FileName;
+			_ParamForTextCreation = pictureDataToCopy.ParamForTextCreation;
+			_ReadSettings = pictureDataToCopy.ReadSettings;
+			// _Varieties = new List<PictureData>();
 		}
 		/// <summary>
 		/// Constructor
@@ -53,7 +52,8 @@ namespace Bulk_Thumbnail_Creator
 
 		}
 
-		public OutputType OutputType;
+		private OutputType _OutputType;
+		public OutputType OutputType { get { return _OutputType; } set { _OutputType = value; } }
 	}
 
 
