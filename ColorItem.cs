@@ -1,19 +1,10 @@
 ﻿using UMapx.Colorspace;
+using Xunit;
 
 namespace Bulk_Thumbnail_Creator
 {
 	public class ColorItem
 	{
-		public ColorItem(ColorItem colorItemToCopy)
-		{
-			red = colorItemToCopy.red;
-			green = colorItemToCopy.green;
-			blue = colorItemToCopy.blue;
-		}
-		public ColorItem() 
-		{
-
-		}
 		private byte red;
 		public byte Red { get { return red; } }
 
@@ -114,6 +105,7 @@ namespace Bulk_Thumbnail_Creator
 
 			return outputHSL;
 		}
+
 		/// <summary>
 		/// Allows you to get a HSL object back based of the current objects RGB values
 		/// </summary>
@@ -133,6 +125,17 @@ namespace Bulk_Thumbnail_Creator
 			HSL CurrentHSL = HSL.FromRGB(inputRGB);
 
 			return CurrentHSL;
+		}
+
+		public ColorItem(ColorItem colorItemToCopy)
+		{
+			red = colorItemToCopy.red;
+			green = colorItemToCopy.green;
+			blue = colorItemToCopy.blue;
+		}
+		public ColorItem()
+		{
+
 		}
 
 	}

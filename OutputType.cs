@@ -6,5 +6,6 @@
 		SaturationVariety,
 		BoxPositionVariety,
 		FontVariety,
+		RandomVariety,
 	}
 }

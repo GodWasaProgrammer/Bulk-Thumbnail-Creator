@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using ImageMagick;
 using System.Drawing;
-using System.Xml.Schema;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -30,7 +29,7 @@ namespace Bulk_Thumbnail_Creator
 			BTCSettings.DownloadedVideosList = Logic.DeSerializeXMLToListOfStrings(BTCSettings.PathToXMLListOfDownloadedVideos);
 
 			//downloads the specified url
-			string URL = "https://youtube.com/live/tqsYO976zTU";
+			string URL = "https://www.youtube.com/watch?v=2wkAeMwPs8Y";
 
 			BTCSettings.PathToVideo = await Logic.YouTubeDL(URL);
 			BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
@@ -97,7 +96,7 @@ namespace Bulk_Thumbnail_Creator
 				};
 
 				BTCSettings.PictureDatas.Add(PassPictureData);
-				//Logic.ProduceTextPictures(PassPictureData);
+				Logic.ProduceTextPictures(PassPictureData);
 			}
 
 			#region Make Showcase Video
@@ -119,11 +118,13 @@ namespace Bulk_Thumbnail_Creator
 				Logic.ProduceFontVarietyData(input);
 
 				Logic.ProducePlacementOfTextVarietyData(input);
+
+				Logic.ProduceRandomVariety(input);
 			}
 
 			for (int i = 0; i < BTCSettings.PictureDatas[0].Varieties.Count; i++)
 			{
-				Logic.ProduceTextPictures(BTCSettings.PictureDatas[0].Varieties[i]);
+				Logic.ProduceTextPictures(BTCSettings.PictureDatas[25].Varieties[i]);
 			}
 
 		}

@@ -1,8 +1,6 @@
 ﻿using ImageMagick;
-using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
@@ -77,48 +75,23 @@ namespace Bulk_Thumbnail_Creator
 			const float incrementalColor = 12.5F;
 			const float resetFromMaxToMin = 0F;
 
-			if (currentelement > 0)
+			hueFillColor += incrementalColor;
+
+			hueStrokeColor = ColorWheelSpinner(hueFillColor);
+			hueBorderColor = ColorWheelSpinner(hueFillColor);
+
+			if (hueFillColor > maxHueValue)
 			{
-				hueFillColor += incrementalColor;
-
-				hueStrokeColor = ColorWheelSpinner(hueFillColor);
-				hueBorderColor = ColorWheelSpinner(hueFillColor);
-
-				if (hueFillColor > maxHueValue)
-				{
-					hueFillColor = resetFromMaxToMin;
-				}
-
-				InputParameter.FillColor.SetByHSL(hueFillColor, saturationFillColor, lightnessFillColor);
-
-				InputParameter.StrokeColor.SetByHSL(hueStrokeColor, saturationStrokeColor, lightnessStrokeColor);
-
-				InputParameter.BorderColor.SetByHSL(hueBorderColor, saturationBorderColor, lightnessBorderColor);
+				hueFillColor = resetFromMaxToMin;
 			}
-			else
-			{
-				InputParameter.FillColor.SetByHSL(hueFillColor, saturationFillColor, lightnessFillColor);
 
-				InputParameter.StrokeColor.SetByHSL(hueStrokeColor, saturationStrokeColor, lightnessStrokeColor);
+			InputParameter.FillColor.SetByHSL(hueFillColor, saturationFillColor, lightnessFillColor);
 
-				InputParameter.BorderColor.SetByHSL(hueBorderColor, saturationBorderColor, lightnessBorderColor);
-			}
+			InputParameter.StrokeColor.SetByHSL(hueStrokeColor, saturationStrokeColor, lightnessStrokeColor);
+
+			InputParameter.BorderColor.SetByHSL(hueBorderColor, saturationBorderColor, lightnessBorderColor);
 
 			return InputParameter;
-		}
-
-		/// <summary>
-		/// Take width, calculate the fontsize for your output
-		/// </summary>
-		/// <param name="Height"></param>
-		public static int CalculateFontSize(int Height)
-		{
-			// this is 8 because it achieves a good ratio of text to the height of the picture (determined empirically)
-			const int NumberToSplitBy = 8;
-
-			int FontSize = Height / NumberToSplitBy;
-
-			return FontSize;
 		}
 
 		static readonly XmlSerializer serializer = new XmlSerializer(typeof(List<string>));
@@ -180,32 +153,6 @@ namespace Bulk_Thumbnail_Creator
 
 			// sets BTC to run on the recently downloaded file res.data is the returned path.
 			return res.Data;
-		}
-
-		/// <summary>
-		/// Generates MagickReadSettings with completely randomized color values for Fill/stroke/border colors
-		/// ALso generates the other necessary settings for ImageMagick necessary to put text on the screenshots
-		/// </summary>
-		/// <returns>returns the randomized MagickReadSettings object</returns>
-		public static MagickReadSettings GenerateRandomColorSettings()
-		{
-			MagickReadSettings settingsTextRandom = new MagickReadSettings
-			{
-				Font = "italic",
-				FillColor = RandomizeColor(),
-				StrokeColor = RandomizeColor(),
-				BorderColor = RandomizeColor(),
-				FontStyle = FontStyleType.Bold,
-				StrokeAntiAlias = true,
-				StrokeWidth = 6,
-				//FontPointsize = 100,
-				FontWeight = FontWeight.Bold,
-				BackgroundColor = MagickColors.Transparent,
-				//Height = 1850, // height of text box
-				Width = 1700, // width of text box
-			};
-
-			return settingsTextRandom;
 		}
 
 		/// <summary>
@@ -274,7 +221,7 @@ namespace Bulk_Thumbnail_Creator
 			// if the passed triangle is empty, set it outside of the image.
 			if (faceRect.IsEmpty)
 			{
-				Rectangle EmptyTriangleWasPassed = new Rectangle(sourcePicture.Width,sourcePicture.Height,50,50);
+				Rectangle EmptyTriangleWasPassed = new Rectangle(sourcePicture.Width, sourcePicture.Height, 50, 50);
 				faceRect = EmptyTriangleWasPassed;
 			}
 
@@ -477,7 +424,7 @@ namespace Bulk_Thumbnail_Creator
 
 				ParamForTextCreation paramForTextCreation = new ParamForTextCreation(createFontVariety.ParamForTextCreation);
 
-                paramForTextCreation.Font = font;
+				paramForTextCreation.Font = font;
 
 				createFontVariety.ReadSettings = TextSettingsGeneration(paramForTextCreation);
 				// set textsettingsgen to set Font of param
@@ -516,7 +463,7 @@ namespace Bulk_Thumbnail_Creator
 		/// <param name="TargetFolder">The target folder to varietize</param>
 		public static void ProducePlacementOfTextVarietyData(PictureData PicToVarietize)
 		{
-			
+
 			List<PictureData> DebugData = new List<PictureData>();
 
 			Box boxToExclude = PicToVarietize.ParamForTextCreation.CurrentBox;
@@ -524,11 +471,11 @@ namespace Bulk_Thumbnail_Creator
 			foreach (var CurrentBox in PicToVarietize.ParamForTextCreation.Boxes)
 			{
 				PictureData CopiedPictureData = new PictureData(PicToVarietize);
-				
+
 				//CopiedPictureData.ParamForTextCreation = PicToVarietize.ParamForTextCreation;
 				//CopiedPictureData.FileName = PicToVarietize.FileName;
 				//CopiedPictureData.ReadSettings = PicToVarietize.ReadSettings;
-				
+
 				//ParamForTextCreation forTextCreation = new ParamForTextCreation();
 
 				if (CurrentBox.Key != boxToExclude)
@@ -545,9 +492,9 @@ namespace Bulk_Thumbnail_Creator
 					//forTextCreation.CurrentBox = CurrentBox.Key;
 					//Bitmap srcpic = new Bitmap(CopiedPictureData.FileName);
 					//forTextCreation = CalculateBoxData(CurrentBox.Key, srcpic, forTextCreation);
-					
-                    // feed it back into object
-                    //CopiedPictureData.ParamForTextCreation.PositionOfText = CurrentPoint;
+
+					// feed it back into object
+					//CopiedPictureData.ParamForTextCreation.PositionOfText = CurrentPoint;
 
 					// set the currentbox to the currentbox key
 					CopiedPictureData.ParamForTextCreation.CurrentBox = CurrentBox.Key;
@@ -561,12 +508,12 @@ namespace Bulk_Thumbnail_Creator
 
 					// add it to list of created varieties
 					CopiedPictureData.OutputType = OutputType.BoxPositionVariety;
-					
+
 					PicToVarietize.Varieties.Add(CopiedPictureData);
 
 					DebugData.Add(CopiedPictureData);
 				}
-				
+
 			}
 		}
 
@@ -579,17 +526,16 @@ namespace Bulk_Thumbnail_Creator
 			string imageName;
 			string OutputPath = Path.GetFullPath(BTCSettings.TextAddedDir);
 			Directory.CreateDirectory(OutputPath + "//" + "variety of " + Path.GetFileName(PicData.FileName));
-			// if file doesnt exist, make it, otherwise treat it as a variety
 
 			if (PicData.OutputType == OutputType.Main)
-			{ 
-				 imageName = Path.GetFileName(PicData.FileName);
-				 OutputPath += "//" + imageName;
-            }
+			{
+				imageName = Path.GetFileName(PicData.FileName);
+				OutputPath += "//" + imageName;
+			}
 			if (PicData.OutputType == OutputType.BoxPositionVariety)
-            {
-                OutputPath +=  "//" + "variety of " + Path.GetFileName(PicData.FileName) + $"//{PicData.ParamForTextCreation.CurrentBox}" + ".png";
-            }
+			{
+				OutputPath += "//" + "variety of " + Path.GetFileName(PicData.FileName) + $"//{PicData.ParamForTextCreation.CurrentBox}" + ".png";
+			}
 			if (PicData.OutputType == OutputType.SaturationVariety)
 			{
 				var ReadValue = PicData.ReadSettings.FillColor;
@@ -599,8 +545,10 @@ namespace Bulk_Thumbnail_Creator
 			{
 				OutputPath += "//" + "variety of " + Path.GetFileName(PicData.FileName) + "//" + Path.GetFileNameWithoutExtension(PicData.ReadSettings.Font) + ".png";
 			}
-
-
+			if (PicData.OutputType == OutputType.RandomVariety)
+			{
+				OutputPath += "//" + "variety of " + Path.GetFileName(PicData.FileName) + "//" + $"{PicData.OutPath}" + ".png";
+			}
 			using (MagickImage outputImage = new MagickImage(Path.GetFullPath(PicData.FileName)))
 			{
 				using (var caption = new MagickImage($"caption:{PicData.ParamForTextCreation.Text}", PicData.ReadSettings))
@@ -620,10 +568,75 @@ namespace Bulk_Thumbnail_Creator
 		}
 
 		/// <summary>
+		/// Generates MagickReadSettings with completely randomized color values for Fill/stroke/border colors
+		/// ALso generates the other necessary settings for ImageMagick necessary to put text on the screenshots
+		/// </summary>
+		/// <returns>returns the randomized MagickReadSettings object</returns>
+		public static MagickReadSettings GenerateRandomColorSettings(ParamForTextCreation param)
+		{
+			MagickReadSettings settingsTextRandom = new MagickReadSettings
+			{
+				Font = param.Font,
+				FillColor = RandomizeColor(),
+				StrokeColor = RandomizeColor(),
+				BorderColor = RandomizeColor(),
+				//FontStyle = FontStyleType.Bold,
+				StrokeAntiAlias = true,
+				StrokeWidth = 6,
+				FontWeight = FontWeight.Bold,
+				BackgroundColor = MagickColors.Transparent,
+				Height = param.HeightOfBox, // height of text box
+				Width = param.WidthOfBox, // width of text box
+			};
+
+			return settingsTextRandom;
+		}
+
+		//public static void DecideIfTooMuchFace(Bitmap SourcePicture, Rectangle FaceRectangle)
+		//{
+		//	bool TooMuchFace;
+
+		//	int IfHalfOfPictureHeight = SourcePicture.Height / 2;
+
+		//	if (FaceRectangle.IsEmpty)
+		//	{
+
+		//	}
+		//}
+
+		public static void ProduceRandomVariety(PictureData PictureInputData)
+		{
+			const int NumberOfRandomsToProduce = 15;
+
+			for (int CurrentIndex = 0; CurrentIndex < NumberOfRandomsToProduce; CurrentIndex++)
+			{
+				Random random = new Random();
+				PictureData VarietyData = new PictureData(PictureInputData);
+
+				Box PickedBox = (Box)random.Next(PictureInputData.ParamForTextCreation.Boxes.Count);
+
+				VarietyData.ParamForTextCreation.CurrentBox = PickedBox;
+
+				Bitmap src = new Bitmap(PictureInputData.FileName);
+
+				VarietyData.ParamForTextCreation = CalculateBoxData(VarietyData.ParamForTextCreation.CurrentBox, src, VarietyData.ParamForTextCreation);
+
+				string Font = PickRandomFont();
+				VarietyData.ParamForTextCreation.Font = Font;
+
+				MagickReadSettings settings = GenerateRandomColorSettings(VarietyData.ParamForTextCreation);
+				VarietyData.ReadSettings = settings;
+				VarietyData.OutputType = OutputType.RandomVariety;
+				VarietyData.OutPath = $"{CurrentIndex}";
+				PictureInputData.Varieties.Add(VarietyData);
+			}
+
+		}
+
+		/// <summary>
 		/// Creates Variety from an existing image, this will be on user interaction
 		/// </summary>
 		/// <param name="PictureInputData">The Image to create variety of</param>
-		/// <param name="TargetFolder">The Folder where you want the results to go</param>
 		public static void ProduceSaturationVarietyData(PictureData PictureInputData)
 		{
 			const float baseLuminanceValue = 0.50F;
@@ -653,7 +666,7 @@ namespace Bulk_Thumbnail_Creator
 
 			float Variety5 = 1F;
 			VarietyList.Add(Variety5);
-			
+
 			foreach (float variety in VarietyList)
 			{
 				PictureData VarietyData = new PictureData(PictureInputData);
@@ -664,15 +677,11 @@ namespace Bulk_Thumbnail_Creator
 
 				VarietyData.ParamForTextCreation.BorderColor.SetByHSL(bordercolorHue, variety, bordercolorLuminance);
 
-				VarietyData.FileName = PictureInputData.FileName;
-
 				Bitmap src = new Bitmap(VarietyData.FileName);
 
 				VarietyData.ParamForTextCreation = CalculateBoxData(VarietyData.ParamForTextCreation.CurrentBox, src, VarietyData.ParamForTextCreation);
 
 				MagickReadSettings settings = TextSettingsGeneration(VarietyData.ParamForTextCreation);
-
-				
 
 				VarietyData.ReadSettings = settings;
 
