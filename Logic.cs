@@ -493,29 +493,16 @@ namespace Bulk_Thumbnail_Creator
 			{
 				PictureData CopiedPictureData = new PictureData(PicToVarietize);
 
-				//CopiedPictureData.ParamForTextCreation = PicToVarietize.ParamForTextCreation;
-				//CopiedPictureData.FileName = PicToVarietize.FileName;
-				//CopiedPictureData.ReadSettings = PicToVarietize.ReadSettings;
-
-				//ParamForTextCreation forTextCreation = new ParamForTextCreation();
-
 				if (CurrentBox.Key != boxToExclude)
 				{
-					// PictureData CopiedPictureData = new PictureData(PicToVarietize);
-
 					// lift Rectangle
 					Rectangle currentRectangle = CurrentBox.Value;
 
 					// write it to a Point
 					Point CurrentPoint = new Point(currentRectangle.X, currentRectangle.Y);
 
-					//forTextCreation.PositionOfText = CurrentPoint;
-					//forTextCreation.CurrentBox = CurrentBox.Key;
-					//Bitmap srcpic = new Bitmap(CopiedPictureData.FileName);
-					//forTextCreation = CalculateBoxData(CurrentBox.Key, srcpic, forTextCreation);
-
 					// feed it back into object
-					//CopiedPictureData.ParamForTextCreation.PositionOfText = CurrentPoint;
+					CopiedPictureData.ParamForTextCreation.PositionOfText = CurrentPoint;
 
 					// set the currentbox to the currentbox key
 					CopiedPictureData.ParamForTextCreation.CurrentBox = CurrentBox.Key;
@@ -546,9 +533,14 @@ namespace Bulk_Thumbnail_Creator
 		{
 			string imageName;
 			string OutputPath = Path.GetFullPath(BTCSettings.TextAddedDir);
-			Directory.CreateDirectory(OutputPath + "//" + "variety of " + Path.GetFileName(PicData.FileName));
 
-			if (PicData.OutputType == OutputType.Main)
+			// if not main type, we will make a directory for files to be written in
+			if (PicData.OutputType != OutputType.Main) 
+			{ 
+			Directory.CreateDirectory(OutputPath + "//" + "variety of " + Path.GetFileName(PicData.FileName));
+            }
+
+            if (PicData.OutputType == OutputType.Main)
 			{
 				imageName = Path.GetFileName(PicData.FileName);
 				OutputPath += "//" + imageName;
@@ -612,18 +604,6 @@ namespace Bulk_Thumbnail_Creator
 
 			return settingsTextRandom;
 		}
-
-		//public static void DecideIfTooMuchFace(Bitmap SourcePicture, Rectangle FaceRectangle)
-		//{
-		//	bool TooMuchFace;
-
-		//	int IfHalfOfPictureHeight = SourcePicture.Height / 2;
-
-		//	if (FaceRectangle.IsEmpty)
-		//	{
-
-		//	}
-		//}
 
 		public static void ProduceRandomVariety(PictureData PictureInputData)
 		{
