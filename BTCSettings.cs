@@ -36,6 +36,10 @@ namespace Bulk_Thumbnail_Creator
 		public static List<PictureData> PictureDatas { get { return _PictureDatas; } set { _PictureDatas = value; } }
 
 
+		private static List<string> _DiscardedBecauseTooMuchFacefiles = new List<string>();
+		public static List<string> DiscardedBecauseTooMuchFacePictureData {get { return _DiscardedBecauseTooMuchFacefiles; }set { _DiscardedBecauseTooMuchFacefiles = value; } }
+
+
 		/// <summary>
 		/// Link to the provided Youtube Link
 		/// </summary>

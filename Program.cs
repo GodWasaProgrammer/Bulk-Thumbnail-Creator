@@ -29,7 +29,7 @@ namespace Bulk_Thumbnail_Creator
 			BTCSettings.DownloadedVideosList = Logic.DeSerializeXMLToListOfStrings(BTCSettings.PathToXMLListOfDownloadedVideos);
 
 			//downloads the specified url
-			string URL = "https://www.youtube.com/watch?v=2wkAeMwPs8Y";
+			string URL = "https://www.youtube.com/watch?v=WOb2AMe0Pso";
 
 			BTCSettings.PathToVideo = await Logic.YouTubeDL(URL);
 			BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
@@ -70,33 +70,39 @@ namespace Bulk_Thumbnail_Creator
 
 				Bitmap bitmap = new Bitmap(file);
 
-				Rectangle[] detectedFacesRect = faceDetector.Forward(bitmap);
+				Rectangle[] detectedFacesRectArray = faceDetector.Forward(bitmap);
 
-				ParamForTextCreation currentParameters = new ParamForTextCreation();
+				Logic.DecideIfTooMuchFace(file,bitmap,detectedFacesRectArray);
 
-				Rectangle faceRect = detectedFacesRect.FirstOrDefault();
-				currentParameters = Logic.GettextPosition(currentParameters, bitmap, faceRect);
-
-				currentParameters = Logic.DecideColorGeneration(currentParameters, fileIndex);
-
-				currentParameters.Font = Logic.PickRandomFont();
-
-				// picks a random string from the list
-				Random pickAString = new Random();
-				int pickedString = pickAString.Next(BTCSettings.ListOfText.Count);
-				currentParameters.Text = BTCSettings.ListOfText[pickedString];
-
-				MagickReadSettings settings = Logic.TextSettingsGeneration(currentParameters);
-
-				PictureData PassPictureData = new PictureData()
+				if (!BTCSettings.DiscardedBecauseTooMuchFacePictureData.Contains(file))
 				{
-					FileName = file,
-					ParamForTextCreation = currentParameters,
-					ReadSettings = settings,
-				};
+                    ParamForTextCreation currentParameters = new ParamForTextCreation();
 
-				BTCSettings.PictureDatas.Add(PassPictureData);
-				Logic.ProduceTextPictures(PassPictureData);
+                    Rectangle faceRect = detectedFacesRectArray.FirstOrDefault();
+                    currentParameters = Logic.GettextPosition(currentParameters, bitmap, faceRect);
+
+                    currentParameters = Logic.DecideColorGeneration(currentParameters, fileIndex);
+
+                    currentParameters.Font = Logic.PickRandomFont();
+
+                    // picks a random string from the list
+                    Random pickAString = new Random();
+                    int pickedString = pickAString.Next(BTCSettings.ListOfText.Count);
+                    currentParameters.Text = BTCSettings.ListOfText[pickedString];
+
+                    MagickReadSettings settings = Logic.TextSettingsGeneration(currentParameters);
+
+                    PictureData PassPictureData = new PictureData()
+                    {
+                        FileName = file,
+                        ParamForTextCreation = currentParameters,
+                        ReadSettings = settings,
+                    };
+
+                    BTCSettings.PictureDatas.Add(PassPictureData);
+                    Logic.ProduceTextPictures(PassPictureData);
+                }
+
 			}
 
 			#region Make Showcase Video
@@ -124,7 +130,7 @@ namespace Bulk_Thumbnail_Creator
 
 			for (int i = 0; i < BTCSettings.PictureDatas[0].Varieties.Count; i++)
 			{
-				Logic.ProduceTextPictures(BTCSettings.PictureDatas[25].Varieties[i]);
+				Logic.ProduceTextPictures(BTCSettings.PictureDatas[2].Varieties[i]);
 			}
 
 		}
