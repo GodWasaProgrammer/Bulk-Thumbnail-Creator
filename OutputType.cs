@@ -7,5 +7,6 @@
 		BoxPositionVariety,
 		FontVariety,
 		RandomVariety,
+		Dankness,
 	}
 }

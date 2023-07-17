@@ -53,6 +53,14 @@ namespace Bulk_Thumbnail_Creator
 
 		}
 
+		private Box _DankBox;
+		public Box Dankbox {get { return _DankBox; } set { _DankBox = value; } }
+
+
+		private string _Meme;
+		public string Meme {get { return _Meme; }set { _Meme = value; } }
+
+
 		private OutputType _OutputType;
 		public OutputType OutputType { get { return _OutputType; } set { _OutputType = value; } }
 	}

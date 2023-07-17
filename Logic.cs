@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using YoutubeDLSharp;
@@ -90,7 +92,7 @@ namespace Bulk_Thumbnail_Creator
 		/// <param name="InputParameter">ParamForTextcreation Object to Generate Colors for</param>
 		/// <param name="currentelement">the current index of the object being passed</param>
 		/// <returns>returns the ParamForTextCreation object with the modified Color Values</returns>
-		public static ParamForTextCreation DecideColorGeneration(ParamForTextCreation InputParameter, int currentelement)
+		public static ParamForTextCreation DecideColorGeneration(ParamForTextCreation InputParameter)
 		{
 			const float maxHueValue = 360F;
 			const float incrementalColor = 12.5F;
@@ -562,6 +564,11 @@ namespace Bulk_Thumbnail_Creator
 			{
 				OutputPath += "//" + "variety of " + Path.GetFileName(PicData.FileName) + "//" + $"{PicData.OutPath}" + ".png";
 			}
+			if (PicData.OutputType == OutputType.Dankness)
+			{
+				OutputPath += "//" + "variety of " + Path.GetFileName(PicData.FileName) + "//" + PicData.Dankbox + ".png";
+			}
+
 			using (MagickImage outputImage = new MagickImage(Path.GetFullPath(PicData.FileName)))
 			{
 				using (var caption = new MagickImage($"caption:{PicData.ParamForTextCreation.Text}", PicData.ReadSettings))
@@ -569,7 +576,15 @@ namespace Bulk_Thumbnail_Creator
 					// Add the caption layer on top of the background image
 					outputImage.Composite(caption, PicData.ParamForTextCreation.Boxes[PicData.ParamForTextCreation.CurrentBox].X, PicData.ParamForTextCreation.Boxes[PicData.ParamForTextCreation.CurrentBox].Y, CompositeOperator.Over);
 					outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
+					
+					if (PicData.OutputType == OutputType.Dankness)
+					{
+						MagickImage MemeToPutOnPic = new MagickImage(PicData.Meme);
 
+						Rectangle ReadPosition = PicData.ParamForTextCreation.Boxes[PicData.Dankbox];
+
+						outputImage.Composite(MemeToPutOnPic, ReadPosition.X, ReadPosition.Y, CompositeOperator.Over);
+					}
 					outputImage.Quality = 100;
 
 					// outputs the file to the provided path and name
@@ -632,6 +647,33 @@ namespace Bulk_Thumbnail_Creator
 				PictureInputData.Varieties.Add(VarietyData);
 			}
 
+		}
+
+		public static void ProduceMemeDankness(PictureData DankifyTarget)
+		{
+			PictureData CopiedPicData = new PictureData(DankifyTarget);
+
+			if (CopiedPicData.ParamForTextCreation.Boxes.Count > 2)
+			{
+				// pick a box to dankify
+				Random pickbox = new Random();
+				Box PickedBox = (Box)pickbox.Next(DankifyTarget.ParamForTextCreation.Boxes.Count);
+				
+				// write picked box to dankbox property
+				CopiedPicData.Dankbox = PickedBox;
+
+                // pick a meme
+                Random pickRandomMeme = new Random();
+				int PickedMeme = pickRandomMeme.Next(BTCSettings.Memes.Length);
+
+				// write our chosen meme to Meme property
+				CopiedPicData.Meme = BTCSettings.Memes[PickedMeme];
+
+				// set the type of output
+				CopiedPicData.OutputType = OutputType.Dankness;
+
+				DankifyTarget.Varieties.Add(CopiedPicData);
+			}
 		}
 
 		/// <summary>

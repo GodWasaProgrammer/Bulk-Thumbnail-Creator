@@ -58,6 +58,8 @@ namespace Bulk_Thumbnail_Creator
 
 			BTCSettings.Files = Directory.GetFiles(BTCSettings.OutputDir, "*.*", SearchOption.AllDirectories);
 
+			BTCSettings.Memes = Directory.GetFiles(BTCSettings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
+
 			var faceDetector = new FaceDetector(0.95f, 0.5f);
 
 			Console.WriteLine($"Processing {BTCSettings.Files.Length} images");
@@ -81,7 +83,7 @@ namespace Bulk_Thumbnail_Creator
                     Rectangle faceRect = detectedFacesRectArray.FirstOrDefault();
                     currentParameters = Logic.GettextPosition(currentParameters, bitmap, faceRect);
 
-                    currentParameters = Logic.DecideColorGeneration(currentParameters, fileIndex);
+                    currentParameters = Logic.DecideColorGeneration(currentParameters);
 
                     currentParameters.Font = Logic.PickRandomFont();
 
@@ -100,7 +102,7 @@ namespace Bulk_Thumbnail_Creator
                     };
 
                     BTCSettings.PictureDatas.Add(PassPictureData);
-                    Logic.ProduceTextPictures(PassPictureData);
+                   //  Logic.ProduceTextPictures(PassPictureData);
                 }
 
 			}
@@ -126,6 +128,8 @@ namespace Bulk_Thumbnail_Creator
 				Logic.ProducePlacementOfTextVarietyData(input);
 
 				Logic.ProduceRandomVariety(input);
+
+				Logic.ProduceMemeDankness(input);
 			}
 
 			for (int i = 0; i < BTCSettings.PictureDatas[0].Varieties.Count; i++)

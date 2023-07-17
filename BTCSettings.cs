@@ -28,6 +28,14 @@ namespace Bulk_Thumbnail_Creator
 		private static string[] files;
 		public static string[] Files { get { return files; } set { files = value; } }
 
+
+		private static string _DankMemeStashDir = "..\\..\\DankMemeStash"; 
+		public static string DankMemeStashDir { get { return _DankMemeStashDir; } set { _DankMemeStashDir = value; } }
+
+
+		private static string[] _Memes;
+		public static string[] Memes {get { return _Memes;} set { _Memes = value; } }
+		
 		/// <summary>
 		/// List of PictureDataObject which is a complete recipe to output an 
 		/// image(or output an image again after the fact)
