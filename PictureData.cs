@@ -42,7 +42,16 @@ namespace Bulk_Thumbnail_Creator
 			_FileName = (string)pictureDataToCopy.FileName.Clone();
 			_ParamForTextCreation = new ParamForTextCreation(pictureDataToCopy.ParamForTextCreation);
 			_Varieties = new List<PictureData>();
-			_outPath = (string)pictureDataToCopy.OutPath.Clone();
+			if (_outPath != null)
+			{
+                _outPath = (string)pictureDataToCopy.OutPath.Clone();
+            }
+			_DankBox = pictureDataToCopy.Dankbox;
+			if (_Meme != null)
+			{
+                _Meme = (string)pictureDataToCopy._Meme.Clone();
+            }
+			
 		}
 		/// <summary>
 		/// Constructor

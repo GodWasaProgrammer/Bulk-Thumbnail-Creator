@@ -79,8 +79,7 @@ namespace Bulk_Thumbnail_Creator
 				{
                     ParamForTextCreation currentParameters = new ParamForTextCreation();
 
-                    Rectangle faceRect = detectedFacesRectArray.FirstOrDefault();
-                    currentParameters = Logic.GettextPosition(currentParameters, bitmap, faceRect);
+                    currentParameters = Logic.GettextPos(currentParameters, bitmap, detectedFacesRectArray);
 
                     currentParameters = Logic.DecideColorGeneration(currentParameters);
 
@@ -91,52 +90,49 @@ namespace Bulk_Thumbnail_Creator
                     int pickedString = pickAString.Next(BTCSettings.ListOfText.Count);
                     currentParameters.Text = BTCSettings.ListOfText[pickedString];
 
-                    // MagickReadSettings settings = Logic.TextSettingsGeneration(currentParameters);
-
                     PictureData PassPictureData = new PictureData()
                     {
                         FileName = file,
                         ParamForTextCreation = currentParameters,
-                        // ReadSettings = settings,
                     };
 
                     BTCSettings.PictureDatas.Add(PassPictureData);
-					// Logic.ProduceTextPictures(PassPictureData);
                 }
 
 			}
 
-			#region Make Showcase Video
-			//Dictionary<string, string> paramToMakeVideoOfResult = new Dictionary<string, string>();
-			//paramToMakeVideoOfResult["framerate"] = "2";
-			//paramToMakeVideoOfResult["i"] = $@"""{Path.GetFullPath(BTCSettings.TextAddedDir)}/%03d.png""";
-			//string getTruePath = Path.GetFullPath(BTCSettings.TextAddedDir);
-			//string showCaseVideoOutPut = $@"""{getTruePath}/showcase.mp4""";
+			//Logic.ProduceTextPictures(BTCSettings.PictureDatas[21]);
+            #region Make Showcase Video
+            //Dictionary<string, string> paramToMakeVideoOfResult = new Dictionary<string, string>();
+            //paramToMakeVideoOfResult["framerate"] = "2";
+            //paramToMakeVideoOfResult["i"] = $@"""{Path.GetFullPath(BTCSettings.TextAddedDir)}/%03d.png""";
+            //string getTruePath = Path.GetFullPath(BTCSettings.TextAddedDir);
+            //string showCaseVideoOutPut = $@"""{getTruePath}/showcase.mp4""";
 
-			//FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
-			#endregion
+            //FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
+            #endregion
 
-			// just to try out variety will be on interaction/choice of pic
-			for (int i = 0; i < BTCSettings.PictureDatas.Count; i++)
-			{
-				var input = BTCSettings.PictureDatas[i];
-				Logic.ProduceSaturationVarietyData(input);
+            // just to try out variety will be on interaction/choice of pic
+            //for (int i = 0; i < BTCSettings.PictureDatas.Count; i++)
+            //{
+            //	var input = BTCSettings.PictureDatas[i];
+            //	Logic.ProduceSaturationVarietyData(input);
 
-				Logic.ProduceFontVarietyData(input);
+            //	Logic.ProduceFontVarietyData(input);
 
-				Logic.ProducePlacementOfTextVarietyData(input);
+            //	Logic.ProducePlacementOfTextVarietyData(input);
 
-				Logic.ProduceRandomVariety(input);
+            //	Logic.ProduceRandomVariety(input);
 
-				Logic.ProduceMemeDankness(input);
-			}
+            //	Logic.ProduceMemeDankness(input);
+            //}
 
-			for (int i = 0; i < BTCSettings.PictureDatas[0].Varieties.Count; i++)
-			{
-				Logic.ProduceTextPictures(BTCSettings.PictureDatas[2].Varieties[i]);
-			}
+            //for (int i = 0; i < BTCSettings.PictureDatas[0].Varieties.Count; i++)
+            //{
+            //	Logic.ProduceTextPictures(BTCSettings.PictureDatas[2].Varieties[i]);
+            //}
 
-		}
+        }
 
 	}
 

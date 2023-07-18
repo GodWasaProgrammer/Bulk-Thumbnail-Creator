@@ -231,23 +231,197 @@ namespace Bulk_Thumbnail_Creator
 			Directory.CreateDirectory(YTDL);
 		}
 
-		/// <summary>
-		/// Decides if there is a face detected on upper half or lower half of the image
-		/// </summary>
-		/// <param name="sourcePicture">the picture to detect faces on</param>
-		/// <param name="faceRect">the returned rectangle with the faceposition</param>
-		/// <returns></returns>
+        /// <summary>
+        /// Decides if there is a face detected on upper half or lower half of the image
+        /// </summary>
+        /// <param name="sourcePicture">the picture to detect faces on</param>
+        /// <param name="faceRect">the returned rectangle with the faceposition</param>
+        /// <returns></returns>
 
-		public static ParamForTextCreation GettextPosition(ParamForTextCreation parameters, Bitmap sourcePicture, Rectangle faceRect)
+        public static ParamForTextCreation GettextPosition(ParamForTextCreation parameters, Bitmap sourcePicture, Rectangle faceRect)
+        {
+            // if the passed rectangle is empty, set it outside of the image.
+            if (faceRect.IsEmpty)
+            {
+                Rectangle EmptyTriangleWasPassed = new Rectangle(sourcePicture.Width, sourcePicture.Height, 50, 50);
+                faceRect = EmptyTriangleWasPassed;
+            }
+
+            Dictionary<Box, Rectangle> Boxes = new Dictionary<Box, Rectangle>();
+
+            // top box
+            int TopBoxValueX = 0;
+            int TopBoxValueY = 0;
+            Box topBox = Box.TopBox;
+
+            Rectangle TopBoxRectangle = new Rectangle
+            {
+                X = TopBoxValueX,
+                Y = TopBoxValueY,
+                Width = sourcePicture.Width,
+                Height = TopBoxValueY
+            };
+
+            Boxes.Add(topBox, TopBoxRectangle);
+
+            // bottom box
+            int bottomBoxValueX = 0;
+            int bottomBoxValueY = sourcePicture.Height / 2;
+            Box bottomBox = Box.BottomBox;
+
+            Rectangle bottomBoxRectangle = new Rectangle
+            {
+                X = bottomBoxValueX,
+                Y = bottomBoxValueY,
+                Width = sourcePicture.Width,
+                Height = bottomBoxValueY
+            };
+
+            Boxes.Add(bottomBox, bottomBoxRectangle);
+
+            // top left box
+            int topLeftBoxValueX = 0;
+            int topLeftBoxValueY = 0;
+            Box topLeftBox = Box.TopLeft;
+
+            Rectangle topLeftBoxRectangle = new Rectangle
+            {
+                X = topLeftBoxValueX,
+                Y = topLeftBoxValueY,
+                Width = sourcePicture.Width / 2,
+                Height = topLeftBoxValueY / 2
+            };
+
+            Boxes.Add(topLeftBox, topLeftBoxRectangle);
+
+            // top right box
+            int topRightBoxValueX = sourcePicture.Width / 2;
+            int topRightBoxValueY = 0;
+            Box topRightBox = Box.TopRight;
+
+            Rectangle topRightBoxRectangle = new Rectangle
+            {
+                X = topRightBoxValueX,
+                Y = topRightBoxValueY,
+                Width = sourcePicture.Width / 2,
+                Height = sourcePicture.Height / 2
+            };
+
+            Boxes.Add(topRightBox, topRightBoxRectangle);
+
+            // bottom left box
+            int bottomLeftBoxValueX = 0;
+            int bottomLeftBoxValueY = sourcePicture.Height / 2;
+            Box bottomLeftBox = Box.BottomLeft;
+
+            Rectangle bottomleftBoxRectangle = new Rectangle
+            {
+                X = bottomLeftBoxValueX,
+                Y = bottomLeftBoxValueY,
+                Width = sourcePicture.Width / 2,
+                Height = sourcePicture.Height / 2
+            };
+
+            Boxes.Add(bottomLeftBox, bottomleftBoxRectangle);
+
+            // bottom right box
+            int bottomRightBoxValueX = sourcePicture.Width / 2;
+            int bottomRightBoxValueY = sourcePicture.Height / 2;
+            Box bottomRightBox = Box.BottomRight;
+
+            Rectangle bottomRightBoxRectangle = new Rectangle
+            {
+                X = bottomRightBoxValueX,
+                Y = bottomRightBoxValueY,
+                Width = sourcePicture.Width / 2,
+                Height = sourcePicture.Height / 2
+            };
+
+            Boxes.Add(bottomRightBox, bottomRightBoxRectangle);
+
+            List<Box> BoxesWithNoFacesDetected = new List<Box>();
+
+            // calculate position of face rectangle in relation to boxes
+
+            // if top left cornerbox no face detected
+            if (faceRect.X < sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2)
+            {
+                BoxesWithNoFacesDetected.Add(topLeftBox);
+            }
+            // if toprightbox no face detected
+            if (!(faceRect.X < sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height / 2))
+            {
+                BoxesWithNoFacesDetected.Add(topRightBox);
+            }
+            // if bottomleftbox no face detected
+            if (faceRect.X < sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2)
+            {
+                BoxesWithNoFacesDetected.Add(bottomLeftBox);
+            }
+            // if bottomrightbox no face detected
+            if (!(faceRect.X < sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height / 2))
+            {
+                BoxesWithNoFacesDetected.Add(bottomRightBox);
+            }
+
+            // handles the calculation of faces if the boxes are top/bottom boxes
+            int LocationOfRectangleCenterYpos = faceRect.Y + faceRect.Height / 2;
+
+            // sets the position to the middle of the picture, mid point at X = 0
+            int sourceIMGMiddleY = sourcePicture.Height / 2;
+
+            // if middle of image is more then the location of the rectangle height position 
+            if (sourceIMGMiddleY > LocationOfRectangleCenterYpos)
+            {
+                // add bottom box to list of allowed boxes
+                BoxesWithNoFacesDetected.Add(bottomBox);
+            }
+
+            // if middle of image is less then the location of the rectangle height position
+            if (sourceIMGMiddleY < LocationOfRectangleCenterYpos)
+            {
+                BoxesWithNoFacesDetected.Add(topBox);
+            }
+
+            // write boxvalues and name to object
+            parameters.Boxes = Boxes;
+
+            // all calculations done, pick one box
+            Random randomizeBoxPosition = new Random();
+            int randomizedbox = randomizeBoxPosition.Next(BoxesWithNoFacesDetected.Count);
+
+            // picks a random box that has no face in it
+            Box pickedBoxName = BoxesWithNoFacesDetected[randomizedbox];
+
+            // tries to read from dictionary
+            Boxes.TryGetValue(pickedBoxName, out Rectangle pickedBoxRectangle);
+
+            parameters.CurrentBox = pickedBoxName;
+
+            // makes a point to feed to the parameters passed in
+            Point pickedBoxPoint = new Point(pickedBoxRectangle.X, pickedBoxRectangle.Y);
+
+            // sets the position of the parameter objects point variable 
+            parameters.PositionOfText = pickedBoxPoint;
+
+            // passes the box width and height to the parameter passed to the method
+            // this is important to avoid boxes being juxtaposed outside of the image
+            parameters = CalculateBoxData(pickedBoxName, sourcePicture, parameters);
+
+            return parameters;
+        }
+
+        public static ParamForTextCreation GettextPos(ParamForTextCreation parameters, Bitmap sourcePicture, Rectangle[] faceRect)
 		{
-			// if the passed rectangle is empty, set it outside of the image.
-			if (faceRect.IsEmpty)
-			{
-				Rectangle EmptyTriangleWasPassed = new Rectangle(sourcePicture.Width, sourcePicture.Height, 50, 50);
-				faceRect = EmptyTriangleWasPassed;
-			}
 
-			Dictionary<Box, Rectangle> Boxes = new Dictionary<Box, Rectangle>();
+            // if the passed rectangle is empty, set it outside of the image.
+            //         if (faceRect.IsEmpty)
+            //{
+            //	Rectangle EmptyTriangleWasPassed = new Rectangle(sourcePicture.Width, sourcePicture.Height, 50, 50);
+            //	faceRect = EmptyTriangleWasPassed;
+            //}
+            List<Box> AllowedBoxes = new List<Box>();
+            Dictionary<Box, Rectangle> Boxes = new Dictionary<Box, Rectangle>();
 
 			// top box
 			int TopBoxValueX = 0;
@@ -263,6 +437,7 @@ namespace Bulk_Thumbnail_Creator
 			};
 
 			Boxes.Add(topBox, TopBoxRectangle);
+			AllowedBoxes.Add(topBox);
 
 			// bottom box
 			int bottomBoxValueX = 0;
@@ -278,6 +453,7 @@ namespace Bulk_Thumbnail_Creator
 			};
 
 			Boxes.Add(bottomBox, bottomBoxRectangle);
+			AllowedBoxes.Add(bottomBox);
 
 			// top left box
 			int topLeftBoxValueX = 0;
@@ -293,6 +469,7 @@ namespace Bulk_Thumbnail_Creator
 			};
 
 			Boxes.Add(topLeftBox, topLeftBoxRectangle);
+			AllowedBoxes.Add(topLeftBox);
 
 			// top right box
 			int topRightBoxValueX = sourcePicture.Width / 2;
@@ -308,6 +485,7 @@ namespace Bulk_Thumbnail_Creator
 			};
 
 			Boxes.Add(topRightBox, topRightBoxRectangle);
+			AllowedBoxes.Add(topRightBox);
 
 			// bottom left box
 			int bottomLeftBoxValueX = 0;
@@ -323,6 +501,7 @@ namespace Bulk_Thumbnail_Creator
 			};
 
 			Boxes.Add(bottomLeftBox, bottomleftBoxRectangle);
+			AllowedBoxes.Add(bottomLeftBox);
 
 			// bottom right box
 			int bottomRightBoxValueX = sourcePicture.Width / 2;
@@ -338,76 +517,83 @@ namespace Bulk_Thumbnail_Creator
 			};
 
 			Boxes.Add(bottomRightBox, bottomRightBoxRectangle);
+			AllowedBoxes.Add(bottomRightBox);
 
-			List<Box> BoxesWithNoFacesDetected = new List<Box>();
+            // write boxvalues and name to object
+            parameters.Boxes = Boxes;
 
-			// calculate position of face rectangle in relation to boxes
+            foreach (var face in faceRect)
+            {
+                // calculate position of face rectangle in relation to boxes
 
-			// if top left cornerbox no face detected
-			if (faceRect.X < sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2)
+                // if top left cornerbox face detected
+                if ((face.X < sourcePicture.Width / 2 && face.Y < sourcePicture.Height / 2))
+                {
+					AllowedBoxes.Remove(topLeftBox);
+                }
+                // if toprightbox face detected
+                if (!(face.X < sourcePicture.Width / 2 && face.Y > sourcePicture.Height / 2))
+                {
+					AllowedBoxes.Remove(topRightBox);
+                }
+                // if bottomleftbox face detected
+                if (!(face.X < sourcePicture.Width / 2 && face.Y < sourcePicture.Height / 2))
+                {
+					AllowedBoxes.Remove(bottomLeftBox);
+                }
+                // if bottomrightbox face detected
+                if (!(face.X < sourcePicture.Width / 2 && face.Y > sourcePicture.Height / 2))
+                {
+					AllowedBoxes.Remove(bottomRightBox);
+                }
+
+                // handles the calculation of faces if the boxes are top/bottom boxes
+                int LocationOfRectangleCenterYpos = face.Y + face.Height / 2;
+
+                // sets the position to the middle of the picture, mid point at X = 0
+                int sourceIMGMiddleY = sourcePicture.Height / 2;
+
+                // if middle of image is more then the location of the rectangle height position 
+                if (sourceIMGMiddleY < LocationOfRectangleCenterYpos)
+                {
+					AllowedBoxes.Remove(bottomBox);
+                }
+
+                // if middle of image is less then the location of the rectangle height position
+                if (sourceIMGMiddleY > LocationOfRectangleCenterYpos)
+                {
+					AllowedBoxes.Remove(topBox);
+                }
+
+            }
+
+			if (AllowedBoxes.Count == 0)
 			{
-				BoxesWithNoFacesDetected.Add(topLeftBox);
+				parameters.CurrentBox = Box.Discarded;
 			}
-			// if toprightbox no face detected
-			if (!(faceRect.X < sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height / 2))
+			else
 			{
-				BoxesWithNoFacesDetected.Add(topRightBox);
-			}
-			// if bottomleftbox no face detected
-			if (faceRect.X < sourcePicture.Width / 2 && faceRect.Y < sourcePicture.Height / 2)
-			{
-				BoxesWithNoFacesDetected.Add(bottomLeftBox);
-			}
-			// if bottomrightbox no face detected
-			if (!(faceRect.X < sourcePicture.Width / 2 && faceRect.Y > sourcePicture.Height / 2))
-			{
-				BoxesWithNoFacesDetected.Add(bottomRightBox);
-			}
+                // all calculations done, pick one box
+                Random random = new Random();
+                // picks a random box that has no face in it
+                Box pickedBoxName = (Box)random.Next(AllowedBoxes.Count);
 
-			// handles the calculation of faces if the boxes are top/bottom boxes
-			int LocationOfRectangleCenterYpos = faceRect.Y + faceRect.Height / 2;
+                // tries to read from dictionary
+                Boxes.TryGetValue(pickedBoxName, out Rectangle pickedBoxRectangle);
 
-			// sets the position to the middle of the picture, mid point at X = 0
-			int sourceIMGMiddleY = sourcePicture.Height / 2;
+                parameters.CurrentBox = pickedBoxName;
 
-			// if middle of image is more then the location of the rectangle height position 
-			if (sourceIMGMiddleY > LocationOfRectangleCenterYpos)
-			{
-				// add bottom box to list of allowed boxes
-				BoxesWithNoFacesDetected.Add(bottomBox);
-			}
+                // makes a point to feed to the parameters passed in
+                Point pickedBoxPoint = new Point(pickedBoxRectangle.X, pickedBoxRectangle.Y);
 
-			// if middle of image is less then the location of the rectangle height position
-			if (sourceIMGMiddleY < LocationOfRectangleCenterYpos)
-			{
-				BoxesWithNoFacesDetected.Add(topBox);
-			}
+                // sets the position of the parameter objects point variable 
+                parameters.PositionOfText = pickedBoxPoint;
 
-			// write boxvalues and name to object
-			parameters.Boxes = Boxes;
-
-			// all calculations done, pick one box
-			Random randomizeBoxPosition = new Random();
-			int randomizedbox = randomizeBoxPosition.Next(BoxesWithNoFacesDetected.Count);
-
-			// picks a random box that has no face in it
-			Box pickedBoxName = BoxesWithNoFacesDetected[randomizedbox];
-
-			// tries to read from dictionary
-			Boxes.TryGetValue(pickedBoxName, out Rectangle pickedBoxRectangle);
-
-			parameters.CurrentBox = pickedBoxName;
-
-			// makes a point to feed to the parameters passed in
-			Point pickedBoxPoint = new Point(pickedBoxRectangle.X, pickedBoxRectangle.Y);
-
-			// sets the position of the parameter objects point variable 
-			parameters.PositionOfText = pickedBoxPoint;
-
-			// passes the box width and height to the parameter passed to the method
-			// this is important to avoid boxes being juxtaposed outside of the image
-			parameters = CalculateBoxData(pickedBoxName, sourcePicture, parameters);
-
+                // passes the box width and height to the parameter passed to the method
+                // this is important to avoid boxes being juxtaposed outside of the image
+                parameters = CalculateBoxData(pickedBoxName, sourcePicture, parameters);
+            }
+            
 			return parameters;
 		}
 		/// <summary>
@@ -444,11 +630,7 @@ namespace Bulk_Thumbnail_Creator
 			{
 				PictureData createFontVariety = new PictureData(PicToVarietize);
 
-
 				createFontVariety.ParamForTextCreation.Font = font;
-
-				// set textsettingsgen to set Font of param
-				// createFontVariety.ParamForTextCreation.Font = createFontVariety.ReadSettings.Font;
 				createFontVariety.OutputType = OutputType.FontVariety;
 				PicToVarietize.Varieties.Add(createFontVariety);
 			}
@@ -483,9 +665,6 @@ namespace Bulk_Thumbnail_Creator
 		/// <param name="TargetFolder">The target folder to varietize</param>
 		public static void ProducePlacementOfTextVarietyData(PictureData PicToVarietize)
 		{
-
-			List<PictureData> DebugData = new List<PictureData>();
-
 			Box boxToExclude = PicToVarietize.ParamForTextCreation.CurrentBox;
 
 			foreach (var CurrentBox in PicToVarietize.ParamForTextCreation.Boxes)
@@ -511,14 +690,11 @@ namespace Bulk_Thumbnail_Creator
 					// calculate box data, important for TextSettingsGeneration returning a correct ReadSettings object
 					CopiedPictureData.ParamForTextCreation = CalculateBoxData(CurrentBox.Key, sourcePicture, CopiedPictureData.ParamForTextCreation);
 
-					// CopiedPictureData.ReadSettings = TextSettingsGeneration(CopiedPictureData.ParamForTextCreation);
-
 					// add it to list of created varieties
 					CopiedPictureData.OutputType = OutputType.BoxPositionVariety;
 
 					PicToVarietize.Varieties.Add(CopiedPictureData);
 
-					DebugData.Add(CopiedPictureData);
 				}
 
 			}
@@ -570,7 +746,11 @@ namespace Bulk_Thumbnail_Creator
 				using (var caption = new MagickImage($"caption:{PicData.ParamForTextCreation.Text}", PicData.ReadSettings))
 				{
 					// Add the caption layer on top of the background image
-					outputImage.Composite(caption, PicData.ParamForTextCreation.Boxes[PicData.ParamForTextCreation.CurrentBox].X, PicData.ParamForTextCreation.Boxes[PicData.ParamForTextCreation.CurrentBox].Y, CompositeOperator.Over);
+					if (PicData.ParamForTextCreation.CurrentBox != Box.Discarded)
+					{
+                        outputImage.Composite(caption, PicData.ParamForTextCreation.Boxes[PicData.ParamForTextCreation.CurrentBox].X, PicData.ParamForTextCreation.Boxes[PicData.ParamForTextCreation.CurrentBox].Y, CompositeOperator.Over);
+                    }
+					
 					outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
 					
 					if (PicData.OutputType == OutputType.Dankness)
@@ -636,8 +816,6 @@ namespace Bulk_Thumbnail_Creator
 				string Font = PickRandomFont();
 				VarietyData.ParamForTextCreation.Font = Font;
 
-				MagickReadSettings settings = GenerateRandomColorSettings(VarietyData.ParamForTextCreation);
-				// VarietyData.ReadSettings = settings;
 				VarietyData.OutputType = OutputType.RandomVariety;
 				VarietyData.OutPath = $"{CurrentIndex}";
 				PictureInputData.Varieties.Add(VarietyData);
@@ -711,12 +889,6 @@ namespace Bulk_Thumbnail_Creator
 				PictureData VarietyData = new PictureData(PictureInputData);
 
 				VarietyData.ParamForTextCreation.FillColor.SetByHSL(fillcolorHue, variety, fillcolorLuminance);
-
-				float DeBugSaturationProp = PictureInputData.ParamForTextCreation.FillColor.Saturation;
-
-				float DeBugBrightnessProp = PictureInputData.ParamForTextCreation.FillColor.Luminance;
-
-				float DebugHueProp = PictureInputData.ParamForTextCreation.FillColor.Hue;
 
 				VarietyData.ParamForTextCreation.StrokeColor.SetByHSL(strokecolorHue, variety, strokecolorLuminance);
 

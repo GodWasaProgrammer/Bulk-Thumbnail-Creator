@@ -62,18 +62,18 @@ namespace Bulk_Thumbnail_Creator
         public Box CurrentBox { get { return _CurrentBox; } set { _CurrentBox = value; } }
 
 
-        public ParamForTextCreation(ParamForTextCreation paramForTextCreationToCopy)
+        public ParamForTextCreation(ParamForTextCreation param)
         {
-            _Text = (string)paramForTextCreationToCopy.Text.Clone(); // string
-            positionOfText = paramForTextCreationToCopy.PositionOfText; // struct
-            _Font = (string)paramForTextCreationToCopy.Font.Clone(); // string
-            _WidthOfBox = paramForTextCreationToCopy.WidthOfBox; // int
-            _HeightOfBox = paramForTextCreationToCopy.HeightOfBox; // int
-            fillColor = new ColorItem(paramForTextCreationToCopy.FillColor); // object
-            strokeColor = new ColorItem(paramForTextCreationToCopy.StrokeColor); // object
-            borderColor = new ColorItem(paramForTextCreationToCopy.BorderColor); // object
-            _Boxes = paramForTextCreationToCopy._Boxes; // enum
-            _CurrentBox = paramForTextCreationToCopy._CurrentBox; // enum
+            _Text = (string)param.Text.Clone(); // string
+            positionOfText = param.PositionOfText; // struct
+            _Font = (string)param.Font.Clone(); // string
+            _WidthOfBox = param.WidthOfBox; // int
+            _HeightOfBox = param.HeightOfBox; // int
+            fillColor = new ColorItem(param.FillColor); // object
+            strokeColor = new ColorItem(param.StrokeColor); // object
+            borderColor = new ColorItem(param.BorderColor); // object
+            _Boxes = param._Boxes; // enum
+            _CurrentBox = param._CurrentBox; // enum
         }
         public ParamForTextCreation()
         {

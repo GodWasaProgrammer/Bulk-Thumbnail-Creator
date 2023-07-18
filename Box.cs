@@ -11,6 +11,7 @@ namespace Bulk_Thumbnail_Creator
         TopLeft,
         BottomLeft,
         BottomRight,
+        Discarded,
     }
 
 }
