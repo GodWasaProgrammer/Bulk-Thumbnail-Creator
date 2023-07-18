@@ -4,7 +4,6 @@ using FaceONNX;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ImageMagick;
 using System.Drawing;
 
 namespace Bulk_Thumbnail_Creator
@@ -29,7 +28,7 @@ namespace Bulk_Thumbnail_Creator
 			BTCSettings.DownloadedVideosList = Logic.DeSerializeXMLToListOfStrings(BTCSettings.PathToXMLListOfDownloadedVideos);
 
 			//downloads the specified url
-			string URL = "https://www.youtube.com/watch?v=WOb2AMe0Pso";
+			string URL = "https://www.youtube.com/watch?v=goHe6ya8HXk";
 
 			BTCSettings.PathToVideo = await Logic.YouTubeDL(URL);
 			BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
@@ -92,17 +91,17 @@ namespace Bulk_Thumbnail_Creator
                     int pickedString = pickAString.Next(BTCSettings.ListOfText.Count);
                     currentParameters.Text = BTCSettings.ListOfText[pickedString];
 
-                    MagickReadSettings settings = Logic.TextSettingsGeneration(currentParameters);
+                    // MagickReadSettings settings = Logic.TextSettingsGeneration(currentParameters);
 
                     PictureData PassPictureData = new PictureData()
                     {
                         FileName = file,
                         ParamForTextCreation = currentParameters,
-                        ReadSettings = settings,
+                        // ReadSettings = settings,
                     };
 
                     BTCSettings.PictureDatas.Add(PassPictureData);
-                   //  Logic.ProduceTextPictures(PassPictureData);
+					// Logic.ProduceTextPictures(PassPictureData);
                 }
 
 			}

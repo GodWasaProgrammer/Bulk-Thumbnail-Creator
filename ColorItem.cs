@@ -135,7 +135,9 @@ namespace Bulk_Thumbnail_Creator
 		}
 		public ColorItem()
 		{
-
+			//red = new byte();
+			//green = new byte();
+			//blue = new byte();
 		}
 
 	}

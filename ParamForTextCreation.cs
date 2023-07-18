@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace Bulk_Thumbnail_Creator
@@ -23,11 +24,6 @@ namespace Bulk_Thumbnail_Creator
         private string _Font;
         public string Font { get { return _Font; } set { _Font = value; } }
 
-        /// <summary>
-        /// The fontpointsize for this object, 70 is just default, this will always be overwritten
-        /// </summary>
-        private int _FontPointSize = 70;
-        public int FontPointSize { get { return _FontPointSize; } set { _FontPointSize = value; } }
 
         /// <summary>
         /// The Box Width which in text will be placed of this object
@@ -68,16 +64,16 @@ namespace Bulk_Thumbnail_Creator
 
         public ParamForTextCreation(ParamForTextCreation paramForTextCreationToCopy)
         {
-            _Text = paramForTextCreationToCopy.Text;
-            positionOfText = paramForTextCreationToCopy.PositionOfText;
-            _Font = paramForTextCreationToCopy.Font;
-            _WidthOfBox = paramForTextCreationToCopy.WidthOfBox;
-            _HeightOfBox = paramForTextCreationToCopy.HeightOfBox;
-            fillColor = paramForTextCreationToCopy.FillColor;
-            strokeColor = paramForTextCreationToCopy.StrokeColor;
-            borderColor = paramForTextCreationToCopy.BorderColor;
-            _Boxes = paramForTextCreationToCopy._Boxes;
-            _CurrentBox = paramForTextCreationToCopy._CurrentBox;
+            _Text = (string)paramForTextCreationToCopy.Text.Clone(); // string
+            positionOfText = paramForTextCreationToCopy.PositionOfText; // struct
+            _Font = (string)paramForTextCreationToCopy.Font.Clone(); // string
+            _WidthOfBox = paramForTextCreationToCopy.WidthOfBox; // int
+            _HeightOfBox = paramForTextCreationToCopy.HeightOfBox; // int
+            fillColor = new ColorItem(paramForTextCreationToCopy.FillColor); // object
+            strokeColor = new ColorItem(paramForTextCreationToCopy.StrokeColor); // object
+            borderColor = new ColorItem(paramForTextCreationToCopy.BorderColor); // object
+            _Boxes = paramForTextCreationToCopy._Boxes; // enum
+            _CurrentBox = paramForTextCreationToCopy._CurrentBox; // enum
         }
         public ParamForTextCreation()
         {

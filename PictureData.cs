@@ -25,7 +25,7 @@ namespace Bulk_Thumbnail_Creator
 		/// ImageMagick settings that belongs to this object, this is used to generate color/textsettings
 		/// </summary>
 		private MagickReadSettings _ReadSettings;
-		public MagickReadSettings ReadSettings { get { return _ReadSettings; } set { _ReadSettings = value; } }
+		public MagickReadSettings ReadSettings { get { return _ReadSettings = Logic.TextSettingsGeneration(ParamForTextCreation); } }
 
 		/// <summary>
 		/// List of varieties belonging to this image
@@ -39,11 +39,10 @@ namespace Bulk_Thumbnail_Creator
 		/// <param name="pictureDataToCopy"></param>
 		public PictureData(PictureData pictureDataToCopy) 
 		{
-			_FileName = pictureDataToCopy.FileName;
+			_FileName = (string)pictureDataToCopy.FileName.Clone();
 			_ParamForTextCreation = new ParamForTextCreation(pictureDataToCopy.ParamForTextCreation);
-			_ReadSettings = pictureDataToCopy.ReadSettings;
 			_Varieties = new List<PictureData>();
-			_outPath = pictureDataToCopy.OutPath;
+			_outPath = (string)pictureDataToCopy.OutPath.Clone();
 		}
 		/// <summary>
 		/// Constructor
