@@ -72,7 +72,7 @@ namespace Bulk_Thumbnail_Creator
             fillColor = new ColorItem(param.FillColor); // object
             strokeColor = new ColorItem(param.StrokeColor); // object
             borderColor = new ColorItem(param.BorderColor); // object
-            _Boxes = param._Boxes; // enum
+            _Boxes = new Dictionary<Box,Rectangle>(param._Boxes); // dictionary
             _CurrentBox = param._CurrentBox; // enum
         }
         public ParamForTextCreation()

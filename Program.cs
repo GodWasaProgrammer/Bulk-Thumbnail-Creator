@@ -97,42 +97,46 @@ namespace Bulk_Thumbnail_Creator
                     };
 
                     BTCSettings.PictureDatas.Add(PassPictureData);
+					Logic.ProduceTextPictures(PassPictureData);
                 }
 
 			}
 
-			//Logic.ProduceTextPictures(BTCSettings.PictureDatas[21]);
-            #region Make Showcase Video
-            //Dictionary<string, string> paramToMakeVideoOfResult = new Dictionary<string, string>();
-            //paramToMakeVideoOfResult["framerate"] = "2";
-            //paramToMakeVideoOfResult["i"] = $@"""{Path.GetFullPath(BTCSettings.TextAddedDir)}/%03d.png""";
-            //string getTruePath = Path.GetFullPath(BTCSettings.TextAddedDir);
-            //string showCaseVideoOutPut = $@"""{getTruePath}/showcase.mp4""";
+			#region Make Showcase Video
+			//Dictionary<string, string> paramToMakeVideoOfResult = new Dictionary<string, string>();
+			//paramToMakeVideoOfResult["framerate"] = "2";
+			//paramToMakeVideoOfResult["i"] = $@"""{Path.GetFullPath(BTCSettings.TextAddedDir)}/%03d.png""";
+			//string getTruePath = Path.GetFullPath(BTCSettings.TextAddedDir);
+			//string showCaseVideoOutPut = $@"""{getTruePath}/showcase.mp4""";
 
-            //FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
-            #endregion
+			//FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
+			#endregion
 
-            // just to try out variety will be on interaction/choice of pic
-            //for (int i = 0; i < BTCSettings.PictureDatas.Count; i++)
-            //{
-            //	var input = BTCSettings.PictureDatas[i];
-            //	Logic.ProduceSaturationVarietyData(input);
+			// just to try out variety will be on interaction/choice of pic
+			for (int i = 0; i < BTCSettings.PictureDatas.Count; i++)
+			{
+				var input = BTCSettings.PictureDatas[i];
+				Logic.ProduceSaturationVarietyData(input);
 
-            //	Logic.ProduceFontVarietyData(input);
+				Logic.ProduceFontVarietyData(input);
 
-            //	Logic.ProducePlacementOfTextVarietyData(input);
+				Logic.ProducePlacementOfTextVarietyData(input);
 
-            //	Logic.ProduceRandomVariety(input);
+				Logic.ProduceRandomVariety(input);
 
-            //	Logic.ProduceMemeDankness(input);
-            //}
+				Logic.ProduceMemeDankness(input);
+			}
 
-            //for (int i = 0; i < BTCSettings.PictureDatas[0].Varieties.Count; i++)
-            //{
-            //	Logic.ProduceTextPictures(BTCSettings.PictureDatas[2].Varieties[i]);
-            //}
+			for (int index = 0; index < BTCSettings.PictureDatas.Count; index++)
+			{
+				for (int i = 0; i < BTCSettings.PictureDatas[index].Varieties.Count; i++)
+				{
+					Logic.ProduceTextPictures(BTCSettings.PictureDatas[index].Varieties[i]);
+				}
 
-        }
+			}
+
+		}
 
 	}
 

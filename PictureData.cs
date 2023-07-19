@@ -53,6 +53,7 @@ namespace Bulk_Thumbnail_Creator
             }
 			
 		}
+
 		/// <summary>
 		/// Constructor
 		/// </summary>
