@@ -361,3 +361,20 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/BTC Blazor/YTDL
+/BTC Blazor/output
+/BTC Blazor/Fonts
+/BTC Blazor/wwwroot/song.mp3
+/BTC Blazor/avcodec-60.dll
+/BTC Blazor/avdevice-60.dll
+/BTC Blazor/avfilter-9.dll
+/BTC Blazor/avformat-60.dll
+/BTC Blazor/avutil-58.dll
+/BTC Blazor/ffmpeg.exe
+/BTC Blazor/ffplay.exe
+/BTC Blazor/ffprobe.exe
+/BTC Blazor/postproc-57.dll
+/BTC Blazor/swresample-4.dll
+/BTC Blazor/swscale-7.dll
+/BTC Blazor/yt-dlp.exe
+/ffmpeg.exe
