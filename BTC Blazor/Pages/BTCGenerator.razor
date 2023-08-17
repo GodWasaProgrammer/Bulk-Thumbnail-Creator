@@ -1,0 +1,83 @@
+﻿@page "/"
+
+@using Microsoft.AspNetCore.Components
+@using Microsoft.JSInterop
+@using Bulk_Thumbnail_Creator.Enums;
+
+<PageTitle>Bulk Thumbnail Creator</PageTitle>
+<h1>Bulk Thumbnail Creator</h1>
+
+    @if (isLoading == true)
+    {   <div>
+        <h2>We Generating Some Poppin' Thumbnails For ya!</h2>
+        </div>
+    }
+    @if (isLoading == false)
+
+    {
+    <div class="input-container">
+        <div class="youtube-link">
+            <label class="input-label" for="textInput">Youtube Link:</label>
+            <input id="textInput" type="text" @bind="textInput" class="matrix-input" />
+        </div>
+
+        <div class="text-to-print">
+            <div>
+                <label class="input-label" for="textToPrint1">Text To Print 1:</label>
+                <input id="textToPrint1" type="text" @bind="@TextToPrint1" class="matrix-input" />
+            </div>
+
+            <div>
+                <label class="input-label" for="textToPrint2">Text To Print 2:</label>
+                <input id="textToPrint2" type="text" @bind="@TextToPrint2" class="matrix-input" />
+            </div>
+
+            <div>
+                <label class="input-label" for="textToPrint3">Text To Print 3:</label>
+                <input id="textToPrint3" type="text" @bind="@TextToPrint3" class="matrix-input" />
+            </div>
+        </div>
+        
+    </div>
+    }
+
+<button class="cool-button" @onclick="CallBTC" disabled="@isLoading">
+    @if (isLoading)
+    {
+        <div>
+        <img src="images/pepe-dance.gif" alt="Loading..." style="width: 250px; height: 250px; border:0;" />
+        </div>
+    }
+    else
+    {
+        <text>Generate!</text>
+    }
+</button>
+
+<ImageDisplay></ImageDisplay>
+
+@* @code {
+
+    
+
+    // private async Task CallBTC()
+    // {
+    //     isLoading = true; // Set isLoading to true to show the loading spinner and disable the button
+    //     StateHasChanged();
+
+    //     List<string> TextToPrintList = new();
+    //     TextToPrintList.Add(TextToPrint1);
+    //     TextToPrintList.Add(TextToPrint2);
+    //     TextToPrintList.Add(TextToPrint3);
+
+    //     var ProductionType = Bulk_Thumbnail_Creator.ProductionType.FrontPagePictureLineUp;
+
+    //     await Task.Run(() => Bulk_Thumbnail_Creator.Program.Process(ProductionType, textInput, TextToPrintList));
+
+    //     isLoading = false; // Set isLoading to false to hide the loading spinner and enable the button
+        
+    //     StateHasChanged();
+    // }
+}
+ *@
+

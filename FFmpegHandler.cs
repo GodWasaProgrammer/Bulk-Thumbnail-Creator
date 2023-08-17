@@ -12,10 +12,12 @@ namespace Bulk_Thumbnail_Creator
 		/// <param name="parameters"></param>
 		private static void ExecuteFFMPG(string parameters)
 		{
-			Process processFFMpeg = new Process();
+            System.Diagnostics.Process processFFMpeg = new();
+
+			string WorkDir = System.IO.Directory.GetCurrentDirectory();
 
 			processFFMpeg.StartInfo.FileName = Path.GetFullPath("ffmpeg.exe");
-			processFFMpeg.StartInfo.WorkingDirectory = BTCSettings.YoutubeDLDir;
+			processFFMpeg.StartInfo.WorkingDirectory = Path.Combine(WorkDir, BTCSettings.YoutubeDLDir);
 			processFFMpeg.StartInfo.Arguments = parameters;
 			processFFMpeg.StartInfo.UseShellExecute = false;
 			processFFMpeg.StartInfo.CreateNoWindow = false;
@@ -42,7 +44,7 @@ namespace Bulk_Thumbnail_Creator
 		
 			//string path = $@"""{outPath}/%03d.png""";
 			exePars += outPath;
-			exePars.TrimEnd(' ');
+			//exePars.TrimEnd(' ');
 
 			ExecuteFFMPG(exePars);
 		}

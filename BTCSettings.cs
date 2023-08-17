@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Bulk_Thumbnail_Creator.PictureObjects;
 
 namespace Bulk_Thumbnail_Creator
 {
-	public class BTCSettings
+    public class BTCSettings
 	{
 		/// <summary>
 		/// The Dir where FFmpeg outputs raw images from the specified video
@@ -40,11 +41,11 @@ namespace Bulk_Thumbnail_Creator
 		/// List of PictureDataObject which is a complete recipe to output an 
 		/// image(or output an image again after the fact)
 		/// </summary>
-		private static List<PictureData> _PictureDatas = new List<PictureData>();
+		private static List<PictureData> _PictureDatas = new();
 		public static List<PictureData> PictureDatas { get { return _PictureDatas; } set { _PictureDatas = value; } }
 
 
-		private static List<string> _DiscardedBecauseTooMuchFacefiles = new List<string>();
+		private static List<string> _DiscardedBecauseTooMuchFacefiles = new();
 		public static List<string> DiscardedBecauseTooMuchFacePictureData {get { return _DiscardedBecauseTooMuchFacefiles; }set { _DiscardedBecauseTooMuchFacefiles = value; } }
 
 
@@ -67,7 +68,7 @@ namespace Bulk_Thumbnail_Creator
 		/// <summary>
 		/// Where your output Text strings are located
 		/// </summary>
-		private static List<string> _ListOfText = new List<string>();
+		private static List<string> _ListOfText = new();
 		public static List<string> ListOfText { get { return _ListOfText; } set { _ListOfText = value; } }
 
 
@@ -80,7 +81,7 @@ namespace Bulk_Thumbnail_Creator
 		/// <summary>
 		/// A list of the Videos that have previously been downloaded
 		/// </summary>
-		private static List<string> _DownloadedVideosList = new List<string>();
+		private static List<string> _DownloadedVideosList = new();
 		public static List<string> DownloadedVideosList { get { return _DownloadedVideosList; } set { _DownloadedVideosList = value; } }
 
 		/// <summary>

@@ -1,0 +1,34 @@
+﻿@page "/imagedisplay"
+@inject Bulk_Thumbnail_Creator.PictureObjects.PictureDataService ds
+
+    <div class="image-container">
+        @foreach (var imageUrl in imageUrls)
+        {
+            <button class="image-button" @onclick="() => ShowImageDetail(imageUrl)">
+                <img src="@imageUrl" style="max-width: 300px; margin: 10px;" />
+            </button>
+        }
+
+        @if (imageUrls.Count == 0)
+        {
+            <p>No images to display.</p>
+        }
+    </div>
+
+@code
+{
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    private void ShowImageDetail(string imageUrl)
+    {
+        NavigationManager.NavigateTo($"/imagedetail/{Uri.EscapeDataString(imageUrl)}");
+    }
+
+}
+
+
+
+
+
+

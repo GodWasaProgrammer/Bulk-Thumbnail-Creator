@@ -1,0 +1,388 @@
+@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
+h1:focus {
+    outline: none;
+}
+
+a, .btn-link {
+    color: #0071c1;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+.content {
+    padding-top: 1.1rem;
+}
+
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+}
+
+.invalid {
+    outline: 1px solid red;
+}
+
+.validation-message {
+    color: red;
+}
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+
+.blazor-error-boundary {
+    background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNDkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIG92ZXJmbG93PSJoaWRkZW4iPjxkZWZzPjxjbGlwUGF0aCBpZD0iY2xpcDAiPjxyZWN0IHg9IjIzNSIgeT0iNTEiIHdpZHRoPSI1NiIgaGVpZ2h0PSI0OSIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yMzUgLTUxKSI+PHBhdGggZD0iTTI2My41MDYgNTFDMjY0LjcxNyA1MSAyNjUuODEzIDUxLjQ4MzcgMjY2LjYwNiA1Mi4yNjU4TDI2Ny4wNTIgNTIuNzk4NyAyNjcuNTM5IDUzLjYyODMgMjkwLjE4NSA5Mi4xODMxIDI5MC41NDUgOTIuNzk1IDI5MC42NTYgOTIuOTk2QzI5MC44NzcgOTMuNTEzIDI5MSA5NC4wODE1IDI5MSA5NC42NzgyIDI5MSA5Ny4wNjUxIDI4OS4wMzggOTkgMjg2LjYxNyA5OUwyNDAuMzgzIDk5QzIzNy45NjMgOTkgMjM2IDk3LjA2NTEgMjM2IDk0LjY3ODIgMjM2IDk0LjM3OTkgMjM2LjAzMSA5NC4wODg2IDIzNi4wODkgOTMuODA3MkwyMzYuMzM4IDkzLjAxNjIgMjM2Ljg1OCA5Mi4xMzE0IDI1OS40NzMgNTMuNjI5NCAyNTkuOTYxIDUyLjc5ODUgMjYwLjQwNyA1Mi4yNjU4QzI2MS4yIDUxLjQ4MzcgMjYyLjI5NiA1MSAyNjMuNTA2IDUxWk0yNjMuNTg2IDY2LjAxODNDMjYwLjczNyA2Ni4wMTgzIDI1OS4zMTMgNjcuMTI0NSAyNTkuMzEzIDY5LjMzNyAyNTkuMzEzIDY5LjYxMDIgMjU5LjMzMiA2OS44NjA4IDI1OS4zNzEgNzAuMDg4N0wyNjEuNzk1IDg0LjAxNjEgMjY1LjM4IDg0LjAxNjEgMjY3LjgyMSA2OS43NDc1QzI2Ny44NiA2OS43MzA5IDI2Ny44NzkgNjkuNTg3NyAyNjcuODc5IDY5LjMxNzkgMjY3Ljg3OSA2Ny4xMTgyIDI2Ni40NDggNjYuMDE4MyAyNjMuNTg2IDY2LjAxODNaTTI2My41NzYgODYuMDU0N0MyNjEuMDQ5IDg2LjA1NDcgMjU5Ljc4NiA4Ny4zMDA1IDI1OS43ODYgODkuNzkyMSAyNTkuNzg2IDkyLjI4MzcgMjYxLjA0OSA5My41Mjk1IDI2My41NzYgOTMuNTI5NSAyNjYuMTE2IDkzLjUyOTUgMjY3LjM4NyA5Mi4yODM3IDI2Ny4zODcgODkuNzkyMSAyNjcuMzg3IDg3LjMwMDUgMjY2LjExNiA4Ni4wNTQ3IDI2My41NzYgODYuMDU0N1oiIGZpbGw9IiNGRkU1MDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvZz48L3N2Zz4=) no-repeat 1rem/1.8rem, #b32121;
+    padding: 1rem 1rem 1rem 3.7rem;
+    color: white;
+}
+
+    .blazor-error-boundary::after {
+        content: "An error has occurred."
+    }
+
+/* Add custom styles for the "Thumbnail Me Up Scotty!" header */
+h1 {
+    color: #FF5722; /* Set the text color to a nice orange (#FF5722) */
+    font-size: 48px; /* Increase the font size for a larger heading */
+    font-family: "Arial", sans-serif; /* Apply a font-family for the header */
+    text-align: center; /* Center the header text */
+    padding: 20px 0; /* Add some padding to the top and bottom of the header */
+    margin-bottom: 30px; /* Add some margin at the bottom of the header */
+    background-color: #333; /* Set a background color for the header */
+    border-radius: 10px; /* Apply a rounded border to the header */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Add a subtle shadow effect */
+}
+
+/* Add custom styles for the status line */
+.custom-status {
+    font-size: 18px; /* Set the font size to make it smaller than h1 but still stand out */
+    color: #0071c1; /* Set a color for the text, you can choose any color you like */
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; /* Apply a font-family */
+    text-align: left; /* Center the text */
+    padding: 10px 0; /* Add some padding to the top and bottom */
+    background-color: #f8f8f8; /* Set a background color for the line */
+    border-radius: 5px; /* Apply a rounded border */
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+}
+
+@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
+/* ... Existing styles ... */
+
+/* Add this CSS to your site.css file or any other appropriate CSS file */
+
+/* Primary Button */
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+    /* Hover effect */
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    /* Active effect */
+    .btn-primary:active {
+        background-color: #00397a;
+    }
+
+    /* Disabled effect */
+    .btn-primary:disabled {
+        background-color: #b8b8b8;
+        cursor: not-allowed;
+    }
+
+    /* Focus effect */
+    .btn-primary:focus {
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+    }
+
+/* Style the gold flake box */
+.gold-flake-box {
+    background-color:black;
+    height:100%;
+    padding: 20px;
+    border: 1px solid #b0b0b0;
+    border-radius: 5px;
+}
+
+/* Style the image container */
+.image-container {
+    display: flex;
+    flex-wrap: wrap;
+    height:100%;
+    justify-content: center;
+}
+
+/* Style the image buttons */
+.image-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1px;
+    padding: 1px;
+    background-color: black;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+    .image-button img {
+        max-width: 300px;
+        max-height: 200px;
+    }
+
+    .image-button:hover {
+        background-color: #1861ac;
+    }
+
+.picture-data-box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+    .picture-data-box h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    .picture-data-box .box-content {
+        margin-top: 10px;
+    }
+
+    .picture-data-box h2 {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+    }
+
+    .picture-data-box select {
+        margin-top: 5px;
+    }
+
+/* CSS for the loading spinner */
+.loading-spinner {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    border-top: 3px solid #3498db;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.matrix-background {
+    /* Background and Border */
+    background-color:black;
+    border: 2px solid #00ff00; /* Green border */
+    height:100%;
+    border-radius: 5px;
+    padding: 8px;
+    color: #00ff00; /* Green text */
+    font-size: 14px;
+    font-family: 'Courier New', monospace; /* Monospaced font */
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.1);
+    transition: background-color 0.2s ease;
+    position: relative; /* Required for pseudo-elements */
+    overflow:auto; /* Hide overflowing characters */
+}
+
+
+.matrix-input {
+    /* Background and Border */
+    background-image : url("/images/matrix-background.gif");
+    border: 2px solid #00ff00; /* Green border */
+    border-radius: 5px;
+    padding: 8px;
+    color: #00ff00; /* Green text */
+    font-size: 14px;
+    font-family: 'Courier New', monospace; /* Monospaced font */
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.1);
+    transition: background-color 0.2s ease;
+    position: relative; /* Required for pseudo-elements */
+    /*overflow: hidden; /* Hide overflowing characters */
+}
+
+    .matrix-input:focus {
+        background-color: #000; /* Black background on focus */
+        outline: none;
+    }
+
+    /* Animation for matrix effect */
+    .matrix-input::before {
+        content: "0";
+        color: #00ff00; /* Green code color */
+        position: absolute;
+        left: 0;
+        top: -100%;
+        opacity: 0;
+        animation: matrixEffect 5s linear infinite; /* Adjust animation duration as needed */
+    }
+
+/* Keyframes for animation */
+@keyframes matrixEffect {
+    0% {
+        transform: translateY(0);
+        opacity: 0.2;
+    }
+
+    100% {
+        transform: translateY(100%);
+        opacity: 1;
+    }
+}
+
+/* Style for the labels */
+.input-label {
+    color: green;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Set the background image to a matrix pattern */
+body {
+    background-image: url('matrix-background.gif');
+    background-repeat: repeat;
+    background-size: cover;
+    height:100%;
+}
+
+/* Add some minimal styling to the body to fill the available space */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Add any additional styling to your content here */
+/* For example, centering the content on the page */
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/* site.css or your custom CSS file */
+html, body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-image: url('../images/matrix-background.gif');
+    background-color:yellow;
+    background-repeat: repeat;
+    background-size: cover;
+}
+
+.input-container {
+    display: flex;
+}
+
+/* Button Style */
+.cool-button {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: #00cc66; /* Green */
+    color: #000; /* Black */
+    border: 2px solid #00cc66; /* Green border */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+
+    .cool-button:hover {
+        background-color: #00994d; /* Darker green on hover */
+        color: #fff; /* White text on hover */
+        border: 2px solid #00994d; /* Darker green border on hover */
+    }
+
+    .cool-button:active {
+        background-color: #006633; /* Even darker green on click */
+        border: 2px solid #006633; /* Even darker green border on click */
+    }
+
+.input-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: black;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.youtube-link {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.text-to-print {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
