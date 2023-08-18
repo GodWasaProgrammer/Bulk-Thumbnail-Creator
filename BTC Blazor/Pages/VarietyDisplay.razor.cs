@@ -6,6 +6,10 @@ namespace BTC_Blazor.Pages
     public partial class VarietyDisplay
     {
 
+        // List of image URLs
+        private List<string> imageUrls;
+
+
         [Parameter]
         public PictureData ParentPictureProp { get; set; }
 

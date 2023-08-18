@@ -159,13 +159,13 @@ namespace Bulk_Thumbnail_Creator
         {
             string CurrentLoc = Assembly.GetExecutingAssembly().Location;
             string parentDirectory = Directory.GetParent(CurrentLoc).FullName;
-            string newPath = Path.Combine(parentDirectory, "Executables");
-            string YTDLPDir = Path.Combine(newPath, "yt-dlp.exe");
-            string FfMpegDir = Path.Combine(newPath, "ffmpeg.exe");
+            string ExePath = Path.Combine(parentDirectory, "Executables");
+            string YTDLPDir = Path.Combine(ExePath, "yt-dlp.exe");
+            string FfMpegDir = Path.Combine(ExePath, "ffmpeg.exe");
 
             Console.WriteLine($"Current Location: {CurrentLoc}");
             Console.WriteLine($"Parent Directory: {parentDirectory}");
-            Console.WriteLine($"New Path: {newPath}");
+            Console.WriteLine($"New Path: {ExePath}");
             if (File.Exists (YTDLPDir))
             {
             Console.WriteLine($"YTDLP Path: {YTDLPDir}");
@@ -173,6 +173,8 @@ namespace Bulk_Thumbnail_Creator
             else
             {
                 Console.WriteLine("yt-dlp.exe was not found");
+                await Console.Out.WriteLineAsync("Will Try To Download yt-dlp");
+                await YoutubeDLSharp.Utils.DownloadYtDlp(ExePath);
             }
             if (File.Exists (FfMpegDir)) 
             { 
@@ -181,6 +183,8 @@ namespace Bulk_Thumbnail_Creator
             else
             {
                 Console.WriteLine("ffmpeg.exe was not found");
+                await Console.Out.WriteLineAsync("Will Try To Download ffmpeg");
+                await YoutubeDLSharp.Utils.DownloadFFmpeg(ExePath);
             }
 
             string currentDirectory = Directory.GetCurrentDirectory();

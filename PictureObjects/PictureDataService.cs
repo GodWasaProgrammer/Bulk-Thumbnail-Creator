@@ -26,6 +26,12 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             PicDataServiceList = await Program.Process(ProdType, url, ListOfTextToPrint);
         }
 
+        public async Task CreatePictureDataVariety(PictureData PicToVarietize)
+        {
+            ProductionType ProdType = ProductionType.VarietyList;
+            PictureDataService = await Program.Process(ProdType,)
+        }
+
         public void AddPictureData(PictureData pictureData)
         {
             PicDataServiceList.Add(pictureData);

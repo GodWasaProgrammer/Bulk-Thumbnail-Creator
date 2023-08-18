@@ -2,10 +2,11 @@
 
 <h3>Variety Pictures</h3>
 <div class="image-container">
-   @*  @foreach (var variety in ParentPictureProp.Varieties)
+    @foreach (var imageUrl in imageUrls)
     {
-        <button class="image-button"><img src="@variety.ImageUrl"</button>
-
-    } *@
+        <button class="image-button" @onclick="() => SetPictureVarietyContent(ParentPictureProp)">
+            <img src="@imageUrl" style="max-width: 300px; margin: 10px;" />
+        </button>
+    }
 
 </div>

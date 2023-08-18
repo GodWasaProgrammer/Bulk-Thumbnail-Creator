@@ -120,8 +120,18 @@ namespace Bulk_Thumbnail_Creator
                     Logic.ProducePlacementOfTextVarietyData(input);
 
                     Logic.ProduceRandomVariety(input);
+
+                    Logic.ProduceMemeDankness(input);
                 }
 
+            }
+
+            if (ProductionType.VarietyList == pd)
+            {
+                PictureData placeholder = new();
+
+                // produce say 
+                Logic.ProduceTextPictures(placeholder);
             }
 
             #region Make Showcase Video
