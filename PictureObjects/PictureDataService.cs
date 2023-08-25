@@ -80,6 +80,10 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             {
                 file.Delete();
             }
+            foreach(DirectoryInfo dir in di.GetDirectories())
+            {
+                dir.Delete(true);
+            }
 
             DirectoryInfo di2 = new DirectoryInfo(BTCSettings.OutputDir);
             
@@ -87,12 +91,20 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             {
                 file.Delete();
             }
+            foreach(DirectoryInfo dir in di2.GetDirectories())
+            {
+                dir.Delete(true); 
+            }
 
             DirectoryInfo di3 = new DirectoryInfo(BTCSettings.YoutubeDLDir);
 
             foreach (FileInfo file in di3.GetFiles())
             {
                 file.Delete();
+            }
+            foreach(DirectoryInfo dir in di3.GetDirectories())
+            { 
+                dir.Delete(true); 
             }
 
             // TODO clear subdirs also
