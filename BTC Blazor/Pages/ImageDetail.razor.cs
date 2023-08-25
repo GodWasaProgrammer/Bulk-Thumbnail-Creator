@@ -17,16 +17,20 @@ namespace BTC_Blazor.Pages
             SetPictureDataImageDisplayCorrelation(ImageUrl);
         }
 
-
         public void SetPictureDataImageDisplayCorrelation(string imageUrl)
         {
             foreach (var item in PictureDataService.PicDataServiceList)
             {
 
-                if (Path.GetFileNameWithoutExtension(item.OutPath) == Path.GetFileNameWithoutExtension(imageUrl)) 
+                if (Path.GetFileNameWithoutExtension(item.OutPath) == Path.GetFileNameWithoutExtension(imageUrl))
                 {
                     CurrentPagePictureData = new PictureData(item);
                 }
+
+                //if (CurrentPagePictureData == item)
+                //{
+                //    CurrentPagePictureData = new PictureData(item);
+                //}
 
             }
             

@@ -1,12 +1,42 @@
 ﻿@inject Bulk_Thumbnail_Creator.PictureObjects.PictureDataService PicDataService;
+@page "/varietydisplay"
 
 <h3>Variety Pictures</h3>
 <div class="image-container">
-    @foreach (var imageUrl in imageUrls)
+    @foreach (var imageUrl in imageURL)
     {
-        <button class="image-button" @onclick="() => SetPictureVarietyContent(ParentPictureProp)">
-            <img src="@imageUrl" style="max-width: 300px; margin: 10px;" />
-        </button>
+        <img src="@imageUrl" style="max-width: 300px; margin: 10px;" />
+    }
+</div>
+
+@code {
+    private List<string> imageURL = new List<string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CreateVarietyAsync();
+        LoadImageUrls();
     }
 
-</div>
+    private async Task CreateVarietyAsync()
+    {
+        imageUrls = await PicDataService.CreatePictureDataVariety(ParentPictureProp); // Replace with the appropriate parameter
+    }
+
+    private void LoadImageUrls()
+    {
+        string baseImagePath = Bulk_Thumbnail_Creator.BTCSettings.TextAddedDir; // Update the base path
+        string[] subdirectories = Directory.GetDirectories(baseImagePath);
+
+        foreach (string subdirectory in subdirectories)
+        {
+            string[] imageFiles = Directory.GetFiles(subdirectory, "*.png");
+
+            foreach (string imageFile in imageFiles)
+            {
+                string imageUrl = $"/{imageFile}"; // Convert local path to renderable URL
+                imageURL.Add(imageUrl);
+            }
+        }
+    }
+}

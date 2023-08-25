@@ -192,7 +192,7 @@ namespace Bulk_Thumbnail_Creator
 
             if (Directory.Exists (ytdlDir))
             {
-                Console.WriteLine("YTDL Dir found");
+                Console.WriteLine($"YTDL Dir found:{ytdlDir}");
             }
             else
             {
@@ -668,7 +668,7 @@ namespace Bulk_Thumbnail_Creator
             return settingsTextRandom;
         }
 
-        public static void ProduceRandomVariety(PictureData PictureInputData)
+        public static void ProduceRandomVarietyData(PictureData PictureInputData)
         {
             const int NumberOfRandomsToProduce = 15;
 
@@ -695,7 +695,7 @@ namespace Bulk_Thumbnail_Creator
 
         }
 
-        public static void ProduceMemeDankness(PictureData DankifyTarget)
+        public static void ProduceMemeDanknessData(PictureData DankifyTarget)
         {
             PictureData CopiedPicData = new(DankifyTarget);
 

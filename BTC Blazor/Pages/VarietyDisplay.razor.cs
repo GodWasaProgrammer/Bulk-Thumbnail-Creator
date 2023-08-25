@@ -5,26 +5,15 @@ namespace BTC_Blazor.Pages
 {
     public partial class VarietyDisplay
     {
+        public List<string> imageUrls;
 
-        // List of image URLs
-        private List<string> imageUrls;
-
+        public VarietyDisplay() 
+        {
+            imageUrls = new List<string>();
+        }
 
         [Parameter]
-        public PictureData ParentPictureProp { get; set; }
-
-        public void SetPictureVarietyContent(PictureData MainIncoming)
-        {
-            for (int Data = 0; Data < PicDataService.PicDataServiceList.Count; Data++)
-            {
-                for (int VarietyData = 0; VarietyData < PicDataService.PicDataServiceList[Data].Varieties.Count; VarietyData++) 
-                {
-
-                }
-
-            }
-
-        }
+        public PictureData ParentPictureProp { get; set;}
 
     }
 

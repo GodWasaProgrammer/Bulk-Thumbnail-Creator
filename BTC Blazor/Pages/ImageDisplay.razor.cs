@@ -1,4 +1,5 @@
 ﻿using Bulk_Thumbnail_Creator;
+using Bulk_Thumbnail_Creator.PictureObjects;
 
 namespace BTC_Blazor.Pages
 {

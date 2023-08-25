@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using FaceONNX;
 using System.Drawing;
 using Bulk_Thumbnail_Creator.PictureObjects;
+using System.Runtime.InteropServices;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -26,16 +27,15 @@ namespace Bulk_Thumbnail_Creator
 
         }
 
-        public static async Task<List<PictureData>> Process(ProductionType pd, string url, List<string> texts)
+        public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, PictureData PicdataObjToVarietize = null)
         {
             BTCSettings.ListOfText = texts;
 
-            if (ProductionType.FrontPagePictureLineUp == pd)
+            // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
+            Logic.CreateDirectories(BTCSettings.OutputDir, BTCSettings.TextAddedDir, BTCSettings.YoutubeDLDir);
+
+            if (ProdType == ProductionType.FrontPagePictureLineUp)
             {
-
-                // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
-                Logic.CreateDirectories(BTCSettings.OutputDir, BTCSettings.TextAddedDir, BTCSettings.YoutubeDLDir);
-
                 BTCSettings.PathToVideo = await Logic.YouTubeDL(url);
                 BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
 
@@ -104,34 +104,57 @@ namespace Bulk_Thumbnail_Creator
                         };
 
                         BTCSettings.PictureDatas.Add(PassPictureData);
-                        Logic.ProduceTextPictures(PassPictureData);
                     }
 
                 }
-
-                // just to try out variety will be on interaction/choice of pic
-                for (int i = 0; i < BTCSettings.PictureDatas.Count; i++)
+                
+                // Produce varietydata for the current object
+                Parallel.For (0, BTCSettings.PictureDatas.Count, i =>
                 {
                     var input = BTCSettings.PictureDatas[i];
+
                     Logic.ProduceSaturationVarietyData(input);
 
                     Logic.ProduceFontVarietyData(input);
 
                     Logic.ProducePlacementOfTextVarietyData(input);
 
-                    Logic.ProduceRandomVariety(input);
+                    Logic.ProduceRandomVarietyData(input);
 
-                    Logic.ProduceMemeDankness(input);
-                }
+                   // Logic.ProduceMemeDanknessData(input);
+                });
+
+
+                Parallel.For(0, BTCSettings.PictureDatas.Count, i =>
+                {
+                    Logic.ProduceTextPictures(BTCSettings.PictureDatas[i]);
+                });
 
             }
 
-            if (ProductionType.VarietyList == pd)
+            if (ProdType == ProductionType.VarietyList)
             {
-                PictureData placeholder = new();
+                //TODO null check
 
-                // produce say 
-                Logic.ProduceTextPictures(placeholder);
+                if (PicdataObjToVarietize ==  null) 
+                {
+                    Console.WriteLine("Null has been passed to PicdataobjToVarietize");
+                }
+                else
+                {
+                    Parallel.For(0, PicdataObjToVarietize.Varieties.Count, i =>
+                    {
+                        Logic.ProduceTextPictures(PicdataObjToVarietize.Varieties[i]);
+                    });
+
+                }
+
+                //TODO possibly  Parallel.ForEach()
+                //for (int i = 0; i <PicdataObjToVarietize.Varieties.Count; i++)
+                //{
+                //    Logic.ProduceTextPictures(PicdataObjToVarietize.Varieties[i]);
+                //}
+
             }
 
             #region Make Showcase Video
@@ -144,8 +167,8 @@ namespace Bulk_Thumbnail_Creator
             //FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
             #endregion
 
+            await Console.Out.WriteLineAsync("Processing Finished");
             return BTCSettings.PictureDatas;
-
         }
 
     }
