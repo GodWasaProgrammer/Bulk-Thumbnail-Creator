@@ -16,20 +16,17 @@
 
 ### Getting Started/Requirements/Prerequisites/Dependencies
 
-- This requires standalone version of FFMPEG
-- This makes use of YoutubeDLSharp
-- more will be added here later as it is still fluent
-- 
+- Uses ImageMagick
+- Uses YoutubeDLSharp
+- Uses FFMpeg
 
 ### Contributing
 
 - Feel free to contribute if you so wish.
 
 ### TODO
-
-- Implementing UI in perhaps Blazor / MAUI
-- Known bugs
-- Only calculates on a single face not on the full array of faces actually returned
+- implement custom output 
+- Known bugs - many
 
 ### Contact
 

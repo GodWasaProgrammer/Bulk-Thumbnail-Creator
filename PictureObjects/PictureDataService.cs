@@ -38,10 +38,12 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
         public async Task<List<string>> CreatePictureDataVariety(PictureData PicToVarietize)
         {
             string url = string.Empty;
-            List<string> texts = new List<string>();
-            texts.Add(Text1);
-            texts.Add(Text2);
-            texts.Add(Text3);
+            List<string> texts = new List<string>
+            {
+                Text1,
+                Text2,
+                Text3
+            };
 
             ProductionType ProdType = ProductionType.VarietyList;
 

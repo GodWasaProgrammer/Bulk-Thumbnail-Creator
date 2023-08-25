@@ -20,12 +20,12 @@
 
     private async Task CreateVarietyAsync()
     {
-        imageUrls = await PicDataService.CreatePictureDataVariety(ParentPictureProp); // Replace with the appropriate parameter
+        imageUrls = await PicDataService.CreatePictureDataVariety(ParentPictureProp);
     }
 
     private void LoadImageUrls()
     {
-        string baseImagePath = Bulk_Thumbnail_Creator.BTCSettings.TextAddedDir; // Update the base path
+        string baseImagePath = Bulk_Thumbnail_Creator.BTCSettings.TextAddedDir;
         string[] subdirectories = Directory.GetDirectories(baseImagePath);
 
         foreach (string subdirectory in subdirectories)

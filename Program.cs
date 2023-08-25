@@ -71,7 +71,6 @@ namespace Bulk_Thumbnail_Creator
                 Console.WriteLine($"Processing {BTCSettings.Files.Length} images");
 
                 // main loop for detecting faces, placing text where face is not
-                // outputting file
                 for (int fileIndex = 0; fileIndex < BTCSettings.Files.Length; fileIndex++)
                 {
                     string file = BTCSettings.Files[fileIndex];
@@ -124,14 +123,14 @@ namespace Bulk_Thumbnail_Creator
                    // Logic.ProduceMemeDanknessData(input);
                 });
 
-
+                // actual file output
                 Parallel.For(0, BTCSettings.PictureDatas.Count, i =>
                 {
                     Logic.ProduceTextPictures(BTCSettings.PictureDatas[i]);
                 });
 
             }
-
+            
             if (ProdType == ProductionType.VarietyList)
             {
                 //TODO null check
@@ -148,12 +147,6 @@ namespace Bulk_Thumbnail_Creator
                     });
 
                 }
-
-                //TODO possibly  Parallel.ForEach()
-                //for (int i = 0; i <PicdataObjToVarietize.Varieties.Count; i++)
-                //{
-                //    Logic.ProduceTextPictures(PicdataObjToVarietize.Varieties[i]);
-                //}
 
             }
 

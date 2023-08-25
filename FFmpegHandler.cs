@@ -12,7 +12,7 @@ namespace Bulk_Thumbnail_Creator
 		/// <param name="parameters"></param>
 		private static void ExecuteFFMPG(string parameters)
 		{
-            System.Diagnostics.Process processFFMpeg = new();
+            Process processFFMpeg = new();
 
 			string WorkDir = System.IO.Directory.GetCurrentDirectory();
 
@@ -41,11 +41,8 @@ namespace Bulk_Thumbnail_Creator
 				exePars += "-" + parameter.Key;
 				exePars +=  " " + parameter.Value + " ";
 			}
-		
-			//string path = $@"""{outPath}/%03d.png""";
-			exePars += outPath;
-			//exePars.TrimEnd(' ');
 
+			exePars += outPath;
 			ExecuteFFMPG(exePars);
 		}
 
