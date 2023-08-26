@@ -6,10 +6,7 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
 {
     public class PictureDataService
     {
-        string Text1;
-        string Text2;
-        string Text3;
-  
+        
         public PictureDataService()
         {
             ClearBaseOutPutDirectories();
@@ -24,30 +21,22 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
 
         public List<PictureData> PicDataServiceList { get; set; } = new List<PictureData>();
         public List<string> OutputFileServiceList { get; set; } = new();
+        public List<string> TextToPrint { get; set; } = new();
 
         public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint)
         {
-            Text1 = ListOfTextToPrint[0];
-            Text2 = ListOfTextToPrint[1];
-            Text3 = ListOfTextToPrint[2];
-
             ProductionType ProdType = ProductionType.FrontPagePictureLineUp;
             PicDataServiceList = await Program.Process(ProdType, url, ListOfTextToPrint);
+            TextToPrint = ListOfTextToPrint;
         }
 
         public async Task<List<string>> CreatePictureDataVariety(PictureData PicToVarietize)
         {
             string url = string.Empty;
-            List<string> texts = new List<string>
-            {
-                Text1,
-                Text2,
-                Text3
-            };
 
             ProductionType ProdType = ProductionType.VarietyList;
 
-            PicDataServiceList = await Program.Process(ProdType, url, texts, PicToVarietize);
+            PicDataServiceList = await Program.Process(ProdType, url, TextToPrint, PicToVarietize);
 
             List<string> ImageUrls = new List<string>();
 
@@ -108,8 +97,6 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             { 
                 dir.Delete(true); 
             }
-
-            // TODO clear subdirs also
 
         }
 
