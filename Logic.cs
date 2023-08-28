@@ -9,6 +9,7 @@ using System.Drawing;
 using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using System.Reflection;
+using System.Linq;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -701,18 +702,39 @@ namespace Bulk_Thumbnail_Creator
 
             if (CopiedPicData.ParamForTextCreation.Boxes.Count > 2)
             {
-                // pick a box to dankify
-                Random pickbox = new();
-                Box PickedBox = (Box)pickbox.Next(DankifyTarget.ParamForTextCreation.Boxes.Count);
+            //    // pick a box to dankify
 
-                // write picked box to dankbox property
-                CopiedPicData.Dankbox = PickedBox;
+            //    Random pickbox = new();
+            //    Box PickedBox = (Box)pickbox.Next(DankifyTarget.ParamForTextCreation.Boxes.Count - 1);
+
+                Dictionary<Box, Rectangle> boxesDictionary = DankifyTarget.ParamForTextCreation.Boxes;
+
+                Box currentBox = DankifyTarget.ParamForTextCreation.CurrentBox;
+
+                Box PickedBox;
+
+                if (boxesDictionary.Count > 2)
+                {
+                    Random pickbox = new();
+                    Box[] boxKeys = boxesDictionary.Keys.ToArray();
+                    int randomIndex;
+
+                    do
+                    {
+                        randomIndex = pickbox.Next(boxKeys.Length);
+                    } while (boxKeys[randomIndex] == currentBox);
+
+                    PickedBox = boxKeys[randomIndex];
+
+                    //// write picked box to dankbox property
+                    CopiedPicData.Dankbox = PickedBox;
+                }
 
                 // pick a meme
                 Random pickRandomMeme = new();
                 int PickedMeme = pickRandomMeme.Next(BTCSettings.Memes.Length);
 
-                // write our chosen meme to Meme property
+                //// write our chosen meme to Meme property
                 CopiedPicData.Meme = BTCSettings.Memes[PickedMeme];
 
                 // set the type of output

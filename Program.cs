@@ -64,7 +64,7 @@ namespace Bulk_Thumbnail_Creator
 
                 BTCSettings.Files = Directory.GetFiles(BTCSettings.OutputDir, "*.*", SearchOption.AllDirectories);
 
-                // BTCSettings.Memes = Directory.GetFiles(BTCSettings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
+                BTCSettings.Memes = Directory.GetFiles(BTCSettings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
 
                 var faceDetector = new FaceDetector(0.95f, 0.5f);
 
@@ -120,7 +120,7 @@ namespace Bulk_Thumbnail_Creator
 
                     Logic.ProduceRandomVarietyData(input);
 
-                   // Logic.ProduceMemeDanknessData(input);
+                    Logic.ProduceMemeDanknessData(input);
                 });
 
                 // actual file output

@@ -30,7 +30,7 @@ namespace Bulk_Thumbnail_Creator
 		public static string[] Files { get { return files; } set { files = value; } }
 
 
-		private static string _DankMemeStashDir = "..\\..\\DankMemeStash"; 
+		private static string _DankMemeStashDir = "DankMemeStash"; 
 		public static string DankMemeStashDir { get { return _DankMemeStashDir; } set { _DankMemeStashDir = value; } }
 
 

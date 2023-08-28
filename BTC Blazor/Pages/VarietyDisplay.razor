@@ -1,14 +1,16 @@
 ﻿@inject Bulk_Thumbnail_Creator.PictureObjects.PictureDataService PicDataService;
 @page "/varietydisplay"
 
-<h3>Variety Pictures</h3>
 <div class="image-container">
-    @foreach (var imageUrl in imageURL)
+    @for (int i = 0; i < imageURL.Count; i++)
     {
-        <img src="@imageUrl" style="max-width: 300px; margin: 10px;" />
+        <img src="@imageURL[i]" />
+        @if ((i + 1) % 3 == 0)
+        {
+            <div style="flex-basis: 100%; height: 0;"></div>
+        }
     }
 </div>
-
 @code {
     private List<string> imageURL = new List<string>();
 
@@ -25,18 +27,46 @@
 
     private void LoadImageUrls()
     {
-        string baseImagePath = Bulk_Thumbnail_Creator.BTCSettings.TextAddedDir;
-        string[] subdirectories = Directory.GetDirectories(baseImagePath);
+        string parentfilename = Path.GetFileName(ParentPictureProp.FileName);
+        string varietyof = "variety of";
 
-        foreach (string subdirectory in subdirectories)
+        string ConcatenatedString = string.Concat(Bulk_Thumbnail_Creator.BTCSettings.TextAddedDir,"/", varietyof, " ", parentfilename);
+        string[] ArrayOfFilePaths = Directory.GetFiles(ConcatenatedString, "*.png");
+
+        foreach (string filepath in ArrayOfFilePaths)
         {
-            string[] imageFiles = Directory.GetFiles(subdirectory, "*.png");
-
-            foreach (string imageFile in imageFiles)
-            {
-                string imageUrl = $"/{imageFile}"; // Convert local path to renderable URL
-                imageURL.Add(imageUrl);
-            }
+            string imageurl = $"/{filepath}"; // convert to URL
+            imageURL.Add(imageurl);
         }
-    }
+
+     }
+
 }
+
+<style>
+    /* Style the image container */
+    .image-container2 {
+        display: flex;
+        flex-wrap: wrap;
+        height: 100%;
+        justify-content: center;
+    }
+
+    image-container img {
+        max-width: calc(50% - 50px); /* Set the width for each image in the row */
+        margin: 10px;
+    }
+</style>
+
+<style>
+    .image-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+        .image-container img {
+            max-width: calc(30% - 50px); /* Set the width for each image in the row */
+            margin: 10px;
+        }
+</style>

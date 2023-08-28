@@ -6,7 +6,6 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
 {
     public class PictureDataService
     {
-        
         public PictureDataService()
         {
             ClearBaseOutPutDirectories();
