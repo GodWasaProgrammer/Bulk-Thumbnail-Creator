@@ -6,6 +6,7 @@ using FaceONNX;
 using System.Drawing;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using System.Runtime.InteropServices;
+using System.Linq;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -110,25 +111,7 @@ namespace Bulk_Thumbnail_Creator
                 #region debugsinglefor
                 // just here for debug purposes
 
-                //for (int i = 0; i < BTCSettings.PictureDatas.Count; i++)
-                //{
-                //    var input = BTCSettings.PictureDatas[i];
-
-                //    Logic.ProduceSaturationVarietyData(input);
-
-                //    Logic.ProduceFontVarietyData(input);
-
-                //    Logic.ProducePlacementOfTextVarietyData(input);
-
-                //    Logic.ProduceRandomVarietyData(input);
-
-                //    Logic.ProduceMemeDanknessData(input);
-                //}
-                // _-------------------------------------------------------
-                #endregion
-
-                // Produce varietydata for the current object
-                Parallel.For(0, BTCSettings.PictureDatas.Count, i =>
+                for (int i = 0; i < BTCSettings.PictureDatas.Count; i++)
                 {
                     var input = BTCSettings.PictureDatas[i];
 
@@ -141,12 +124,36 @@ namespace Bulk_Thumbnail_Creator
                     Logic.ProduceRandomVarietyData(input);
 
                     Logic.ProduceMemeDanknessData(input);
-                });
+                }
+                // _-------------------------------------------------------
+                #endregion
+
+                // Produce varietydata for the current object
+                //Parallel.For(0, BTCSettings.PictureDatas.Count, i =>
+                //{
+                //    var input = BTCSettings.PictureDatas[i];
+
+                //    Logic.ProduceSaturationVarietyData(input);
+
+                //    Logic.ProduceFontVarietyData(input);
+
+                //    Logic.ProducePlacementOfTextVarietyData(input);
+
+                //    Logic.ProduceRandomVarietyData(input);
+
+                //    Logic.ProduceMemeDanknessData(input);
+                //});
 
                 // actual file output
                 Parallel.For(0, BTCSettings.PictureDatas.Count, i =>
                 {
-                    Logic.ProduceTextPictures(BTCSettings.PictureDatas[i]);
+                    string PicObjPath = BTCSettings.PictureDatas[i].FileName;
+
+                    if (!BTCSettings.DiscardedBecauseTooMuchFacePictureData.Contains(PicObjPath))
+                    {
+                        Logic.ProduceTextPictures(BTCSettings.PictureDatas[i]);
+                    }
+
                 });
 
             }

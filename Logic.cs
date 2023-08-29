@@ -425,8 +425,15 @@ namespace Bulk_Thumbnail_Creator
             {
                 // all calculations done, pick one box
                 Random random = new();
+
                 // picks a random box that has no face in it
-                Box pickedBoxName = (Box)random.Next(Boxes.Count);
+                Box pickedBoxName;
+
+                do
+                {
+                    pickedBoxName = (Box)random.Next(Boxes.Count);
+                } 
+                while (!Boxes.ContainsKey(pickedBoxName));
 
                 // tries to read from dictionary
                 Boxes.TryGetValue(pickedBoxName, out Rectangle pickedBoxRectangle);
