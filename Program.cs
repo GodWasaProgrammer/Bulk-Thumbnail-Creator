@@ -106,9 +106,29 @@ namespace Bulk_Thumbnail_Creator
                     }
 
                 }
-                
+
+                #region debugsinglefor
+                // just here for debug purposes
+
+                //for (int i = 0; i < BTCSettings.PictureDatas.Count; i++)
+                //{
+                //    var input = BTCSettings.PictureDatas[i];
+
+                //    Logic.ProduceSaturationVarietyData(input);
+
+                //    Logic.ProduceFontVarietyData(input);
+
+                //    Logic.ProducePlacementOfTextVarietyData(input);
+
+                //    Logic.ProduceRandomVarietyData(input);
+
+                //    Logic.ProduceMemeDanknessData(input);
+                //}
+                // _-------------------------------------------------------
+                #endregion
+
                 // Produce varietydata for the current object
-                Parallel.For (0, BTCSettings.PictureDatas.Count, i =>
+                Parallel.For(0, BTCSettings.PictureDatas.Count, i =>
                 {
                     var input = BTCSettings.PictureDatas[i];
 

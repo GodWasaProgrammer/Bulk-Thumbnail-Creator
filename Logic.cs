@@ -587,9 +587,9 @@ namespace Bulk_Thumbnail_Creator
             }
             if (PicData.OutputType == OutputType.BoxPositionVariety)
             {
-                OutputPath += "//variety of " + imageName  + $"//{PicData.ParamForTextCreation.CurrentBox}" + ".png";;
+                OutputPath += "//variety of " + imageName + $"//{PicData.ParamForTextCreation.CurrentBox}" + ".png"; ;
                 PicData.OutPath = OutputPath;
-        
+
             }
             if (PicData.OutputType == OutputType.SaturationVariety)
             {
@@ -670,6 +670,10 @@ namespace Bulk_Thumbnail_Creator
             return settingsTextRandom;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="PictureInputData"></param>
         public static void ProduceRandomVarietyData(PictureData PictureInputData)
         {
             const int NumberOfRandomsToProduce = 15;
@@ -678,8 +682,14 @@ namespace Bulk_Thumbnail_Creator
             {
                 Random random = new();
                 PictureData VarietyData = new(PictureInputData);
+                Dictionary<Box, Rectangle> AvailableBoxes = PictureInputData.ParamForTextCreation.Boxes;
 
-                Box PickedBox = (Box)random.Next(PictureInputData.ParamForTextCreation.Boxes.Count);
+                Box PickedBox;
+                do
+                {
+                    PickedBox = (Box)random.Next(PictureInputData.ParamForTextCreation.Boxes.Count);
+                }
+                while (!AvailableBoxes.ContainsKey(PickedBox));
 
                 VarietyData.ParamForTextCreation.CurrentBox = PickedBox;
 
@@ -697,6 +707,10 @@ namespace Bulk_Thumbnail_Creator
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="DankifyTarget"></param>
         public static void ProduceMemeDanknessData(PictureData DankifyTarget)
         {
             PictureData CopiedPicData = new(DankifyTarget);
