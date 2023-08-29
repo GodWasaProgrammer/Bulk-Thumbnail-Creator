@@ -1,16 +1,10 @@
-﻿@inject Bulk_Thumbnail_Creator.PictureObjects.PictureDataService PictureDataService;
+﻿@inject Bulk_Thumbnail_Creator.PictureObjects.PictureDataService PicDataService;
 @page "/imagedetail/{imageUrl}"
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-6">
             <img src="@ImageUrl" style="max-width: 100%;" />
-        </div>
-        <div class="col-md-6">
             <PictureDataBox PictureDataProp="@CurrentPagePictureData" />
             <VarietyDisplay ParentPictureProp="CurrentPagePictureData"></VarietyDisplay>
-        </div>
-    </div>
 </div>
 
 

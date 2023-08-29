@@ -15,8 +15,14 @@ namespace BTC_Blazor.Pages
 
         private async Task CallBTC()
         {
+            isLoading = true; // disables button
+            StateHasChanged(); // tells UI to re-render
+
             List<string> ListOfTextToPrint = new List<string> { TextToPrint1, TextToPrint2, TextToPrint3 };
             await DataService.CreateInitialPictureArrayAsync(textInput, ListOfTextToPrint);
+
+            isLoading = false; // we finished, they can have button back
+            StateHasChanged(); // tells UI to re-render
         }
 
     }

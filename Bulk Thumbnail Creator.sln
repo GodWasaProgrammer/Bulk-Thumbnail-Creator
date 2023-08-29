@@ -4,7 +4,7 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bulk Thumbnail Creator", "Bulk Thumbnail Creator.csproj", "{7414B50B-C3D5-46C4-A745-8783831B0410}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BTC Blazor", "BTC Blazor\BTC Blazor.csproj", "{25841487-F777-4E39-A88C-5690FF2EC3FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BTCBlazor", "BTC Blazor\BTCBlazor.csproj", "{25841487-F777-4E39-A88C-5690FF2EC3FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

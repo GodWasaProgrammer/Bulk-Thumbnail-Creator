@@ -167,9 +167,9 @@ namespace Bulk_Thumbnail_Creator
             Console.WriteLine($"Current Location: {CurrentLoc}");
             Console.WriteLine($"Parent Directory: {parentDirectory}");
             Console.WriteLine($"New Path: {ExePath}");
-            if (File.Exists (YTDLPDir))
+            if (File.Exists(YTDLPDir))
             {
-            Console.WriteLine($"YTDLP Path: {YTDLPDir}");
+                Console.WriteLine($"YTDLP Path: {YTDLPDir}");
             }
             else
             {
@@ -177,9 +177,9 @@ namespace Bulk_Thumbnail_Creator
                 await Console.Out.WriteLineAsync("Will Try To Download yt-dlp");
                 await YoutubeDLSharp.Utils.DownloadYtDlp(ExePath);
             }
-            if (File.Exists (FfMpegDir)) 
-            { 
-            Console.WriteLine($"FFmpeg Path: {FfMpegDir}");
+            if (File.Exists(FfMpegDir))
+            {
+                Console.WriteLine($"FFmpeg Path: {FfMpegDir}");
             }
             else
             {
@@ -191,7 +191,7 @@ namespace Bulk_Thumbnail_Creator
             string currentDirectory = Directory.GetCurrentDirectory();
             string ytdlDir = Path.Combine(currentDirectory, "YTDL");
 
-            if (Directory.Exists (ytdlDir))
+            if (Directory.Exists(ytdlDir))
             {
                 Console.WriteLine($"YTDL Dir found:{ytdlDir}");
             }
@@ -396,7 +396,7 @@ namespace Bulk_Thumbnail_Creator
                     }
                     else
                     {
-                        
+
                         // if bottomleftbox face detected
                         if (face.X < MidPointX && face.Y > MidPointY)
                         {
@@ -409,7 +409,7 @@ namespace Bulk_Thumbnail_Creator
                         }
 
                     }
-                   
+
                 }
 
             }
@@ -571,7 +571,7 @@ namespace Bulk_Thumbnail_Creator
 
             imageName = Path.GetFileName(PicData.FileName);
             DateTime dateTime = DateTime.Now;
-                string trimDateTime = dateTime.ToString();
+            string trimDateTime = dateTime.ToString();
             trimDateTime = trimDateTime.Replace(":", "");
 
             // if not main type, we will make a directory for files to be written in
@@ -587,27 +587,28 @@ namespace Bulk_Thumbnail_Creator
             }
             if (PicData.OutputType == OutputType.BoxPositionVariety)
             {
-                OutputPath += "//" + "variety of " + Path.GetFileName(PicData.FileName) + $"//{PicData.ParamForTextCreation.CurrentBox}" + ".png";
+                OutputPath += "//variety of " + imageName  + $"//{PicData.ParamForTextCreation.CurrentBox}" + ".png";;
                 PicData.OutPath = OutputPath;
+        
             }
             if (PicData.OutputType == OutputType.SaturationVariety)
             {
-                OutputPath += "//" + "variety of " + Path.GetFileName(PicData.FileName) + $"//{PicData.ParamForTextCreation.FillColor.Saturation} " + ".png";
+                OutputPath += "//variety of " + imageName + $"//{PicData.ParamForTextCreation.FillColor.Saturation}.png";
                 PicData.OutPath = OutputPath;
             }
             if (PicData.OutputType == OutputType.FontVariety)
             {
-                OutputPath += "//" + "variety of " + Path.GetFileName(PicData.FileName) + "//" + Path.GetFileNameWithoutExtension(PicData.ReadSettings.Font) + ".png";
+                OutputPath += "//variety of " + imageName + "//" + Path.GetFileNameWithoutExtension(PicData.ReadSettings.Font) + ".png";
                 PicData.OutPath = OutputPath;
             }
             if (PicData.OutputType == OutputType.RandomVariety)
             {
-                OutputPath += "//" + "variety of " + Path.GetFileName(PicData.FileName) + "//" + $"{PicData.OutPath}" + ".png";
+                OutputPath += "//variety of " + imageName + "//" + $"{PicData.OutPath}" + ".png";
                 PicData.OutPath = OutputPath;
             }
             if (PicData.OutputType == OutputType.Dankness)
             {
-                OutputPath += "//" + "variety of " + Path.GetFileName(PicData.FileName) + "//" + PicData.Dankbox + ".png";
+                OutputPath += "//variety of " + imageName + "//" + PicData.Dankbox + ".png";
                 PicData.OutPath = OutputPath;
             }
 
@@ -702,10 +703,10 @@ namespace Bulk_Thumbnail_Creator
 
             if (CopiedPicData.ParamForTextCreation.Boxes.Count > 2)
             {
-            //    // pick a box to dankify
+                //    // pick a box to dankify
 
-            //    Random pickbox = new();
-            //    Box PickedBox = (Box)pickbox.Next(DankifyTarget.ParamForTextCreation.Boxes.Count - 1);
+                //    Random pickbox = new();
+                //    Box PickedBox = (Box)pickbox.Next(DankifyTarget.ParamForTextCreation.Boxes.Count - 1);
 
                 Dictionary<Box, Rectangle> boxesDictionary = DankifyTarget.ParamForTextCreation.Boxes;
 
