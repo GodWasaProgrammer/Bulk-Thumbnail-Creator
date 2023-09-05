@@ -2,19 +2,30 @@
 
 @using Microsoft.AspNetCore.Components
 @using Microsoft.JSInterop
-@using Bulk_Thumbnail_Creator.Enums;
+@using Bulk_Thumbnail_Creator;
 
 <PageTitle>Bulk Thumbnail Creator</PageTitle>
 <h1>Bulk Thumbnail Creator</h1>
 
-    @if (isLoading == true)
-    {   <div>
-        <h2>We Generating Some Poppin' Thumbnails For ya!</h2>
+@if (isLoading == true)
+{
+    <div class="horizontal-align">
+        
+        <div>
+            <img src="images/pepe-dance.gif" alt="Loading..." style="width: 500px; height: 500px; border:0;" />
         </div>
-    }
-    @if (isLoading == false)
+    </div>
+}
+else 
 
-    {
+{
+    <select>
+        @foreach (string listobject in DownloadedVideosList)
+        {
+            <option value="@listobject">@listobject</option>
+        }
+    </select>
+
     <div class="input-container">
         <div class="youtube-link">
             <label class="input-label" for="textInput">Youtube Link:</label>
@@ -37,47 +48,38 @@
                 <input id="textToPrint3" type="text" @bind="@TextToPrint3" class="matrix-input" />
             </div>
         </div>
-        
-    </div>
-    }
 
-<button class="cool-button" @onclick="CallBTC" disabled="@isLoading">
-    @if (isLoading)
+    </div>
+}
+
+<MudButton Disabled="@_processing" OnClick="AwaitBTC" Variant="Variant.Filled" Color="Color.Primary">
+
+    @if (_processing)
     {
-        <div>
-        <img src="images/pepe-dance.gif" alt="Loading..." style="width: 250px; height: 250px; border:0;" />
-        </div>
+        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" Color="Color.Secondary" />
+        <MudText Class="ms-2">Processing</MudText>
     }
     else
     {
-        <text>Generate!</text>
+        <MudText>Run BTC</MudText>
     }
-</button>
 
-<ImageDisplay></ImageDisplay>
+</MudButton>
 
-@* @code {
+@code 
+{
+    private bool _processing = false;
 
-    
+    private async void AwaitBTC()
+    {
+        _processing = true;
+        await CallBTC();
+        _processing = false;
+        StateHasChanged();
+    }
 
-    // private async Task CallBTC()
-    // {
-    //     isLoading = true; // Set isLoading to true to show the loading spinner and disable the button
-    //     StateHasChanged();
-
-    //     List<string> TextToPrintList = new();
-    //     TextToPrintList.Add(TextToPrint1);
-    //     TextToPrintList.Add(TextToPrint2);
-    //     TextToPrintList.Add(TextToPrint3);
-
-    //     var ProductionType = Bulk_Thumbnail_Creator.ProductionType.FrontPagePictureLineUp;
-
-    //     await Task.Run(() => Bulk_Thumbnail_Creator.Program.Process(ProductionType, textInput, TextToPrintList));
-
-    //     isLoading = false; // Set isLoading to false to hide the loading spinner and enable the button
-        
-    //     StateHasChanged();
-    // }
 }
- *@
+
+<ImageDisplay @ref="imageDisplayref"></ImageDisplay>
+
 

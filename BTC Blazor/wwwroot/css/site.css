@@ -89,10 +89,25 @@ h1 {
 }
 
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+.grid-container 
+{
+    display:grid;
+    grid-template-columns: 2fr 1fr;
+}
 
-/* ... Existing styles ... */
-
-/* Add this CSS to your site.css file or any other appropriate CSS file */
+.color-box 
+{
+    background-color: #3498db; /* Background color (you can change this) */
+    color: #73057a; /* Text color (white in this example) */
+    border: 1px solid #2980b9; /* Border color (darker than background) */
+    padding: 10px; /* Add padding to create space inside the box */
+    text-align: center; /* Center-align text */
+    border-radius: 5px; /* Rounded corners for a modern look */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Drop shadow for depth */
+    font-family: Arial, sans-serif; /* Font family (you can change this) */
+    font-weight:900;
+    font-size: 16px; /* Font size for text */
+}
 
 /* Primary Button */
 .btn-primary {
@@ -129,12 +144,49 @@ h1 {
         box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
     }
 
+/* Container for the PictureData box */
+.picture-data-box {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #6eb1f0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+    /* Heading style */
+    .picture-data-box h4 {
+        font-size: 18px;
+        color: #333;
+        margin: 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    /* Data point style */
+    .picture-data-box .data-point {
+        margin: 10px 0;
+    }
+
+    /* Label style */
+    .picture-data-box .data-label {
+        font-weight: bold;
+        color: #555;
+    }
+
+    /* Value style */
+    .picture-data-box .data-value {
+        color: #333;
+    }
+
+
 /* Style the gold flake box */
 .gold-flake-box {
-    background-color:black;
-    height:100%;
+    background-color: #d63c31;
+    height: 100%;
+    width: auto;
     padding: 20px;
-    border: 1px solid #b0b0b0;
+    border: 2px solid #d63c31;
     border-radius: 5px;
 }
 
@@ -214,12 +266,53 @@ h1 {
     }
 }
 
+/* Studded Header Style */
+.studded-header {
+    background-color: #000; /* Background color */
+    color: #FFD700; /* Text color (gold) */
+    padding: 20px; /* Add padding to create space inside the header */
+    text-align: center; /* Center-align text */
+    border-bottom: 2px solid #FFD700; /* Gold border on the bottom */
+}
+
+    /* Add "studs" using pseudo-elements */
+    .studded-header::before,
+    .studded-header::after {
+        content: '\2022'; /* Bullet character (•) for the "studs" */
+        font-size: 24px; /* Adjust the size of the studs */
+        color: #FFD700; /* Gold color for studs */
+        margin: 0 10px; /* Spacing between studs */
+    }
+
+    /* Center the studs */
+    .studded-header::before {
+        vertical-align: middle;
+    }
+
+    .studded-header::after {
+        vertical-align: middle;
+    }
+
+    /* Adjust spacing and font styles for the text */
+    .studded-header h1 {
+        margin: 0; /* Remove default margin for h1 element */
+        font-size: 36px; /* Adjust the font size for the header text */
+        font-weight: bold; /* Bold font for emphasis */
+    }
+
+
+.horizontal-align {
+    display: flex;
+    justify-content: center; /* Optional: Center-align the elements horizontally within their container */
+}
+
+
 .matrix-background {
     /* Background and Border */
     background-color:black;
     border: 2px solid #00ff00; /* Green border */
     height:100%;
-    border-radius: 5px;
+    border-radius: 2px;
     padding: 8px;
     color: #00ff00; /* Green text */
     font-size: 14px;
@@ -371,7 +464,32 @@ html, body {
     flex-direction: column;
 }
 
+.fill-color-info-box {
+    background-color: #f0f0f0; /* Background color */
+    border: 1px solid #ccc; /* Border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 16px; /* Spacing inside the box */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle lift */
+    font-family: Arial, sans-serif; /* Font family */
+    color: #333; /* Text color */
+    /* Add more styles as needed */
+}
 
+    .fill-color-info-box strong {
+        color: #555; /* Strong text color */
+    }
+
+    .fill-color-info-box hr {
+        border-color: #ddd; /* Horizontal line color */
+        margin-top: 12px; /* Margin above the line */
+        margin-bottom: 8px; /* Margin below the line */
+    }
+
+    /* Example usage */
+    .fill-color-info-box .color-values {
+        font-size: 18px; /* Font size for color values */
+        color: #007bff; /* Color value color */
+    }
 
 
 

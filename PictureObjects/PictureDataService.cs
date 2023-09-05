@@ -47,22 +47,7 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             return ImageUrls;
         }
 
-        public void AddPictureData(PictureData pictureData)
-        {
-            PicDataServiceList.Add(pictureData);
-        }
-
-        public void ResetPictureDataList()
-        {
-            PicDataServiceList.Clear();
-        }
-
-        public void ResetOutPutList()
-        {
-            OutputFileServiceList.Clear();
-        }
-
-        public static void ClearBaseOutPutDirectories()
+        public void ClearBaseOutPutDirectories()
         {
             DirectoryInfo di = new DirectoryInfo(BTCSettings.TextAddedDir);
 
@@ -75,6 +60,7 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
                 dir.Delete(true);
             }
 
+            // TODO : for whatever reason these resources are not free for deletion
             DirectoryInfo di2 = new DirectoryInfo(BTCSettings.OutputDir);
             
             foreach(FileInfo file in di2.GetFiles())
@@ -86,16 +72,16 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
                 dir.Delete(true); 
             }
 
-            DirectoryInfo di3 = new DirectoryInfo(BTCSettings.YoutubeDLDir);
+            //DirectoryInfo di3 = new DirectoryInfo(BTCSettings.YoutubeDLDir);
 
-            foreach (FileInfo file in di3.GetFiles())
-            {
-                file.Delete();
-            }
-            foreach(DirectoryInfo dir in di3.GetDirectories())
-            { 
-                dir.Delete(true); 
-            }
+            //foreach (FileInfo file in di3.GetFiles())
+            //{
+            //    file.Delete();
+            //}
+            //foreach (DirectoryInfo dir in di3.GetDirectories())
+            //{
+            //    dir.Delete(true);
+            //}
 
         }
 

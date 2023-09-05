@@ -1,17 +1,34 @@
 ﻿@inject Bulk_Thumbnail_Creator.PictureObjects.PictureDataService PicDataService;
+
 @page "/varietydisplay"
 
 <div class="image-container">
     @for (int i = 0; i < imageURL.Count; i++)
     {
-        <img src="@imageURL[i]" />
+        var imageUrl = imageURL[i]; // Capture the value
+        <img class="image-button" src="@imageUrl" @onclick="(() => NavToCustomizePicture(imageUrl))" />
         @if ((i + 1) % 3 == 0)
         {
             <div style="flex-basis: 100%; height: 0;"></div>
         }
     }
 </div>
-@code {
+
+@code 
+{
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+     private void ShowImageDetail(string imageUrl)
+    {
+        NavigationManager.NavigateTo($"/imagedetail/{Uri.EscapeDataString(imageUrl)}");
+    }
+    
+    private void NavToCustomizePicture(string imageURL)
+    {
+            NavigationManager.NavigateTo($"/CustomizePicture/{Uri.EscapeDataString(imageURL)}");
+    }
+
     private List<string> imageURL = new List<string>();
 
     protected override async Task OnInitializedAsync()
@@ -29,8 +46,6 @@
     {
         string parentfilename = Path.GetFileName(ParentPictureProp.FileName);
         string varietyof = "variety of";
-
-     //   string ConcatenatedString = string.Concat(Bulk_Thumbnail_Creator.BTCSettings.TextAddedDir,"/", varietyof, " ", parentfilename);
         string ConcatenatedString =$"{Bulk_Thumbnail_Creator.BTCSettings.TextAddedDir}/{varietyof} {parentfilename}";
         string[] ArrayOfFilePaths = Directory.GetFiles(ConcatenatedString, "*.png");
 

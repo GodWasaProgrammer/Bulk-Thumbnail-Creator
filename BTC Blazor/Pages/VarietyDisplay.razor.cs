@@ -6,6 +6,7 @@ namespace BTC_Blazor.Pages
     public partial class VarietyDisplay
     {
         public List<string> imageUrls;
+        // public NavigationManager navigationManager {get ;set;}
 
         public VarietyDisplay() 
         {

@@ -1,6 +1,7 @@
 using Bulk_Thumbnail_Creator;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using Microsoft.Extensions.FileProviders;
+using MudBlazor.Services;
 
 namespace BTC_Blazor
 {
@@ -14,6 +15,7 @@ namespace BTC_Blazor
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
             builder.Services.AddSingleton<PictureDataService>();
+            builder.Services.AddMudServices();
 
             var app = builder.Build();
 

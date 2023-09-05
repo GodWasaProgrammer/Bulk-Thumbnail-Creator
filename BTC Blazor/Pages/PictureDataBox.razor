@@ -8,9 +8,12 @@
         <h2>Current Box: @CurrentBox</h2>
         <h2>Font: @Font</h2>
         <select>
+            @if (AvailableBoxes != null)
+            {
             @foreach (var box in AvailableBoxes)
             {
                 <option value="@box">@box</option>
+            }
             }
         </select>
     </div>

@@ -1,4 +1,5 @@
-﻿using Bulk_Thumbnail_Creator.PictureObjects;
+﻿using Bulk_Thumbnail_Creator;
+using Bulk_Thumbnail_Creator.PictureObjects;
 using Microsoft.AspNetCore.Components;
 
 namespace BTC_Blazor.Pages
@@ -7,6 +8,8 @@ namespace BTC_Blazor.Pages
     {
         [Inject]
         PictureDataService DataService { get; set; }
+        private List<string> DownloadedVideosList = new List<string> { "Video 1", "video 2" };
+
         private bool isLoading = false;
         private string textInput = string.Empty;
         private string TextToPrint1 = "Good Ole Rambler try!";
@@ -24,6 +27,26 @@ namespace BTC_Blazor.Pages
             isLoading = false; // we finished, they can have button back
             StateHasChanged(); // tells UI to re-render
         }
+
+        private List<string> DisplayList = new();
+
+        private void BuildVideosList()
+        {
+            DownloadedVideosList = Logic.DeSerializeXMLToListOfStrings(BTCSettings.PathToXMLListOfDownloadedVideos);
+
+            foreach (var video in DownloadedVideosList) 
+            {
+                DisplayList.Add(Path.GetFileName(video));
+            }
+
+        }
+
+        protected override void OnInitialized()
+        {
+            BuildVideosList();
+        }
+
+        public ImageDisplay imageDisplayref;
 
     }
 

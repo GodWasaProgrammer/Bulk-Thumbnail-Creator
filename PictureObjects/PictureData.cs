@@ -42,6 +42,7 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             _FileName = (string)pictureDataToCopy.FileName.Clone();
             _ParamForTextCreation = new ParamForTextCreation(pictureDataToCopy.ParamForTextCreation);
             _Varieties = new List<PictureData>(pictureDataToCopy.Varieties);
+            _OutputType = pictureDataToCopy.OutputType;
             _outPath = pictureDataToCopy.OutPath;
             _DankBox = pictureDataToCopy.Dankbox;
             _Meme = pictureDataToCopy._Meme;

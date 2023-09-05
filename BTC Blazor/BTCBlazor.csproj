@@ -54,6 +54,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MudBlazor" Version="6.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Bulk Thumbnail Creator.csproj" />
   </ItemGroup>
 

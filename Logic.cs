@@ -10,10 +10,11 @@ using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using System.Reflection;
 using System.Linq;
+using System.ComponentModel.Design;
 
 namespace Bulk_Thumbnail_Creator
 {
-    internal class Logic
+    public class Logic
     {
         public static void DecideIfTooMuchFace(string CurrentFile, Bitmap PictureWhereFacesWereDetected, Rectangle[] rectangleArray)
         {
@@ -432,7 +433,7 @@ namespace Bulk_Thumbnail_Creator
                 do
                 {
                     pickedBoxName = (Box)random.Next(Boxes.Count);
-                } 
+                }
                 while (!Boxes.ContainsKey(pickedBoxName));
 
                 // tries to read from dictionary
@@ -596,7 +597,6 @@ namespace Bulk_Thumbnail_Creator
             {
                 OutputPath += "//variety of " + imageName + $"//{PicData.ParamForTextCreation.CurrentBox}" + ".png"; ;
                 PicData.OutPath = OutputPath;
-
             }
             if (PicData.OutputType == OutputType.SaturationVariety)
             {
@@ -615,66 +615,68 @@ namespace Bulk_Thumbnail_Creator
             }
             if (PicData.OutputType == OutputType.Dankness)
             {
-                OutputPath += "//variety of " + imageName + "//" + PicData.Dankbox + ".png";
+                OutputPath += "//variety of " + imageName + "//" + PicData.Dankbox + trimDateTime + imageName + ".png";
                 PicData.OutPath = OutputPath;
             }
 
-            using MagickImage outputImage = new(Path.GetFullPath(PicData.FileName));
-            using var caption = new MagickImage($"caption:{PicData.ParamForTextCreation.Text}", PicData.ReadSettings);
-
-            // Add the caption layer on top of the background image
-            if (PicData.ParamForTextCreation.Boxes.ContainsKey(PicData.ParamForTextCreation.CurrentBox))
+            using (MagickImage outputImage = new(Path.GetFullPath(PicData.FileName)))
             {
-                int takeX = PicData.ParamForTextCreation.Boxes[PicData.ParamForTextCreation.CurrentBox].X;
+                using (var caption = new MagickImage($"caption:{PicData.ParamForTextCreation.Text}", PicData.ReadSettings))
+                {
 
-                int takeY = PicData.ParamForTextCreation.Boxes[PicData.ParamForTextCreation.CurrentBox].Y;
 
-                outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
+                    // Add the caption layer on top of the background image
+                    if (PicData.ParamForTextCreation.Boxes.ContainsKey(PicData.ParamForTextCreation.CurrentBox))
+                    {
+                        int takeX = PicData.ParamForTextCreation.Boxes[PicData.ParamForTextCreation.CurrentBox].X;
+
+                        int takeY = PicData.ParamForTextCreation.Boxes[PicData.ParamForTextCreation.CurrentBox].Y;
+
+                        outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
+                    }
+
+                    outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
+
+                    if (PicData.OutputType == OutputType.Dankness)
+                    {
+                        MagickImage MemeToPutOnPic = new(PicData.Meme);
+
+                        Rectangle ReadPosition = PicData.ParamForTextCreation.Boxes[PicData.Dankbox];
+
+                        int posX = ReadPosition.X;
+                        int posY = ReadPosition.Y;
+
+                        outputImage.Composite(MemeToPutOnPic, posX, posY, CompositeOperator.Over);
+                    }
+                    outputImage.Quality = 100;
+
+                    // outputs the file to the provided path and name
+                    outputImage.Write(OutputPath);
+
+                    //  outputImage.Dispose(); //TODO: check if works
+
+                }
             }
-
-            outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
-
-            if (PicData.OutputType == OutputType.Dankness)
-            {
-                MagickImage MemeToPutOnPic = new(PicData.Meme);
-
-                Rectangle ReadPosition = PicData.ParamForTextCreation.Boxes[PicData.Dankbox];
-
-                int posX = ReadPosition.X;
-                int posY = ReadPosition.Y;
-
-                outputImage.Composite(MemeToPutOnPic, posX, posY, CompositeOperator.Over);
-            }
-            outputImage.Quality = 100;
-
-            // outputs the file to the provided path and name
-            outputImage.Write(OutputPath);
 
         }
 
         /// <summary>
-        /// Generates MagickReadSettings with completely randomized color values for Fill/stroke/border colors
-        /// ALso generates the other necessary settings for ImageMagick necessary to put text on the screenshots
+        /// Generates randomized colorvalues 
         /// </summary>
-        /// <returns>returns the randomized MagickReadSettings object</returns>
-        public static MagickReadSettings GenerateRandomColorSettings(ParamForTextCreation param)
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public static ParamForTextCreation GenerateRandomColorSettings(ParamForTextCreation param)
         {
-            MagickReadSettings settingsTextRandom = new()
-            {
-                Font = param.Font,
-                FillColor = RandomizeColor(),
-                StrokeColor = RandomizeColor(),
-                BorderColor = RandomizeColor(),
-                //FontStyle = FontStyleType.Bold,
-                StrokeAntiAlias = true,
-                StrokeWidth = 6,
-                FontWeight = FontWeight.Bold,
-                BackgroundColor = MagickColors.Transparent,
-                Height = param.HeightOfBox, // height of text box
-                Width = param.WidthOfBox, // width of text box
-            };
+            MagickColor magickColor = RandomizeColor();
+            param.FillColor.SetByRGB((byte)magickColor.R, (byte)magickColor.G, (byte)magickColor.B);
 
-            return settingsTextRandom;
+            magickColor = RandomizeColor();
+            param.StrokeColor.SetByRGB((byte)magickColor.R, (byte)magickColor.G, (byte)magickColor.B);
+
+            magickColor = RandomizeColor();
+            param.BorderColor.SetByRGB((byte)(magickColor.R), (byte)(magickColor.G), (byte)(magickColor.B));
+
+            return param;
         }
 
         /// <summary>
@@ -693,7 +695,7 @@ namespace Bulk_Thumbnail_Creator
 
                 Box PickedBox;
                 do
-                {
+                { //TODO: dont rely on RNG luck lol for it to work
                     PickedBox = (Box)random.Next(PictureInputData.ParamForTextCreation.Boxes.Count);
                 }
                 while (!AvailableBoxes.ContainsKey(PickedBox));
@@ -703,6 +705,8 @@ namespace Bulk_Thumbnail_Creator
                 Bitmap src = new(PictureInputData.FileName);
 
                 VarietyData.ParamForTextCreation = CalculateBoxData(VarietyData.ParamForTextCreation.CurrentBox, src, VarietyData.ParamForTextCreation);
+
+                VarietyData.ParamForTextCreation = GenerateRandomColorSettings(VarietyData.ParamForTextCreation);
 
                 string Font = PickRandomFont();
                 VarietyData.ParamForTextCreation.Font = Font;
@@ -718,52 +722,105 @@ namespace Bulk_Thumbnail_Creator
         /// 
         /// </summary>
         /// <param name="DankifyTarget"></param>
-        public static void ProduceMemeDanknessData(PictureData DankifyTarget)
+        public static void ProduceMemePositionData(PictureData DankifyTarget)
         {
             PictureData CopiedPicData = new(DankifyTarget);
 
             if (CopiedPicData.ParamForTextCreation.Boxes.Count > 2)
             {
-                //    // pick a box to dankify
-
-                //    Random pickbox = new();
-                //    Box PickedBox = (Box)pickbox.Next(DankifyTarget.ParamForTextCreation.Boxes.Count - 1);
-
                 Dictionary<Box, Rectangle> boxesDictionary = DankifyTarget.ParamForTextCreation.Boxes;
 
                 Box currentBox = DankifyTarget.ParamForTextCreation.CurrentBox;
 
-                Box PickedBox;
+                Box PickedBox = Box.Discarded;
 
-                if (boxesDictionary.Count > 2)
+                List<Box> AvailableBoxes = new List<Box>();
+
+                boxesDictionary.Keys.ToList().ForEach(AvailableBoxes.Add);
+
+                foreach (Box key in AvailableBoxes)
                 {
-                    Random pickbox = new();
-                    Box[] boxKeys = boxesDictionary.Keys.ToArray();
-                    int randomIndex;
 
-                    do
+                    if (currentBox == Box.BottomBox)
                     {
-                        randomIndex = pickbox.Next(boxKeys.Length);
-                    } while (boxKeys[randomIndex] == currentBox);
+                        // avail boxes is only topright topleft
+                        if (key == Box.TopLeft || key == Box.TopRight)
+                        {
+                            PickedBox = key;
+                        }
 
-                    PickedBox = boxKeys[randomIndex];
+                    }
+                    if (currentBox == Box.TopBox)
+                    {
+                        // only possible boxes are bot left bot right
+                        if (key == Box.BottomLeft || key == Box.BottomRight)
+                        {
+                            PickedBox = key;
+                        }
 
-                    //// write picked box to dankbox property
-                    CopiedPicData.Dankbox = PickedBox;
+                    }
+
+                    if (currentBox == Box.TopLeft)
+                    {
+                        if (key == Box.TopRight || key == Box.BottomLeft || key == Box.BottomRight)
+                        {
+                            PickedBox = key;
+                        }
+
+                    }
+                    if (currentBox == Box.TopRight)
+                    {
+                        if (key == Box.TopLeft || key == Box.BottomRight || key == Box.BottomLeft)
+                        {
+                            PickedBox = key;
+                        }
+
+                    }
+
+                    if (currentBox == Box.BottomLeft)
+                    {
+                        if (key == Box.BottomRight || key == Box.TopLeft || key == Box.TopRight)
+                        {
+                            PickedBox = key;
+                        }
+
+                    }
+                    if (currentBox == Box.BottomRight)
+                    {
+                        if (key == Box.BottomLeft || key == Box.TopLeft || key == Box.TopRight)
+                        {
+                            PickedBox = key;
+                        }
+
+                    }
+
                 }
 
-                // pick a meme
-                Random pickRandomMeme = new();
-                int PickedMeme = pickRandomMeme.Next(BTCSettings.Memes.Length);
+                //Random newrandom = new Random();
 
-                //// write our chosen meme to Meme property
-                CopiedPicData.Meme = BTCSettings.Memes[PickedMeme];
+                //var randN = newrandom.Next(0, AvailableBoxes.Count);
 
-                // set the type of output
-                CopiedPicData.OutputType = OutputType.Dankness;
+                //var randommlypickedbox = AvailableBoxes[randN];
 
-                DankifyTarget.Varieties.Add(CopiedPicData);
+                //CopiedPicData.Dankbox = randommlypickedbox;
+
+                if (PickedBox != Box.Discarded)
+                {
+                    // pick a meme
+                    Random pickRandomMeme = new();
+                    int PickedMeme = pickRandomMeme.Next(BTCSettings.Memes.Length);
+
+                    //// write our chosen meme to Meme property
+                    CopiedPicData.Meme = BTCSettings.Memes[PickedMeme];
+
+                    // set the type of output
+                    CopiedPicData.OutputType = OutputType.Dankness;
+
+                    DankifyTarget.Varieties.Add(CopiedPicData);
+                }
+
             }
+
         }
 
         /// <summary>

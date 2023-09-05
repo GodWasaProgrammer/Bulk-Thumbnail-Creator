@@ -1,5 +1,4 @@
 ﻿using Bulk_Thumbnail_Creator;
-using Bulk_Thumbnail_Creator.PictureObjects;
 
 namespace BTC_Blazor.Pages
 {
@@ -7,6 +6,16 @@ namespace BTC_Blazor.Pages
     {
         // List of image URLs
         private List<string> imageUrls;
+
+        public void updateState()
+        {
+            StateHasChanged();
+        }
+
+        public void ClearList()
+        {
+            imageUrls.Clear();
+        }
 
         // Load image URLs in the OnInitializedAsync lifecycle method
         protected override async Task OnInitializedAsync()
@@ -54,4 +63,3 @@ namespace BTC_Blazor.Pages
         private int TimerInterval { get; set; }
     }
 }
-
