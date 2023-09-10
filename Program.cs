@@ -177,6 +177,7 @@ namespace Bulk_Thumbnail_Creator
 
             if (ProdType == ProductionType.CustomPicture) 
             {
+                var PicToCustomize = PicdataObjToVarietize;
 
             }
 

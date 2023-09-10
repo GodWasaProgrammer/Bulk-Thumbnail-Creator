@@ -42,5 +42,7 @@ namespace BTC_Blazor.Pages
             }
 
         }
+
     }
+
 }
