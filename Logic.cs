@@ -774,7 +774,9 @@ namespace Bulk_Thumbnail_Creator
 
                 List<Box> AvailableBoxes = new List<Box>();
 
-                boxesDictionary.Keys.ToList().ForEach(AvailableBoxes.Add);
+               // boxesDictionary.Keys.ToList().ForEach(AvailableBoxes.Add);
+
+                AvailableBoxes = boxesDictionary.Keys.ToList();
 
                 foreach (Box key in AvailableBoxes)
                 {
