@@ -85,8 +85,19 @@
         <MudText>Saturation: @CurrentPagePictureData.ParamForTextCreation.StrokeColor.Saturation</MudText>
         <MudText>Luminance: @CurrentPagePictureData.ParamForTextCreation.StrokeColor.Luminance</MudText>
 
+        <MudButton Disabled="@_processing" OnClick="CreateCustomPicDataObject" Variant="Variant.Filled" Color="Color.Primary">
 
-        <MudButton Variant="Variant.Filled" Color="Color.Success">Produce Custom Picture</MudButton>
+            @if (_processing)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" Color="Color.Secondary" />
+                <MudText Class="ms-2">Processing</MudText>
+            }
+            else
+            {
+                <MudText>Produce Picture</MudText>
+            }
+
+        </MudButton>
 
     </div>
 
@@ -94,6 +105,8 @@
 
 @code
 {
+    private bool _processing = false;
+
     private List<ColorGroup> colorBoxes = Enum.GetValues(typeof(ColorGroup)).Cast<ColorGroup>().ToList();
 
     private Box SelectedBox;

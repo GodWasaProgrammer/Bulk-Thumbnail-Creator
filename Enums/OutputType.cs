@@ -8,5 +8,6 @@
         FontVariety,
         RandomVariety,
         Dankness,
+        Custom,
     }
 }

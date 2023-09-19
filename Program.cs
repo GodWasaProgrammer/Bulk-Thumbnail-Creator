@@ -186,7 +186,7 @@ namespace Bulk_Thumbnail_Creator
                     Logic.ProduceTextPictures(PicdataObjToVarietize);
                     BTCSettings.PictureDatas.Add(PicdataObjToVarietize);
                 }
-                var PicToCustomize = PicdataObjToVarietize;
+                
             }
 
             #region Make Showcase Video

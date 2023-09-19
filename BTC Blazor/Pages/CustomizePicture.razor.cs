@@ -24,12 +24,14 @@ namespace BTC_Blazor.Pages
 
         }
 
-        public void CreateCustomPicDataObject()
+        public async void CreateCustomPicDataObject()
         {
             PicDataToCustomize = new(CurrentPagePictureData);
             PicDataToCustomize.ParamForTextCreation.CurrentBox = CustomPickedBox;
             PicDataToCustomize.Dankbox = MemeBox;
             PicDataToCustomize.ParamForTextCreation.Font = PickedFont;
+
+            await PicDataService.CreateCustomPicture(PicDataToCustomize);
         }
 
         protected override void OnInitialized()

@@ -161,10 +161,7 @@ namespace Bulk_Thumbnail_Creator
             string CurrentLoc = Assembly.GetExecutingAssembly().Location;
             string parentDirectory = Directory.GetParent(CurrentLoc).FullName;
 
-
             // if dir doesnt exist, make it
-            
-
             string ExePath = Path.Combine(parentDirectory, "Executables");
 
             if (!Path.Exists(ExePath))
@@ -653,6 +650,11 @@ namespace Bulk_Thumbnail_Creator
             if (PicData.OutputType == OutputType.Dankness)
             {
                 OutputPath += "//variety of " + imageName + "//" + PicData.Dankbox + trimDateTime + imageName + ".png";
+                PicData.OutPath = OutputPath;
+            }
+            if(PicData.OutputType == OutputType.Custom)
+            {
+                OutputPath += "//variety of " + imageName + "//" + trimDateTime + "Custom of" + imageName + ".png";
                 PicData.OutPath = OutputPath;
             }
 
