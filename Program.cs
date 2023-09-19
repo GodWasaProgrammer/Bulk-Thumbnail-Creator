@@ -183,6 +183,11 @@ namespace Bulk_Thumbnail_Creator
                 }
                 else
                 {
+                    Bitmap srcpic = new Bitmap(PicdataObjToVarietize.FileName);
+
+
+                    PicdataObjToVarietize.ParamForTextCreation = Logic.CalculateBoxData(PicdataObjToVarietize.ParamForTextCreation.CurrentBox, srcpic, PicdataObjToVarietize.ParamForTextCreation);
+
                     Logic.ProduceTextPictures(PicdataObjToVarietize);
                     BTCSettings.PictureDatas.Add(PicdataObjToVarietize);
                 }
