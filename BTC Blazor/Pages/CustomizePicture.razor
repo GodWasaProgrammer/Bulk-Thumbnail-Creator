@@ -6,16 +6,6 @@
 
 <h1>Bulk Thumbnail Creator</h1>
 
-<!-- Shared MudColorPicker (outside of color boxes) -->
-<MudDialog @ref="colorPickerDialog" Position="DialogPosition.Center" MaxWidth="MaxWidth.Md" IsOpen="colorPickerIsOpen">
-    <DialogContent>
-        <MudColorPicker @bind-Value="selectedColor" Label="Color Picker" DisableAlpha="true" DisableModeSwitch="true" ColorPickerMode="ColorPickerMode.HSL" />
-    </DialogContent>
-    <DialogActions>
-        <MudButton Color="Color.Secondary" Variant="Variant.Filled" OnClick="() => CloseColorPicker()">Close</MudButton>
-    </DialogActions>
-</MudDialog>
-
 <div class="grid-container">
 
     <div class="picture-data-box">
@@ -30,82 +20,66 @@
         <MudText Color="Color.Secondary">Varieties of this Picture: @CurrentPagePictureData.Varieties.Count</MudText>
         <MudText Color="Color.Secondary">CurrentBox: @CurrentPagePictureData.ParamForTextCreation.CurrentBox</MudText>
 
+        @foreach (var colorBox in Enum.GetValues(typeof(ColorGroup)).Cast<ColorGroup>())
+        {
+
+            <div class="color-box">
+                <header class="studded-header">@colorBox.ToString()</header>
+                <MudText>Hue: @GetColorValue(colorBox, ColorProperty.Hue)</MudText>
+                <MudText>Saturation: @GetColorValue(colorBox, ColorProperty.Saturation)</MudText>
+                <MudText>Luminance: @GetColorValue(colorBox, ColorProperty.Luminance)</MudText>
+            </div>
+
+        }
+
     </div>
+
+    <div class="color-box-container">
+
+        <MudColorPicker PickerVariant="PickerVariant.Dialog" ColorPickerMode="ColorPickerMode.HSL" DisableAlpha DisableModeSwitch></MudColorPicker>
+
+        <MudSelect AdornmentColor="Color.Primary" Label="Select a Color to edit" @bind-Value="PickedGroup">
+
+            @foreach (var Colorz in colorBoxes)
+            {
+
+                <MudSelectItem Value="@Colorz"><MudText Color="Color.Secondary">@Colorz</MudText></MudSelectItem>
+            }
+
+        </MudSelect>
+
+        <MudSelect AdornmentColor="Color.Primary" Label="Select an output box" @bind-Value="SelectedBox">
+
+            @foreach (var key in CurrentPagePictureData.ParamForTextCreation.Boxes.Keys)
+            {
+                var value = CurrentPagePictureData.ParamForTextCreation.Boxes[key];
+                <MudSelectItem Value="@key"><MudText Color="Color.Secondary">@key</MudText></MudSelectItem>
+            }
+
+        </MudSelect>
+
+        <MudSelect AdornmentColor="Color.Primary" Label="Select a font" @bind-Value="PickedFont">
+
+            @foreach (var font in AvailableFonts)
+            {
+                
+                <MudSelectItem Value="@font"><MudText Color="Color.Secondary">@font</MudText></MudSelectItem>
+            }
+
+        </MudSelect>
+
+
+
+    </div>
+
 </div>
 
-@foreach (var colorBox in Enum.GetValues(typeof(ColorGroup)).Cast<ColorGroup>())
-{
-    <div class="oi-align-right">
-        <div class="color-box">
-            <header class="studded-header">@colorBox.ToString()</header>
-            <MudText>@GetColorValue(colorBox, ColorProperty.Hue)</MudText>
-            <MudText>@GetColorValue(colorBox, ColorProperty.Saturation)</MudText>
-            <MudText>@GetColorValue(colorBox, ColorProperty.Luminance)</MudText>
-        </div>
-    </div>
-    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="() => OpenColorPicker(colorBox)">Color Picker</MudButton>
-}
 
-<MudSelect AdornmentColor="Color.Primary" Label="Select an output box" @bind-Value="SelectedBox">
 
-    @foreach (var key in CurrentPagePictureData.ParamForTextCreation.Boxes.Keys)
-    {
-        var value = CurrentPagePictureData.ParamForTextCreation.Boxes[key];
-        <MudSelectItem Value="@key"><MudText Color="Color.Secondary">@key</MudText></MudSelectItem>
-    }
-
-</MudSelect>
 @code
 {
-    private enum ColorProperty
-    {
-        Hue,
-        Saturation,
-        Luminance
-    }
-
-    private string GetColorValue(ColorGroup colorGroup, ColorProperty property)
-    {
-        switch (colorGroup)
-        {
-            case ColorGroup.FillColor:
-                return property switch
-                {
-                    ColorProperty.Hue => CurrentPagePictureData.ParamForTextCreation.FillColor.Hue.ToString(),
-                    ColorProperty.Saturation => CurrentPagePictureData.ParamForTextCreation.FillColor.Saturation.ToString(),
-                    ColorProperty.Luminance => CurrentPagePictureData.ParamForTextCreation.FillColor.Luminance.ToString(),
-                    _ => string.Empty,
-                };
-            case ColorGroup.BorderColor:
-                return property switch
-                {
-                    ColorProperty.Hue => CurrentPagePictureData.ParamForTextCreation.BorderColor.Hue.ToString(),
-                    ColorProperty.Saturation => CurrentPagePictureData.ParamForTextCreation.BorderColor.Saturation.ToString(),
-                    ColorProperty.Luminance => CurrentPagePictureData.ParamForTextCreation.BorderColor.Luminance.ToString(),
-                    _ => string.Empty,
-                };
-            case ColorGroup.StrokeColor:
-                return property switch
-                {
-                    ColorProperty.Hue => CurrentPagePictureData.ParamForTextCreation.StrokeColor.Hue.ToString(),
-                    ColorProperty.Saturation => CurrentPagePictureData.ParamForTextCreation.StrokeColor.Saturation.ToString(),
-                    ColorProperty.Luminance => CurrentPagePictureData.ParamForTextCreation.StrokeColor.Luminance.ToString(),
-                    _ => string.Empty,
-                };
-            default:
-                return string.Empty;
-        }
-    }
 
     private List<ColorGroup> colorBoxes = Enum.GetValues(typeof(ColorGroup)).Cast<ColorGroup>().ToList();
-
-    private void OpenColorPicker(ColorGroup colorGroup)
-    {
-        PickedGroup = colorGroup;
-        colorPickerIsOpen = true;
-    }
-
-    private MudDialog colorPickerDialog = new();
 
     private Box SelectedBox;
 
@@ -115,11 +89,23 @@
 
     private MudBlazor.Utilities.MudColor selectedColor;
 
+    private enum ColorProperty
+    {
+        Hue,
+        Saturation,
+        Luminance
+    }
+
     private enum ColorGroup
     {
         FillColor,
         BorderColor,
         StrokeColor
+    }
+
+    private void OpenColorPicker()
+    {
+        colorPickerIsOpen = true;
     }
 
     private void CloseColorPicker()
@@ -128,7 +114,6 @@
         // Handle the selectedColor based on selectedColorGroup
         // Update your CurrentPagePictureData with the selected color.
         // Make sure to use your project-specific types and properties.
-
     }
 
 }

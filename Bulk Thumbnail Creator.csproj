@@ -12,10 +12,13 @@
 	<ItemGroup>
 	  <Compile Remove="BTC Blazor\**" />
 	  <Compile Remove="Executables\**" />
+	  <Compile Remove="PicturesAndText\**" />
 	  <EmbeddedResource Remove="BTC Blazor\**" />
 	  <EmbeddedResource Remove="Executables\**" />
+	  <EmbeddedResource Remove="PicturesAndText\**" />
 	  <None Remove="BTC Blazor\**" />
 	  <None Remove="Executables\**" />
+	  <None Remove="PicturesAndText\**" />
 	</ItemGroup>
 
 	<ItemGroup>

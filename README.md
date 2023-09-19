@@ -19,6 +19,8 @@
 - Uses ImageMagick
 - Uses YoutubeDLSharp
 - Uses FFMpeg
+- uses Microsoft Machine Learning
+- uses FACEONNX(ML facial recognition)
 
 ### Contributing
 

@@ -89,12 +89,21 @@ h1 {
 }
 
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
 .grid-container 
 {
-    display:grid;
-    grid-template-columns: 2fr 1fr;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    gap: 20px; /* Adjust the gap as needed */
 }
 
+.color-box-container {
+    /* Styles for the container of color boxes */
+}
+
+.color-box {
+    /* Styles for individual color boxes */
+}
 .color-box 
 {
     background-color: #3498db; /* Background color (you can change this) */

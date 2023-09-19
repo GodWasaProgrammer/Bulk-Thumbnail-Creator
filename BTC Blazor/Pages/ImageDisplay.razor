@@ -1,7 +1,11 @@
 ﻿@page "/imagedisplay"
 @inject Bulk_Thumbnail_Creator.PictureObjects.PictureDataService ds
 
+
+@if (IMGDetailClicked == false)
+{
     <div class="image-container">
+
         @foreach (var imageUrl in imageUrls)
         {
             <button class="image-button" @onclick="() => ShowImageDetail(imageUrl)">
@@ -13,15 +17,24 @@
         {
             <p>No images to display.</p>
         }
+
     </div>
+}
+else
+{
+    <MudText>Loading your Requested Varieties</MudText>
+}
 
 @code
 {
     [Inject]
     private NavigationManager NavigationManager { get; set; }
 
+    private bool IMGDetailClicked = false;
+
     private void ShowImageDetail(string imageUrl)
     {
+        IMGDetailClicked = true;
         NavigationManager.NavigateTo($"/imagedetail/{Uri.EscapeDataString(imageUrl)}");
     }
 

@@ -10,7 +10,6 @@ using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using System.Reflection;
 using System.Linq;
-using System.ComponentModel.Design;
 
 namespace Bulk_Thumbnail_Creator
 {
