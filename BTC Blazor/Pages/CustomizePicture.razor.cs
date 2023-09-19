@@ -8,6 +8,8 @@ namespace BTC_Blazor.Pages
     {
         public PictureData CurrentPagePictureData { get; set; }
 
+        public PictureData PicDataToCustomize = new PictureData();
+
         public Box CustomPickedBox { get; set; }
         public List<string> InputText { get; set; }
         public Box MemeBox { get; set; }
@@ -22,11 +24,18 @@ namespace BTC_Blazor.Pages
 
         }
 
+        public void CreateCustomPicDataObject()
+        {
+            PicDataToCustomize = new(CurrentPagePictureData);
+            PicDataToCustomize.ParamForTextCreation.CurrentBox = CustomPickedBox;
+            PicDataToCustomize.Dankbox = MemeBox;
+            PicDataToCustomize.ParamForTextCreation.Font = PickedFont;
+        }
+
         protected override void OnInitialized()
         {
             SetPictureDataImageDisplayCorrelation(ImageURL);
 
-            Directory.GetFiles("Fonts");
         }
 
         private string GetColorValue(ColorGroup colorGroup, ColorProperty property)

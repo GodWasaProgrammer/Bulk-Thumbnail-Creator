@@ -177,8 +177,16 @@ namespace Bulk_Thumbnail_Creator
 
             if (ProdType == ProductionType.CustomPicture) 
             {
+                if (PicdataObjToVarietize == null)
+                {
+                    Console.WriteLine("Null has been passed to CustomPicture");
+                }
+                else
+                {
+                    Logic.ProduceTextPictures(PicdataObjToVarietize);
+                    BTCSettings.PictureDatas.Add(PicdataObjToVarietize);
+                }
                 var PicToCustomize = PicdataObjToVarietize;
-
             }
 
             #region Make Showcase Video

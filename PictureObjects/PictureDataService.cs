@@ -47,6 +47,13 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             return ImageUrls;
         }
 
+        public async Task CreateCustomPicture(PictureData CustomPictureData)
+        {
+            string url = string.Empty;
+
+            PicDataServiceList = await Program.Process(ProductionType.CustomPicture, url, TextToPrint, CustomPictureData);
+        }
+
         public void ClearBaseOutPutDirectories()
         {
             DirectoryInfo di = new DirectoryInfo(BTCSettings.TextAddedDir);
