@@ -1,8 +1,6 @@
 ﻿using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
-using System.Drawing;
 
 namespace BTC_Blazor.Pages
 {

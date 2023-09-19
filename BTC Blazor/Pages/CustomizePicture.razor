@@ -68,17 +68,32 @@
 
         </MudSelect>
 
+        <MudText>PictureData To Produce</MudText>
+        <MudText>Chosen Font: @Path.GetFileName(PickedFont)</MudText>
+        <MudText>Chosen Box: @SelectedBox.ToString()</MudText>
 
+        <header>BorderColor Values</header>
+        <MudText>Hue: @CurrentPagePictureData.ParamForTextCreation.BorderColor.Hue</MudText>
+        <MudText>Saturation: @CurrentPagePictureData.ParamForTextCreation.BorderColor.Saturation</MudText>
+        <MudText>Luminance: @CurrentPagePictureData.ParamForTextCreation.BorderColor.Luminance</MudText>
+
+        <MudText>Hue: @CurrentPagePictureData.ParamForTextCreation.FillColor.Hue</MudText>
+        <MudText>Saturation: @CurrentPagePictureData.ParamForTextCreation.FillColor.Saturation</MudText>
+        <MudText>Luminance: @CurrentPagePictureData.ParamForTextCreation.FillColor.Luminance</MudText>
+
+        <MudText>Hue: @CurrentPagePictureData.ParamForTextCreation.StrokeColor.Hue</MudText>
+        <MudText>Saturation: @CurrentPagePictureData.ParamForTextCreation.StrokeColor.Saturation</MudText>
+        <MudText>Luminance: @CurrentPagePictureData.ParamForTextCreation.StrokeColor.Luminance</MudText>
+
+
+        <MudButton Variant="Variant.Filled" Color="Color.Default">Produce Custom Picture</MudButton>
 
     </div>
 
 </div>
 
-
-
 @code
 {
-
     private List<ColorGroup> colorBoxes = Enum.GetValues(typeof(ColorGroup)).Cast<ColorGroup>().ToList();
 
     private Box SelectedBox;
