@@ -1,6 +1,7 @@
 ﻿using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using Microsoft.AspNetCore.Components;
+using UMapx.Imaging;
 
 namespace BTC_Blazor.Pages
 {
@@ -10,7 +11,7 @@ namespace BTC_Blazor.Pages
 
         public PictureData PicDataToCustomize = new PictureData();
 
-        public Box CustomPickedBox { get; set; }
+        public Box PickedBox { get; set; }
         public List<string> InputText { get; set; }
         public Box MemeBox { get; set; }
         public List<string> AvailableFonts { get { return Directory.GetFiles("Fonts").ToList(); } }
@@ -27,11 +28,18 @@ namespace BTC_Blazor.Pages
         public async void CreateCustomPicDataObject()
         {
             PicDataToCustomize = new(CurrentPagePictureData);
-            PicDataToCustomize.ParamForTextCreation.CurrentBox = CustomPickedBox;
+            PicDataToCustomize.ParamForTextCreation.CurrentBox = PickedBox;
             PicDataToCustomize.Dankbox = MemeBox;
             PicDataToCustomize.ParamForTextCreation.Font = PickedFont;
+            PicDataToCustomize.OutputType = OutputType.Custom;
 
             await PicDataService.CreateCustomPicture(PicDataToCustomize);
+            ShowCustomPicture(PicDataToCustomize);
+        }
+
+        private void ShowCustomPicture(PictureData CustomPicture)
+        {
+            SetPictureDataImageDisplayCorrelation(CustomPicture.OutPath);
         }
 
         protected override void OnInitialized()

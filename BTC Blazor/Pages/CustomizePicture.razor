@@ -48,7 +48,7 @@
 
         </MudSelect>
 
-        <MudSelect AdornmentColor="Color.Primary" Label="Select an output box" @bind-Value="SelectedBox">
+        <MudSelect AdornmentColor="Color.Primary" Label="Select an output box" @bind-Value="PickedBox">
 
             @foreach (var key in CurrentPagePictureData.ParamForTextCreation.Boxes.Keys)
             {
@@ -70,7 +70,7 @@
 
         <MudText>PictureData To Produce</MudText>
         <MudText>Chosen Font: @Path.GetFileName(PickedFont)</MudText>
-        <MudText>Chosen Box: @SelectedBox.ToString()</MudText>
+        <MudText>Chosen Box: @PickedBox.ToString()</MudText>
 
         <header>BorderColor Values</header>
         <MudText>Hue: @CurrentPagePictureData.ParamForTextCreation.BorderColor.Hue</MudText>
@@ -108,8 +108,6 @@
     private bool _processing = false;
 
     private List<ColorGroup> colorBoxes = Enum.GetValues(typeof(ColorGroup)).Cast<ColorGroup>().ToList();
-
-    private Box SelectedBox;
 
     private ColorGroup PickedGroup;
 

@@ -615,11 +615,12 @@ namespace Bulk_Thumbnail_Creator
             DateTime dateTime = DateTime.Now;
             string trimDateTime = dateTime.ToString();
             trimDateTime = trimDateTime.Replace(":", "");
+            string varietyof = "//variety of ";
 
             // if not main type, we will make a directory for files to be written in
             if (PicData.OutputType != OutputType.Main)
             {
-                Directory.CreateDirectory(OutputPath + "//" + "variety of " + Path.GetFileName(PicData.FileName));
+                Directory.CreateDirectory(OutputPath + varietyof + Path.GetFileName(PicData.FileName));
             }
 
             if (PicData.OutputType == OutputType.Main)
@@ -629,32 +630,32 @@ namespace Bulk_Thumbnail_Creator
             }
             if (PicData.OutputType == OutputType.BoxPositionVariety)
             {
-                OutputPath += "//variety of " + imageName + $"//{PicData.ParamForTextCreation.CurrentBox}" + ".png"; ;
+                OutputPath += varietyof + imageName + $"//{PicData.ParamForTextCreation.CurrentBox}" + ".png"; ;
                 PicData.OutPath = OutputPath;
             }
             if (PicData.OutputType == OutputType.SaturationVariety)
             {
-                OutputPath += "//variety of " + imageName + $"//{PicData.ParamForTextCreation.FillColor.Saturation}.png";
+                OutputPath += varietyof + imageName + $"//{PicData.ParamForTextCreation.FillColor.Saturation}.png";
                 PicData.OutPath = OutputPath;
             }
             if (PicData.OutputType == OutputType.FontVariety)
             {
-                OutputPath += "//variety of " + imageName + "//" + Path.GetFileNameWithoutExtension(PicData.ReadSettings.Font) + ".png";
+                OutputPath += varietyof + imageName + "//" + Path.GetFileNameWithoutExtension(PicData.ReadSettings.Font) + ".png";
                 PicData.OutPath = OutputPath;
             }
             if (PicData.OutputType == OutputType.RandomVariety)
             {
-                OutputPath += "//variety of " + imageName + "//" + $"{PicData.OutPath}" + ".png";
+                OutputPath += varietyof + imageName + "//" + $"{PicData.OutPath}" + ".png";
                 PicData.OutPath = OutputPath;
             }
             if (PicData.OutputType == OutputType.Dankness)
             {
-                OutputPath += "//variety of " + imageName + "//" + PicData.Dankbox + trimDateTime + imageName + ".png";
+                OutputPath += varietyof + imageName + "//" + PicData.Dankbox + trimDateTime + imageName + ".png";
                 PicData.OutPath = OutputPath;
             }
             if(PicData.OutputType == OutputType.Custom)
             {
-                OutputPath += "//variety of " + imageName + "//" + trimDateTime + "Custom of" + imageName + ".png";
+                OutputPath += varietyof + imageName + "//" + trimDateTime + "Custom of" + imageName;
                 PicData.OutPath = OutputPath;
             }
 
@@ -662,7 +663,6 @@ namespace Bulk_Thumbnail_Creator
             {
                 using (var caption = new MagickImage($"caption:{PicData.ParamForTextCreation.Text}", PicData.ReadSettings))
                 {
-
 
                     // Add the caption layer on top of the background image
                     if (PicData.ParamForTextCreation.Boxes.ContainsKey(PicData.ParamForTextCreation.CurrentBox))
@@ -691,10 +691,8 @@ namespace Bulk_Thumbnail_Creator
 
                     // outputs the file to the provided path and name
                     outputImage.Write(OutputPath);
-
-                    //  outputImage.Dispose(); //TODO: check if works
-
                 }
+
             }
 
         }
