@@ -9,17 +9,20 @@
 
 ### Core Technical Concepts/Inspiration
 
-- This is for people that want awesome thumbnails but dont know how to.
-- This Piece of Software will allow you to create thumbnails as easy as breathing.
+- Microsoft Machine Learning face detection
+- Linear variety 
+- random variety 
+- customize your thumbnails right in browser
+- This Software will allow you to create thumbnails as easy as breathing.
 - Includes the markets best ffmpeg Wrapper - Mine!
 
-### Getting Started/Requirements/Prerequisites/Dependencies
+### Dependencies
 
-- Uses ImageMagick
-- Uses YoutubeDLSharp
-- Uses FFMpeg
-- uses Microsoft Machine Learning
-- uses FACEONNX(ML facial recognition)
+- ImageMagick
+- YoutubeDLSharp
+- FFMpeg
+- Microsoft Machine Learning
+- FACEONNX(ML facial recognition)
 
 ### Contributing
 
