@@ -29,7 +29,6 @@
 - Feel free to contribute if you so wish.
 
 ### TODO
-- implement custom output 
 - Known bugs - many
 
 ### Contact
