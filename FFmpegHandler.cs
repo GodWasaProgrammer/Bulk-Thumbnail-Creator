@@ -13,8 +13,7 @@ namespace Bulk_Thumbnail_Creator
 		private static void ExecuteFFMPG(string parameters)
 		{
             Process processFFMpeg = new();
-
-			string WorkDir = System.IO.Directory.GetCurrentDirectory();
+			string WorkDir = Directory.GetCurrentDirectory();
 
 			processFFMpeg.StartInfo.FileName = Path.GetFullPath("ffmpeg.exe");
 			processFFMpeg.StartInfo.WorkingDirectory = Path.Combine(WorkDir, BTCSettings.YoutubeDLDir);

@@ -67,8 +67,6 @@ namespace Bulk_Thumbnail_Creator
             return colorRNGPicked;
         }
 
-        
-
         /// <summary>
         /// Allows you to "spin" the HSL "globe" to "invert" colors
         /// </summary>

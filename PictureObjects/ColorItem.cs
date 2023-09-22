@@ -126,17 +126,20 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             return CurrentHSL;
         }
 
+        /// <summary>
+        /// Copy Ctor
+        /// </summary>
+        /// <param name="colorItemToCopy"></param>
         public ColorItem(ColorItem colorItemToCopy)
         {
             red = colorItemToCopy.red;
             green = colorItemToCopy.green;
             blue = colorItemToCopy.blue;
         }
+
         public ColorItem()
         {
-            //red = new byte();
-            //green = new byte();
-            //blue = new byte();
+
         }
 
     }

@@ -7,11 +7,6 @@ namespace BTC_Blazor.Pages
         // List of image URLs
         private List<string> imageUrls;
 
-        public void ClearList()
-        {
-            imageUrls.Clear();
-        }
-
         // Load image URLs in the OnInitializedAsync lifecycle method
         protected override async Task OnInitializedAsync()
         {

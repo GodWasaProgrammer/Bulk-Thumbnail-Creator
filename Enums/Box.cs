@@ -1,8 +1,5 @@
-﻿using System;
-
-namespace Bulk_Thumbnail_Creator.Enums
+﻿namespace Bulk_Thumbnail_Creator.Enums
 {
-
     public enum Box
     {
         TopBox,

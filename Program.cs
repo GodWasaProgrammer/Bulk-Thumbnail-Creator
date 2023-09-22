@@ -5,13 +5,11 @@ using System.Collections.Generic;
 using FaceONNX;
 using System.Drawing;
 using Bulk_Thumbnail_Creator.PictureObjects;
-using System.Linq;
 
 namespace Bulk_Thumbnail_Creator
 {
     public class Program
     {
-        
         public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, PictureData PicdataObjToVarietize = null)
         {
             BTCSettings.ListOfText = texts;
@@ -56,7 +54,7 @@ namespace Bulk_Thumbnail_Creator
                 Console.WriteLine($"Processing {BTCSettings.Files.Length} images");
 
                 // main loop for detecting faces, placing text where face is not
-                Parallel.For(0,BTCSettings.Files.Length, fileIndex =>
+                Parallel.For(0, BTCSettings.Files.Length, fileIndex =>
                 {
                     string file = BTCSettings.Files[fileIndex];
 
@@ -141,12 +139,12 @@ namespace Bulk_Thumbnail_Creator
                 });
 
             }
-            
+
             if (ProdType == ProductionType.VarietyList)
             {
                 //TODO null check
 
-                if (PicdataObjToVarietize ==  null) 
+                if (PicdataObjToVarietize == null)
                 {
                     Console.WriteLine("Null has been passed to PicdataobjToVarietize");
                 }
@@ -161,7 +159,7 @@ namespace Bulk_Thumbnail_Creator
 
             }
 
-            if (ProdType == ProductionType.CustomPicture) 
+            if (ProdType == ProductionType.CustomPicture)
             {
                 if (PicdataObjToVarietize == null)
                 {
@@ -174,9 +172,9 @@ namespace Bulk_Thumbnail_Creator
 
                     Logic.ProduceTextPictures(PicdataObjToVarietize);
                     BTCSettings.PictureDatas.Add(PicdataObjToVarietize);
-                    
+
                 }
-                
+
             }
 
             #region Make Showcase Video
@@ -197,8 +195,4 @@ namespace Bulk_Thumbnail_Creator
         }
 
     }
-
-
-
-
 }

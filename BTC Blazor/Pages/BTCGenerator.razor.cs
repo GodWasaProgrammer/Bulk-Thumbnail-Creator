@@ -6,6 +6,12 @@ namespace BTC_Blazor.Pages
 {
     public partial class BTCGenerator
     {
+
+        private bool _processing = false;
+
+        private bool DisableMenu = false;
+
+
         [Inject]
         PictureDataService DataService { get; set; }
         private List<string> DownloadedVideosList = new List<string> { "Video 1", "video 2" };
@@ -25,6 +31,16 @@ namespace BTC_Blazor.Pages
         }
 
         private List<string> DisplayList = new();
+
+        private async void AwaitBTC()
+        {
+            DisableMenu = true;
+            _processing = true;
+            StateHasChanged();
+            await CallBTC();
+            _processing = false;
+            StateHasChanged();
+        }
 
         private void BuildVideosList()
         {
