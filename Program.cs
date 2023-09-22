@@ -5,27 +5,13 @@ using System.Collections.Generic;
 using FaceONNX;
 using System.Drawing;
 using Bulk_Thumbnail_Creator.PictureObjects;
+using System.Linq;
 
 namespace Bulk_Thumbnail_Creator
 {
     public class Program
     {
-        public static async Task Main(string[] args)
-        {
-            //argv0 = process name on cli call
-
-            if (args[1] == "front")
-            {
-                var texts = new List<string>();
-                texts.Add(args[3]);
-                texts.Add(args[4]);
-                texts.Add(args[5]);
-                texts.Add(args[6]);
-                await Process(ProductionType.FrontPagePictureLineUp, args[2], texts);
-            }
-
-        }
-
+        
         public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, PictureData PicdataObjToVarietize = null)
         {
             BTCSettings.ListOfText = texts;
@@ -70,7 +56,7 @@ namespace Bulk_Thumbnail_Creator
                 Console.WriteLine($"Processing {BTCSettings.Files.Length} images");
 
                 // main loop for detecting faces, placing text where face is not
-                for (int fileIndex = 0; fileIndex < BTCSettings.Files.Length; fileIndex++)
+                Parallel.For(0,BTCSettings.Files.Length, fileIndex =>
                 {
                     string file = BTCSettings.Files[fileIndex];
 
@@ -104,7 +90,7 @@ namespace Bulk_Thumbnail_Creator
                         BTCSettings.PictureDatas.Add(PassPictureData);
                     }
 
-                }
+                });
 
                 #region debugsinglefor
                 // just here for debug purposes
@@ -183,13 +169,12 @@ namespace Bulk_Thumbnail_Creator
                 }
                 else
                 {
-                    Bitmap srcpic = new Bitmap(PicdataObjToVarietize.FileName);
-
-
+                    Bitmap srcpic = new(PicdataObjToVarietize.FileName);
                     PicdataObjToVarietize.ParamForTextCreation = Logic.CalculateBoxData(PicdataObjToVarietize.ParamForTextCreation.CurrentBox, srcpic, PicdataObjToVarietize.ParamForTextCreation);
 
                     Logic.ProduceTextPictures(PicdataObjToVarietize);
                     BTCSettings.PictureDatas.Add(PicdataObjToVarietize);
+                    
                 }
                 
             }
@@ -207,7 +192,13 @@ namespace Bulk_Thumbnail_Creator
             await Console.Out.WriteLineAsync("Processing Finished");
             return BTCSettings.PictureDatas;
         }
+        static void Main(string[] args)
+        {
+        }
 
     }
+
+
+
 
 }

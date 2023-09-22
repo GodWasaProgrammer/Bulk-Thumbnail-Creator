@@ -13,16 +13,17 @@
             </button>
         }
 
-        @if (imageUrls.Count == 0)
-        {
-            <p>No images to display.</p>
-        }
-
     </div>
 }
 else
 {
-    <MudText>Loading your Requested Varieties</MudText>
+    <div class="horizontal-align">
+
+        <div>
+            <img src="images/pepe-dance.gif" alt="Loading..." style="width: 500px; height: 500px; border:0;" />
+        </div>
+    </div>
+
 }
 
 @code

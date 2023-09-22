@@ -37,7 +37,7 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
 
             PicDataServiceList = await Program.Process(ProdType, url, TextToPrint, PicToVarietize);
 
-            List<string> ImageUrls = new List<string>();
+            List<string> ImageUrls = new();
 
             for (int i = 0; i < PicToVarietize.Varieties.Count; i++)
             {
@@ -54,9 +54,9 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             PicDataServiceList = await Program.Process(ProductionType.CustomPicture, url, TextToPrint, CustomPictureData);
         }
 
-        public void ClearBaseOutPutDirectories()
+        public static void ClearBaseOutPutDirectories()
         {
-            DirectoryInfo di = new DirectoryInfo(BTCSettings.TextAddedDir);
+            DirectoryInfo di = new(BTCSettings.TextAddedDir);
 
             foreach (FileInfo file in di.GetFiles())
             {
@@ -68,7 +68,7 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             }
 
             // TODO : for whatever reason these resources are not free for deletion
-            DirectoryInfo di2 = new DirectoryInfo(BTCSettings.OutputDir);
+            DirectoryInfo di2 = new(BTCSettings.OutputDir);
             
             foreach(FileInfo file in di2.GetFiles())
             {

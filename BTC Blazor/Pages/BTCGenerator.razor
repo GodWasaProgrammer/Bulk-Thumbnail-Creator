@@ -7,7 +7,7 @@
 <PageTitle>Bulk Thumbnail Creator</PageTitle>
 <h1>Bulk Thumbnail Creator</h1>
 
-@if (isLoading == true)
+@if (_processing == true)
 {
     <div class="horizontal-align">
         
@@ -16,7 +16,7 @@
         </div>
     </div>
 }
-else 
+@if(DisableMenu == false) 
 
 {
     <select>
@@ -50,29 +50,33 @@ else
         </div>
 
     </div>
+
+    <MudButton Disabled="@_processing" OnClick="AwaitBTC" Variant="Variant.Filled" Color="Color.Primary">
+
+        @if (_processing)
+        {
+            <MudText>Generating Thumbnails</MudText>
+        }
+        else
+        {
+            <MudText>Run BTC</MudText>
+        }
+
+    </MudButton>
 }
 
-<MudButton Disabled="@_processing" OnClick="AwaitBTC" Variant="Variant.Filled" Color="Color.Primary">
-
-    @if (_processing)
-    {
-        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" Color="Color.Secondary" />
-        <MudText Class="ms-2">Processing</MudText>
-    }
-    else
-    {
-        <MudText>Run BTC</MudText>
-    }
-
-</MudButton>
 
 @code 
 {
     private bool _processing = false;
 
+    private bool DisableMenu = false;
+
     private async void AwaitBTC()
     {
+        DisableMenu = true;
         _processing = true;
+        StateHasChanged();
         await CallBTC();
         _processing = false;
         StateHasChanged();

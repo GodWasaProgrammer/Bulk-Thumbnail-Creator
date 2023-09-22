@@ -10,7 +10,6 @@ namespace BTC_Blazor.Pages
         PictureDataService DataService { get; set; }
         private List<string> DownloadedVideosList = new List<string> { "Video 1", "video 2" };
 
-        private bool isLoading = false;
         private string textInput = string.Empty;
         private string TextToPrint1 = "Good Ole Rambler try!";
         private string TextToPrint2 = "I've Taken Dunkirk! Onwards Men!";
@@ -18,13 +17,10 @@ namespace BTC_Blazor.Pages
 
         private async Task CallBTC()
         {
-            isLoading = true; // disables button
             StateHasChanged(); // tells UI to re-render
 
             List<string> ListOfTextToPrint = new List<string> { TextToPrint1, TextToPrint2, TextToPrint3 };
             await DataService.CreateInitialPictureArrayAsync(textInput, ListOfTextToPrint);
-
-            isLoading = false; // we finished, they can have button back
             StateHasChanged(); // tells UI to re-render
         }
 

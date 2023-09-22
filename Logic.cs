@@ -15,6 +15,18 @@ namespace Bulk_Thumbnail_Creator
 {
     public class Logic
     {
+        static float hueFillColor = 0F;
+        static readonly float saturationFillColor = 1F;
+        static readonly float lightnessFillColor = 0.50F;
+
+        static float hueStrokeColor = 125F;
+        static readonly float saturationStrokeColor = 1F;
+        static readonly float lightnessStrokeColor = 0.50F;
+
+        static float hueBorderColor = 28F;
+        static readonly float saturationBorderColor = 1F;
+        static readonly float lightnessBorderColor = 0.50F;
+
         public static void DecideIfTooMuchFace(string CurrentFile, Bitmap PictureWhereFacesWereDetected, Rectangle[] rectangleArray)
         {
             int SumOfRectanglesX = 0;
@@ -55,17 +67,7 @@ namespace Bulk_Thumbnail_Creator
             return colorRNGPicked;
         }
 
-        static float hueFillColor = 0F;
-        static readonly float saturationFillColor = 1F;
-        static readonly float lightnessFillColor = 0.50F;
-
-        static float hueStrokeColor = 125F;
-        static readonly float saturationStrokeColor = 1F;
-        static readonly float lightnessStrokeColor = 0.50F;
-
-        static float hueBorderColor = 28F;
-        static readonly float saturationBorderColor = 1F;
-        static readonly float lightnessBorderColor = 0.50F;
+        
 
         /// <summary>
         /// Allows you to "spin" the HSL "globe" to "invert" colors
@@ -148,7 +150,6 @@ namespace Bulk_Thumbnail_Creator
         {
             using FileStream file = File.Create(PathToXML);
             serializer.Serialize(file, ListOfStringsToSerialize);
-
         }
 
         /// <summary>
@@ -659,41 +660,37 @@ namespace Bulk_Thumbnail_Creator
                 PicData.OutPath = OutputPath;
             }
 
-            using (MagickImage outputImage = new(Path.GetFullPath(PicData.FileName)))
+            using MagickImage outputImage = new(Path.GetFullPath(PicData.FileName));
+
+            using var caption = new MagickImage($"caption:{PicData.ParamForTextCreation.Text}", PicData.ReadSettings);
+
+            // Add the caption layer on top of the background image
+            if (PicData.ParamForTextCreation.Boxes.ContainsKey(PicData.ParamForTextCreation.CurrentBox))
             {
-                using (var caption = new MagickImage($"caption:{PicData.ParamForTextCreation.Text}", PicData.ReadSettings))
-                {
+                int takeX = PicData.ParamForTextCreation.Boxes[PicData.ParamForTextCreation.CurrentBox].X;
 
-                    // Add the caption layer on top of the background image
-                    if (PicData.ParamForTextCreation.Boxes.ContainsKey(PicData.ParamForTextCreation.CurrentBox))
-                    {
-                        int takeX = PicData.ParamForTextCreation.Boxes[PicData.ParamForTextCreation.CurrentBox].X;
+                int takeY = PicData.ParamForTextCreation.Boxes[PicData.ParamForTextCreation.CurrentBox].Y;
 
-                        int takeY = PicData.ParamForTextCreation.Boxes[PicData.ParamForTextCreation.CurrentBox].Y;
-
-                        outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
-                    }
-
-                    outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
-
-                    if (PicData.OutputType == OutputType.Dankness)
-                    {
-                        MagickImage MemeToPutOnPic = new(PicData.Meme);
-
-                        Rectangle ReadPosition = PicData.ParamForTextCreation.Boxes[PicData.Dankbox];
-
-                        int posX = ReadPosition.X;
-                        int posY = ReadPosition.Y;
-
-                        outputImage.Composite(MemeToPutOnPic, posX, posY, CompositeOperator.Over);
-                    }
-                    outputImage.Quality = 100;
-
-                    // outputs the file to the provided path and name
-                    outputImage.Write(OutputPath);
-                }
-
+                outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
             }
+
+            outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
+
+            if (PicData.OutputType == OutputType.Dankness)
+            {
+                MagickImage MemeToPutOnPic = new(PicData.Meme);
+
+                Rectangle ReadPosition = PicData.ParamForTextCreation.Boxes[PicData.Dankbox];
+
+                int posX = ReadPosition.X;
+                int posY = ReadPosition.Y;
+
+                outputImage.Composite(MemeToPutOnPic, posX, posY, CompositeOperator.Over);
+            }
+            outputImage.Quality = 100;
+
+            // outputs the file to the provided path and name
+            outputImage.Write(OutputPath);
 
         }
 
@@ -771,9 +768,7 @@ namespace Bulk_Thumbnail_Creator
 
                 Box PickedBox = Box.Discarded;
 
-                List<Box> AvailableBoxes = new List<Box>();
-
-               // boxesDictionary.Keys.ToList().ForEach(AvailableBoxes.Add);
+                List<Box> AvailableBoxes;
 
                 AvailableBoxes = boxesDictionary.Keys.ToList();
 

@@ -1,6 +1,9 @@
 ﻿@page "/CustomizePicture/{imageUrl}"
 
-@using Bulk_Thumbnail_Creator.Enums;
+@using Bulk_Thumbnail_Creator;
+@using Bulk_Thumbnail_Creator.PictureObjects;
+@using MudBlazor.Utilities;
+@using UMapx;
 
 @inject Bulk_Thumbnail_Creator.PictureObjects.PictureDataService PicDataService
 
@@ -20,33 +23,24 @@
         <MudText Color="Color.Secondary">Varieties of this Picture: @CurrentPagePictureData.Varieties.Count</MudText>
         <MudText Color="Color.Secondary">CurrentBox: @CurrentPagePictureData.ParamForTextCreation.CurrentBox</MudText>
 
-        @foreach (var colorBox in Enum.GetValues(typeof(ColorGroup)).Cast<ColorGroup>())
-        {
-
-            <div class="color-box">
-                <header class="studded-header">@colorBox.ToString()</header>
-                <MudText>Hue: @GetColorValue(colorBox, ColorProperty.Hue)</MudText>
-                <MudText>Saturation: @GetColorValue(colorBox, ColorProperty.Saturation)</MudText>
-                <MudText>Luminance: @GetColorValue(colorBox, ColorProperty.Luminance)</MudText>
-            </div>
-
         }
 
     </div>
 
     <div class="color-box-container">
 
-        <MudColorPicker PickerVariant="PickerVariant.Dialog" ColorPickerMode="ColorPickerMode.HSL" DisableAlpha DisableModeSwitch></MudColorPicker>
+        <MudColorPicker PickerVariant="PickerVariant.Dialog" ColorPickerMode="ColorPickerMode.HSL" DisableAlpha DisableModeSwitch @bind-Value="colorvalue"></MudColorPicker>
 
-        <MudSelect AdornmentColor="Color.Primary" Label="Select a Color to edit" @bind-Value="PickedGroup">
+         <MudSelect AdornmentColor="Color.Primary" Label="Select a Color to edit" @bind-Value="PickedGroup">
 
-            @foreach (var Colorz in colorBoxes)
+             @foreach (var Colorz in colorBoxes)
             {
 
                 <MudSelectItem Value="@Colorz"><MudText Color="Color.Secondary">@Colorz</MudText></MudSelectItem>
             }
 
         </MudSelect>
+        <MudButton Color="Color.Primary" @onclick="() => SetColor(PickedGroup)">Set Color</MudButton>
 
         <MudSelect AdornmentColor="Color.Primary" Label="Select an output box" @bind-Value="PickedBox">
 
@@ -68,36 +62,49 @@
 
         </MudSelect>
 
-        <MudText>PictureData To Produce</MudText>
-        <MudText>Chosen Font: @Path.GetFileName(PickedFont)</MudText>
-        <MudText>Chosen Box: @PickedBox.ToString()</MudText>
+        <div class="fact-box">
+            <div class="fact-group">
+                <div class="fact-title">Picture Data To Produce</div>
+                <div class="fact-item">Chosen Font: @Path.GetFileName(PickedFont)</div>
+                <div class="fact-item">Chosen Box: @PickedBox.ToString()</div>
+            </div>
 
-        <header>BorderColor Values</header>
-        <MudText>Hue: @CurrentPagePictureData.ParamForTextCreation.BorderColor.Hue</MudText>
-        <MudText>Saturation: @CurrentPagePictureData.ParamForTextCreation.BorderColor.Saturation</MudText>
-        <MudText>Luminance: @CurrentPagePictureData.ParamForTextCreation.BorderColor.Luminance</MudText>
+            <div class="fact-group">
+                <div class="fact-title">BorderColor Values</div>
+                <div class="fact-item">Hue: @BorderCLRItem.Hue</div>
+                <div class="fact-item">Saturation: @BorderCLRItem.Saturation</div>
+                <div class="fact-item">Luminance: @BorderCLRItem.Luminance</div>
+            </div>
 
-        <MudText>Hue: @CurrentPagePictureData.ParamForTextCreation.FillColor.Hue</MudText>
-        <MudText>Saturation: @CurrentPagePictureData.ParamForTextCreation.FillColor.Saturation</MudText>
-        <MudText>Luminance: @CurrentPagePictureData.ParamForTextCreation.FillColor.Luminance</MudText>
+            <div class="fact-group">
+                <div class="fact-title">FillColor Values</div>
+                <div class="fact-item">Hue: @fillCLRItem.Hue</div>
+                <div class="fact-item">Saturation: @fillCLRItem.Saturation</div>
+                <div class="fact-item">Luminance: @fillCLRItem.Luminance</div>
+            </div>
 
-        <MudText>Hue: @CurrentPagePictureData.ParamForTextCreation.StrokeColor.Hue</MudText>
-        <MudText>Saturation: @CurrentPagePictureData.ParamForTextCreation.StrokeColor.Saturation</MudText>
-        <MudText>Luminance: @CurrentPagePictureData.ParamForTextCreation.StrokeColor.Luminance</MudText>
+            <div class="fact-group">
+                <div class="fact-title">StrokeColor Values</div>
+                <div class="fact-item">Hue: @StrokeCLRItem.Hue</div>
+                <div class="fact-item">Saturation: @StrokeCLRItem.Saturation</div>
+                <div class="fact-item">Luminance: @StrokeCLRItem.Luminance</div>
+            </div>
 
-        <MudButton Disabled="@_processing" OnClick="CreateCustomPicDataObject" Variant="Variant.Filled" Color="Color.Primary">
+            <div class="fact-button">
+                <button class="custom-button" disabled="@_processing" @onclick="CreateCustomPicDataObject">
+                    @if (_processing)
+                    {
+                        <div class="loader"></div>
+                        <div class="button-text">Processing</div>
+                    }
+                    else
+                    {
+                        <text>Produce Picture</text>
+                            }
+                </button>
+            </div>
+        </div>
 
-            @if (_processing)
-            {
-                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" Color="Color.Secondary" />
-                <MudText Class="ms-2">Processing</MudText>
-            }
-            else
-            {
-                <MudText>Produce Picture</MudText>
-            }
-
-        </MudButton>
 
     </div>
 
@@ -109,11 +116,26 @@
 
     private List<ColorGroup> colorBoxes = Enum.GetValues(typeof(ColorGroup)).Cast<ColorGroup>().ToList();
 
+    private MudColor colorvalue;
+
     private ColorGroup PickedGroup;
 
     private bool colorPickerIsOpen = false;
 
-    private MudBlazor.Utilities.MudColor selectedColor;
+    // get value from picker
+    private MudColor BorderColor;
+    // set value and display it
+    private ColorItem BorderCLRItem;
+
+    // get value from picker
+    private MudColor FillColor;
+    // set value and display it
+    private ColorItem fillCLRItem;
+
+    // get value from picker
+    private MudColor StrokeColor;
+    // set value and display it
+    private ColorItem StrokeCLRItem;
 
     private enum ColorProperty
     {
@@ -129,17 +151,34 @@
         StrokeColor
     }
 
-    private void OpenColorPicker()
+    private void initializeColorItems()
     {
-        colorPickerIsOpen = true;
+        BorderCLRItem = CurrentPagePictureData.ParamForTextCreation.BorderColor;
+        fillCLRItem = CurrentPagePictureData.ParamForTextCreation.FillColor;
+        StrokeCLRItem = CurrentPagePictureData.ParamForTextCreation.StrokeColor;
     }
 
-    private void CloseColorPicker()
+    private void SetColor(ColorGroup clrGRP)
     {
-        colorPickerIsOpen = false;
-        // Handle the selectedColor based on selectedColorGroup
-        // Update your CurrentPagePictureData with the selected color.
-        // Make sure to use your project-specific types and properties.
+        if (clrGRP == ColorGroup.BorderColor)
+        {
+            // PicDataToCustomize.ParamForTextCreation.BorderColor.SetByHSL((float)colorvalue.H, (float)colorvalue.S, (float)colorvalue.L);
+            BorderColor = colorvalue;
+            BorderCLRItem.SetByHSL((float)BorderColor.H, (float)BorderColor.S, (float)BorderColor.L);
+        }
+        if (clrGRP == ColorGroup.FillColor)
+        {
+            //  PicDataToCustomize.ParamForTextCreation.FillColor.SetByHSL((float)colorvalue.H, (float)colorvalue.S, (float)colorvalue.L);
+            FillColor = colorvalue;
+            fillCLRItem.SetByHSL((float)FillColor.H, (float)FillColor.S, (float)FillColor.L);
+        }
+        if (clrGRP == ColorGroup.StrokeColor)
+        {
+            StrokeColor = colorvalue;
+            StrokeCLRItem.SetByHSL((float)StrokeColor.H, (float)StrokeColor.S, (float)StrokeColor.L);
+            //  PicDataToCustomize.ParamForTextCreation.StrokeColor.SetByHSL((float)colorvalue.H, (float)colorvalue.S, (float)colorvalue.L);
+        }
+        StateHasChanged();
     }
 
 }

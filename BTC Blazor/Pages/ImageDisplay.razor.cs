@@ -7,11 +7,6 @@ namespace BTC_Blazor.Pages
         // List of image URLs
         private List<string> imageUrls;
 
-        public void updateState()
-        {
-            StateHasChanged();
-        }
-
         public void ClearList()
         {
             imageUrls.Clear();
@@ -23,14 +18,14 @@ namespace BTC_Blazor.Pages
             await UpdateImageUrls();
 
             TimerInterval = 5000;
-            Timer = new System.Threading.Timer(async _ =>
+            var Timer = new System.Threading.Timer(async _ =>
             {
                 await UpdateImageUrlsWithInvoke();
             }, null, TimerInterval, TimerInterval);
         }
 
         // Method to update the list of image URLs
-        private async Task UpdateImageUrls()
+        private Task UpdateImageUrls()
         {
             string imagePath = BTCSettings.TextAddedDir;
 
@@ -49,6 +44,7 @@ namespace BTC_Blazor.Pages
 
             // Notify the component that the state has changed
             StateHasChanged();
+            return Task.CompletedTask;
         }
 
         // update the list of image URLs using InvokeAsync
@@ -59,7 +55,7 @@ namespace BTC_Blazor.Pages
         }
 
         // Timer properties
-        private System.Threading.Timer Timer { get; set; }
         private int TimerInterval { get; set; }
     }
+
 }
