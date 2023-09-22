@@ -15,7 +15,7 @@ namespace Bulk_Thumbnail_Creator
             Process processFFMpeg = new();
 			string WorkDir = Directory.GetCurrentDirectory();
 
-			processFFMpeg.StartInfo.FileName = Path.GetFullPath("ffmpeg.exe");
+			processFFMpeg.StartInfo.FileName = Path.GetFullPath("..\\Executables//ffmpeg.exe");
 			processFFMpeg.StartInfo.WorkingDirectory = Path.Combine(WorkDir, BTCSettings.YoutubeDLDir);
 			processFFMpeg.StartInfo.Arguments = parameters;
 			processFFMpeg.StartInfo.UseShellExecute = false;
