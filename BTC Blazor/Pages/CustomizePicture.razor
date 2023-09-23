@@ -10,21 +10,23 @@
 <h1>Bulk Thumbnail Creator</h1>
 
 <div class="grid-container">
-
     <div class="picture-data-box">
-
         <h3 class="studded-header">Picture Data</h3>
-
         <img src="@ImageURL" style="max-width: 100%;" />
 
-        <MudText Color="Color.Secondary">CurrentFont:@CurrentPagePictureData.ParamForTextCreation.Font</MudText>
-        <MudText Color="Color.Secondary">Output Type:@CurrentPagePictureData.OutputType</MudText>
-        <MudText Color="Color.Secondary">Filename @CurrentPagePictureData.FileName:</MudText>
-        <MudText Color="Color.Secondary">Varieties of this Picture: @CurrentPagePictureData.Varieties.Count</MudText>
-        <MudText Color="Color.Secondary">CurrentBox: @CurrentPagePictureData.ParamForTextCreation.CurrentBox</MudText>
-
-        }
-
+        <div class="fact-box">
+            <div class="fact-group">
+                <div class="fact-title">Picture Data names</div>
+                <div class="fact-item">Current font name: @Path.GetFileName(CurrentPagePictureData.ParamForTextCreation.Font)</div>
+                <div class="fact-item">Base Filename: @CurrentPagePictureData.FileName</div>
+                <div class="fact-item">Production Filename:@Path.GetFileName(CurrentPagePictureData.OutPath) </div>
+            </div>
+            <div class="fact-group">
+                <div class="fact-title">Picture Data values</div>
+                <div class="fact-item">Output Type:@CurrentPagePictureData.OutputType</div>
+                <div class="fact-item">Current Text Box:@CurrentPagePictureData.ParamForTextCreation.CurrentBox</div>
+            </div>
+        </div>
     </div>
 
     <div class="color-box-container">
@@ -56,7 +58,7 @@
 
             @foreach (var font in AvailableFonts)
             {
-                
+
                 <MudSelectItem Value="@font"><MudText Color="Color.Secondary">@font</MudText></MudSelectItem>
             }
 
@@ -100,7 +102,7 @@
                     else
                     {
                         <text>Produce Picture</text>
-                            }
+                    }
                 </button>
             </div>
         </div>
@@ -162,13 +164,11 @@
     {
         if (clrGRP == ColorGroup.BorderColor)
         {
-            // PicDataToCustomize.ParamForTextCreation.BorderColor.SetByHSL((float)colorvalue.H, (float)colorvalue.S, (float)colorvalue.L);
             BorderColor = colorvalue;
             BorderCLRItem.SetByHSL((float)BorderColor.H, (float)BorderColor.S, (float)BorderColor.L);
         }
         if (clrGRP == ColorGroup.FillColor)
         {
-            //  PicDataToCustomize.ParamForTextCreation.FillColor.SetByHSL((float)colorvalue.H, (float)colorvalue.S, (float)colorvalue.L);
             FillColor = colorvalue;
             fillCLRItem.SetByHSL((float)FillColor.H, (float)FillColor.S, (float)FillColor.L);
         }
@@ -176,10 +176,8 @@
         {
             StrokeColor = colorvalue;
             StrokeCLRItem.SetByHSL((float)StrokeColor.H, (float)StrokeColor.S, (float)StrokeColor.L);
-            //  PicDataToCustomize.ParamForTextCreation.StrokeColor.SetByHSL((float)colorvalue.H, (float)colorvalue.S, (float)colorvalue.L);
         }
         StateHasChanged();
     }
 
 }
-

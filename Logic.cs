@@ -281,6 +281,14 @@ namespace Bulk_Thumbnail_Creator
             Directory.CreateDirectory(YTDL);
         }
 
+        /// <summary>
+        /// This Allows you to Get the Text Position, It will Calculate where faces are
+        /// and give you a position that is not colliding with a face
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="sourcePicture"></param>
+        /// <param name="faceRect"></param>
+        /// <returns></returns>
         public static ParamForTextCreation GettextPos(ParamForTextCreation parameters, Bitmap sourcePicture, Rectangle[] faceRect)
         {
             Dictionary<Box, Rectangle> Boxes = new();
@@ -601,6 +609,8 @@ namespace Bulk_Thumbnail_Creator
 
         }
 
+
+        public static int fixerupper;
         /// <summary>
         /// Produces Picture using the ImageMagick Library
         /// </summary>
@@ -644,7 +654,8 @@ namespace Bulk_Thumbnail_Creator
             }
             if (PicData.OutputType == OutputType.RandomVariety)
             {
-                OutputPath += varietyof + imageName + "//" + $"{PicData.OutPath}" + ".png";
+                fixerupper++;
+                OutputPath += varietyof + imageName + "//" + $"{fixerupper}" + ".png";
                 PicData.OutPath = OutputPath;
             }
             if (PicData.OutputType == OutputType.Dankness)
@@ -744,7 +755,8 @@ namespace Bulk_Thumbnail_Creator
                 VarietyData.ParamForTextCreation.Font = Font;
 
                 VarietyData.OutputType = OutputType.RandomVariety;
-                VarietyData.OutPath = $"{CurrentIndex}";
+                // VarietyData.OutPath = $"{CurrentIndex}"; // this is super bad form u donkey
+
                 PictureInputData.Varieties.Add(VarietyData);
             }
 

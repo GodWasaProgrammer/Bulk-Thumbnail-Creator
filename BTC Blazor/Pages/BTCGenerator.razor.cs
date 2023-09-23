@@ -6,11 +6,8 @@ namespace BTC_Blazor.Pages
 {
     public partial class BTCGenerator
     {
-
         private bool _processing = false;
-
         private bool DisableMenu = false;
-
 
         [Inject]
         PictureDataService DataService { get; set; }
