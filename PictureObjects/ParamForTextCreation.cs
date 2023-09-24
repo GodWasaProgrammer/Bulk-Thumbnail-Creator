@@ -1,11 +1,31 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Xml.Serialization;
 using Bulk_Thumbnail_Creator.Enums;
 
 namespace Bulk_Thumbnail_Creator.PictureObjects
 {
     public class ParamForTextCreation
     {
+        [XmlIgnore]
+        private SerializableDictionary<Box, Rectangle> _BoxesProxy = new SerializableDictionary<Box, Rectangle>();
+        [XmlIgnore]
+        public SerializableDictionary<Box, Rectangle> BoxesProxy
+        {
+            get
+            {
+                foreach (var kvp in Boxes)
+                {
+                    _BoxesProxy.Add(kvp.Key, kvp.Value);
+                }
+                return _BoxesProxy;
+            }
+            set
+            {
+                _BoxesProxy = value;
+            }
+        }
+
         /// <summary>
         /// Text that will be printed on the image for this object
         /// </summary>
@@ -52,9 +72,11 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
         private ColorItem borderColor = new();
         public ColorItem BorderColor { get { return borderColor; } set { borderColor = BorderColor; } }
 
-
+        [XmlIgnore]
         private Dictionary<Box, Rectangle> _Boxes = new();
+
         // store possible boxes
+        [XmlIgnore]
         public Dictionary<Box, Rectangle> Boxes { get { return _Boxes; } set { _Boxes = value; } }
 
 
@@ -75,10 +97,12 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             _Boxes = new Dictionary<Box, Rectangle>(param._Boxes); // dictionary
             _CurrentBox = param._CurrentBox; // enum
         }
+
         public ParamForTextCreation()
         {
 
         }
+
     }
 
 }

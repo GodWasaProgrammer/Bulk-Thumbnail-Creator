@@ -142,8 +142,6 @@ namespace Bulk_Thumbnail_Creator
 
             if (ProdType == ProductionType.VarietyList)
             {
-                //TODO null check
-
                 if (PicdataObjToVarietize == null)
                 {
                     Console.WriteLine("Null has been passed to PicdataobjToVarietize");
@@ -186,6 +184,14 @@ namespace Bulk_Thumbnail_Creator
 
             //FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
             #endregion
+
+            using (StreamWriter streamWriter = new StreamWriter("Picturedatas.xml"))
+            {
+                foreach (var PictureData in BTCSettings.PictureDatas)
+                {
+                    Logic.SerializePictureData(streamWriter, PictureData);
+                }
+            }
 
             await Console.Out.WriteLineAsync("Processing Finished");
             return BTCSettings.PictureDatas;

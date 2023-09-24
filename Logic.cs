@@ -532,6 +532,7 @@ namespace Bulk_Thumbnail_Creator
             foreach (string font in fontList)
             {
                 PictureData createFontVariety = new(PicToVarietize);
+                createFontVariety.Varieties.Clear();
 
                 createFontVariety.ParamForTextCreation.Font = font;
                 createFontVariety.OutputType = OutputType.FontVariety;
@@ -575,6 +576,7 @@ namespace Bulk_Thumbnail_Creator
                 foreach (var CurrentBox in PicToVarietize.ParamForTextCreation.Boxes)
                 {
                     PictureData CopiedPictureData = new(PicToVarietize);
+                    CopiedPictureData.Varieties.Clear();
 
                     if (CurrentBox.Key != boxToExclude)
                     {
@@ -610,7 +612,7 @@ namespace Bulk_Thumbnail_Creator
         }
 
 
-        public static int fixerupper;
+        private static int fixerupper;
         /// <summary>
         /// Produces Picture using the ImageMagick Library
         /// </summary>
@@ -663,7 +665,7 @@ namespace Bulk_Thumbnail_Creator
                 OutputPath += varietyof + imageName + "//" + PicData.Dankbox + trimDateTime + imageName + ".png";
                 PicData.OutPath = OutputPath;
             }
-            if(PicData.OutputType == OutputType.Custom)
+            if (PicData.OutputType == OutputType.Custom)
             {
                 OutputPath += varietyof + imageName + "//" + trimDateTime + "Custom of" + imageName;
                 PicData.OutPath = OutputPath;
@@ -734,6 +736,7 @@ namespace Bulk_Thumbnail_Creator
             {
                 Random random = new();
                 PictureData VarietyData = new(PictureInputData);
+                VarietyData.Varieties.Clear();
                 Dictionary<Box, Rectangle> AvailableBoxes = PictureInputData.ParamForTextCreation.Boxes;
 
                 Box PickedBox;
@@ -769,6 +772,7 @@ namespace Bulk_Thumbnail_Creator
         public static void ProduceMemePositionData(PictureData DankifyTarget)
         {
             PictureData CopiedPicData = new(DankifyTarget);
+            CopiedPicData.Varieties.Clear();
 
             if (CopiedPicData.ParamForTextCreation.Boxes.Count > 2)
             {
@@ -904,6 +908,7 @@ namespace Bulk_Thumbnail_Creator
             foreach (float variety in VarietyList)
             {
                 PictureData VarietyData = new(PictureInputData);
+                VarietyData.Varieties.Clear();
 
                 VarietyData.ParamForTextCreation.FillColor.SetByHSL(fillcolorHue, variety, fillcolorLuminance);
 
@@ -920,6 +925,51 @@ namespace Bulk_Thumbnail_Creator
             }
 
         }
-    }
 
+
+        // ...
+
+        // Serialize PictureData object to XML
+        public static void SerializePictureData(TextWriter writer, PictureData pictureData)
+        {
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(PictureData));
+                serializer.Serialize(writer, pictureData);
+
+                // Serialize ParamForTextCreation dictionary using your custom serializer
+                DictionarySerializer.Serialize(writer, pictureData.ParamForTextCreation.BoxesProxy);
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception, log it, or rethrow it as needed
+                Console.WriteLine("Error during serialization: " + ex.Message);
+            }
+        }
+
+        // Deserialize PictureData object from XML
+        public static PictureData DeserializePictureData(TextReader reader)
+        {
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(PictureData));
+                PictureData pictureData = (PictureData)serializer.Deserialize(reader);
+
+                // Deserialize ParamForTextCreation dictionary using your custom serializer
+                Dictionary<string, Rectangle> boxes = new();
+                DictionarySerializer.Deserialize(reader, pictureData.ParamForTextCreation.BoxesProxy);
+
+                // Rest of your deserialization code
+
+                return pictureData;
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception, log it, or rethrow it as needed
+                Console.WriteLine("Error during deserialization: " + ex.Message);
+                return null; // You may want to return null or throw a custom exception
+            }
+        }
+
+    }
 }

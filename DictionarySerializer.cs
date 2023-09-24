@@ -2,52 +2,48 @@
 using System.Collections;
 using System.IO;
 using System.Xml.Serialization;
+using Bulk_Thumbnail_Creator.Enums;
+using System.Drawing;
 
-public static class DictionarySerializer
+namespace Bulk_Thumbnail_Creator
 {
-    static void Serialize(TextWriter writer, IDictionary dictionary)
+    public static class DictionarySerializer
     {
-        List<Entry> entries = new List<Entry>(dictionary.Count);
-
-        foreach (object key in dictionary.Keys)
+        public static void Serialize(TextWriter writer, SerializableDictionary<Box,Rectangle> dictionary)
         {
-            entries.Add(new Entry(key, dictionary[key]));
+            XmlSerializer serializer = new XmlSerializer(typeof(SerializableDictionary<Box, Rectangle>));
+            serializer.Serialize(writer, dictionary);
         }
 
-        XmlSerializer serializer = new XmlSerializer(typeof(List<Entry>));
-
-        serializer.Serialize(writer, entries);
-
-    }
-    static void Deserialize(TextReader reader, IDictionary dictionary)
-    {
-        dictionary.Clear();
-
-        XmlSerializer serializer = new XmlSerializer(typeof(List<Entry>));
-
-        List<Entry> list = (List<Entry>)serializer.Deserialize(reader);
-
-        foreach (Entry entry in list)
+        public static void Deserialize(TextReader reader, SerializableDictionary<Box, Rectangle> dictionary)
         {
-            dictionary[entry.Key] = entry.Value;
+            XmlSerializer serializer = new XmlSerializer(typeof(SerializableDictionary<Box, Rectangle>));
+            SerializableDictionary<Box, Rectangle> deserializedDictionary = (SerializableDictionary<Box, Rectangle>)serializer.Deserialize(reader);
+
+            dictionary.Entries.Clear();
+            foreach (var entry in deserializedDictionary.Entries)
+            {
+                dictionary.Entries.Add(entry);
+            }
         }
 
     }
 
-    public class Entry
-    {
-        public object Key;
-        public object Value;
-        public Entry()
+        public class Entry
         {
+            public object Key;
+            public object Value;
+            public Entry()
+            {
+
+            }
+
+            public Entry(object key, object value)
+            {
+                Key = key;
+                Value = value;
+            }
 
         }
 
-        public Entry(object key, object value)
-        {
-            Key = key;
-            Value = value;
-        }
     }
-
-}
