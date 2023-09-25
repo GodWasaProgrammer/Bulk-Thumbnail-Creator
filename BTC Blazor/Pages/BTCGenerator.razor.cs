@@ -1,5 +1,6 @@
 ﻿using Bulk_Thumbnail_Creator;
 using Bulk_Thumbnail_Creator.PictureObjects;
+using Bulk_Thumbnail_Creator.Serialization;
 using Microsoft.AspNetCore.Components;
 
 namespace BTC_Blazor.Pages
@@ -11,7 +12,7 @@ namespace BTC_Blazor.Pages
 
         [Inject]
         PictureDataService DataService { get; set; }
-        private List<string> DownloadedVideosList = new List<string> { "Video 1", "video 2" };
+        private List<string> DownloadedVideosList = new() { "Video 1", "video 2" };
 
         private string textInput = string.Empty;
         private string TextToPrint1 = "Good Ole Rambler try!";
@@ -22,7 +23,7 @@ namespace BTC_Blazor.Pages
         {
             StateHasChanged(); // tells UI to re-render
 
-            List<string> ListOfTextToPrint = new List<string> { TextToPrint1, TextToPrint2, TextToPrint3 };
+            List<string> ListOfTextToPrint = new() { TextToPrint1, TextToPrint2, TextToPrint3 };
             await DataService.CreateInitialPictureArrayAsync(textInput, ListOfTextToPrint);
             StateHasChanged(); // tells UI to re-render
         }
@@ -41,7 +42,7 @@ namespace BTC_Blazor.Pages
 
         private void BuildVideosList()
         {
-            DownloadedVideosList = Logic.DeSerializeXMLToListOfStrings(BTCSettings.PathToXMLListOfDownloadedVideos);
+            DownloadedVideosList = Serialization.DeSerializeXMLToListOfStrings(BTCSettings.PathToXMLListOfDownloadedVideos);
 
             foreach (var video in DownloadedVideosList) 
             {

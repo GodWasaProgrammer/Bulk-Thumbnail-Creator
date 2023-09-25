@@ -8,9 +8,9 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
     public class ParamForTextCreation
     {
         [XmlIgnore]
-        private SerializableDictionary<Box, Rectangle> _BoxesProxy = new SerializableDictionary<Box, Rectangle>();
+        private Serialization.SerializableDictionary<Box, Rectangle> _BoxesProxy = new();
         [XmlIgnore]
-        public SerializableDictionary<Box, Rectangle> BoxesProxy
+        public Serialization.SerializableDictionary<Box, Rectangle> BoxesProxy
         {
             get
             {

@@ -1,19 +1,17 @@
-﻿using ImageMagick;
+﻿using Bulk_Thumbnail_Creator.Enums;
+using Bulk_Thumbnail_Creator.PictureObjects;
+using ImageMagick;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-using YoutubeDLSharp;
 using System.Drawing;
-using Bulk_Thumbnail_Creator.Enums;
-using Bulk_Thumbnail_Creator.PictureObjects;
-using System.Reflection;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Bulk_Thumbnail_Creator
 {
-    public class Logic
+    public class DataGeneration
     {
         static float hueFillColor = 0F;
         static readonly float saturationFillColor = 1F;
@@ -119,138 +117,6 @@ namespace Bulk_Thumbnail_Creator
             return InputParameter;
         }
 
-        static readonly XmlSerializer serializer = new(typeof(List<string>));
-
-        /// <summary>
-        /// General DeSerializer for List of Strings
-        /// </summary>
-        /// <param name="pathtoXMLToDeSerialize">The XML to be deserialized</param>
-        /// <returns>The Deserialized List of Strings</returns>
-        public static List<string> DeSerializeXMLToListOfStrings(string pathtoXMLToDeSerialize)
-        {
-            List<string> ListofStringsToDeSerialize = BTCSettings.DownloadedVideosList;
-
-            if (File.Exists(pathtoXMLToDeSerialize))
-            {
-                using FileStream file = File.OpenRead(pathtoXMLToDeSerialize);
-                ListofStringsToDeSerialize = (List<string>)serializer.Deserialize(file);
-
-            }
-            return ListofStringsToDeSerialize;
-        }
-
-        /// <summary>
-        ///  General Serializer for list of strings
-        /// </summary>
-        /// <param name="PathToXML">Your Path to the XML to be written to</param>
-        /// <param name="ListOfStringsToSerialize">The List of Strings to Serialize</param>
-        public static void SerializeListOfStringsToXML(string PathToXML, List<string> ListOfStringsToSerialize)
-        {
-            using FileStream file = File.Create(PathToXML);
-            serializer.Serialize(file, ListOfStringsToSerialize);
-        }
-
-        /// <summary>
-        /// Instantiates a YoutubeDL and downloads the specified string
-        /// </summary>
-        /// <param name="URL">the specified link URL to download</param>
-        /// <returns>returns the path to the downloaded video</returns>
-        public static async Task<string> YouTubeDL(string URL)
-        {
-            string CurrentLoc = Assembly.GetExecutingAssembly().Location;
-            string parentDirectory = Directory.GetParent(CurrentLoc).FullName;
-
-            // if dir doesnt exist, make it
-            string ExePath = Path.Combine(parentDirectory, "Executables");
-
-            if (!Path.Exists(ExePath))
-            {
-                Directory.CreateDirectory(ExePath);
-            }
-
-            string YTDLPDir = Path.Combine(ExePath, "yt-dlp.exe");
-            string FfMpegDir = Path.Combine(ExePath, "ffmpeg.exe");
-
-            Console.WriteLine($"Current Location: {CurrentLoc}");
-            Console.WriteLine($"Parent Directory: {parentDirectory}");
-            Console.WriteLine($"New Path: {ExePath}");
-
-            if (File.Exists(YTDLPDir))
-            {
-                Console.WriteLine($"YTDLP Path: {YTDLPDir}");
-            }
-            else
-            {
-                Console.WriteLine("yt-dlp.exe was not found");
-                await Console.Out.WriteLineAsync("Will Try To Download yt-dlp");
-                await YoutubeDLSharp.Utils.DownloadYtDlp(ExePath);
-
-                if (File.Exists(YTDLPDir))
-                {
-                    await Console.Out.WriteLineAsync("Successfully downloaded yt-dlp");
-                }
-                else
-                {
-                    await Console.Out.WriteLineAsync("Failed to download yt-dlp");
-                }
-
-            }
-
-            if (File.Exists(FfMpegDir))
-            {
-                Console.WriteLine($"FFmpeg Path: {FfMpegDir}");
-            }
-            else
-            {
-                // we didnt find ffmpeg
-                Console.WriteLine("ffmpeg.exe was not found");
-
-                // so will download it
-                await Console.Out.WriteLineAsync("Will Try To Download ffmpeg");
-
-                //attempts to download the file to local dir
-                await YoutubeDLSharp.Utils.DownloadFFmpeg(ExePath);
-
-                if (File.Exists(FfMpegDir))
-                {
-                    await Console.Out.WriteLineAsync("File has been successfully downloaded");
-                }
-                else
-                {
-                    await Console.Out.WriteLineAsync("Download of FFMPEG has failed.");
-                }
-
-            }
-
-            string currentDirectory = Directory.GetCurrentDirectory();
-            string ytdlDir = Path.Combine(currentDirectory, "YTDL");
-
-            if (Directory.Exists(ytdlDir))
-            {
-                Console.WriteLine($"YTDL Dir found:{ytdlDir}");
-            }
-            else
-            {
-                Console.WriteLine("YTDL Dir was not found");
-            }
-
-            var ytdl = new YoutubeDL
-            {
-                // set paths
-                YoutubeDLPath = YTDLPDir,
-                FFmpegPath = FfMpegDir,
-                OutputFolder = ytdlDir,
-            };
-
-            // downloads specified video from youtube if it does not already exist.
-            //BTCSettings.YoutubeLink = URL;
-            var res = await ytdl.RunVideoDownload(url: URL);
-            await Console.Out.WriteLineAsync("Download Success:" + res.Success.ToString());
-
-            // sets BTC to run on the recently downloaded file res.data is the returned path.
-            return res.Data;
-        }
-
         /// <summary>
         /// Picks a random font from the provided font folder
         /// </summary>
@@ -274,11 +140,54 @@ namespace Bulk_Thumbnail_Creator
         /// <param name="outputDir"></param>
         /// <param name="TextAdded"></param>
         /// <param name="YTDL"></param>
-        public static void CreateDirectories(string outputDir, string TextAdded, string YTDL)
+
+        /// <summary>
+        /// Produces the remaining boxes of a picturedata object to create variety of choice
+        /// </summary>
+        /// <param name="PicToVarietize">The Target picture to varietize</param>
+        /// <param name="TargetFolder">The target folder to varietize</param>
+        public static void ProducePlacementOfTextVarietyData(PictureData PicToVarietize)
         {
-            Directory.CreateDirectory(outputDir);
-            Directory.CreateDirectory(TextAdded);
-            Directory.CreateDirectory(YTDL);
+            Box boxToExclude = PicToVarietize.ParamForTextCreation.CurrentBox;
+
+            if (boxToExclude != Box.Discarded)
+            {
+                foreach (var CurrentBox in PicToVarietize.ParamForTextCreation.Boxes)
+                {
+                    PictureData CopiedPictureData = new(PicToVarietize);
+                    CopiedPictureData.Varieties.Clear();
+
+                    if (CurrentBox.Key != boxToExclude)
+                    {
+                        // lift Rectangle
+                        Rectangle currentRectangle = CurrentBox.Value;
+
+                        // write it to a Point
+                        Point CurrentPoint = new(currentRectangle.X, currentRectangle.Y);
+
+                        // feed it back into object
+                        CopiedPictureData.ParamForTextCreation.PositionOfText = CurrentPoint;
+
+                        // set the currentbox to the currentbox key
+                        if (CurrentBox.Key != Box.Discarded)
+                        {
+                            CopiedPictureData.ParamForTextCreation.CurrentBox = CurrentBox.Key;
+                        }
+
+                        Bitmap sourcePicture = new(CopiedPictureData.FileName);
+
+                        // calculate box data, important for TextSettingsGeneration returning a correct ReadSettings object
+                        CopiedPictureData.ParamForTextCreation = CalculateBoxData(CurrentBox.Key, sourcePicture, CopiedPictureData.ParamForTextCreation);
+
+                        // add it to list of created varieties
+                        CopiedPictureData.OutputType = OutputType.BoxPositionVariety;
+
+                        PicToVarietize.Varieties.Add(CopiedPictureData);
+                    }
+
+                }
+            }
+
         }
 
         /// <summary>
@@ -409,7 +318,8 @@ namespace Bulk_Thumbnail_Creator
 
                     int MidPointX = sourcePicture.Width / 2;
                     int MidPointY = sourcePicture.Height / 2;
-
+                    
+                    #pragma warning disable CA1853
                     if (!Boxes.ContainsKey(topBox))
 
                     {
@@ -430,7 +340,7 @@ namespace Bulk_Thumbnail_Creator
                         }
 
                     }
-
+                    #pragma warning disable CA1853
                     if (!Boxes.ContainsKey(bottomBox))
                     {
                         Boxes.Remove(bottomLeftBox);
@@ -455,7 +365,7 @@ namespace Bulk_Thumbnail_Creator
                 }
 
             }
-
+            #pragma warning restore CA1853
             // write surviving boxvalues to object
             parameters.Boxes = Boxes;
 
@@ -497,6 +407,30 @@ namespace Bulk_Thumbnail_Creator
 
             return parameters;
         }
+
+
+
+        /// <summary>
+        /// Generates randomized colorvalues 
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public static ParamForTextCreation GenerateRandomColorSettings(ParamForTextCreation param)
+        {
+            MagickColor magickColor = RandomizeColor();
+            param.FillColor.SetByRGB((byte)magickColor.R, (byte)magickColor.G, (byte)magickColor.B);
+
+            magickColor = RandomizeColor();
+            param.StrokeColor.SetByRGB((byte)magickColor.R, (byte)magickColor.G, (byte)magickColor.B);
+
+            magickColor = RandomizeColor();
+            param.BorderColor.SetByRGB((byte)(magickColor.R), (byte)(magickColor.G), (byte)(magickColor.B));
+
+            return param;
+        }
+
+
+
 
         /// <summary>
         /// Produces 5 varieties of the first randomized font that hasnt already been chosen
@@ -540,6 +474,8 @@ namespace Bulk_Thumbnail_Creator
             }
 
         }
+
+
         /// <summary>
         /// Support method to calculate where the box will be juxtaposed
         /// </summary>
@@ -562,167 +498,63 @@ namespace Bulk_Thumbnail_Creator
 
             return CurrentParamForText;
         }
+
         /// <summary>
-        /// Produces the remaining boxes of a picturedata object to create variety of choice
+        /// Creates Variety from an existing image, this will be on user interaction
         /// </summary>
-        /// <param name="PicToVarietize">The Target picture to varietize</param>
-        /// <param name="TargetFolder">The target folder to varietize</param>
-        public static void ProducePlacementOfTextVarietyData(PictureData PicToVarietize)
+        /// <param name="PictureInputData">The Image to create variety of</param>
+        public static void ProduceSaturationVarietyData(PictureData PictureInputData)
         {
-            Box boxToExclude = PicToVarietize.ParamForTextCreation.CurrentBox;
+            const float baseLuminanceValue = 0.50F;
+            float fillcolorHue = PictureInputData.ParamForTextCreation.FillColor.Hue;
+            float fillcolorLuminance = baseLuminanceValue;
 
-            if (boxToExclude != Box.Discarded)
+            float strokecolorHue = PictureInputData.ParamForTextCreation.StrokeColor.Hue;
+            float strokecolorLuminance = baseLuminanceValue;
+
+            float bordercolorHue = PictureInputData.ParamForTextCreation.BorderColor.Hue;
+            float bordercolorLuminance = baseLuminanceValue;
+
+            // create variety based on the current value
+            List<float> VarietyList = new();
+
+            float Variety1 = 0.30F;
+            VarietyList.Add(Variety1);
+
+            float Variety2 = 0.45F;
+            VarietyList.Add(Variety2);
+
+            float Variety3 = 0.55F;
+            VarietyList.Add(Variety3);
+
+            float Variety4 = 0.85F;
+            VarietyList.Add(Variety4);
+
+            float Variety5 = 1F;
+            VarietyList.Add(Variety5);
+
+            foreach (float variety in VarietyList)
             {
-                foreach (var CurrentBox in PicToVarietize.ParamForTextCreation.Boxes)
-                {
-                    PictureData CopiedPictureData = new(PicToVarietize);
-                    CopiedPictureData.Varieties.Clear();
+                PictureData VarietyData = new(PictureInputData);
+                VarietyData.Varieties.Clear();
 
-                    if (CurrentBox.Key != boxToExclude)
-                    {
-                        // lift Rectangle
-                        Rectangle currentRectangle = CurrentBox.Value;
+                VarietyData.ParamForTextCreation.FillColor.SetByHSL(fillcolorHue, variety, fillcolorLuminance);
 
-                        // write it to a Point
-                        Point CurrentPoint = new(currentRectangle.X, currentRectangle.Y);
+                VarietyData.ParamForTextCreation.StrokeColor.SetByHSL(strokecolorHue, variety, strokecolorLuminance);
 
-                        // feed it back into object
-                        CopiedPictureData.ParamForTextCreation.PositionOfText = CurrentPoint;
+                VarietyData.ParamForTextCreation.BorderColor.SetByHSL(bordercolorHue, variety, bordercolorLuminance);
 
-                        // set the currentbox to the currentbox key
-                        if (CurrentBox.Key != Box.Discarded)
-                        {
-                            CopiedPictureData.ParamForTextCreation.CurrentBox = CurrentBox.Key;
-                        }
+                Bitmap src = new(VarietyData.FileName);
 
-                        Bitmap sourcePicture = new(CopiedPictureData.FileName);
+                VarietyData.ParamForTextCreation = CalculateBoxData(VarietyData.ParamForTextCreation.CurrentBox, src, VarietyData.ParamForTextCreation);
 
-                        // calculate box data, important for TextSettingsGeneration returning a correct ReadSettings object
-                        CopiedPictureData.ParamForTextCreation = CalculateBoxData(CurrentBox.Key, sourcePicture, CopiedPictureData.ParamForTextCreation);
-
-                        // add it to list of created varieties
-                        CopiedPictureData.OutputType = OutputType.BoxPositionVariety;
-
-                        PicToVarietize.Varieties.Add(CopiedPictureData);
-                    }
-
-                }
+                VarietyData.OutputType = OutputType.SaturationVariety;
+                PictureInputData.Varieties.Add(VarietyData);
             }
 
         }
 
 
-        private static int fixerupper;
-        /// <summary>
-        /// Produces Picture using the ImageMagick Library
-        /// </summary>
-        /// <param name="PicData">PictureDataObject Containing everything needed to create an image</param>
-        public static void ProduceTextPictures(PictureData PicData)
-        {
-            string imageName;
-            string OutputPath = Path.GetFullPath(BTCSettings.TextAddedDir);
-
-            imageName = Path.GetFileName(PicData.FileName);
-            DateTime dateTime = DateTime.Now;
-            string trimDateTime = dateTime.ToString();
-            trimDateTime = trimDateTime.Replace(":", "");
-            string varietyof = "//variety of ";
-
-            // if not main type, we will make a directory for files to be written in
-            if (PicData.OutputType != OutputType.Main)
-            {
-                Directory.CreateDirectory(OutputPath + varietyof + Path.GetFileName(PicData.FileName));
-            }
-
-            if (PicData.OutputType == OutputType.Main)
-            {
-                OutputPath += "//" + trimDateTime + imageName;
-                PicData.OutPath = OutputPath;
-            }
-            if (PicData.OutputType == OutputType.BoxPositionVariety)
-            {
-                OutputPath += varietyof + imageName + $"//{PicData.ParamForTextCreation.CurrentBox}" + ".png"; ;
-                PicData.OutPath = OutputPath;
-            }
-            if (PicData.OutputType == OutputType.SaturationVariety)
-            {
-                OutputPath += varietyof + imageName + $"//{PicData.ParamForTextCreation.FillColor.Saturation}.png";
-                PicData.OutPath = OutputPath;
-            }
-            if (PicData.OutputType == OutputType.FontVariety)
-            {
-                OutputPath += varietyof + imageName + "//" + Path.GetFileNameWithoutExtension(PicData.ReadSettings.Font) + ".png";
-                PicData.OutPath = OutputPath;
-            }
-            if (PicData.OutputType == OutputType.RandomVariety)
-            {
-                fixerupper++;
-                OutputPath += varietyof + imageName + "//" + $"{fixerupper}" + ".png";
-                PicData.OutPath = OutputPath;
-            }
-            if (PicData.OutputType == OutputType.Dankness)
-            {
-                OutputPath += varietyof + imageName + "//" + PicData.Dankbox + trimDateTime + imageName + ".png";
-                PicData.OutPath = OutputPath;
-            }
-            if (PicData.OutputType == OutputType.Custom)
-            {
-                OutputPath += varietyof + imageName + "//" + trimDateTime + "Custom of" + imageName;
-                PicData.OutPath = OutputPath;
-            }
-
-            using MagickImage outputImage = new(Path.GetFullPath(PicData.FileName));
-
-            using var caption = new MagickImage($"caption:{PicData.ParamForTextCreation.Text}", PicData.ReadSettings);
-
-            // Add the caption layer on top of the background image
-            if (PicData.ParamForTextCreation.Boxes.ContainsKey(PicData.ParamForTextCreation.CurrentBox))
-            {
-                int takeX = PicData.ParamForTextCreation.Boxes[PicData.ParamForTextCreation.CurrentBox].X;
-
-                int takeY = PicData.ParamForTextCreation.Boxes[PicData.ParamForTextCreation.CurrentBox].Y;
-
-                outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
-            }
-
-            outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
-
-            if (PicData.OutputType == OutputType.Dankness)
-            {
-                MagickImage MemeToPutOnPic = new(PicData.Meme);
-
-                Rectangle ReadPosition = PicData.ParamForTextCreation.Boxes[PicData.Dankbox];
-
-                int posX = ReadPosition.X;
-                int posY = ReadPosition.Y;
-
-                outputImage.Composite(MemeToPutOnPic, posX, posY, CompositeOperator.Over);
-            }
-            outputImage.Quality = 100;
-
-            // outputs the file to the provided path and name
-            outputImage.Write(OutputPath);
-
-        }
-
-        /// <summary>
-        /// Generates randomized colorvalues 
-        /// </summary>
-        /// <param name="param"></param>
-        /// <returns></returns>
-        public static ParamForTextCreation GenerateRandomColorSettings(ParamForTextCreation param)
-        {
-            MagickColor magickColor = RandomizeColor();
-            param.FillColor.SetByRGB((byte)magickColor.R, (byte)magickColor.G, (byte)magickColor.B);
-
-            magickColor = RandomizeColor();
-            param.StrokeColor.SetByRGB((byte)magickColor.R, (byte)magickColor.G, (byte)magickColor.B);
-
-            magickColor = RandomizeColor();
-            param.BorderColor.SetByRGB((byte)(magickColor.R), (byte)(magickColor.G), (byte)(magickColor.B));
-
-            return param;
-        }
 
         /// <summary>
         /// 
@@ -844,14 +676,6 @@ namespace Bulk_Thumbnail_Creator
 
                 }
 
-                //Random newrandom = new Random();
-
-                //var randN = newrandom.Next(0, AvailableBoxes.Count);
-
-                //var randommlypickedbox = AvailableBoxes[randN];
-
-                //CopiedPicData.Dankbox = randommlypickedbox;
-
                 if (PickedBox != Box.Discarded)
                 {
                     // pick a meme
@@ -870,106 +694,5 @@ namespace Bulk_Thumbnail_Creator
             }
 
         }
-
-        /// <summary>
-        /// Creates Variety from an existing image, this will be on user interaction
-        /// </summary>
-        /// <param name="PictureInputData">The Image to create variety of</param>
-        public static void ProduceSaturationVarietyData(PictureData PictureInputData)
-        {
-            const float baseLuminanceValue = 0.50F;
-            float fillcolorHue = PictureInputData.ParamForTextCreation.FillColor.Hue;
-            float fillcolorLuminance = baseLuminanceValue;
-
-            float strokecolorHue = PictureInputData.ParamForTextCreation.StrokeColor.Hue;
-            float strokecolorLuminance = baseLuminanceValue;
-
-            float bordercolorHue = PictureInputData.ParamForTextCreation.BorderColor.Hue;
-            float bordercolorLuminance = baseLuminanceValue;
-
-            // create variety based on the current value
-            List<float> VarietyList = new();
-
-            float Variety1 = 0.30F;
-            VarietyList.Add(Variety1);
-
-            float Variety2 = 0.45F;
-            VarietyList.Add(Variety2);
-
-            float Variety3 = 0.55F;
-            VarietyList.Add(Variety3);
-
-            float Variety4 = 0.85F;
-            VarietyList.Add(Variety4);
-
-            float Variety5 = 1F;
-            VarietyList.Add(Variety5);
-
-            foreach (float variety in VarietyList)
-            {
-                PictureData VarietyData = new(PictureInputData);
-                VarietyData.Varieties.Clear();
-
-                VarietyData.ParamForTextCreation.FillColor.SetByHSL(fillcolorHue, variety, fillcolorLuminance);
-
-                VarietyData.ParamForTextCreation.StrokeColor.SetByHSL(strokecolorHue, variety, strokecolorLuminance);
-
-                VarietyData.ParamForTextCreation.BorderColor.SetByHSL(bordercolorHue, variety, bordercolorLuminance);
-
-                Bitmap src = new(VarietyData.FileName);
-
-                VarietyData.ParamForTextCreation = CalculateBoxData(VarietyData.ParamForTextCreation.CurrentBox, src, VarietyData.ParamForTextCreation);
-
-                VarietyData.OutputType = OutputType.SaturationVariety;
-                PictureInputData.Varieties.Add(VarietyData);
-            }
-
-        }
-
-
-        // ...
-
-        // Serialize PictureData object to XML
-        public static void SerializePictureData(TextWriter writer, PictureData pictureData)
-        {
-            try
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(PictureData));
-                serializer.Serialize(writer, pictureData);
-
-                // Serialize ParamForTextCreation dictionary using your custom serializer
-                DictionarySerializer.Serialize(writer, pictureData.ParamForTextCreation.BoxesProxy);
-            }
-            catch (Exception ex)
-            {
-                // Handle the exception, log it, or rethrow it as needed
-                Console.WriteLine("Error during serialization: " + ex.Message);
-            }
-        }
-
-        // Deserialize PictureData object from XML
-        public static PictureData DeserializePictureData(TextReader reader)
-        {
-            try
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(PictureData));
-                PictureData pictureData = (PictureData)serializer.Deserialize(reader);
-
-                // Deserialize ParamForTextCreation dictionary using your custom serializer
-                Dictionary<string, Rectangle> boxes = new();
-                DictionarySerializer.Deserialize(reader, pictureData.ParamForTextCreation.BoxesProxy);
-
-                // Rest of your deserialization code
-
-                return pictureData;
-            }
-            catch (Exception ex)
-            {
-                // Handle the exception, log it, or rethrow it as needed
-                Console.WriteLine("Error during deserialization: " + ex.Message);
-                return null; // You may want to return null or throw a custom exception
-            }
-        }
-
     }
 }

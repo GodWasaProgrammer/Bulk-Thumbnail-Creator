@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using FaceONNX;
 using System.Drawing;
 using Bulk_Thumbnail_Creator.PictureObjects;
+using UMapx.Distribution;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -15,11 +16,11 @@ namespace Bulk_Thumbnail_Creator
             BTCSettings.ListOfText = texts;
 
             // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
-            Logic.CreateDirectories(BTCSettings.OutputDir, BTCSettings.TextAddedDir, BTCSettings.YoutubeDLDir);
+            Production.CreateDirectories(BTCSettings.OutputDir, BTCSettings.TextAddedDir, BTCSettings.YoutubeDLDir);
 
             if (ProdType == ProductionType.FrontPagePictureLineUp)
             {
-                BTCSettings.PathToVideo = await Logic.YouTubeDL(url);
+                BTCSettings.PathToVideo = await Production.YouTubeDL(url);
                 BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
 
                 // Adds To DownloadedVideosList if it is not already containing it,
@@ -43,7 +44,7 @@ namespace Bulk_Thumbnail_Creator
                 FFmpegHandler.RunFFMPG(parameters, pictureOutput);
                 #endregion
 
-                Logic.SerializeListOfStringsToXML(BTCSettings.PathToXMLListOfDownloadedVideos, BTCSettings.DownloadedVideosList);
+                Serialization.Serialization.SerializeListOfStringsToXML(BTCSettings.PathToXMLListOfDownloadedVideos, BTCSettings.DownloadedVideosList);
 
                 BTCSettings.Files = Directory.GetFiles(BTCSettings.OutputDir, "*.*", SearchOption.AllDirectories);
 
@@ -62,17 +63,17 @@ namespace Bulk_Thumbnail_Creator
 
                     Rectangle[] detectedFacesRectArray = faceDetector.Forward(PicToDetectFacesOn);
 
-                    Logic.DecideIfTooMuchFace(file, PicToDetectFacesOn, detectedFacesRectArray);
+                    DataGeneration.DecideIfTooMuchFace(file, PicToDetectFacesOn, detectedFacesRectArray);
 
                     if (!BTCSettings.DiscardedBecauseTooMuchFacePictureData.Contains(file))
                     {
                         ParamForTextCreation currentParameters = new();
 
-                        currentParameters = Logic.GettextPos(currentParameters, PicToDetectFacesOn, detectedFacesRectArray);
+                        currentParameters = DataGeneration.GettextPos(currentParameters, PicToDetectFacesOn, detectedFacesRectArray);
 
-                        currentParameters = Logic.DecideColorGeneration(currentParameters);
+                        currentParameters = DataGeneration.DecideColorGeneration(currentParameters);
 
-                        currentParameters.Font = Logic.PickRandomFont();
+                        currentParameters.Font = DataGeneration.PickRandomFont();
 
                         // picks a random string from the list
                         Random pickAString = new();
@@ -115,15 +116,15 @@ namespace Bulk_Thumbnail_Creator
                 {
                     var input = BTCSettings.PictureDatas[i];
 
-                    Logic.ProduceSaturationVarietyData(input);
+                    DataGeneration.ProduceSaturationVarietyData(input);
 
-                    Logic.ProduceFontVarietyData(input);
+                    DataGeneration.ProduceFontVarietyData(input);
 
-                    Logic.ProducePlacementOfTextVarietyData(input);
+                    DataGeneration.ProducePlacementOfTextVarietyData(input);
 
-                    Logic.ProduceRandomVarietyData(input);
+                    DataGeneration.ProduceRandomVarietyData(input);
 
-                    Logic.ProduceMemePositionData(input);
+                    DataGeneration.ProduceMemePositionData(input);
                 });
 
                 // actual file output
@@ -133,7 +134,7 @@ namespace Bulk_Thumbnail_Creator
 
                     if (!BTCSettings.DiscardedBecauseTooMuchFacePictureData.Contains(PicObjPath))
                     {
-                        Logic.ProduceTextPictures(BTCSettings.PictureDatas[i]);
+                        Production.ProduceTextPictures(BTCSettings.PictureDatas[i]);
                     }
 
                 });
@@ -150,7 +151,7 @@ namespace Bulk_Thumbnail_Creator
                 {
                     Parallel.For(0, PicdataObjToVarietize.Varieties.Count, i =>
                     {
-                        Logic.ProduceTextPictures(PicdataObjToVarietize.Varieties[i]);
+                        Production.ProduceTextPictures(PicdataObjToVarietize.Varieties[i]);
                     });
 
                 }
@@ -166,9 +167,9 @@ namespace Bulk_Thumbnail_Creator
                 else
                 {
                     Bitmap srcpic = new(PicdataObjToVarietize.FileName);
-                    PicdataObjToVarietize.ParamForTextCreation = Logic.CalculateBoxData(PicdataObjToVarietize.ParamForTextCreation.CurrentBox, srcpic, PicdataObjToVarietize.ParamForTextCreation);
+                    PicdataObjToVarietize.ParamForTextCreation = DataGeneration.CalculateBoxData(PicdataObjToVarietize.ParamForTextCreation.CurrentBox, srcpic, PicdataObjToVarietize.ParamForTextCreation);
 
-                    Logic.ProduceTextPictures(PicdataObjToVarietize);
+                    Production.ProduceTextPictures(PicdataObjToVarietize);
                     BTCSettings.PictureDatas.Add(PicdataObjToVarietize);
 
                 }
@@ -185,18 +186,18 @@ namespace Bulk_Thumbnail_Creator
             //FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
             #endregion
 
-            using (StreamWriter streamWriter = new StreamWriter("Picturedatas.xml"))
+            using (StreamWriter streamWriter = new("Picturedatas.xml"))
             {
                 foreach (var PictureData in BTCSettings.PictureDatas)
                 {
-                    Logic.SerializePictureData(streamWriter, PictureData);
+                    Serialization.Serialization.SerializePictureData(streamWriter, PictureData);
                 }
             }
 
             await Console.Out.WriteLineAsync("Processing Finished");
             return BTCSettings.PictureDatas;
         }
-        static void Main(string[] args)
+        static void Main()
         {
         }
 
