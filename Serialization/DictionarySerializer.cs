@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections;
-using System.IO;
+﻿using System.IO;
 using System.Xml.Serialization;
 using Bulk_Thumbnail_Creator.Enums;
 using System.Drawing;

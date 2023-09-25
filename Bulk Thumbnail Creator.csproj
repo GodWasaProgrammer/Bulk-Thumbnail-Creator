@@ -28,8 +28,8 @@
 
 	<ItemGroup>
 	  <PackageReference Include="FaceONNX" Version="2.2.0.4" />
-	  <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="13.2.0" />
-	  <PackageReference Include="Magick.NET.Core" Version="13.2.0" />
+	  <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="13.3.0" />
+	  <PackageReference Include="Magick.NET.Core" Version="13.3.0" />
 	  <PackageReference Include="UMapx" Version="5.2.6.6" />
 	  <PackageReference Include="YoutubeDLSharp" Version="1.0.0" />
 	</ItemGroup>

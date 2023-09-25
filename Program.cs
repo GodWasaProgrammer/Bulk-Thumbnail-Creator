@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using FaceONNX;
 using System.Drawing;
 using Bulk_Thumbnail_Creator.PictureObjects;
-using UMapx.Distribution;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -197,9 +196,12 @@ namespace Bulk_Thumbnail_Creator
             await Console.Out.WriteLineAsync("Processing Finished");
             return BTCSettings.PictureDatas;
         }
+
         static void Main()
         {
+
         }
 
     }
+
 }

@@ -3,7 +3,6 @@ using System.Xml.Serialization;
 
 namespace Bulk_Thumbnail_Creator.Serialization
 {
-
     public class SerializableDictionary<TKey, TValue>
     {
         [XmlElement("Entry")]

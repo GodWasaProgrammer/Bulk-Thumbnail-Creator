@@ -1,15 +1,12 @@
 ﻿using ImageMagick;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 using YoutubeDLSharp;
 using System.Drawing;
 using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using System.Reflection;
-using Bulk_Thumbnail_Creator.Serialization;
 
 namespace Bulk_Thumbnail_Creator
 {
