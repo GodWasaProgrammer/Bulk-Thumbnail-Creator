@@ -190,7 +190,7 @@ namespace Bulk_Thumbnail_Creator
             {
                 foreach (var PictureData in BTCSettings.PictureDatas)
                 {
-                    Serialization.SerializePictureData(streamWriter, PictureData);
+                    Serializing.SerializePictureData(streamWriter, PictureData);
                 }
             }
 
