@@ -363,6 +363,7 @@ namespace Bulk_Thumbnail_Creator
                 }
 
             }
+
             #pragma warning restore CA1853
             // write surviving boxvalues to object
             parameters.Boxes = Boxes;
@@ -406,8 +407,6 @@ namespace Bulk_Thumbnail_Creator
             return parameters;
         }
 
-
-
         /// <summary>
         /// Generates randomized colorvalues 
         /// </summary>
@@ -426,9 +425,6 @@ namespace Bulk_Thumbnail_Creator
 
             return param;
         }
-
-
-
 
         /// <summary>
         /// Produces 5 varieties of the first randomized font that hasnt already been chosen
@@ -692,5 +688,7 @@ namespace Bulk_Thumbnail_Creator
             }
 
         }
+
     }
+
 }

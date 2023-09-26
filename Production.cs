@@ -83,9 +83,9 @@ namespace Bulk_Thumbnail_Creator
                 }
 
             }
+            BTCSettings.FfmpegDir = FfMpegDir;
 
-            string currentDirectory = Directory.GetCurrentDirectory();
-            string ytdlDir = Path.Combine(currentDirectory, "YTDL");
+            string ytdlDir = Path.Combine(parentDirectory, "YTDL");
 
             if (Directory.Exists(ytdlDir))
             {
@@ -94,6 +94,7 @@ namespace Bulk_Thumbnail_Creator
             else
             {
                 Console.WriteLine("YTDL Dir was not found");
+                Directory.CreateDirectory(ytdlDir);
             }
 
             var ytdl = new YoutubeDL
@@ -105,8 +106,17 @@ namespace Bulk_Thumbnail_Creator
             };
 
             // downloads specified video from youtube if it does not already exist.
-            //BTCSettings.YoutubeLink = URL;
-            var res = await ytdl.RunVideoDownload(url: URL);
+            RunResult<string> res;
+
+            if (URL == null)
+            {
+                throw new ArgumentNullException();
+            }
+            else
+            {
+                res = await ytdl.RunVideoDownload(url: URL);
+            }
+
             await Console.Out.WriteLineAsync("Download Success:" + res.Success.ToString());
 
             // sets BTC to run on the recently downloaded file res.data is the returned path.

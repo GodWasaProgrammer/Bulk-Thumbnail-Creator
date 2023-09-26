@@ -15,16 +15,17 @@ namespace BTC_Blazor.Pages
         private List<string> DownloadedVideosList = new() { "Video 1", "video 2" };
 
         private string textInput = string.Empty;
+        private bool passedNull = false;
         private string TextToPrint1 = "Good Ole Rambler try!";
         private string TextToPrint2 = "I've Taken Dunkirk! Onwards Men!";
         private string TextToPrint3 = "Tallyhoo Laddiooo";
 
-        private async Task CallBTC()
+        private async Task CallBTC(string url)
         {
             StateHasChanged(); // tells UI to re-render
 
             List<string> ListOfTextToPrint = new() { TextToPrint1, TextToPrint2, TextToPrint3 };
-            await DataService.CreateInitialPictureArrayAsync(textInput, ListOfTextToPrint);
+            await DataService.CreateInitialPictureArrayAsync(url, ListOfTextToPrint);
             StateHasChanged(); // tells UI to re-render
         }
 
@@ -32,19 +33,30 @@ namespace BTC_Blazor.Pages
 
         private async void AwaitBTC()
         {
-            DisableMenu = true;
-            _processing = true;
-            StateHasChanged();
-            await CallBTC();
-            _processing = false;
-            StateHasChanged();
+            string url = textInput;
+
+            if (url == null || url == string.Empty)
+            {
+                passedNull = true;
+            }
+            else
+            {
+                passedNull = false;
+                DisableMenu = true;
+                _processing = true;
+                StateHasChanged();
+                await CallBTC(url);
+                _processing = false;
+                StateHasChanged();
+            }
+
         }
 
         private void BuildVideosList()
         {
             DownloadedVideosList = Serializing.DeSerializeXMLToListOfStrings(BTCSettings.PathToXMLListOfDownloadedVideos);
 
-            foreach (var video in DownloadedVideosList) 
+            foreach (var video in DownloadedVideosList)
             {
                 DisplayList.Add(Path.GetFileName(video));
             }

@@ -10,13 +10,13 @@
 @if (_processing == true)
 {
     <div class="horizontal-align">
-        
+
         <div>
             <img src="images/pepe-dance.gif" alt="Loading..." style="width: 500px; height: 500px; border:0;" />
         </div>
     </div>
 }
-@if(DisableMenu == false) 
+@if (DisableMenu == false)
 {
     <select>
         @foreach (string listobject in DownloadedVideosList)
@@ -60,8 +60,17 @@
         {
             <MudText>Run BTC</MudText>
         }
-
     </MudButton>
+
+    @if (passedNull)
+    {
+        <MudText>You need to give me an actual YoutubeLink</MudText>
+    }
+    else
+    {
+
+    }
+
 }
 
 <ImageDisplay @ref="imageDisplayref"></ImageDisplay>

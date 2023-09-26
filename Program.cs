@@ -35,7 +35,7 @@ namespace Bulk_Thumbnail_Creator
 
                 string extractedfilename = Path.GetFileName(BTCSettings.PathToVideo);
 
-                parameters["i"] = $@"""{extractedfilename}""";
+                parameters["i"] = $@"""{BTCSettings.PathToVideo}""";
                 parameters["vf"] = @"select=gt(scene\,0.3)";
                 parameters["vsync"] = "vfr";
                 string truePath = Path.GetFullPath(BTCSettings.OutputDir);
