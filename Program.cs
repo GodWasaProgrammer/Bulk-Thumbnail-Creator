@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using FaceONNX;
 using System.Drawing;
 using Bulk_Thumbnail_Creator.PictureObjects;
+using Bulk_Thumbnail_Creator.Serialization;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -43,7 +44,7 @@ namespace Bulk_Thumbnail_Creator
                 FFmpegHandler.RunFFMPG(parameters, pictureOutput);
                 #endregion
 
-                Serialization.Serialization.SerializeListOfStringsToXML(BTCSettings.PathToXMLListOfDownloadedVideos, BTCSettings.DownloadedVideosList);
+                Serialization.Serializing.SerializeListOfStringsToXML(BTCSettings.PathToXMLListOfDownloadedVideos, BTCSettings.DownloadedVideosList);
 
                 BTCSettings.Files = Directory.GetFiles(BTCSettings.OutputDir, "*.*", SearchOption.AllDirectories);
 
@@ -189,7 +190,7 @@ namespace Bulk_Thumbnail_Creator
             {
                 foreach (var PictureData in BTCSettings.PictureDatas)
                 {
-                    Serialization.Serialization.SerializePictureData(streamWriter, PictureData);
+                    Serialization.SerializePictureData(streamWriter, PictureData);
                 }
             }
 

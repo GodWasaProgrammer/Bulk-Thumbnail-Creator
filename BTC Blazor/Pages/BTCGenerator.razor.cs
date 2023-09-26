@@ -42,7 +42,7 @@ namespace BTC_Blazor.Pages
 
         private void BuildVideosList()
         {
-            DownloadedVideosList = Serialization.DeSerializeXMLToListOfStrings(BTCSettings.PathToXMLListOfDownloadedVideos);
+            DownloadedVideosList = Serializing.DeSerializeXMLToListOfStrings(BTCSettings.PathToXMLListOfDownloadedVideos);
 
             foreach (var video in DownloadedVideosList) 
             {

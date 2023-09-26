@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace Bulk_Thumbnail_Creator.Serialization
 {
-    public class Serialization
+    public class Serializing
     {
         // Serialize PictureData object to XML
         public static void SerializePictureData(TextWriter writer, PictureData pictureData)
