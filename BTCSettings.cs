@@ -5,10 +5,13 @@ namespace Bulk_Thumbnail_Creator
 {
     public class BTCSettings
 	{
-		/// <summary>
-		/// The Dir where FFmpeg outputs raw images from the specified video
-		/// </summary>
-		private static string _outputDir = "output";
+		private static LogService _Logger = new LogService();
+        public static  LogService Logger { get { return _Logger; } }
+
+        /// <summary>
+        /// The Dir where FFmpeg outputs raw images from the specified video
+        /// </summary>
+        private static string _outputDir = "output";
 		public static string OutputDir { get { return _outputDir; } set { _outputDir = value; } }
 
 		/// <summary>

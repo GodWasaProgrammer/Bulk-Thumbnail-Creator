@@ -33,53 +33,53 @@ namespace Bulk_Thumbnail_Creator
             string YTDLPDir = Path.Combine(ExePath, "yt-dlp.exe");
             string FfMpegDir = Path.Combine(ExePath, "ffmpeg.exe");
 
-            Console.WriteLine($"Current Location: {CurrentLoc}");
-            Console.WriteLine($"Parent Directory: {parentDirectory}");
-            Console.WriteLine($"New Path: {ExePath}");
+            BTCSettings.Logger.LogInformation($"Current Location: {CurrentLoc}");
+            BTCSettings.Logger.LogInformation($"Parent Directory: {parentDirectory}");
+            BTCSettings.Logger.LogInformation($"New Path: {ExePath}");
 
             if (File.Exists(YTDLPDir))
             {
-                Console.WriteLine($"YTDLP Path: {YTDLPDir}");
+                BTCSettings.Logger.LogInformation($"YTDLP Path: {YTDLPDir}");
             }
             else
             {
-                Console.WriteLine("yt-dlp.exe was not found");
-                await Console.Out.WriteLineAsync("Will Try To Download yt-dlp");
+                BTCSettings.Logger.LogError("yt-dlp.exe was not found");
+                BTCSettings.Logger.LogInformation("Will Try To Download yt-dlp");
                 await YoutubeDLSharp.Utils.DownloadYtDlp(ExePath);
 
                 if (File.Exists(YTDLPDir))
                 {
-                    await Console.Out.WriteLineAsync("Successfully downloaded yt-dlp");
+                    BTCSettings.Logger.LogInformation("Successfully downloaded yt-dlp");
                 }
                 else
                 {
-                    await Console.Out.WriteLineAsync("Failed to download yt-dlp");
+                    BTCSettings.Logger.LogError("Failed to download yt-dlp");
                 }
 
             }
 
             if (File.Exists(FfMpegDir))
             {
-                Console.WriteLine($"FFmpeg Path: {FfMpegDir}");
+                BTCSettings.Logger.LogInformation($"FFmpeg Path: {FfMpegDir}");
             }
             else
             {
                 // we didnt find ffmpeg
-                Console.WriteLine("ffmpeg.exe was not found");
+                BTCSettings.Logger.LogError("ffmpeg.exe was not found");
 
                 // so will download it
-                await Console.Out.WriteLineAsync("Will Try To Download ffmpeg");
+                BTCSettings.Logger.LogInformation("Will Try To Download ffmpeg");
 
                 //attempts to download the file to local dir
                 await YoutubeDLSharp.Utils.DownloadFFmpeg(ExePath);
 
                 if (File.Exists(FfMpegDir))
                 {
-                    await Console.Out.WriteLineAsync("File has been successfully downloaded");
+                    BTCSettings.Logger.LogInformation("File has been successfully downloaded");
                 }
                 else
                 {
-                    await Console.Out.WriteLineAsync("Download of FFMPEG has failed.");
+                    BTCSettings.Logger.LogInformation("Download of FFMPEG has failed.");
                 }
 
             }
@@ -89,11 +89,11 @@ namespace Bulk_Thumbnail_Creator
 
             if (Directory.Exists(ytdlDir))
             {
-                Console.WriteLine($"YTDL Dir found:{ytdlDir}");
+                BTCSettings.Logger.LogInformation($"YTDL Dir found:{ytdlDir}");
             }
             else
             {
-                Console.WriteLine("YTDL Dir was not found");
+                BTCSettings.Logger.LogError("YTDL Dir was not found");
                 Directory.CreateDirectory(ytdlDir);
             }
 
@@ -110,14 +110,17 @@ namespace Bulk_Thumbnail_Creator
 
             if (URL == null)
             {
+                BTCSettings.Logger.LogError("URL has been passed as null to YTDL");
                 throw new ArgumentNullException(nameof(URL));
+
             }
             else
             {
+                BTCSettings.Logger.LogInformation($"Attempting download of: {URL}");
                 res = await ytdl.RunVideoDownload(url: URL);
             }
 
-            await Console.Out.WriteLineAsync("Download Success:" + res.Success.ToString());
+            BTCSettings.Logger.LogInformation("Download Success:" + res.Success.ToString());
 
             // sets BTC to run on the recently downloaded file res.data is the returned path.
             return res.Data;
@@ -125,9 +128,22 @@ namespace Bulk_Thumbnail_Creator
 
         public static void CreateDirectories(string outputDir, string TextAdded, string YTDL)
         {
-            Directory.CreateDirectory(outputDir);
-            Directory.CreateDirectory(TextAdded);
-            Directory.CreateDirectory(YTDL);
+            if (!Directory.Exists(outputDir))
+            {
+                BTCSettings.Logger.LogInformation($"{outputDir} Directory was missing, will be created");
+                Directory.CreateDirectory(outputDir);
+            }
+            if (!Directory.Exists(YTDL))
+            {
+                BTCSettings.Logger.LogInformation($"{TextAdded} Directory was missing, will be created");
+                Directory.CreateDirectory(TextAdded);
+            }
+            if (!Directory.Exists(YTDL))
+            {
+                BTCSettings.Logger.LogInformation($"{YTDL} Directory was missing, will be created");
+                Directory.CreateDirectory(YTDL);
+            }
+
         }
 
         private static int counterRandomOutPut;

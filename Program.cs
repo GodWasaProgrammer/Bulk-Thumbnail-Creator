@@ -6,7 +6,6 @@ using FaceONNX;
 using System.Drawing;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using Bulk_Thumbnail_Creator.Serialization;
-using RockLib.Logging;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -14,8 +13,6 @@ namespace Bulk_Thumbnail_Creator
     {
         public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, PictureData PicdataObjToVarietize = null)
         {
-            LogService Logger = new LogService();
-
             BTCSettings.ListOfText = texts;
 
             // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
@@ -55,7 +52,7 @@ namespace Bulk_Thumbnail_Creator
 
                 var faceDetector = new FaceDetector(0.95f, 0.5f);
 
-                Logger.LogInformation($"Processing {BTCSettings.Files.Length} images");
+                BTCSettings.Logger.LogInformation($"Processing {BTCSettings.Files.Length} images");
 
                 // main loop for detecting faces, placing text where face is not
                 Parallel.For(0, BTCSettings.Files.Length, fileIndex =>
@@ -68,7 +65,7 @@ namespace Bulk_Thumbnail_Creator
 
                     DataGeneration.DecideIfTooMuchFace(file, PicToDetectFacesOn, detectedFacesRectArray);
 
-                    Logger.LogInformation($" Discarded Amount Of Pictures:{BTCSettings.DiscardedBecauseTooMuchFacePictureData.Count}");
+                    BTCSettings.Logger.LogInformation($" Discarded Amount Of Pictures:{BTCSettings.DiscardedBecauseTooMuchFacePictureData.Count}");
 
                     if (!BTCSettings.DiscardedBecauseTooMuchFacePictureData.Contains(file))
                     {
@@ -150,7 +147,7 @@ namespace Bulk_Thumbnail_Creator
             {
                 if (PicdataObjToVarietize == null)
                 {
-                    Logger.LogError("null has been passed to PicdataobjToVarietize");
+                    BTCSettings.Logger.LogError("null has been passed to PicdataobjToVarietize");
                 }
                 else
                 {
@@ -167,7 +164,7 @@ namespace Bulk_Thumbnail_Creator
             {
                 if (PicdataObjToVarietize == null)
                 {
-                    Logger.LogError("Null has been passed to CustomPicture");
+                    BTCSettings.Logger.LogError("Null has been passed to CustomPicture");
                 }
                 else
                 {
@@ -195,11 +192,12 @@ namespace Bulk_Thumbnail_Creator
                 foreach (var PictureData in BTCSettings.PictureDatas)
                 {
                     Serializing.SerializePictureData(streamWriter, PictureData);
+                    BTCSettings.Logger.LogInformation("PictureDatas.xml Serialized from PictureData");
                 }
 
             }
 
-            await Console.Out.WriteLineAsync("Processing Finished");
+            BTCSettings.Logger.LogInformation("Processing Finished");
             return BTCSettings.PictureDatas;
         }
 

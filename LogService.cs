@@ -19,7 +19,6 @@ namespace Bulk_Thumbnail_Creator
 
         public LogService()
         {
-            string dir = Directory.GetCurrentDirectory();
             _logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
                 .WriteTo.Console()
