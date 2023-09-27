@@ -144,7 +144,7 @@ namespace Bulk_Thumbnail_Creator
         /// </summary>
         /// <param name="PicToVarietize">The Target picture to varietize</param>
         /// <param name="TargetFolder">The target folder to varietize</param>
-        public static void ProducePlacementOfTextVarietyData(PictureData PicToVarietize)
+        public static void GenPlacementOfTextVariety(PictureData PicToVarietize)
         {
             Box boxToExclude = PicToVarietize.ParamForTextCreation.CurrentBox;
 
@@ -363,7 +363,6 @@ namespace Bulk_Thumbnail_Creator
                 }
 
             }
-
             #pragma warning restore CA1853
             // write surviving boxvalues to object
             parameters.Boxes = Boxes;
@@ -407,6 +406,8 @@ namespace Bulk_Thumbnail_Creator
             return parameters;
         }
 
+
+
         /// <summary>
         /// Generates randomized colorvalues 
         /// </summary>
@@ -426,12 +427,15 @@ namespace Bulk_Thumbnail_Creator
             return param;
         }
 
+
+
+
         /// <summary>
         /// Produces 5 varieties of the first randomized font that hasnt already been chosen
         /// </summary>
         /// <param name="PicToVarietize">Your input PictureData object to produce varieties of</param>
         /// <param name="TargetFolder">The target folder of your object</param>
-        public static void ProduceFontVarietyData(PictureData PicToVarietize)
+        public static void GenFontVariety(PictureData PicToVarietize)
         {
             List<string> fontList = new()
             {
@@ -497,7 +501,7 @@ namespace Bulk_Thumbnail_Creator
         /// Creates Variety from an existing image, this will be on user interaction
         /// </summary>
         /// <param name="PictureInputData">The Image to create variety of</param>
-        public static void ProduceSaturationVarietyData(PictureData PictureInputData)
+        public static void GenSaturationVariety(PictureData PictureInputData)
         {
             const float baseLuminanceValue = 0.50F;
             float fillcolorHue = PictureInputData.ParamForTextCreation.FillColor.Hue;
@@ -554,7 +558,7 @@ namespace Bulk_Thumbnail_Creator
         /// 
         /// </summary>
         /// <param name="PictureInputData"></param>
-        public static void ProduceRandomVarietyData(PictureData PictureInputData)
+        public static void GenRandomVariety(PictureData PictureInputData)
         {
             const int NumberOfRandomsToProduce = 15;
 
@@ -595,7 +599,7 @@ namespace Bulk_Thumbnail_Creator
         /// 
         /// </summary>
         /// <param name="DankifyTarget"></param>
-        public static void ProduceMemePositionData(PictureData DankifyTarget)
+        public static void GenMemePosition(PictureData DankifyTarget)
         {
             PictureData CopiedPicData = new(DankifyTarget);
             CopiedPicData.Varieties.Clear();
@@ -688,7 +692,5 @@ namespace Bulk_Thumbnail_Creator
             }
 
         }
-
     }
-
 }

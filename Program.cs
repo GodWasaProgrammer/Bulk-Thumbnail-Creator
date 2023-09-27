@@ -6,6 +6,7 @@ using FaceONNX;
 using System.Drawing;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using Bulk_Thumbnail_Creator.Serialization;
+using RockLib.Logging;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -13,6 +14,8 @@ namespace Bulk_Thumbnail_Creator
     {
         public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, PictureData PicdataObjToVarietize = null)
         {
+            LogService Logger = new LogService();
+
             BTCSettings.ListOfText = texts;
 
             // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
@@ -35,7 +38,7 @@ namespace Bulk_Thumbnail_Creator
 
                 string extractedfilename = Path.GetFileName(BTCSettings.PathToVideo);
 
-                parameters["i"] = $@"""{BTCSettings.PathToVideo}""";
+                parameters["i"] = $@"""{extractedfilename}""";
                 parameters["vf"] = @"select=gt(scene\,0.3)";
                 parameters["vsync"] = "vfr";
                 string truePath = Path.GetFullPath(BTCSettings.OutputDir);
@@ -52,7 +55,7 @@ namespace Bulk_Thumbnail_Creator
 
                 var faceDetector = new FaceDetector(0.95f, 0.5f);
 
-                Console.WriteLine($"Processing {BTCSettings.Files.Length} images");
+                Logger.LogInformation($"Processing {BTCSettings.Files.Length} images");
 
                 // main loop for detecting faces, placing text where face is not
                 Parallel.For(0, BTCSettings.Files.Length, fileIndex =>
@@ -64,6 +67,8 @@ namespace Bulk_Thumbnail_Creator
                     Rectangle[] detectedFacesRectArray = faceDetector.Forward(PicToDetectFacesOn);
 
                     DataGeneration.DecideIfTooMuchFace(file, PicToDetectFacesOn, detectedFacesRectArray);
+
+                    Logger.LogInformation($" Discarded Amount Of Pictures:{BTCSettings.DiscardedBecauseTooMuchFacePictureData.Count}");
 
                     if (!BTCSettings.DiscardedBecauseTooMuchFacePictureData.Contains(file))
                     {
@@ -116,15 +121,15 @@ namespace Bulk_Thumbnail_Creator
                 {
                     var input = BTCSettings.PictureDatas[i];
 
-                    DataGeneration.ProduceSaturationVarietyData(input);
+                    DataGeneration.GenSaturationVariety(input);
 
-                    DataGeneration.ProduceFontVarietyData(input);
+                    DataGeneration.GenFontVariety(input);
 
-                    DataGeneration.ProducePlacementOfTextVarietyData(input);
+                    DataGeneration.GenPlacementOfTextVariety(input);
 
-                    DataGeneration.ProduceRandomVarietyData(input);
+                    DataGeneration.GenRandomVariety(input);
 
-                    DataGeneration.ProduceMemePositionData(input);
+                    DataGeneration.GenMemePosition(input);
                 });
 
                 // actual file output
@@ -145,7 +150,7 @@ namespace Bulk_Thumbnail_Creator
             {
                 if (PicdataObjToVarietize == null)
                 {
-                    Console.WriteLine("Null has been passed to PicdataobjToVarietize");
+                    Logger.LogError("null has been passed to PicdataobjToVarietize");
                 }
                 else
                 {
@@ -153,7 +158,7 @@ namespace Bulk_Thumbnail_Creator
                     {
                         Production.ProduceTextPictures(PicdataObjToVarietize.Varieties[i]);
                     });
-
+                    
                 }
 
             }
@@ -162,7 +167,7 @@ namespace Bulk_Thumbnail_Creator
             {
                 if (PicdataObjToVarietize == null)
                 {
-                    Console.WriteLine("Null has been passed to CustomPicture");
+                    Logger.LogError("Null has been passed to CustomPicture");
                 }
                 else
                 {
@@ -171,7 +176,6 @@ namespace Bulk_Thumbnail_Creator
 
                     Production.ProduceTextPictures(PicdataObjToVarietize);
                     BTCSettings.PictureDatas.Add(PicdataObjToVarietize);
-
                 }
 
             }
@@ -192,6 +196,7 @@ namespace Bulk_Thumbnail_Creator
                 {
                     Serializing.SerializePictureData(streamWriter, PictureData);
                 }
+
             }
 
             await Console.Out.WriteLineAsync("Processing Finished");

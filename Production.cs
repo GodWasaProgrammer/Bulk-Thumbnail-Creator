@@ -110,7 +110,7 @@ namespace Bulk_Thumbnail_Creator
 
             if (URL == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(URL));
             }
             else
             {
@@ -160,33 +160,33 @@ namespace Bulk_Thumbnail_Creator
             }
             if (PicData.OutputType == OutputType.BoxPositionVariety)
             {
-                OutputPath += varietyof + imageName + $"//{PicData.ParamForTextCreation.CurrentBox}" + ".png"; ;
+                OutputPath += $"{varietyof}{imageName}//{PicData.ParamForTextCreation.CurrentBox}.png";
                 PicData.OutPath = OutputPath;
             }
             if (PicData.OutputType == OutputType.SaturationVariety)
             {
-                OutputPath += varietyof + imageName + $"//{PicData.ParamForTextCreation.FillColor.Saturation}.png";
+                OutputPath += $"{varietyof}{imageName}//{PicData.ParamForTextCreation.FillColor.Saturation}.png";
                 PicData.OutPath = OutputPath;
             }
             if (PicData.OutputType == OutputType.FontVariety)
             {
-                OutputPath += varietyof + imageName + "//" + Path.GetFileNameWithoutExtension(PicData.ReadSettings.Font) + ".png";
+                OutputPath += $"{varietyof}{imageName}//{Path.GetFileNameWithoutExtension(PicData.ReadSettings.Font)}.png";
                 PicData.OutPath = OutputPath;
             }
             if (PicData.OutputType == OutputType.RandomVariety)
             {
                 counterRandomOutPut++;
-                OutputPath += varietyof + imageName + "//" + $"{counterRandomOutPut}" + ".png";
+                OutputPath += $"{varietyof}{imageName}//{counterRandomOutPut}.png";
                 PicData.OutPath = OutputPath;
             }
             if (PicData.OutputType == OutputType.Dankness)
             {
-                OutputPath += varietyof + imageName + "//" + PicData.Dankbox + trimDateTime + imageName + ".png";
+                OutputPath += $"{varietyof}{imageName}//{PicData.Dankbox}{trimDateTime}{imageName}.png";
                 PicData.OutPath = OutputPath;
             }
             if (PicData.OutputType == OutputType.Custom)
             {
-                OutputPath += varietyof + imageName + "//" + trimDateTime + "Custom of" + imageName;
+                OutputPath += $"{varietyof}{imageName}//{trimDateTime}Custom of{imageName}.png";
                 PicData.OutPath = OutputPath;
             }
 
