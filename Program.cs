@@ -16,7 +16,8 @@ namespace Bulk_Thumbnail_Creator
             BTCSettings.ListOfText = texts;
 
             // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
-            Production.CreateDirectories(BTCSettings.OutputDir, BTCSettings.TextAddedDir, BTCSettings.YoutubeDLDir);
+            Production.CreateDirectories(BTCSettings.OutputDir, BTCSettings.TextAddedDir, BTCSettings.YTDLOutPutDir);
+            Production.VerifyDirectoryAndExeIntegrity();
             
             #region Front Page Picture Line Up Output
             if (ProdType == ProductionType.FrontPagePictureLineUp)

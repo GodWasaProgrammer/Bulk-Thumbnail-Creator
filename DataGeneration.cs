@@ -11,18 +11,6 @@ namespace Bulk_Thumbnail_Creator
 {
     public class DataGeneration
     {
-        static float hueFillColor = 0F;
-        static readonly float saturationFillColor = 1F;
-        static readonly float lightnessFillColor = 0.50F;
-
-        static float hueStrokeColor = 125F;
-        static readonly float saturationStrokeColor = 1F;
-        static readonly float lightnessStrokeColor = 0.50F;
-
-        static float hueBorderColor = 28F;
-        static readonly float saturationBorderColor = 1F;
-        static readonly float lightnessBorderColor = 0.50F;
-
         public static void DecideIfTooMuchFace(string CurrentFile, Bitmap PictureWhereFacesWereDetected, Rectangle[] rectangleArray)
         {
             int SumOfRectanglesX = 0;
@@ -44,14 +32,13 @@ namespace Bulk_Thumbnail_Creator
 
         }
 
-        private static readonly Random colorRandom = new();
-
         /// <summary>
         /// Generates random colors in bytes
         /// </summary>
         /// <returns>returns a MagickColor Object which is RGB</returns>
         internal static MagickColor RandomizeColor()
         {
+            Random colorRandom = new();
             byte pickedColorRedRGB = (byte)colorRandom.Next(BTCSettings.MaxRGB);
             byte pickedColorGreenRGB = (byte)colorRandom.Next(BTCSettings.MaxRGB);
             byte pickedColorBlueRGB = (byte)colorRandom.Next(BTCSettings.MaxRGB);
@@ -92,14 +79,22 @@ namespace Bulk_Thumbnail_Creator
         /// <returns>returns the ParamForTextCreation object with the modified Color Values</returns>
         public static ParamForTextCreation DecideColorGeneration(ParamForTextCreation InputParameter)
         {
+            float hueFillColor = 0F;
+            float saturationFillColor = 1F;
+            float lightnessFillColor = 0.50F;
+            float saturationStrokeColor = 1F;
+            float lightnessStrokeColor = 0.50F;
+            float saturationBorderColor = 1F;
+            float lightnessBorderColor = 0.50F;
+
             const float maxHueValue = 360F;
             const float incrementalColor = 12.5F;
             const float resetFromMaxToMin = 0F;
 
             hueFillColor += incrementalColor;
 
-            hueStrokeColor = ColorWheelSpinner(hueFillColor);
-            hueBorderColor = ColorWheelSpinner(hueFillColor);
+            float hueStrokeColor = ColorWheelSpinner(hueFillColor);
+            float hueBorderColor = ColorWheelSpinner(hueFillColor);
 
             if (hueFillColor > maxHueValue)
             {
@@ -131,13 +126,6 @@ namespace Bulk_Thumbnail_Creator
 
             return fontNames[fontChosen].ToString();
         }
-
-        /// <summary>
-        /// Creates our directories for operations
-        /// </summary>
-        /// <param name="outputDir"></param>
-        /// <param name="TextAdded"></param>
-        /// <param name="YTDL"></param>
 
         /// <summary>
         /// Produces the remaining boxes of a picturedata object to create variety of choice
@@ -363,6 +351,7 @@ namespace Bulk_Thumbnail_Creator
                 }
 
             }
+
             #pragma warning restore CA1853
             // write surviving boxvalues to object
             parameters.Boxes = Boxes;

@@ -20,12 +20,19 @@ namespace Bulk_Thumbnail_Creator
 		private static string _TextAddedDir = "text added";
 		public static string TextAddedDir { get { return _TextAddedDir; } set { _TextAddedDir = value; } }
 
+		// Location of YTDLP executable
+		private static string _YTDLPDir;
+		public static string YTDLPDir { get { return _YTDLPDir; } set { _YTDLPDir = value; } }
+
 		/// <summary>
 		/// The Dir where videos are downloaded
 		/// </summary>
-		private static string _YoutubeDLDir = "YTDL";
-		public static string YoutubeDLDir { get { return _YoutubeDLDir; } set { _YoutubeDLDir = value; } }
+		private static string _YTDLOutPutDir = "YTDL";
+		public static string YTDLOutPutDir { get { return _YTDLOutPutDir; } set { _YTDLOutPutDir = value; } }
 
+		/// <summary>
+		/// Directory where FFmpeg exe is located
+		/// </summary>
 		private static string _FfmpegDir;
 		public static string FfmpegDir { get { return _FfmpegDir; } set { _FfmpegDir = value; } }
 		
@@ -35,11 +42,15 @@ namespace Bulk_Thumbnail_Creator
 		private static string[] files;
 		public static string[] Files { get { return files; } set { files = value; } }
 
-
+		/// <summary>
+		/// Where the available memes are stashed
+		/// </summary>
 		private static string _DankMemeStashDir = "DankMemeStash"; 
 		public static string DankMemeStashDir { get { return _DankMemeStashDir; } set { _DankMemeStashDir = value; } }
 
-
+		/// <summary>
+		/// A string array of the available memes from the DankMemeStash
+		/// </summary>
 		private static string[] _Memes;
 		public static string[] Memes {get { return _Memes;} set { _Memes = value; } }
 		

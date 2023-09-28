@@ -13,11 +13,9 @@ namespace Bulk_Thumbnail_Creator
     public class Production
     {
         /// <summary>
-        /// Instantiates a YoutubeDL and downloads the specified string
+        /// Checks if we have our directory/executables  in order
         /// </summary>
-        /// <param name="URL">the specified link URL to download</param>
-        /// <returns>returns the path to the downloaded video</returns>
-        public static async Task<string> YouTubeDL(string URL)
+        public static async void VerifyDirectoryAndExeIntegrity()
         {
             string CurrentLoc = Assembly.GetExecutingAssembly().Location;
             string parentDirectory = Directory.GetParent(CurrentLoc).FullName;
@@ -58,6 +56,7 @@ namespace Bulk_Thumbnail_Creator
 
             }
 
+
             if (File.Exists(FfMpegDir))
             {
                 BTCSettings.Logger.LogInformation($"FFmpeg Path: {FfMpegDir}");
@@ -83,6 +82,7 @@ namespace Bulk_Thumbnail_Creator
                 }
 
             }
+
             BTCSettings.FfmpegDir = FfMpegDir;
 
             string ytdlDir = Path.Combine(parentDirectory, "YTDL");
@@ -97,14 +97,22 @@ namespace Bulk_Thumbnail_Creator
                 Directory.CreateDirectory(ytdlDir);
                 BTCSettings.Logger.LogInformation($"Dir Created at:{ytdlDir}");
             }
-                BTCSettings.YoutubeDLDir = ytdlDir;
+            BTCSettings.YTDLOutPutDir = ytdlDir;
+        }
 
+        /// <summary>
+        /// Instantiates a YoutubeDL and downloads the specified string
+        /// </summary>
+        /// <param name="URL">the specified link URL to download</param>
+        /// <returns>returns the path to the downloaded video</returns>
+        public static async Task<string> YouTubeDL(string URL)
+        {
             var ytdl = new YoutubeDL
             {
                 // set paths
-                YoutubeDLPath = YTDLPDir,
-                FFmpegPath = FfMpegDir,
-                OutputFolder = ytdlDir,
+                YoutubeDLPath = BTCSettings.YTDLOutPutDir,
+                FFmpegPath = BTCSettings.FfmpegDir,
+                OutputFolder = BTCSettings.YTDLOutPutDir,
             };
 
             // downloads specified video from youtube if it does not already exist.

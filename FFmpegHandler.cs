@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -15,7 +14,7 @@ namespace Bulk_Thumbnail_Creator
             Process processFFMpeg = new();
 
 			processFFMpeg.StartInfo.FileName = BTCSettings.FfmpegDir;
-			processFFMpeg.StartInfo.WorkingDirectory = BTCSettings.YoutubeDLDir;
+			processFFMpeg.StartInfo.WorkingDirectory = BTCSettings.YTDLOutPutDir;
 			processFFMpeg.StartInfo.Arguments = parameters;
 			processFFMpeg.StartInfo.UseShellExecute = false;
 			processFFMpeg.StartInfo.CreateNoWindow = false;

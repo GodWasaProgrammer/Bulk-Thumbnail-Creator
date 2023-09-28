@@ -1,8 +1,4 @@
 ﻿using Serilog;
-using Serilog.Events;
-using Serilog.Sinks.SystemConsole;
-using Serilog.Sinks.File;
-using System.IO;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -36,7 +32,6 @@ namespace Bulk_Thumbnail_Creator
             _logger.Error(message);
         }
 
-        // Implement other logging methods as needed
     }
 
 }

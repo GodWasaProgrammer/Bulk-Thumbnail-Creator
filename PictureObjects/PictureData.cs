@@ -2,13 +2,11 @@
 using ImageMagick;
 using System.Collections.Generic;
 using System;
-using System.Xml.Serialization;
 
 namespace Bulk_Thumbnail_Creator.PictureObjects
 {
     [Serializable]
     public class PictureData
-
     {
         /// <summary>
         /// The filename of this object, with relative output path example : output//001.png

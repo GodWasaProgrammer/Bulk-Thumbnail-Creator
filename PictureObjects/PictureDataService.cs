@@ -79,17 +79,6 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
                 dir.Delete(true); 
             }
 
-            //DirectoryInfo di3 = new DirectoryInfo(BTCSettings.YoutubeDLDir);
-
-            //foreach (FileInfo file in di3.GetFiles())
-            //{
-            //    file.Delete();
-            //}
-            //foreach (DirectoryInfo dir in di3.GetDirectories())
-            //{
-            //    dir.Delete(true);
-            //}
-
         }
 
     }

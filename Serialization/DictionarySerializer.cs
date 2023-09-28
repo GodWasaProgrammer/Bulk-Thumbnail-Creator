@@ -26,7 +26,6 @@ namespace Bulk_Thumbnail_Creator.Serialization
         }
 
     }
-
         public class Entry
         {
             public object Key;
