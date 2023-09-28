@@ -17,7 +17,8 @@ namespace Bulk_Thumbnail_Creator
 
             // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
             Production.CreateDirectories(BTCSettings.OutputDir, BTCSettings.TextAddedDir, BTCSettings.YoutubeDLDir);
-
+            
+            #region Front Page Picture Line Up Output
             if (ProdType == ProductionType.FrontPagePictureLineUp)
             {
                 BTCSettings.PathToVideo = await Production.YouTubeDL(url);
@@ -142,7 +143,9 @@ namespace Bulk_Thumbnail_Creator
                 });
 
             }
+            #endregion
 
+            #region Variety Picture Output
             if (ProdType == ProductionType.VarietyList)
             {
                 if (PicdataObjToVarietize == null)
@@ -159,7 +162,9 @@ namespace Bulk_Thumbnail_Creator
                 }
 
             }
+            #endregion
 
+            #region Custom Picture OutPut
             if (ProdType == ProductionType.CustomPicture)
             {
                 if (PicdataObjToVarietize == null)
@@ -176,6 +181,7 @@ namespace Bulk_Thumbnail_Creator
                 }
 
             }
+            #endregion
 
             #region Make Showcase Video
             //Dictionary<string, string> paramToMakeVideoOfResult = new Dictionary<string, string>();
@@ -187,12 +193,14 @@ namespace Bulk_Thumbnail_Creator
             //FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
             #endregion
 
+            #region Picdata serialization
+
             //using (StreamWriter streamWriter = new("Picturedatas.xml"))
             //{
             //    foreach (var PictureData in BTCSettings.PictureDatas)
             //    {
             //        Serializing.SerializePictureData(streamWriter, PictureData);
-                    
+
             //    }
             //    BTCSettings.Logger.LogInformation("PictureDatas.xml Serialized from PictureData");
             //}
@@ -200,7 +208,7 @@ namespace Bulk_Thumbnail_Creator
             BTCSettings.Logger.LogInformation("Processing Finished");
             return BTCSettings.PictureDatas;
         }
-
+         #endregion
         static void Main()
         {
 
