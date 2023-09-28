@@ -5,7 +5,7 @@ namespace Bulk_Thumbnail_Creator
 {
     public class BTCSettings
 	{
-		private static LogService _Logger = new LogService();
+		private static readonly LogService _Logger = new();
         public static  LogService Logger { get { return _Logger; } }
 
         /// <summary>

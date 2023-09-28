@@ -10,12 +10,12 @@ namespace Bulk_Thumbnail_Creator
     {
         void LogInformation(string message);
         void LogError(string message);
-        // Add more logging methods as needed
+
     }
 
     public class LogService : ILoggerService
     {
-        private readonly ILogger _logger;
+        private readonly Serilog.Core.Logger _logger;
 
         public LogService()
         {

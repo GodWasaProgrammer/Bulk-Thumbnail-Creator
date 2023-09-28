@@ -406,8 +406,6 @@ namespace Bulk_Thumbnail_Creator
             return parameters;
         }
 
-
-
         /// <summary>
         /// Generates randomized colorvalues 
         /// </summary>
@@ -426,9 +424,6 @@ namespace Bulk_Thumbnail_Creator
 
             return param;
         }
-
-
-
 
         /// <summary>
         /// Produces 5 varieties of the first randomized font that hasnt already been chosen
@@ -472,7 +467,6 @@ namespace Bulk_Thumbnail_Creator
             }
 
         }
-
 
         /// <summary>
         /// Support method to calculate where the box will be juxtaposed
@@ -551,8 +545,6 @@ namespace Bulk_Thumbnail_Creator
             }
 
         }
-
-
 
         /// <summary>
         /// 
@@ -692,5 +684,7 @@ namespace Bulk_Thumbnail_Creator
             }
 
         }
+
     }
+
 }

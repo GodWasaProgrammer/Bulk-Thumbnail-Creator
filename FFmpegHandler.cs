@@ -23,7 +23,7 @@ namespace Bulk_Thumbnail_Creator
 
 			processFFMpeg.Start();
 			processFFMpeg.WaitForExit();
-			System.Console.WriteLine("Ffmpeg finished producing pictures");
+			BTCSettings.Logger.LogInformation("Ffmpeg finished producing pictures");
 		}
 
 		/// <summary>

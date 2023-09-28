@@ -44,7 +44,7 @@ namespace Bulk_Thumbnail_Creator
                 FFmpegHandler.RunFFMPG(parameters, pictureOutput);
                 #endregion
 
-                Serialization.Serializing.SerializeListOfStringsToXML(BTCSettings.PathToXMLListOfDownloadedVideos, BTCSettings.DownloadedVideosList);
+                Serializing.SerializeListOfStringsToXML(BTCSettings.PathToXMLListOfDownloadedVideos, BTCSettings.DownloadedVideosList);
 
                 BTCSettings.Files = Directory.GetFiles(BTCSettings.OutputDir, "*.*", SearchOption.AllDirectories);
 
@@ -64,8 +64,6 @@ namespace Bulk_Thumbnail_Creator
                     Rectangle[] detectedFacesRectArray = faceDetector.Forward(PicToDetectFacesOn);
 
                     DataGeneration.DecideIfTooMuchFace(file, PicToDetectFacesOn, detectedFacesRectArray);
-
-                    BTCSettings.Logger.LogInformation($" Discarded Amount Of Pictures:{BTCSettings.DiscardedBecauseTooMuchFacePictureData.Count}");
 
                     if (!BTCSettings.DiscardedBecauseTooMuchFacePictureData.Contains(file))
                     {
@@ -92,6 +90,8 @@ namespace Bulk_Thumbnail_Creator
                     }
 
                 });
+
+                BTCSettings.Logger.LogInformation($" Discarded Amount Of Pictures:{BTCSettings.DiscardedBecauseTooMuchFacePictureData.Count}");
 
                 #region debugsinglefor
                 // just here for debug purposes
@@ -187,15 +187,15 @@ namespace Bulk_Thumbnail_Creator
             //FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
             #endregion
 
-            using (StreamWriter streamWriter = new("Picturedatas.xml"))
-            {
-                foreach (var PictureData in BTCSettings.PictureDatas)
-                {
-                    Serializing.SerializePictureData(streamWriter, PictureData);
-                    BTCSettings.Logger.LogInformation("PictureDatas.xml Serialized from PictureData");
-                }
-
-            }
+            //using (StreamWriter streamWriter = new("Picturedatas.xml"))
+            //{
+            //    foreach (var PictureData in BTCSettings.PictureDatas)
+            //    {
+            //        Serializing.SerializePictureData(streamWriter, PictureData);
+                    
+            //    }
+            //    BTCSettings.Logger.LogInformation("PictureDatas.xml Serialized from PictureData");
+            //}
 
             BTCSettings.Logger.LogInformation("Processing Finished");
             return BTCSettings.PictureDatas;

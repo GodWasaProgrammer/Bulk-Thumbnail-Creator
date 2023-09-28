@@ -95,7 +95,9 @@ namespace Bulk_Thumbnail_Creator
             {
                 BTCSettings.Logger.LogError("YTDL Dir was not found");
                 Directory.CreateDirectory(ytdlDir);
+                BTCSettings.Logger.LogInformation($"Dir Created at:{ytdlDir}");
             }
+                BTCSettings.YoutubeDLDir = ytdlDir;
 
             var ytdl = new YoutubeDL
             {
@@ -237,7 +239,7 @@ namespace Bulk_Thumbnail_Creator
 
             // outputs the file to the provided path and name
             outputImage.Write(OutputPath);
-
+            BTCSettings.Logger.LogInformation($"File Created: {OutputPath}");
         }
 
     }

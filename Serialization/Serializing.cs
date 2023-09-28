@@ -23,8 +23,9 @@ namespace Bulk_Thumbnail_Creator.Serialization
             catch (Exception ex)
             {
                 // Handle the exception, log it, or rethrow it as needed
-                Console.WriteLine("Error during serialization: " + ex.Message);
+                BTCSettings.Logger.LogError("Error during serialization: " + ex.Message);
             }
+
         }
 
         // Deserialize PictureData object from XML
@@ -46,9 +47,10 @@ namespace Bulk_Thumbnail_Creator.Serialization
             catch (Exception ex)
             {
                 // Handle the exception, log it, or rethrow it as needed
-                Console.WriteLine("Error during deserialization: " + ex.Message);
+                BTCSettings.Logger.LogError("Error during deserialization: " + ex.Message);
                 return null; // You may want to return null or throw a custom exception
             }
+
         }
 
         static readonly XmlSerializer serializer = new(typeof(List<string>));
@@ -82,6 +84,6 @@ namespace Bulk_Thumbnail_Creator.Serialization
             serializer.Serialize(file, ListOfStringsToSerialize);
         }
 
-        
     }
+
 }
