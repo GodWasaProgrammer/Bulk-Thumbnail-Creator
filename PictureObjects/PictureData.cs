@@ -75,11 +75,6 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
         /// <returns></returns>
         private static MagickReadSettings TextSettingsGeneration(ParamForTextCreation Parameters)
         {
-            if(Parameters.CurrentBox == Box.BottomBox || Parameters.CurrentBox == Box.BottomLeft || Parameters.CurrentBox == Box.BottomRight )
-            {
-                Parameters.HeightOfBox /= 2;
-            }
-
             MagickReadSettings SettingsTextLinear = new()
             {
                 Font = Parameters.Font,
