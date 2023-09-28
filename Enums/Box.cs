@@ -8,7 +8,6 @@
         TopLeft,
         BottomLeft,
         BottomRight,
-        Discarded,
     }
 
 }

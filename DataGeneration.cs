@@ -134,19 +134,19 @@ namespace Bulk_Thumbnail_Creator
         /// <param name="TargetFolder">The target folder to varietize</param>
         public static void GenPlacementOfTextVariety(PictureData PicToVarietize)
         {
-            Box boxToExclude = PicToVarietize.ParamForTextCreation.CurrentBox;
+            Box CurrentBox = PicToVarietize.ParamForTextCreation.CurrentBox;
 
-            if (boxToExclude != Box.Discarded)
+            if (PicToVarietize.ParamForTextCreation.Boxes.Count > 2)
             {
-                foreach (var CurrentBox in PicToVarietize.ParamForTextCreation.Boxes)
+                foreach (var CurrentIterationBox in PicToVarietize.ParamForTextCreation.Boxes)
                 {
                     PictureData CopiedPictureData = new(PicToVarietize);
                     CopiedPictureData.Varieties.Clear();
 
-                    if (CurrentBox.Key != boxToExclude)
+                    if (CurrentIterationBox.Key != CurrentBox)
                     {
                         // lift Rectangle
-                        Rectangle currentRectangle = CurrentBox.Value;
+                        Rectangle currentRectangle = CurrentIterationBox.Value;
 
                         // write it to a Point
                         Point CurrentPoint = new(currentRectangle.X, currentRectangle.Y);
@@ -155,15 +155,15 @@ namespace Bulk_Thumbnail_Creator
                         CopiedPictureData.ParamForTextCreation.PositionOfText = CurrentPoint;
 
                         // set the currentbox to the currentbox key
-                        if (CurrentBox.Key != Box.Discarded)
+                        if (CurrentIterationBox.Key != CurrentBox)
                         {
-                            CopiedPictureData.ParamForTextCreation.CurrentBox = CurrentBox.Key;
+                            CopiedPictureData.ParamForTextCreation.CurrentBox = CurrentIterationBox.Key;
                         }
 
                         Bitmap sourcePicture = new(CopiedPictureData.FileName);
 
                         // calculate box data, important for TextSettingsGeneration returning a correct ReadSettings object
-                        CopiedPictureData.ParamForTextCreation = CalculateBoxData(CurrentBox.Key, sourcePicture, CopiedPictureData.ParamForTextCreation);
+                        CopiedPictureData.ParamForTextCreation = CalculateBoxData(CurrentIterationBox.Key, sourcePicture, CopiedPictureData.ParamForTextCreation);
 
                         // add it to list of created varieties
                         CopiedPictureData.OutputType = OutputType.BoxPositionVariety;
@@ -188,6 +188,7 @@ namespace Bulk_Thumbnail_Creator
         {
             Dictionary<Box, Rectangle> Boxes = new();
 
+            #region Box Declarations
             // top box
             int TopBoxValueX = 0;
             int TopBoxValueY = 0;
@@ -277,6 +278,7 @@ namespace Bulk_Thumbnail_Creator
             };
 
             Boxes.Add(bottomRightBox, bottomRightBoxRectangle);
+            #endregion
 
             if (faceRect.Length != 0)
             {
@@ -301,13 +303,11 @@ namespace Bulk_Thumbnail_Creator
                     }
 
                     // calculate position of face rectangle in relation to boxes
-
                     int MidPointX = sourcePicture.Width / 2;
                     int MidPointY = sourcePicture.Height / 2;
-                    
-                    #pragma warning disable CA1853
-                    if (!Boxes.ContainsKey(topBox))
 
+#pragma warning disable CA1853
+                    if (!Boxes.ContainsKey(topBox))
                     {
                         Boxes.Remove(topLeftBox);
                         Boxes.Remove(topRightBox);
@@ -326,7 +326,7 @@ namespace Bulk_Thumbnail_Creator
                         }
 
                     }
-                    #pragma warning disable CA1853
+#pragma warning disable CA1853
                     if (!Boxes.ContainsKey(bottomBox))
                     {
                         Boxes.Remove(bottomLeftBox);
@@ -352,30 +352,25 @@ namespace Bulk_Thumbnail_Creator
 
             }
 
-            #pragma warning restore CA1853
+#pragma warning restore CA1853
             // write surviving boxvalues to object
             parameters.Boxes = Boxes;
 
-            if (Boxes.Count == 0)
-            {
-                parameters.CurrentBox = Box.Discarded;
-            }
-            else
+            if (parameters.Boxes.Count != 0)
             {
                 // all calculations done, pick one box
                 Random random = new();
-
-                // picks a random box that has no face in it
                 Box pickedBoxName;
 
+                // picks a random box that has no face in it
                 do
                 {
-                    pickedBoxName = (Box)random.Next(Boxes.Count);
+                    pickedBoxName = (Box)random.Next(parameters.Boxes.Count);
                 }
-                while (!Boxes.ContainsKey(pickedBoxName));
+                while (!parameters.Boxes.ContainsKey(pickedBoxName));
 
                 // tries to read from dictionary
-                Boxes.TryGetValue(pickedBoxName, out Rectangle pickedBoxRectangle);
+                parameters.Boxes.TryGetValue(pickedBoxName, out Rectangle pickedBoxRectangle);
 
                 parameters.CurrentBox = pickedBoxName;
 
@@ -391,7 +386,6 @@ namespace Bulk_Thumbnail_Creator
             }
 
             parameters.Boxes = Boxes;
-
             return parameters;
         }
 
@@ -551,13 +545,41 @@ namespace Bulk_Thumbnail_Creator
                 Dictionary<Box, Rectangle> AvailableBoxes = PictureInputData.ParamForTextCreation.Boxes;
 
                 Box PickedBox;
-                do
-                { //TODO: dont rely on RNG luck lol for it to work
-                    PickedBox = (Box)random.Next(PictureInputData.ParamForTextCreation.Boxes.Count);
-                }
-                while (!AvailableBoxes.ContainsKey(PickedBox));
 
-                VarietyData.ParamForTextCreation.CurrentBox = PickedBox;
+                var availableBoxesExceptCurrent = AvailableBoxes.Keys.Where(box => box != PictureInputData.ParamForTextCreation.CurrentBox)
+                                                                     .ToList();
+
+                if (availableBoxesExceptCurrent.Count > 0)
+                {
+                    int randomIndex = random.Next(availableBoxesExceptCurrent.Count);
+                    PickedBox = availableBoxesExceptCurrent[randomIndex];
+                }
+                else
+                {
+                    PickedBox = VarietyData.ParamForTextCreation.CurrentBox;
+                }
+
+                //do
+                //{ //TODO: dont rely on RNG luck lol for it to work
+                //    PickedBox = (Box)random.Next(PictureInputData.ParamForTextCreation.Boxes.Count);
+                //}
+                //while (!AvailableBoxes.ContainsKey(PickedBox));
+
+                //foreach (Box CurrentIterationBox in AvailableBoxes.Keys)
+                //{
+                //    if (CurrentIterationBox != PictureInputData.ParamForTextCreation.CurrentBox)
+                //    {
+                //        PickedBox = CurrentIterationBox;
+                //        break;
+                //    }
+
+                //}
+
+                if (PickedBox != VarietyData.ParamForTextCreation.CurrentBox)
+                {
+                    VarietyData.ParamForTextCreation.CurrentBox = PickedBox;
+                }
+
 
                 Bitmap src = new(PictureInputData.FileName);
 
@@ -591,7 +613,7 @@ namespace Bulk_Thumbnail_Creator
 
                 Box currentBox = DankifyTarget.ParamForTextCreation.CurrentBox;
 
-                Box PickedBox = Box.Discarded;
+                Box PickedBox = currentBox;
 
                 List<Box> AvailableBoxes;
 
@@ -655,7 +677,7 @@ namespace Bulk_Thumbnail_Creator
 
                 }
 
-                if (PickedBox != Box.Discarded)
+                if (PickedBox != currentBox)
                 {
                     // pick a meme
                     Random pickRandomMeme = new();

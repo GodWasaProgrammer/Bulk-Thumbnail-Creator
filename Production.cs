@@ -55,7 +55,7 @@ namespace Bulk_Thumbnail_Creator
                 }
 
             }
-
+            BTCSettings.YTDLPDir = YTDLPDir;
 
             if (File.Exists(FfMpegDir))
             {
@@ -110,7 +110,7 @@ namespace Bulk_Thumbnail_Creator
             var ytdl = new YoutubeDL
             {
                 // set paths
-                YoutubeDLPath = BTCSettings.YTDLOutPutDir,
+                YoutubeDLPath = BTCSettings.YTDLPDir,
                 FFmpegPath = BTCSettings.FfmpegDir,
                 OutputFolder = BTCSettings.YTDLOutPutDir,
             };

@@ -6,7 +6,6 @@ namespace Bulk_Thumbnail_Creator
     {
         void LogInformation(string message);
         void LogError(string message);
-
     }
 
     public class LogService : ILoggerService

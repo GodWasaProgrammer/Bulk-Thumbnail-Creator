@@ -15,13 +15,13 @@ namespace Bulk_Thumbnail_Creator
         {
             BTCSettings.ListOfText = texts;
 
-            // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
-            Production.CreateDirectories(BTCSettings.OutputDir, BTCSettings.TextAddedDir, BTCSettings.YTDLOutPutDir);
-            Production.VerifyDirectoryAndExeIntegrity();
-            
             #region Front Page Picture Line Up Output
             if (ProdType == ProductionType.FrontPagePictureLineUp)
             {
+                // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
+                Production.CreateDirectories(BTCSettings.OutputDir, BTCSettings.TextAddedDir, BTCSettings.YTDLOutPutDir);
+                Production.VerifyDirectoryAndExeIntegrity();
+
                 BTCSettings.PathToVideo = await Production.YouTubeDL(url);
                 BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
 
@@ -159,7 +159,7 @@ namespace Bulk_Thumbnail_Creator
                     {
                         Production.ProduceTextPictures(PicdataObjToVarietize.Varieties[i]);
                     });
-                    
+
                 }
 
             }
@@ -209,7 +209,7 @@ namespace Bulk_Thumbnail_Creator
             BTCSettings.Logger.LogInformation("Processing Finished");
             return BTCSettings.PictureDatas;
         }
-         #endregion
+        #endregion
         static void Main()
         {
 
