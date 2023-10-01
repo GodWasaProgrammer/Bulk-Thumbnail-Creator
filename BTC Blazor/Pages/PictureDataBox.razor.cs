@@ -1,39 +1,25 @@
 ﻿using Bulk_Thumbnail_Creator.Enums;
+using Bulk_Thumbnail_Creator.InterFaces;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using Microsoft.AspNetCore.Components;
 using System.Drawing;
 
 namespace BTC_Blazor.Pages
 {
-    public partial class PictureDataBox
+    public partial class PictureDataBox : IPictureData
     {
-        private PictureData pictureData;
-
         [Parameter]
-        public PictureData PictureDataProp
-        {
-            get => pictureData;
-            set
-            {
-                pictureData = value;
-                UpdateData();
-            }
-        }
-
+        public PictureData PicData { get; set; }
         public string FileName { get; set; }
+        public string OutPath { get; set; }
         public Box CurrentBox { get; set; }
         public string Font { get; set; }
-        public OutputType outPutType { get; set; }
+        public OutputType OutPutType { get => PicData.OutPutType; set => throw new NotImplementedException(); }
         public Dictionary<Box, Rectangle> AvailableBoxes { get; set; }
-
-        private void UpdateData()
-        {
-            FileName = PictureDataProp.FileName;
-            CurrentBox = PictureDataProp.ParamForTextCreation.CurrentBox;
-            Font = PictureDataProp.ParamForTextCreation.Font;
-            outPutType = PictureDataProp.OutputType;
-            AvailableBoxes = PictureDataProp.ParamForTextCreation.Boxes;
-        }
+        public ParamForTextCreation ParamForTextCreation { get => PicData.ParamForTextCreation; set => throw new NotImplementedException(); }
+        public List<PictureData> Varieties { get => PicData.Varieties; set => throw new NotImplementedException(); }
+        public Box Dankbox { get => PicData.Dankbox; set => throw new NotImplementedException(); }
+        public string Meme { get => PicData.Meme; set => throw new NotImplementedException(); }
 
     }
 

@@ -2,11 +2,12 @@
 using ImageMagick;
 using System.Collections.Generic;
 using System;
+using Bulk_Thumbnail_Creator.InterFaces;
 
 namespace Bulk_Thumbnail_Creator.PictureObjects
 {
     [Serializable]
-    public class PictureData
+    public class PictureData : IPictureData
     {
         /// <summary>
         /// The filename of this object, with relative output path example : output//001.png
@@ -43,7 +44,7 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             _FileName = (string)pictureDataToCopy.FileName.Clone();
             _ParamForTextCreation = new ParamForTextCreation(pictureDataToCopy.ParamForTextCreation);
             _Varieties = new List<PictureData>(pictureDataToCopy.Varieties);
-            _OutputType = pictureDataToCopy.OutputType;
+            _OutputType = pictureDataToCopy.OutPutType;
             _outPath = pictureDataToCopy.OutPath;
             _DankBox = pictureDataToCopy.Dankbox;
             _Meme = pictureDataToCopy._Meme;
@@ -66,7 +67,9 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
 
 
         private OutputType _OutputType;
-        public OutputType OutputType { get { return _OutputType; } set { _OutputType = value; } }
+        public OutputType OutPutType { get { return _OutputType; } set { _OutputType = value; } }
+
+        public PictureData PicData => throw new NotImplementedException();
 
         /// <summary>
         /// Generates MagickReadSettings to be used in a PicturedataObject to decide how text will look

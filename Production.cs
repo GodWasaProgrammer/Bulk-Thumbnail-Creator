@@ -174,43 +174,43 @@ namespace Bulk_Thumbnail_Creator
             string varietyof = "//variety of ";
 
             // if not main type, we will make a directory for files to be written in
-            if (PicData.OutputType != OutputType.Main)
+            if (PicData.OutPutType != OutputType.Main)
             {
                 Directory.CreateDirectory(OutputPath + varietyof + Path.GetFileName(PicData.FileName));
             }
 
-            if (PicData.OutputType == OutputType.Main)
+            if (PicData.OutPutType == OutputType.Main)
             {
                 OutputPath += "//" + trimDateTime + imageName;
                 PicData.OutPath = OutputPath;
             }
-            if (PicData.OutputType == OutputType.BoxPositionVariety)
+            if (PicData.OutPutType == OutputType.BoxPositionVariety)
             {
                 OutputPath += $"{varietyof}{imageName}//{PicData.ParamForTextCreation.CurrentBox}.png";
                 PicData.OutPath = OutputPath;
             }
-            if (PicData.OutputType == OutputType.SaturationVariety)
+            if (PicData.OutPutType == OutputType.SaturationVariety)
             {
                 OutputPath += $"{varietyof}{imageName}//{PicData.ParamForTextCreation.FillColor.Saturation}.png";
                 PicData.OutPath = OutputPath;
             }
-            if (PicData.OutputType == OutputType.FontVariety)
+            if (PicData.OutPutType == OutputType.FontVariety)
             {
                 OutputPath += $"{varietyof}{imageName}//{Path.GetFileNameWithoutExtension(PicData.ReadSettings.Font)}.png";
                 PicData.OutPath = OutputPath;
             }
-            if (PicData.OutputType == OutputType.RandomVariety)
+            if (PicData.OutPutType == OutputType.RandomVariety)
             {
                 counterRandomOutPut++;
                 OutputPath += $"{varietyof}{imageName}//{counterRandomOutPut}.png";
                 PicData.OutPath = OutputPath;
             }
-            if (PicData.OutputType == OutputType.Dankness)
+            if (PicData.OutPutType == OutputType.Dankness)
             {
                 OutputPath += $"{varietyof}{imageName}//{PicData.Dankbox}{trimDateTime}{imageName}.png";
                 PicData.OutPath = OutputPath;
             }
-            if (PicData.OutputType == OutputType.Custom)
+            if (PicData.OutPutType == OutputType.Custom)
             {
                 OutputPath += $"{varietyof}{imageName}//{trimDateTime}Custom of{imageName}.png";
                 PicData.OutPath = OutputPath;
@@ -232,7 +232,7 @@ namespace Bulk_Thumbnail_Creator
 
             outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
 
-            if (PicData.OutputType == OutputType.Dankness)
+            if (PicData.OutPutType == OutputType.Dankness)
             {
                 MagickImage MemeToPutOnPic = new(PicData.Meme);
 

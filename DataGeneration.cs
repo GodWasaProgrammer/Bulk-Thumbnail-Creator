@@ -166,7 +166,7 @@ namespace Bulk_Thumbnail_Creator
                         CopiedPictureData.ParamForTextCreation = CalculateBoxData(CurrentIterationBox.Key, sourcePicture, CopiedPictureData.ParamForTextCreation);
 
                         // add it to list of created varieties
-                        CopiedPictureData.OutputType = OutputType.BoxPositionVariety;
+                        CopiedPictureData.OutPutType = OutputType.BoxPositionVariety;
 
                         PicToVarietize.Varieties.Add(CopiedPictureData);
                     }
@@ -445,7 +445,7 @@ namespace Bulk_Thumbnail_Creator
                 createFontVariety.Varieties.Clear();
 
                 createFontVariety.ParamForTextCreation.Font = font;
-                createFontVariety.OutputType = OutputType.FontVariety;
+                createFontVariety.OutPutType = OutputType.FontVariety;
                 PicToVarietize.Varieties.Add(createFontVariety);
             }
 
@@ -523,7 +523,7 @@ namespace Bulk_Thumbnail_Creator
 
                 VarietyData.ParamForTextCreation = CalculateBoxData(VarietyData.ParamForTextCreation.CurrentBox, src, VarietyData.ParamForTextCreation);
 
-                VarietyData.OutputType = OutputType.SaturationVariety;
+                VarietyData.OutPutType = OutputType.SaturationVariety;
                 PictureInputData.Varieties.Add(VarietyData);
             }
 
@@ -590,7 +590,7 @@ namespace Bulk_Thumbnail_Creator
                 string Font = PickRandomFont();
                 VarietyData.ParamForTextCreation.Font = Font;
 
-                VarietyData.OutputType = OutputType.RandomVariety;
+                VarietyData.OutPutType = OutputType.RandomVariety;
                 // VarietyData.OutPath = $"{CurrentIndex}"; // this is super bad form u donkey
 
                 PictureInputData.Varieties.Add(VarietyData);
@@ -687,7 +687,7 @@ namespace Bulk_Thumbnail_Creator
                     CopiedPicData.Meme = BTCSettings.Memes[PickedMeme];
 
                     // set the type of output
-                    CopiedPicData.OutputType = OutputType.Dankness;
+                    CopiedPicData.OutPutType = OutputType.Dankness;
 
                     DankifyTarget.Varieties.Add(CopiedPicData);
                 }
