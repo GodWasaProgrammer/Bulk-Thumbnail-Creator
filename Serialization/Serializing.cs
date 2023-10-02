@@ -17,12 +17,12 @@ namespace Bulk_Thumbnail_Creator.Serialization
                 XmlSerializer serializer = new(typeof(PictureData));
                 serializer.Serialize(writer, pictureData);
 
-                // Serialize ParamForTextCreation dictionary using your custom serializer
+                // Serialize ParamForTextCreation dictionary
                 DictionarySerializer.Serialize(writer, pictureData.ParamForTextCreation.BoxesProxy);
             }
             catch (Exception ex)
             {
-                // Handle the exception, log it, or rethrow it as needed
+                // Handle the exception, log it
                 BTCSettings.Logger.LogError("Error during serialization: " + ex.Message);
             }
 
@@ -36,7 +36,7 @@ namespace Bulk_Thumbnail_Creator.Serialization
                 XmlSerializer serializer = new(typeof(PictureData));
                 PictureData pictureData = (PictureData)serializer.Deserialize(reader);
 
-                // Deserialize ParamForTextCreation dictionary using your custom serializer
+                // Deserialize ParamForTextCreation dictionary 
                 Dictionary<string, Rectangle> boxes = new();
                 DictionarySerializer.Deserialize(reader, pictureData.ParamForTextCreation.BoxesProxy);
 
@@ -46,9 +46,9 @@ namespace Bulk_Thumbnail_Creator.Serialization
             }
             catch (Exception ex)
             {
-                // Handle the exception, log it, or rethrow it as needed
+                // Handle the exception, log it,
                 BTCSettings.Logger.LogError("Error during deserialization: " + ex.Message);
-                return null; // You may want to return null or throw a custom exception
+                return null; // return null or throw a custom exception
             }
 
         }

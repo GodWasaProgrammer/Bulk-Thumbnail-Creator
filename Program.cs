@@ -210,6 +210,7 @@ namespace Bulk_Thumbnail_Creator
             return BTCSettings.PictureDatas;
         }
         #endregion
+
         static void Main()
         {
 

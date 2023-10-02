@@ -212,7 +212,7 @@ namespace Bulk_Thumbnail_Creator
             }
             if (PicData.OutPutType == OutputType.Custom)
             {
-                OutputPath += $"{varietyof}{imageName}//{trimDateTime}Custom of{imageName}.png";
+                OutputPath += $"{varietyof}{imageName}//{trimDateTime}Custom of{imageName}";
                 PicData.OutPath = OutputPath;
             }
 

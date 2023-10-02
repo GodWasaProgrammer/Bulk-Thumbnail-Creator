@@ -2,13 +2,7 @@
 
 namespace Bulk_Thumbnail_Creator
 {
-    public interface ILoggerService
-    {
-        void LogInformation(string message);
-        void LogError(string message);
-    }
-
-    public class LogService : ILoggerService
+    public class LogService 
     {
         private readonly Serilog.Core.Logger _logger;
 
