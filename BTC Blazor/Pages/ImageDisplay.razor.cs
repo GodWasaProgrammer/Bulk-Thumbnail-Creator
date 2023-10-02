@@ -1,4 +1,5 @@
 ﻿using Bulk_Thumbnail_Creator;
+using Microsoft.AspNetCore.Components;
 
 namespace BTC_Blazor.Pages
 {
@@ -11,21 +12,15 @@ namespace BTC_Blazor.Pages
         protected override async Task OnInitializedAsync()
         {
             await UpdateImageUrls();
-
-            TimerInterval = 5000;
-            var Timer = new System.Threading.Timer(async _ =>
-            {
-                await UpdateImageUrlsWithInvoke();
-            }, null, TimerInterval, TimerInterval);
         }
 
         // Method to update the list of image URLs
-        private Task UpdateImageUrls()
+        private async Task UpdateImageUrls()
         {
             string imagePath = BTCSettings.TextAddedDir;
 
-            // Get the list of image files in the folder
-            string[] imageFiles = Directory.GetFiles(imagePath, "*.png");
+            // Get the list of image files in the folder asynchronously
+            string[] imageFiles = await Task.Run(() => Directory.GetFiles(imagePath, "*.png"));
 
             // Initialize the image URLs list
             imageUrls = new List<string>();
@@ -39,18 +34,23 @@ namespace BTC_Blazor.Pages
 
             // Notify the component that the state has changed
             StateHasChanged();
-            return Task.CompletedTask;
         }
 
-        // update the list of image URLs using InvokeAsync
-        private async Task UpdateImageUrlsWithInvoke()
+        [Inject]
+        private NavigationManager NavigationManager { get; set; }
+
+        private bool IMGDetailClicked = false;
+
+        private async Task ShowImageDetail(string imageUrl)
         {
-            // Use InvokeAsync to switch to the Blazor UI thread before calling UpdateImageUrls
-            await InvokeAsync(UpdateImageUrls);
+            IMGDetailClicked = true;
+
+            // Add an asynchronous delay (if needed) to allow other operations to complete.
+            await Task.Delay(50000); // Adjust the delay time as needed.
+
+            NavigationManager.NavigateTo($"/imagedetail/{Uri.EscapeDataString(imageUrl)}");
         }
 
-        // Timer properties
-        private int TimerInterval { get; set; }
     }
 
 }

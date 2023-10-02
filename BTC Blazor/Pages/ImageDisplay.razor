@@ -3,16 +3,19 @@
 
 @if (IMGDetailClicked == false)
 {
-    <div class="image-container">
-
+   
+        @if(imageUrls != null)
+        {
+        <div class="image-container">
         @foreach (var imageUrl in imageUrls)
         {
             <button class="image-button" @onclick="() => ShowImageDetail(imageUrl)">
                 <img src="@imageUrl" style="max-width: 300px; margin: 10px;" />
             </button>
+            }
+        </div>
         }
 
-    </div>
 }
 else
 {
@@ -22,20 +25,5 @@ else
             <img src="images/pepe-dance.gif" alt="Loading..." style="width: 500px; height: 500px; border:0;" />
         </div>
     </div>
-
-}
-
-@code
-{
-    [Inject]
-    private NavigationManager NavigationManager { get; set; }
-
-    private bool IMGDetailClicked = false;
-
-    private void ShowImageDetail(string imageUrl)
-    {
-        IMGDetailClicked = true;
-        NavigationManager.NavigateTo($"/imagedetail/{Uri.EscapeDataString(imageUrl)}");
-    }
 
 }

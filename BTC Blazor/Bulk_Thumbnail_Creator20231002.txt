@@ -1,556 +1,526 @@
-2023-10-02 13:57:11.996 +02:00 [INF] Current Location: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
-2023-10-02 13:57:12.035 +02:00 [INF] Parent Directory: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
-2023-10-02 13:57:12.036 +02:00 [INF] New Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
-2023-10-02 13:57:12.036 +02:00 [INF] YTDLP Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
-2023-10-02 13:57:12.037 +02:00 [INF] FFmpeg Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
-2023-10-02 13:57:12.038 +02:00 [INF] YTDL Dir found:C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
-2023-10-02 13:57:12.040 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=excszfdb_Ls
-2023-10-02 13:57:25.896 +02:00 [INF] Download Success:True
-2023-10-02 13:57:45.794 +02:00 [INF] Ffmpeg finished producing pictures
-2023-10-02 13:57:45.870 +02:00 [INF] Processing 18 images
-2023-10-02 13:57:46.521 +02:00 [INF]  Discarded Amount Of Pictures:0
-2023-10-02 13:57:51.147 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 135747007.png
-2023-10-02 13:57:51.157 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 135747001.png
-2023-10-02 13:57:51.160 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 135747006.png
-2023-10-02 13:57:51.341 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 135747004.png
-2023-10-02 13:57:51.425 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 135747012.png
-2023-10-02 13:57:51.522 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 135747008.png
-2023-10-02 13:57:51.638 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 135747015.png
-2023-10-02 13:57:51.638 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 135747016.png
-2023-10-02 13:57:51.667 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 135747003.png
-2023-10-02 13:57:51.779 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 135747013.png
-2023-10-02 13:57:51.840 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 135747014.png
-2023-10-02 13:57:51.992 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 135747017.png
-2023-10-02 13:57:52.067 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 135747018.png
-2023-10-02 13:57:52.128 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 135747009.png
-2023-10-02 13:57:52.221 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 135747011.png
-2023-10-02 13:57:52.222 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 135747005.png
-2023-10-02 13:57:52.297 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 135747002.png
-2023-10-02 13:57:52.569 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 135747010.png
-2023-10-02 13:57:52.573 +02:00 [INF] Processing Finished
-2023-10-02 14:02:00.461 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//0,2992126.png
-2023-10-02 14:02:01.117 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//2.png
-2023-10-02 14:02:01.249 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//0,55118114.png
-2023-10-02 14:02:01.327 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//1.png
-2023-10-02 14:02:01.452 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//0,8503937.png
-2023-10-02 14:02:01.531 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//1.png
-2023-10-02 14:02:01.579 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//BAUHS93.png
-2023-10-02 14:02:01.604 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//Roboto-Black.png
-2023-10-02 14:02:01.679 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//0,44881886.png
-2023-10-02 14:02:01.711 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//BottomLeft.png
-2023-10-02 14:02:01.745 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//BottomRight.png
-2023-10-02 14:02:01.769 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//7.png
-2023-10-02 14:02:01.797 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//Roboto-MediumItalic.png
-2023-10-02 14:02:01.861 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//Montserrat-SemiBold.png
-2023-10-02 14:02:01.906 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//4.png
-2023-10-02 14:02:01.917 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//3.png
-2023-10-02 14:02:01.983 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//Montserrat-Light.png
-2023-10-02 14:02:02.038 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//5.png
-2023-10-02 14:02:02.045 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//6.png
-2023-10-02 14:02:02.050 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//tahoma.png
-2023-10-02 14:02:02.218 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//8.png
-2023-10-02 14:02:03.645 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//9.png
-2023-10-02 14:02:03.991 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//12.png
-2023-10-02 14:02:04.083 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//11.png
-2023-10-02 14:02:04.189 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//13.png
-2023-10-02 14:02:04.219 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//10.png
-2023-10-02 14:02:04.310 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//14.png
-2023-10-02 14:02:04.354 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//15.png
-2023-10-02 14:02:04.356 +02:00 [INF] Processing Finished
-2023-10-02 14:02:22.371 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//2023-10-02 140220Custom of008.png.png
-2023-10-02 14:02:22.374 +02:00 [INF] Processing Finished
-2023-10-02 14:07:01.294 +02:00 [INF] Current Location: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
-2023-10-02 14:07:01.320 +02:00 [INF] Parent Directory: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
-2023-10-02 14:07:01.321 +02:00 [INF] New Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
-2023-10-02 14:07:01.322 +02:00 [INF] YTDLP Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
-2023-10-02 14:07:01.322 +02:00 [INF] FFmpeg Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
-2023-10-02 14:07:01.323 +02:00 [INF] YTDL Dir found:C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
-2023-10-02 14:07:01.324 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=excszfdb_Ls
-2023-10-02 14:07:13.995 +02:00 [INF] Download Success:True
-2023-10-02 14:07:37.657 +02:00 [INF] Ffmpeg finished producing pictures
-2023-10-02 14:07:37.751 +02:00 [INF] Processing 18 images
-2023-10-02 14:07:38.596 +02:00 [INF]  Discarded Amount Of Pictures:0
-2023-10-02 14:07:52.168 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 140740003.png
-2023-10-02 14:07:54.125 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 140740014.png
-2023-10-02 14:07:53.160 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 140740015.png
-2023-10-02 14:07:54.235 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 140740006.png
-2023-10-02 14:07:54.093 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 140740016.png
-2023-10-02 14:07:53.904 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 140740001.png
-2023-10-02 14:07:53.078 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 140740005.png
-2023-10-02 14:07:54.223 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 140740007.png
-2023-10-02 14:07:54.544 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 140740017.png
-2023-10-02 14:07:54.603 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 140740018.png
-2023-10-02 14:07:54.683 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 140740002.png
-2023-10-02 14:07:54.831 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 140740013.png
-2023-10-02 14:07:54.874 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 140740009.png
-2023-10-02 14:07:55.067 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 140740010.png
-2023-10-02 14:07:55.073 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 140740012.png
-2023-10-02 14:07:55.184 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 140740008.png
-2023-10-02 14:07:55.580 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 140740011.png
-2023-10-02 14:07:55.585 +02:00 [INF] Processing Finished
-2023-10-02 14:09:43.922 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,55118114.png
-2023-10-02 14:09:47.091 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//1.png
-2023-10-02 14:09:45.440 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,44881886.png
-2023-10-02 14:09:47.579 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,2992126.png
-2023-10-02 14:09:46.234 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,8503937.png
-2023-10-02 14:09:55.138 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//6.png
-2023-10-02 14:09:46.234 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//MAGNETOB.png
-2023-10-02 14:09:48.658 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Montserrat-ExtraBoldItalic.png
-2023-10-02 14:09:46.727 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//arialbd.png
-2023-10-02 14:09:47.236 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Roboto-Black.png
-2023-10-02 14:09:48.467 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//SHOWG.png
-2023-10-02 14:09:48.340 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//ariali.png
-2023-10-02 14:09:47.594 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//BottomLeft.png
-2023-10-02 14:09:49.049 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//BottomRight.png
-2023-10-02 14:09:50.737 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//1.png
-2023-10-02 14:09:50.479 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//2.png
-2023-10-02 14:09:52.208 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//3.png
-2023-10-02 14:09:55.247 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//4.png
-2023-10-02 14:09:56.042 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//5.png
-2023-10-02 14:09:56.837 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//7.png
-2023-10-02 14:09:57.211 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//8.png
-2023-10-02 14:09:57.426 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//10.png
-2023-10-02 14:09:57.497 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//9.png
-2023-10-02 14:09:57.989 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//11.png
-2023-10-02 14:09:58.227 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//13.png
-2023-10-02 14:09:58.384 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//12.png
-2023-10-02 14:09:58.891 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//14.png
-2023-10-02 14:09:59.236 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//15.png
-2023-10-02 14:09:59.241 +02:00 [INF] Processing Finished
-2023-10-02 14:10:34.707 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//2023-10-02 141031Custom of003.png.png
-2023-10-02 14:10:34.711 +02:00 [INF] Processing Finished
-2023-10-02 14:13:23.323 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//2023-10-02 141321Custom of003.png
-2023-10-02 14:13:23.324 +02:00 [INF] Processing Finished
-2023-10-02 14:19:30.984 +02:00 [INF] Current Location: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
-2023-10-02 14:19:31.011 +02:00 [INF] Parent Directory: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
-2023-10-02 14:19:31.012 +02:00 [INF] New Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
-2023-10-02 14:19:31.013 +02:00 [INF] YTDLP Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
-2023-10-02 14:19:31.013 +02:00 [INF] FFmpeg Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
-2023-10-02 14:19:31.014 +02:00 [INF] YTDL Dir found:C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
-2023-10-02 14:19:31.016 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=excszfdb_Ls
-2023-10-02 14:19:43.204 +02:00 [INF] Download Success:True
-2023-10-02 14:20:02.303 +02:00 [INF] Ffmpeg finished producing pictures
-2023-10-02 14:20:02.372 +02:00 [INF] Processing 18 images
-2023-10-02 14:20:02.948 +02:00 [INF]  Discarded Amount Of Pictures:0
-2023-10-02 14:20:06.769 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142003009.png
-2023-10-02 14:20:06.798 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142003004.png
-2023-10-02 14:20:06.877 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142003005.png
-2023-10-02 14:20:06.913 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142003011.png
-2023-10-02 14:20:07.058 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142003008.png
-2023-10-02 14:20:07.111 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142003015.png
-2023-10-02 14:20:07.138 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142003014.png
-2023-10-02 14:20:07.199 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142003002.png
-2023-10-02 14:20:07.256 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142003007.png
-2023-10-02 14:20:07.315 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142003012.png
-2023-10-02 14:20:07.407 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142003013.png
-2023-10-02 14:20:07.448 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142003010.png
-2023-10-02 14:20:07.712 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142003006.png
-2023-10-02 14:20:07.715 +02:00 [INF] Processing Finished
-2023-10-02 14:20:16.490 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//BottomRight.png
-2023-10-02 14:20:17.350 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//12.png
-2023-10-02 14:20:17.412 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//Roboto-BlackItalic.png
-2023-10-02 14:20:17.417 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//9.png
-2023-10-02 14:20:17.615 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//0,8503937.png
-2023-10-02 14:20:17.696 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//0,55118114.png
-2023-10-02 14:20:17.778 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//14.png
-2023-10-02 14:20:17.894 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//ariblk.png
-2023-10-02 14:20:17.918 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//ALGER.png
-2023-10-02 14:20:18.111 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//Roboto-Black.png
-2023-10-02 14:20:18.163 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//4.png
-2023-10-02 14:20:18.169 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//11.png
-2023-10-02 14:20:18.235 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//8.png
-2023-10-02 14:20:18.286 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//0,44881886.png
-2023-10-02 14:20:18.309 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//Montserrat-LightItalic.png
-2023-10-02 14:20:18.341 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//1.png
-2023-10-02 14:20:18.449 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//1.png
-2023-10-02 14:20:18.456 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//13.png
-2023-10-02 14:20:18.478 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//6.png
-2023-10-02 14:20:18.646 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//Roboto-Medium.png
-2023-10-02 14:20:18.704 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//BottomLeft.png
-2023-10-02 14:20:18.720 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//10.png
-2023-10-02 14:20:18.729 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//15.png
-2023-10-02 14:20:18.732 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//0,2992126.png
-2023-10-02 14:20:18.763 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//3.png
-2023-10-02 14:20:18.768 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//9.png
-2023-10-02 14:20:18.827 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//6.png
-2023-10-02 14:20:18.947 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//2.png
-2023-10-02 14:20:18.949 +02:00 [INF] Processing Finished
-2023-10-02 14:24:04.837 +02:00 [INF] Current Location: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
-2023-10-02 14:24:04.864 +02:00 [INF] Parent Directory: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
-2023-10-02 14:24:04.866 +02:00 [INF] New Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
-2023-10-02 14:24:04.866 +02:00 [INF] YTDLP Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
-2023-10-02 14:24:04.867 +02:00 [INF] FFmpeg Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
-2023-10-02 14:24:04.868 +02:00 [INF] YTDL Dir found:C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
-2023-10-02 14:24:04.869 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=excszfdb_Ls
-2023-10-02 14:24:16.173 +02:00 [INF] Download Success:True
-2023-10-02 14:24:40.245 +02:00 [INF] Ffmpeg finished producing pictures
-2023-10-02 14:24:40.339 +02:00 [INF] Processing 18 images
-2023-10-02 14:24:41.196 +02:00 [INF]  Discarded Amount Of Pictures:0
-2023-10-02 14:24:55.961 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142443018.png
-2023-10-02 14:24:56.306 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142443017.png
-2023-10-02 14:24:56.198 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142443005.png
-2023-10-02 14:24:57.369 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142443002.png
-2023-10-02 14:24:57.650 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142443015.png
-2023-10-02 14:24:57.690 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142443014.png
-2023-10-02 14:24:57.547 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142443008.png
-2023-10-02 14:24:57.929 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142443006.png
-2023-10-02 14:24:58.001 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142443003.png
-2023-10-02 14:24:58.354 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142443012.png
-2023-10-02 14:24:58.448 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142443016.png
-2023-10-02 14:24:58.469 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142443009.png
-2023-10-02 14:24:58.478 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142443011.png
-2023-10-02 14:24:58.683 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142443004.png
-2023-10-02 14:24:58.850 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142443001.png
-2023-10-02 14:24:59.381 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142443007.png
-2023-10-02 14:24:59.615 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142443013.png
-2023-10-02 14:24:59.856 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 142443010.png
-2023-10-02 14:24:59.861 +02:00 [INF] Processing Finished
-2023-10-02 14:25:24.327 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//1.png
-2023-10-02 14:25:24.716 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//COOPBL.png
-2023-10-02 14:25:25.660 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//7.png
-2023-10-02 14:25:25.893 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//5.png
-2023-10-02 14:25:26.358 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//MAGNETOB.png
-2023-10-02 14:25:26.571 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//0,2992126.png
-2023-10-02 14:25:26.595 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//14.png
-2023-10-02 14:25:26.991 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//10.png
-2023-10-02 14:25:26.628 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//BottomRight.png
-2023-10-02 14:25:27.233 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//segoepr.png
-2023-10-02 14:25:27.341 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//6.png
-2023-10-02 14:25:27.495 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//0,55118114.png
-2023-10-02 14:25:27.499 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//4.png
-2023-10-02 14:25:27.562 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//0,44881886.png
-2023-10-02 14:25:27.839 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//13.png
-2023-10-02 14:25:28.041 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//BottomLeft.png
-2023-10-02 14:25:28.056 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//1.png
-2023-10-02 14:25:28.459 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//2.png
-2023-10-02 14:25:28.608 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//3.png
-2023-10-02 14:25:28.657 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//8.png
-2023-10-02 14:25:28.695 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//12.png
-2023-10-02 14:25:28.800 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//11.png
-2023-10-02 14:25:28.884 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//Montserrat-ExtraBold.png
-2023-10-02 14:25:28.888 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//0,8503937.png
-2023-10-02 14:25:28.894 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//Montserrat-Bold.png
-2023-10-02 14:25:29.094 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//15.png
-2023-10-02 14:25:29.254 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//Montserrat-SemiBold.png
-2023-10-02 14:25:29.372 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 008.png//9.png
-2023-10-02 14:25:29.376 +02:00 [INF] Processing Finished
-2023-10-02 14:32:24.231 +02:00 [INF] Current Location: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
-2023-10-02 14:32:24.259 +02:00 [INF] Parent Directory: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
-2023-10-02 14:32:24.260 +02:00 [INF] New Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
-2023-10-02 14:32:24.260 +02:00 [INF] YTDLP Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
-2023-10-02 14:32:24.261 +02:00 [INF] FFmpeg Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
-2023-10-02 14:32:24.261 +02:00 [INF] YTDL Dir found:C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
-2023-10-02 14:32:24.262 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=excszfdb_Ls
-2023-10-02 14:32:35.782 +02:00 [INF] Download Success:True
-2023-10-02 14:32:59.574 +02:00 [INF] Ffmpeg finished producing pictures
-2023-10-02 14:32:59.670 +02:00 [INF] Processing 18 images
-2023-10-02 14:33:00.591 +02:00 [INF]  Discarded Amount Of Pictures:0
-2023-10-02 14:33:14.762 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143302002.png
-2023-10-02 14:33:15.044 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143302015.png
-2023-10-02 14:33:15.987 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143302008.png
-2023-10-02 14:33:15.427 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143302016.png
-2023-10-02 14:33:16.615 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143302009.png
-2023-10-02 14:33:16.173 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143302017.png
-2023-10-02 14:33:16.766 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143302014.png
-2023-10-02 14:33:16.351 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143302012.png
-2023-10-02 14:33:16.219 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143302018.png
-2023-10-02 14:33:16.733 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143302005.png
-2023-10-02 14:33:15.863 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143302006.png
-2023-10-02 14:33:15.390 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143302007.png
-2023-10-02 14:33:15.815 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143302004.png
-2023-10-02 14:33:16.897 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143302013.png
-2023-10-02 14:33:17.023 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143302003.png
-2023-10-02 14:33:17.181 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143302011.png
-2023-10-02 14:33:17.563 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143302010.png
-2023-10-02 14:33:17.566 +02:00 [INF] Processing Finished
-2023-10-02 14:33:37.841 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//1.png
-2023-10-02 14:33:39.397 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//3.png
-2023-10-02 14:33:40.895 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//8.png
-2023-10-02 14:33:39.081 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//5.png
-2023-10-02 14:33:39.094 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//0,2992126.png
-2023-10-02 14:33:39.211 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//4.png
-2023-10-02 14:33:39.317 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//1.png
-2023-10-02 14:33:40.895 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//7.png
-2023-10-02 14:33:39.081 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//2.png
-2023-10-02 14:33:40.900 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//6.png
-2023-10-02 14:33:41.253 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//BottomLeft.png
-2023-10-02 14:33:40.897 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//BottomRight.png
-2023-10-02 14:33:39.081 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//Roboto-LightItalic.png
-2023-10-02 14:33:41.634 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//Montserrat-LightItalic.png
-2023-10-02 14:33:40.036 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//Montserrat-SemiBoldItalic.png
-2023-10-02 14:33:41.271 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//Montserrat-Bold.png
-2023-10-02 14:33:40.897 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//Roboto-BoldItalic.png
-2023-10-02 14:33:39.713 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//0,8503937.png
-2023-10-02 14:33:41.796 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//0,44881886.png
-2023-10-02 14:33:41.950 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//Montserrat-Light.png
-2023-10-02 14:33:40.897 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//0,55118114.png
-2023-10-02 14:33:41.253 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//9.png
-2023-10-02 14:33:43.702 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//10.png
-2023-10-02 14:33:43.786 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//11.png
-2023-10-02 14:33:43.816 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//12.png
-2023-10-02 14:33:44.549 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//13.png
-2023-10-02 14:33:45.254 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//14.png
-2023-10-02 14:33:45.413 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//15.png
-2023-10-02 14:33:45.417 +02:00 [INF] Processing Finished
-2023-10-02 14:34:27.840 +02:00 [INF] Current Location: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
-2023-10-02 14:34:27.868 +02:00 [INF] Parent Directory: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
-2023-10-02 14:34:27.869 +02:00 [INF] New Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
-2023-10-02 14:34:27.869 +02:00 [INF] YTDLP Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
-2023-10-02 14:34:27.869 +02:00 [INF] FFmpeg Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
-2023-10-02 14:34:27.870 +02:00 [INF] YTDL Dir found:C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
-2023-10-02 14:34:27.871 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=excszfdb_Ls
-2023-10-02 14:34:38.607 +02:00 [INF] Download Success:True
-2023-10-02 14:35:02.005 +02:00 [INF] Ffmpeg finished producing pictures
-2023-10-02 14:35:02.088 +02:00 [INF] Processing 18 images
-2023-10-02 14:35:02.959 +02:00 [INF]  Discarded Amount Of Pictures:0
-2023-10-02 14:35:18.139 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143505003.png
-2023-10-02 14:35:19.394 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143505017.png
-2023-10-02 14:35:18.857 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143505007.png
-2023-10-02 14:35:18.519 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143505001.png
-2023-10-02 14:35:20.118 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143505009.png
-2023-10-02 14:35:20.213 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143505005.png
-2023-10-02 14:35:21.619 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143505011.png
-2023-10-02 14:35:20.767 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143505016.png
-2023-10-02 14:35:20.933 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143505006.png
-2023-10-02 14:35:21.214 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143505015.png
-2023-10-02 14:35:21.251 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143505018.png
-2023-10-02 14:35:21.451 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143505008.png
-2023-10-02 14:35:21.595 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143505014.png
-2023-10-02 14:35:21.428 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143505002.png
-2023-10-02 14:35:21.362 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143505013.png
-2023-10-02 14:35:19.735 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143505012.png
-2023-10-02 14:35:21.685 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143505010.png
-2023-10-02 14:35:21.956 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143505004.png
-2023-10-02 14:35:21.961 +02:00 [INF] Processing Finished
-2023-10-02 14:35:48.275 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//9.png
-2023-10-02 14:35:48.275 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//8.png
-2023-10-02 14:35:48.276 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Roboto-Black.png
-2023-10-02 14:35:48.276 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,44881886.png
-2023-10-02 14:35:48.275 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//4.png
-2023-10-02 14:35:49.309 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//1.png
-2023-10-02 14:35:49.309 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//5.png
-2023-10-02 14:35:49.309 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//2.png
-2023-10-02 14:35:49.309 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//7.png
-2023-10-02 14:35:49.309 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//6.png
-2023-10-02 14:35:48.455 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Roboto-ThinItalic.png
-2023-10-02 14:35:49.309 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//1.png
-2023-10-02 14:35:48.995 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,55118114.png
-2023-10-02 14:35:49.446 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Roboto-LightItalic.png
-2023-10-02 14:35:49.526 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Montserrat-SemiBold.png
-2023-10-02 14:35:49.593 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//3.png
-2023-10-02 14:35:49.744 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//BottomRight.png
-2023-10-02 14:35:49.783 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//BottomLeft.png
-2023-10-02 14:35:49.785 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//12.png
-2023-10-02 14:35:49.978 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//10.png
-2023-10-02 14:35:50.255 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,2992126.png
-2023-10-02 14:35:50.519 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//11.png
-2023-10-02 14:35:50.551 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,8503937.png
-2023-10-02 14:35:50.777 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Montserrat-BoldItalic.png
-2023-10-02 14:35:50.822 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//13.png
-2023-10-02 14:35:51.012 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Montserrat-SemiBoldItalic.png
-2023-10-02 14:35:51.561 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//14.png
-2023-10-02 14:35:52.849 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//15.png
-2023-10-02 14:35:52.853 +02:00 [INF] Processing Finished
-2023-10-02 14:36:29.376 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,8503937.png
-2023-10-02 14:36:29.376 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,55118114.png
-2023-10-02 14:36:32.035 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//1.png
-2023-10-02 14:36:32.035 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,2992126.png
-2023-10-02 14:36:32.036 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Roboto-Black.png
-2023-10-02 14:36:33.139 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Montserrat-SemiBoldItalic.png
-2023-10-02 14:36:33.493 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,44881886.png
-2023-10-02 14:36:33.853 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Roboto-ThinItalic.png
-2023-10-02 14:36:34.618 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//BottomLeft.png
-2023-10-02 14:36:34.649 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//17.png
-2023-10-02 14:36:34.660 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//BottomRight.png
-2023-10-02 14:36:34.755 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Montserrat-BoldItalic.png
-2023-10-02 14:36:35.292 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Montserrat-SemiBold.png
-2023-10-02 14:36:35.505 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//17.png
-2023-10-02 14:36:35.902 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//18.png
-2023-10-02 14:36:35.951 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Roboto-LightItalic.png
-2023-10-02 14:36:36.637 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//19.png
-2023-10-02 14:36:37.311 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//20.png
-2023-10-02 14:36:37.981 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//21.png
-2023-10-02 14:36:38.105 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//23.png
-2023-10-02 14:36:38.558 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//22.png
-2023-10-02 14:36:39.549 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//25.png
-2023-10-02 14:36:39.909 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//24.png
-2023-10-02 14:36:40.036 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//26.png
-2023-10-02 14:36:40.374 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//29.png
-2023-10-02 14:36:40.534 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//30.png
-2023-10-02 14:36:40.620 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//27.png
-2023-10-02 14:36:40.667 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//28.png
-2023-10-02 14:36:40.672 +02:00 [INF] Processing Finished
-2023-10-02 14:37:12.040 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,2992126.png
-2023-10-02 14:37:12.042 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//42.png
-2023-10-02 14:37:13.139 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//41.png
-2023-10-02 14:37:13.140 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//38.png
-2023-10-02 14:37:12.216 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//BottomRight.png
-2023-10-02 14:37:12.127 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//BottomLeft.png
-2023-10-02 14:37:12.189 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,8503937.png
-2023-10-02 14:37:13.344 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//33.png
-2023-10-02 14:37:13.717 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//32.png
-2023-10-02 14:37:13.755 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,44881886.png
-2023-10-02 14:37:13.801 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//34.png
-2023-10-02 14:37:14.108 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//31.png
-2023-10-02 14:37:14.679 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//39.png
-2023-10-02 14:37:14.729 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//35.png
-2023-10-02 14:37:14.844 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Roboto-ThinItalic.png
-2023-10-02 14:37:14.878 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Roboto-LightItalic.png
-2023-10-02 14:37:14.898 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//1.png
-2023-10-02 14:37:15.247 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Roboto-Black.png
-2023-10-02 14:37:15.359 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,55118114.png
-2023-10-02 14:37:15.571 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//44.png
-2023-10-02 14:37:15.630 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//37.png
-2023-10-02 14:37:15.626 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Montserrat-SemiBoldItalic.png
-2023-10-02 14:37:15.797 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//40.png
-2023-10-02 14:37:15.836 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//36.png
-2023-10-02 14:37:15.858 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Montserrat-SemiBold.png
-2023-10-02 14:37:15.862 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Montserrat-BoldItalic.png
-2023-10-02 14:37:16.057 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//45.png
-2023-10-02 14:37:16.091 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//43.png
-2023-10-02 14:37:16.095 +02:00 [INF] Processing Finished
-2023-10-02 14:38:32.193 +02:00 [INF] Current Location: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
-2023-10-02 14:38:32.220 +02:00 [INF] Parent Directory: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
-2023-10-02 14:38:32.221 +02:00 [INF] New Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
-2023-10-02 14:38:32.221 +02:00 [INF] YTDLP Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
-2023-10-02 14:38:32.221 +02:00 [INF] FFmpeg Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
-2023-10-02 14:38:32.222 +02:00 [INF] YTDL Dir found:C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
-2023-10-02 14:38:32.223 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=excszfdb_Ls
-2023-10-02 14:38:42.858 +02:00 [INF] Download Success:True
-2023-10-02 14:39:06.585 +02:00 [INF] Ffmpeg finished producing pictures
-2023-10-02 14:39:06.680 +02:00 [INF] Processing 18 images
-2023-10-02 14:39:07.633 +02:00 [INF]  Discarded Amount Of Pictures:0
-2023-10-02 14:39:23.067 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143909007.png
-2023-10-02 14:39:23.674 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143909012.png
-2023-10-02 14:39:24.883 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143909017.png
-2023-10-02 14:39:23.067 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143909015.png
-2023-10-02 14:39:24.028 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143909018.png
-2023-10-02 14:39:24.111 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143909016.png
-2023-10-02 14:39:24.131 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143909014.png
-2023-10-02 14:39:24.030 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143909001.png
-2023-10-02 14:39:24.361 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143909004.png
-2023-10-02 14:39:25.071 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143909011.png
-2023-10-02 14:39:24.028 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143909005.png
-2023-10-02 14:39:24.112 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143909006.png
-2023-10-02 14:39:25.088 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143909013.png
-2023-10-02 14:39:25.164 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143909002.png
-2023-10-02 14:39:25.178 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143909009.png
-2023-10-02 14:39:25.533 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143909010.png
-2023-10-02 14:39:25.816 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143909008.png
-2023-10-02 14:39:25.826 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 143909003.png
-2023-10-02 14:39:25.828 +02:00 [INF] Processing Finished
-2023-10-02 14:39:46.579 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//5.png
-2023-10-02 14:39:47.050 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//BottomLeft.png
-2023-10-02 14:39:47.124 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//6.png
-2023-10-02 14:39:47.125 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//2.png
-2023-10-02 14:39:47.166 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//tahoma.png
-2023-10-02 14:39:47.259 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//5.png
-2023-10-02 14:39:47.296 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//BottomRight.png
-2023-10-02 14:39:47.380 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//3.png
-2023-10-02 14:39:47.415 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//Roboto-Bold.png
-2023-10-02 14:39:47.469 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//1.png
-2023-10-02 14:39:47.473 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//1.png
-2023-10-02 14:39:47.504 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//Montserrat-ExtraBoldItalic.png
-2023-10-02 14:39:47.517 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//8.png
-2023-10-02 14:39:47.641 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//10.png
-2023-10-02 14:39:47.641 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//Montserrat-ExtraLight.png
-2023-10-02 14:39:47.721 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//12.png
-2023-10-02 14:39:47.866 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//0,44881886.png
-2023-10-02 14:39:47.908 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//9.png
-2023-10-02 14:39:47.965 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//13.png
-2023-10-02 14:39:47.974 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//11.png
-2023-10-02 14:39:47.978 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//7.png
-2023-10-02 14:39:48.039 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//0,8503937.png
-2023-10-02 14:39:48.142 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//Montserrat-BlackItalic.png
-2023-10-02 14:39:48.187 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//Montserrat-BoldItalic.png
-2023-10-02 14:39:48.309 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//0,55118114.png
-2023-10-02 14:39:48.359 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//0,2992126.png
-2023-10-02 14:39:48.528 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//14.png
-2023-10-02 14:39:49.226 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//15.png
-2023-10-02 14:39:49.228 +02:00 [INF] Processing Finished
-2023-10-02 14:42:41.399 +02:00 [INF] Current Location: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
-2023-10-02 14:42:41.427 +02:00 [INF] Parent Directory: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
-2023-10-02 14:42:41.427 +02:00 [INF] New Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
-2023-10-02 14:42:41.428 +02:00 [INF] YTDLP Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
-2023-10-02 14:42:41.428 +02:00 [INF] FFmpeg Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
-2023-10-02 14:42:41.429 +02:00 [INF] YTDL Dir found:C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
-2023-10-02 14:42:41.430 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=excszfdb_Ls
-2023-10-02 14:42:51.849 +02:00 [INF] Download Success:True
-2023-10-02 14:43:12.284 +02:00 [INF] Ffmpeg finished producing pictures
-2023-10-02 14:43:12.363 +02:00 [INF] Processing 18 images
-2023-10-02 14:43:12.924 +02:00 [INF]  Discarded Amount Of Pictures:0
-2023-10-02 14:43:16.876 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144313008.png
-2023-10-02 14:43:17.250 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144313014.png
-2023-10-02 14:43:17.356 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144313007.png
-2023-10-02 14:43:17.377 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144313009.png
-2023-10-02 14:43:17.464 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144313016.png
-2023-10-02 14:43:17.479 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144313015.png
-2023-10-02 14:43:17.538 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144313011.png
-2023-10-02 14:43:17.780 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144313012.png
-2023-10-02 14:43:17.877 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144313004.png
-2023-10-02 14:43:17.937 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144313002.png
-2023-10-02 14:43:18.375 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144313001.png
-2023-10-02 14:43:18.385 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144313018.png
-2023-10-02 14:43:18.420 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144313003.png
-2023-10-02 14:43:18.472 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144313017.png
-2023-10-02 14:43:19.013 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144313013.png
-2023-10-02 14:43:19.355 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144313010.png
-2023-10-02 14:43:19.358 +02:00 [INF] Processing Finished
-2023-10-02 14:43:46.512 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//BottomLeft.png
-2023-10-02 14:43:46.554 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//2.png
-2023-10-02 14:43:46.785 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//ARIALNI.png
-2023-10-02 14:43:46.950 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//4.png
-2023-10-02 14:43:47.183 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Roboto-BoldItalic.png
-2023-10-02 14:43:47.727 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//1.png
-2023-10-02 14:43:47.886 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Roboto-Bold.png
-2023-10-02 14:43:48.232 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//ARIALNBI.png
-2023-10-02 14:43:48.310 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,44881886.png
-2023-10-02 14:43:48.461 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,8503937.png
-2023-10-02 14:43:48.598 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Montserrat-ExtraBoldItalic.png
-2023-10-02 14:43:48.649 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//7.png
-2023-10-02 14:43:48.664 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//6.png
-2023-10-02 14:43:48.692 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//BottomRight.png
-2023-10-02 14:43:48.725 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,55118114.png
-2023-10-02 14:43:48.741 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//3.png
-2023-10-02 14:43:48.745 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//0,2992126.png
-2023-10-02 14:43:48.809 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//1.png
-2023-10-02 14:43:48.848 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//Montserrat-SemiBoldItalic.png
-2023-10-02 14:43:48.885 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//5.png
-2023-10-02 14:43:48.937 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//8.png
-2023-10-02 14:43:49.781 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//9.png
-2023-10-02 14:43:50.078 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//10.png
-2023-10-02 14:43:50.100 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//11.png
-2023-10-02 14:43:50.297 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//13.png
-2023-10-02 14:43:50.405 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//12.png
-2023-10-02 14:43:51.019 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//14.png
-2023-10-02 14:43:51.048 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 003.png//15.png
-2023-10-02 14:43:51.050 +02:00 [INF] Processing Finished
-2023-10-02 14:47:22.433 +02:00 [INF] Current Location: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
-2023-10-02 14:47:22.464 +02:00 [INF] Parent Directory: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
-2023-10-02 14:47:22.465 +02:00 [INF] New Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
-2023-10-02 14:47:22.465 +02:00 [INF] YTDLP Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
-2023-10-02 14:47:22.465 +02:00 [INF] FFmpeg Path: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
-2023-10-02 14:47:22.466 +02:00 [INF] YTDL Dir found:C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
-2023-10-02 14:47:22.468 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=excszfdb_Ls
-2023-10-02 14:47:33.175 +02:00 [INF] Download Success:True
-2023-10-02 14:47:56.471 +02:00 [INF] Ffmpeg finished producing pictures
-2023-10-02 14:47:56.565 +02:00 [INF] Processing 18 images
-2023-10-02 14:47:57.418 +02:00 [INF]  Discarded Amount Of Pictures:0
-2023-10-02 14:48:11.662 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144759009.png
-2023-10-02 14:48:11.914 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144759004.png
-2023-10-02 14:48:12.087 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144759002.png
-2023-10-02 14:48:12.306 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144759005.png
-2023-10-02 14:48:12.332 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144759007.png
-2023-10-02 14:48:12.368 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144759015.png
-2023-10-02 14:48:12.654 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144759016.png
-2023-10-02 14:48:12.700 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144759008.png
-2023-10-02 14:48:13.044 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144759018.png
-2023-10-02 14:48:13.124 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144759014.png
-2023-10-02 14:48:13.184 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144759017.png
-2023-10-02 14:48:13.364 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144759001.png
-2023-10-02 14:48:13.525 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144759012.png
-2023-10-02 14:48:13.561 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144759003.png
-2023-10-02 14:48:13.572 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144759011.png
-2023-10-02 14:48:14.005 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144759013.png
-2023-10-02 14:48:14.694 +02:00 [INF] File Created: C:\Users\Björn\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 144759010.png
-2023-10-02 14:48:14.697 +02:00 [INF] Processing Finished
+2023-10-02 16:47:11.166 +02:00 [INF] Current Location: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
+2023-10-02 16:47:11.299 +02:00 [INF] Parent Directory: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
+2023-10-02 16:47:11.301 +02:00 [INF] New Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
+2023-10-02 16:47:11.303 +02:00 [INF] YTDLP Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
+2023-10-02 16:47:11.306 +02:00 [INF] FFmpeg Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
+2023-10-02 16:47:11.308 +02:00 [INF] YTDL Dir found:C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
+2023-10-02 16:47:11.315 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=R_rP_aCdLLc
+2023-10-02 16:47:28.976 +02:00 [INF] Download Success:True
+2023-10-02 16:48:32.761 +02:00 [INF] Ffmpeg finished producing pictures
+2023-10-02 16:48:33.132 +02:00 [INF] Processing 6 images
+2023-10-02 16:48:35.943 +02:00 [INF]  Discarded Amount Of Pictures:0
+2023-10-02 16:49:13.523 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 164846001.png
+2023-10-02 16:49:15.687 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 164846005.png
+2023-10-02 16:49:16.409 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 164846004.png
+2023-10-02 16:49:18.445 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 164846006.png
+2023-10-02 16:49:19.566 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 164846002.png
+2023-10-02 16:49:21.655 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 164846003.png
+2023-10-02 16:49:21.666 +02:00 [INF] Processing Finished
+2023-10-02 16:50:14.724 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//5.png
+2023-10-02 16:50:14.574 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//2.png
+2023-10-02 16:50:14.811 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//BRITANIC.png
+2023-10-02 16:50:16.869 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//arialbi.png
+2023-10-02 16:50:17.039 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//4.png
+2023-10-02 16:50:17.830 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//1.png
+2023-10-02 16:50:18.714 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//ariali.png
+2023-10-02 16:50:19.411 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//3.png
+2023-10-02 16:50:40.107 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//7.png
+2023-10-02 16:50:40.581 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//0,55118114.png
+2023-10-02 16:50:42.821 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//0,8503937.png
+2023-10-02 16:50:43.275 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//TopBox.png
+2023-10-02 16:50:44.173 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//0,2992126.png
+2023-10-02 16:50:44.239 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//6.png
+2023-10-02 16:50:44.281 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//0,44881886.png
+2023-10-02 16:50:51.089 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//8.png
+2023-10-02 16:50:51.948 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//10.png
+2023-10-02 16:50:53.202 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//9.png
+2023-10-02 16:50:53.370 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//11.png
+2023-10-02 16:50:57.039 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//arialbd.png
+2023-10-02 16:51:09.277 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//1.png
+2023-10-02 16:51:13.857 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//BottomLeft.png
+2023-10-02 16:51:14.811 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//12.png
+2023-10-02 16:51:14.999 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//BottomBox.png
+2023-10-02 16:51:15.627 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//arial.png
+2023-10-02 16:51:18.390 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//15.png
+2023-10-02 16:51:18.683 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//13.png
+2023-10-02 16:51:19.989 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//14.png
+2023-10-02 16:51:30.075 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//BAUHS93.png
+2023-10-02 16:51:31.881 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//BottomRight.png
+2023-10-02 16:51:32.412 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//TopLeft.png
+2023-10-02 16:51:33.007 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//TopBox2023-10-02 165114002.png.png
+2023-10-02 16:51:33.014 +02:00 [INF] Processing Finished
+2023-10-02 17:15:41.383 +02:00 [INF] Current Location: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
+2023-10-02 17:15:41.562 +02:00 [INF] Parent Directory: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
+2023-10-02 17:15:41.564 +02:00 [INF] New Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
+2023-10-02 17:15:41.566 +02:00 [INF] YTDLP Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
+2023-10-02 17:15:41.569 +02:00 [INF] FFmpeg Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
+2023-10-02 17:15:41.574 +02:00 [INF] YTDL Dir found:C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
+2023-10-02 17:15:41.580 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=R_rP_aCdLLc
+2023-10-02 17:16:02.201 +02:00 [INF] Download Success:True
+2023-10-02 17:17:06.182 +02:00 [INF] Ffmpeg finished producing pictures
+2023-10-02 17:17:06.464 +02:00 [INF] Processing 5 images
+2023-10-02 17:17:07.502 +02:00 [INF]  Discarded Amount Of Pictures:0
+2023-10-02 17:17:24.955 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 171711003.png
+2023-10-02 17:17:25.456 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 171711001.png
+2023-10-02 17:17:27.622 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 171711004.png
+2023-10-02 17:17:27.725 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 171711005.png
+2023-10-02 17:17:30.572 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 171715002.png
+2023-10-02 17:17:30.579 +02:00 [INF] Processing Finished
+2023-10-02 17:18:57.961 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//2.png
+2023-10-02 17:19:01.654 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//1.png
+2023-10-02 17:19:01.888 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//3.png
+2023-10-02 17:19:03.435 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//4.png
+2023-10-02 17:19:03.789 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//ARLRDBD.png
+2023-10-02 17:19:05.898 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//arialbi.png
+2023-10-02 17:19:07.335 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//arial.png
+2023-10-02 17:19:14.813 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//8.png
+2023-10-02 17:19:17.381 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//6.png
+2023-10-02 17:19:20.770 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//5.png
+2023-10-02 17:19:26.290 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//0,44881886.png
+2023-10-02 17:19:27.892 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//0,55118114.png
+2023-10-02 17:19:30.091 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//0,8503937.png
+2023-10-02 17:19:31.987 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//0,2992126.png
+2023-10-02 17:19:32.399 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//7.png
+2023-10-02 17:19:38.781 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//TopBox.png
+2023-10-02 17:19:42.131 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//1.png
+2023-10-02 17:19:42.403 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//BottomBox.png
+2023-10-02 17:19:52.688 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//9.png
+2023-10-02 17:19:56.056 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//13.png
+2023-10-02 17:19:56.340 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//12.png
+2023-10-02 17:19:56.438 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//10.png
+2023-10-02 17:19:56.626 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//11.png
+2023-10-02 17:20:01.987 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//BRITANIC.png
+2023-10-02 17:20:02.533 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//TopRight.png
+2023-10-02 17:20:03.628 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//BottomRight.png
+2023-10-02 17:20:04.695 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//arialbd.png
+2023-10-02 17:20:20.488 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//15.png
+2023-10-02 17:20:21.727 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//14.png
+2023-10-02 17:20:22.268 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//TopBox2023-10-02 171956004.png.png
+2023-10-02 17:20:24.067 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//BottomLeft.png
+2023-10-02 17:20:24.933 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//BAUHS93.png
+2023-10-02 17:20:24.944 +02:00 [INF] Processing Finished
+2023-10-02 17:22:02.569 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//BAUHS93.png
+2023-10-02 17:22:05.181 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//18.png
+2023-10-02 17:22:05.847 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//19.png
+2023-10-02 17:22:07.949 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//arialbi.png
+2023-10-02 17:22:08.241 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//17.png
+2023-10-02 17:22:08.788 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//16.png
+2023-10-02 17:22:09.427 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//BROADW.png
+2023-10-02 17:22:13.191 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//20.png
+2023-10-02 17:22:16.517 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//21.png
+2023-10-02 17:22:29.937 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//0,2992126.png
+2023-10-02 17:22:29.257 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 002.png//0,44881886.png
+2023-10-02 19:24:00.521 +02:00 [INF] Current Location: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
+2023-10-02 19:24:00.669 +02:00 [INF] Parent Directory: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
+2023-10-02 19:24:00.671 +02:00 [INF] New Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
+2023-10-02 19:24:00.673 +02:00 [INF] YTDLP Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
+2023-10-02 19:24:00.675 +02:00 [INF] FFmpeg Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
+2023-10-02 19:24:00.685 +02:00 [INF] YTDL Dir found:C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
+2023-10-02 19:24:00.690 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=R_rP_aCdLLc
+2023-10-02 19:24:19.668 +02:00 [INF] Download Success:True
+2023-10-02 19:25:14.255 +02:00 [INF] Ffmpeg finished producing pictures
+2023-10-02 19:25:14.498 +02:00 [INF] Processing 5 images
+2023-10-02 19:25:15.743 +02:00 [INF]  Discarded Amount Of Pictures:0
+2023-10-02 19:25:40.040 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 192520001.png
+2023-10-02 19:25:41.592 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 192520005.png
+2023-10-02 19:25:42.036 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 192520002.png
+2023-10-02 19:25:43.154 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 192520003.png
+2023-10-02 19:25:44.175 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 192520004.png
+2023-10-02 19:25:44.182 +02:00 [INF] Processing Finished
+2023-10-02 20:08:29.227 +02:00 [INF] Current Location: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
+2023-10-02 20:08:29.347 +02:00 [INF] Parent Directory: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
+2023-10-02 20:08:29.350 +02:00 [INF] New Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
+2023-10-02 20:08:29.353 +02:00 [INF] YTDLP Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
+2023-10-02 20:08:29.355 +02:00 [INF] FFmpeg Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
+2023-10-02 20:08:29.359 +02:00 [INF] YTDL Dir found:C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
+2023-10-02 20:08:29.365 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=R_rP_aCdLLc
+2023-10-02 20:08:51.649 +02:00 [INF] Download Success:True
+2023-10-02 20:10:00.420 +02:00 [INF] Ffmpeg finished producing pictures
+2023-10-02 20:10:00.821 +02:00 [INF] Processing 6 images
+2023-10-02 20:10:02.346 +02:00 [INF]  Discarded Amount Of Pictures:0
+2023-10-02 20:10:38.100 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 201010006.png
+2023-10-02 20:10:38.230 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 201010003.png
+2023-10-02 20:10:38.424 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 201010002.png
+2023-10-02 20:10:39.472 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 201010001.png
+2023-10-02 20:10:39.527 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 201010004.png
+2023-10-02 20:10:40.326 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 201010005.png
+2023-10-02 20:10:40.336 +02:00 [INF] Processing Finished
+2023-10-02 20:12:06.322 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//2.png
+2023-10-02 20:12:07.907 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//6.png
+2023-10-02 20:12:11.499 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//ariali.png
+2023-10-02 20:12:10.394 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//4.png
+2023-10-02 20:12:21.842 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//0,2992126.png
+2023-10-02 20:12:13.368 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//arial.png
+2023-10-02 20:12:19.013 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//5.png
+2023-10-02 20:12:28.741 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//TopBox.png
+2023-10-02 20:12:28.754 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//0,55118114.png
+2023-10-02 20:12:32.614 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//0,8503937.png
+2023-10-02 20:12:34.285 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//0,44881886.png
+2023-10-02 20:12:38.200 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//7.png
+2023-10-02 20:12:38.785 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//1.png
+2023-10-02 20:12:41.333 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//BottomBox.png
+2023-10-02 20:12:42.470 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//9.png
+2023-10-02 20:12:43.490 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//1.png
+2023-10-02 20:12:44.668 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//3.png
+2023-10-02 20:12:44.408 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//arialbd.png
+2023-10-02 20:12:46.458 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//8.png
+2023-10-02 20:12:44.633 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//10.png
+2023-10-02 20:13:06.324 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//arialbi.png
+2023-10-02 20:13:07.787 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//11.png
+2023-10-02 20:13:07.862 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//12.png
+2023-10-02 20:13:08.647 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//13.png
+2023-10-02 20:13:15.783 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//TopLeft.png
+2023-10-02 20:13:18.861 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//BottomRight.png
+2023-10-02 20:13:19.495 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//TopBox2023-10-02 201223001.png.png
+2023-10-02 20:13:19.042 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//BRITANIC.png
+2023-10-02 20:13:31.177 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//BROADW.png
+2023-10-02 20:13:33.099 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//14.png
+2023-10-02 20:13:34.158 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//15.png
+2023-10-02 20:13:35.998 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//TopRight.png
+2023-10-02 20:13:36.005 +02:00 [INF] Processing Finished
+2023-10-02 20:22:45.029 +02:00 [INF] Current Location: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
+2023-10-02 20:22:45.505 +02:00 [INF] Parent Directory: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
+2023-10-02 20:22:45.522 +02:00 [INF] New Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
+2023-10-02 20:22:45.534 +02:00 [INF] YTDLP Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
+2023-10-02 20:22:45.538 +02:00 [INF] FFmpeg Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
+2023-10-02 20:22:45.549 +02:00 [INF] YTDL Dir found:C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
+2023-10-02 20:22:45.567 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=R_rP_aCdLLc
+2023-10-02 20:23:09.428 +02:00 [INF] Download Success:True
+2023-10-02 20:24:17.581 +02:00 [INF] Ffmpeg finished producing pictures
+2023-10-02 20:24:17.992 +02:00 [INF] Processing 6 images
+2023-10-02 20:24:20.025 +02:00 [INF]  Discarded Amount Of Pictures:0
+2023-10-02 20:24:50.074 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 202426004.png
+2023-10-02 20:24:50.194 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 202426002.png
+2023-10-02 20:24:52.407 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 202426006.png
+2023-10-02 20:24:53.901 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 202426001.png
+2023-10-02 20:24:55.578 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 202426005.png
+2023-10-02 20:24:55.587 +02:00 [INF] Processing Finished
+2023-10-02 20:26:36.375 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//6.png
+2023-10-02 20:26:47.954 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//BAUHS93.png
+2023-10-02 20:26:52.104 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//4.png
+2023-10-02 20:27:03.482 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//0,55118114.png
+2023-10-02 20:27:05.349 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//0,8503937.png
+2023-10-02 20:27:06.606 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//TopLeft.png
+2023-10-02 20:27:06.784 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//2.png
+2023-10-02 20:27:10.705 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//BROADW.png
+2023-10-02 20:27:10.922 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//3.png
+2023-10-02 20:27:10.926 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//TopRight.png
+2023-10-02 20:27:10.932 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//5.png
+2023-10-02 20:27:13.594 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//BottomBox.png
+2023-10-02 20:27:13.627 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//ARLRDBD.png
+2023-10-02 20:27:14.655 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//0,2992126.png
+2023-10-02 20:27:17.694 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//1.png
+2023-10-02 20:27:18.219 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//0,44881886.png
+2023-10-02 20:27:25.158 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//11.png
+2023-10-02 20:27:27.085 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//BottomLeft.png
+2023-10-02 20:27:27.325 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//arialbi.png
+2023-10-02 20:27:29.868 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//9.png
+2023-10-02 20:27:30.541 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//10.png
+2023-10-02 20:27:34.631 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//12.png
+2023-10-02 20:27:34.631 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//1.png
+2023-10-02 20:27:38.384 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//7.png
+2023-10-02 20:27:40.393 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//8.png
+2023-10-02 20:27:42.868 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//arial.png
+2023-10-02 20:27:44.647 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//13.png
+2023-10-02 20:27:47.944 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//14.png
+2023-10-02 20:27:50.598 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//BottomRight.png
+2023-10-02 20:27:52.770 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//ariali.png
+2023-10-02 20:27:53.651 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//TopBox2023-10-02 202652001.png.png
+2023-10-02 20:28:00.495 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//15.png
+2023-10-02 20:28:00.502 +02:00 [INF] Processing Finished
+2023-10-02 20:35:30.528 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//BAUHS93.png
+2023-10-02 20:35:31.493 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//17.png
+2023-10-02 20:35:35.340 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//16.png
+2023-10-02 20:35:35.340 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//0,2992126.png
+2023-10-02 20:35:46.172 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//BRITANIC.png
+2023-10-02 20:35:46.854 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//18.png
+2023-10-02 20:35:48.498 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//19.png
+2023-10-02 20:35:53.865 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//20.png
+2023-10-02 20:35:56.452 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//ariali.png
+2023-10-02 20:36:09.475 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//0,44881886.png
+2023-10-02 20:36:13.060 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//22.png
+2023-10-02 20:36:16.425 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//0,55118114.png
+2023-10-02 20:36:22.996 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//0,8503937.png
+2023-10-02 20:36:25.598 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//25.png
+2023-10-02 20:36:26.186 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//21.png
+2023-10-02 20:36:27.322 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//23.png
+2023-10-02 20:36:28.492 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//24.png
+2023-10-02 20:36:29.393 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//BROADW.png
+2023-10-02 20:36:32.946 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//26.png
+2023-10-02 20:36:33.291 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//ARLRDBD.png
+2023-10-02 20:36:34.783 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//27.png
+2023-10-02 20:36:39.633 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//TopBox.png
+2023-10-02 20:37:02.358 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//BottomBox.png
+2023-10-02 20:37:02.652 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//1.png
+2023-10-02 20:37:05.813 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//28.png
+2023-10-02 20:37:05.980 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//TopRight.png
+2023-10-02 20:37:09.043 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//29.png
+2023-10-02 20:37:12.779 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//TopBox2023-10-02 203635005.png.png
+2023-10-02 20:37:12.787 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//30.png
+2023-10-02 20:37:21.634 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//TopLeft.png
+2023-10-02 20:37:22.551 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//arialbi.png
+2023-10-02 20:37:22.678 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 005.png//BottomLeft.png
+2023-10-02 20:37:22.684 +02:00 [INF] Processing Finished
+2023-10-02 20:41:05.494 +02:00 [INF] Current Location: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
+2023-10-02 20:41:05.826 +02:00 [INF] Parent Directory: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
+2023-10-02 20:41:05.830 +02:00 [INF] New Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
+2023-10-02 20:41:05.835 +02:00 [INF] YTDLP Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
+2023-10-02 20:41:05.840 +02:00 [INF] FFmpeg Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
+2023-10-02 20:41:05.877 +02:00 [INF] YTDL Dir found:C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
+2023-10-02 20:41:05.892 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=VQeW62X8rEA
+2023-10-02 20:42:06.546 +02:00 [INF] Download Success:True
+2023-10-02 20:42:51.097 +02:00 [INF] Ffmpeg finished producing pictures
+2023-10-02 20:42:51.557 +02:00 [INF] Processing 16 images
+2023-10-02 20:42:59.770 +02:00 [INF]  Discarded Amount Of Pictures:1
+2023-10-02 20:45:47.031 +02:00 [INF] Current Location: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
+2023-10-02 20:45:47.260 +02:00 [INF] Parent Directory: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
+2023-10-02 20:45:47.265 +02:00 [INF] New Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
+2023-10-02 20:45:47.379 +02:00 [INF] YTDLP Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
+2023-10-02 20:45:47.396 +02:00 [INF] FFmpeg Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
+2023-10-02 20:45:47.407 +02:00 [INF] YTDL Dir found:C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
+2023-10-02 20:45:47.421 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=R_rP_aCdLLc
+2023-10-02 20:46:12.107 +02:00 [INF] Download Success:True
+2023-10-02 20:47:09.350 +02:00 [INF] Ffmpeg finished producing pictures
+2023-10-02 20:47:09.702 +02:00 [INF] Processing 6 images
+2023-10-02 20:47:11.065 +02:00 [INF]  Discarded Amount Of Pictures:0
+2023-10-02 20:47:27.076 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 204714001.png
+2023-10-02 20:47:27.124 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 204714003.png
+2023-10-02 20:47:28.256 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 204714006.png
+2023-10-02 20:47:31.350 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 204714004.png
+2023-10-02 20:47:32.977 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 204718005.png
+2023-10-02 20:47:36.063 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 204724002.png
+2023-10-02 20:47:36.071 +02:00 [INF] Processing Finished
+2023-10-02 20:48:37.251 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//0,2992126.png
+2023-10-02 20:48:38.353 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//0,55118114.png
+2023-10-02 20:48:38.656 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//4.png
+2023-10-02 20:48:40.311 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//2.png
+2023-10-02 20:48:41.389 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//BRITANIC.png
+2023-10-02 20:48:43.658 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//0,44881886.png
+2023-10-02 20:48:45.396 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//6.png
+2023-10-02 20:48:53.522 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//7.png
+2023-10-02 20:48:57.495 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//0,8503937.png
+2023-10-02 20:49:01.950 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//TopBox.png
+2023-10-02 20:49:02.081 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//1.png
+2023-10-02 20:49:07.874 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//arialbd.png
+2023-10-02 20:49:09.468 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//1.png
+2023-10-02 20:49:13.836 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//BottomBox.png
+2023-10-02 20:49:14.000 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//3.png
+2023-10-02 20:49:14.955 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//ariali.png
+2023-10-02 20:49:16.751 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//8.png
+2023-10-02 20:49:17.038 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//5.png
+2023-10-02 20:49:25.550 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//9.png
+2023-10-02 20:49:27.955 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//11.png
+2023-10-02 20:49:28.444 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//arial.png
+2023-10-02 20:49:31.131 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//12.png
+2023-10-02 20:49:33.941 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//13.png
+2023-10-02 20:49:43.320 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//ARLRDBD.png
+2023-10-02 20:49:45.906 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//10.png
+2023-10-02 20:49:47.778 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//BottomRight.png
+2023-10-02 20:49:48.064 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//TopRight.png
+2023-10-02 20:49:53.433 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//TopBox2023-10-02 204928004.png.png
+2023-10-02 20:49:54.944 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//14.png
+2023-10-02 20:50:03.662 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//arialbi.png
+2023-10-02 20:50:04.884 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//BottomLeft.png
+2023-10-02 20:50:05.482 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//15.png
+2023-10-02 20:50:05.489 +02:00 [INF] Processing Finished
+2023-10-02 21:37:37.779 +02:00 [INF] Current Location: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
+2023-10-02 21:37:37.985 +02:00 [INF] Parent Directory: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
+2023-10-02 21:37:37.988 +02:00 [INF] New Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
+2023-10-02 21:37:37.992 +02:00 [INF] YTDLP Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
+2023-10-02 21:37:37.995 +02:00 [INF] FFmpeg Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
+2023-10-02 21:37:37.997 +02:00 [INF] YTDL Dir found:C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
+2023-10-02 21:37:38.007 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=R_rP_aCdLLc
+2023-10-02 21:37:58.903 +02:00 [INF] Download Success:True
+2023-10-02 21:38:44.023 +02:00 [INF] Ffmpeg finished producing pictures
+2023-10-02 21:38:44.271 +02:00 [INF] Processing 5 images
+2023-10-02 21:38:45.565 +02:00 [INF]  Discarded Amount Of Pictures:0
+2023-10-02 21:39:01.599 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 213853001.png
+2023-10-02 21:39:09.911 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 213901002.png
+2023-10-02 21:39:18.800 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 213909005.png
+2023-10-02 21:39:26.986 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 213918003.png
+2023-10-02 21:39:26.993 +02:00 [INF] Processing Finished
+2023-10-02 21:40:04.459 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//0,2992126.png
+2023-10-02 21:40:12.544 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//0,44881886.png
+2023-10-02 21:40:20.569 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//0,55118114.png
+2023-10-02 21:40:28.547 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//0,8503937.png
+2023-10-02 21:40:36.673 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//1.png
+2023-10-02 21:40:44.609 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//arialbd.png
+2023-10-02 21:40:52.256 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//BROADW.png
+2023-10-02 21:41:00.263 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//arial.png
+2023-10-02 21:41:07.884 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//ARLRDBD.png
+2023-10-02 21:41:15.324 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//BRITANIC.png
+2023-10-02 21:41:22.639 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//BAUHS93.png
+2023-10-02 21:41:30.614 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//TopBox.png
+2023-10-02 21:41:38.247 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//TopLeft.png
+2023-10-02 21:41:45.846 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//TopRight.png
+2023-10-02 21:41:53.419 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//BottomLeft.png
+2023-10-02 21:42:01.024 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//BottomRight.png
+2023-10-02 21:42:08.071 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//1.png
+2023-10-02 21:42:15.793 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//2.png
+2023-10-02 21:42:23.488 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//3.png
+2023-10-02 21:42:31.224 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//4.png
+2023-10-02 21:42:39.022 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//5.png
+2023-10-02 21:42:46.986 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//6.png
+2023-10-02 21:42:54.171 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//7.png
+2023-10-02 21:43:01.954 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//8.png
+2023-10-02 21:43:09.254 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//9.png
+2023-10-02 21:43:16.301 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//10.png
+2023-10-02 21:43:24.106 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//11.png
+2023-10-02 21:43:31.904 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//12.png
+2023-10-02 21:43:39.079 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//13.png
+2023-10-02 21:43:46.770 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//14.png
+2023-10-02 21:43:53.868 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//15.png
+2023-10-02 21:44:02.104 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//TopBox2023-10-02 214353001.png.png
+2023-10-02 21:44:02.112 +02:00 [INF] Processing Finished
+2023-10-02 22:05:00.260 +02:00 [INF] Current Location: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
+2023-10-02 22:05:00.431 +02:00 [INF] Parent Directory: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
+2023-10-02 22:05:00.434 +02:00 [INF] New Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
+2023-10-02 22:05:00.438 +02:00 [INF] YTDLP Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
+2023-10-02 22:05:00.441 +02:00 [INF] FFmpeg Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
+2023-10-02 22:05:00.445 +02:00 [INF] YTDL Dir found:C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
+2023-10-02 22:05:00.456 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=R_rP_aCdLLc
+2023-10-02 22:05:28.728 +02:00 [INF] Download Success:True
+2023-10-02 22:06:38.245 +02:00 [INF] Ffmpeg finished producing pictures
+2023-10-02 22:06:38.601 +02:00 [INF] Processing 6 images
+2023-10-02 22:06:40.259 +02:00 [INF]  Discarded Amount Of Pictures:0
+2023-10-02 22:07:00.592 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 220651002.png
+2023-10-02 22:07:08.996 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 220700001.png
+2023-10-02 22:07:18.329 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 220709004.png
+2023-10-02 22:07:27.935 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 220718005.png
+2023-10-02 22:07:37.146 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 220727003.png
+2023-10-02 22:07:44.176 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 220737006.png
+2023-10-02 22:07:44.183 +02:00 [INF] Processing Finished
+2023-10-02 22:08:14.334 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//0,2992126.png
+2023-10-02 22:08:22.425 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//0,44881886.png
+2023-10-02 22:08:30.617 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//0,55118114.png
+2023-10-02 22:08:38.841 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//0,8503937.png
+2023-10-02 22:08:47.094 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//1.png
+2023-10-02 22:08:55.323 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//ARLRDBD.png
+2023-10-02 22:09:03.950 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//arialbi.png
+2023-10-02 22:09:12.492 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//ariali.png
+2023-10-02 22:09:21.087 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//arialbd.png
+2023-10-02 22:09:29.240 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//BROADW.png
+2023-10-02 22:09:37.210 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//BRITANIC.png
+2023-10-02 22:09:45.288 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//BottomBox.png
+2023-10-02 22:09:53.025 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//TopLeft.png
+2023-10-02 22:10:00.758 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//TopRight.png
+2023-10-02 22:10:09.936 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//BottomLeft.png
+2023-10-02 22:10:18.529 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//BottomRight.png
+2023-10-02 22:10:26.978 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//1.png
+2023-10-02 22:10:35.538 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//2.png
+2023-10-02 22:10:44.048 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//3.png
+2023-10-02 22:10:52.318 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//4.png
+2023-10-02 22:11:00.590 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//5.png
+2023-10-02 22:11:09.157 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//6.png
+2023-10-02 22:11:17.561 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//7.png
+2023-10-02 22:11:25.770 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//8.png
+2023-10-02 22:11:33.582 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//9.png
+2023-10-02 22:11:41.725 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//10.png
+2023-10-02 22:11:50.142 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//11.png
+2023-10-02 22:11:57.979 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//12.png
+2023-10-02 22:12:06.529 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//13.png
+2023-10-02 22:12:14.939 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//14.png
+2023-10-02 22:12:22.739 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//15.png
+2023-10-02 22:12:31.997 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 001.png//TopBox2023-10-02 221222001.png.png
+2023-10-02 22:12:32.003 +02:00 [INF] Processing Finished
+2023-10-02 22:18:36.868 +02:00 [INF] Current Location: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
+2023-10-02 22:18:37.051 +02:00 [INF] Parent Directory: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
+2023-10-02 22:18:37.054 +02:00 [INF] New Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
+2023-10-02 22:18:37.056 +02:00 [INF] YTDLP Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
+2023-10-02 22:18:37.066 +02:00 [INF] FFmpeg Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
+2023-10-02 22:18:37.069 +02:00 [INF] YTDL Dir found:C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
+2023-10-02 22:18:37.080 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=R_rP_aCdLLc
+2023-10-02 22:18:58.650 +02:00 [INF] Download Success:True
+2023-10-02 22:20:12.507 +02:00 [INF] Ffmpeg finished producing pictures
+2023-10-02 22:20:12.834 +02:00 [INF] Processing 6 images
+2023-10-02 22:20:15.349 +02:00 [INF]  Discarded Amount Of Pictures:0
+2023-10-02 22:20:36.306 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 222025005.png
+2023-10-02 22:20:43.852 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 222036006.png
+2023-10-02 22:20:51.459 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 222043001.png
+2023-10-02 22:21:02.247 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 222051004.png
+2023-10-02 22:21:09.661 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 222102003.png
+2023-10-02 22:21:09.666 +02:00 [INF] Processing Finished
+2023-10-02 22:22:42.274 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//0,2992126.png
+2023-10-02 22:22:53.728 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//0,44881886.png
+2023-10-02 22:23:03.602 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//0,55118114.png
+2023-10-02 22:23:14.096 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//0,8503937.png
+2023-10-02 22:23:24.570 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//1.png
+2023-10-02 22:23:35.738 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//ARLRDBD.png
+2023-10-02 22:23:46.681 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//BRITANIC.png
+2023-10-02 22:23:56.936 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//BROADW.png
+2023-10-02 22:24:08.071 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//arialbd.png
+2023-10-02 22:24:19.052 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//arialbi.png
+2023-10-02 22:24:30.243 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//BAUHS93.png
+2023-10-02 22:24:40.964 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//TopBox.png
+2023-10-02 22:24:51.694 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//TopLeft.png
+2023-10-02 22:25:02.032 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//TopRight.png
+2023-10-02 22:25:12.071 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//BottomLeft.png
+2023-10-02 22:25:22.948 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//BottomRight.png
+2023-10-02 22:25:33.111 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//1.png
+2023-10-02 22:25:44.147 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//2.png
+2023-10-02 22:25:55.538 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//3.png
+2023-10-02 22:26:08.174 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//4.png
+2023-10-02 22:26:18.499 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//5.png
+2023-10-02 22:26:29.885 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//6.png
+2023-10-02 22:26:39.947 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//7.png
+2023-10-02 22:26:50.319 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//8.png
+2023-10-02 22:27:01.793 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//9.png
+2023-10-02 22:27:12.152 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//10.png
+2023-10-02 22:27:22.735 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//11.png
+2023-10-02 22:27:33.921 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//12.png
+2023-10-02 22:27:44.373 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//13.png
+2023-10-02 22:27:54.550 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//14.png
+2023-10-02 22:28:04.768 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//15.png
+2023-10-02 22:28:15.464 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 004.png//TopBox2023-10-02 222804004.png.png
+2023-10-02 22:28:15.470 +02:00 [INF] Processing Finished
+2023-10-02 22:32:38.727 +02:00 [INF] Current Location: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Bulk Thumbnail Creator.dll
+2023-10-02 22:32:38.908 +02:00 [INF] Parent Directory: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0
+2023-10-02 22:32:38.911 +02:00 [INF] New Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables
+2023-10-02 22:32:38.913 +02:00 [INF] YTDLP Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\yt-dlp.exe
+2023-10-02 22:32:38.917 +02:00 [INF] FFmpeg Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\Executables\ffmpeg.exe
+2023-10-02 22:32:38.921 +02:00 [INF] YTDL Dir found:C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\bin\x64\Debug\net8.0\YTDL
+2023-10-02 22:32:38.928 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=R_rP_aCdLLc
+2023-10-02 22:32:56.727 +02:00 [INF] Download Success:True
+2023-10-02 22:34:00.807 +02:00 [INF] Ffmpeg finished producing pictures
+2023-10-02 22:34:01.060 +02:00 [INF] Processing 6 images
+2023-10-02 22:34:02.568 +02:00 [INF]  Discarded Amount Of Pictures:0
+2023-10-02 22:34:22.823 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 223412004.png
+2023-10-02 22:34:33.704 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 223422002.png
+2023-10-02 22:34:41.581 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 223433001.png
+2023-10-02 22:34:51.725 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 223441003.png
+2023-10-02 22:35:00.885 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 223451005.png
+2023-10-02 22:35:10.924 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//2023-10-02 223500006.png
+2023-10-02 22:35:10.934 +02:00 [INF] Processing Finished
+2023-10-02 22:36:48.623 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//0,2992126.png
+2023-10-02 22:36:58.042 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//0,44881886.png
+2023-10-02 22:37:07.478 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//0,55118114.png
+2023-10-02 22:37:16.914 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//0,8503937.png
+2023-10-02 22:37:26.320 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//1.png
+2023-10-02 22:37:35.747 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//arialbi.png
+2023-10-02 22:37:43.761 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//BROADW.png
+2023-10-02 22:37:52.241 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//ARLRDBD.png
+2023-10-02 22:38:01.662 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//arial.png
+2023-10-02 22:38:10.991 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//arialbd.png
+2023-10-02 22:38:20.184 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//ariali.png
+2023-10-02 22:38:29.833 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//TopBox.png
+2023-10-02 22:38:38.945 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//TopLeft.png
+2023-10-02 22:38:48.278 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//TopRight.png
+2023-10-02 22:38:57.431 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//BottomLeft.png
+2023-10-02 22:39:06.858 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//BottomRight.png
+2023-10-02 22:39:15.138 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//1.png
+2023-10-02 22:39:24.388 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//2.png
+2023-10-02 22:39:32.393 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//3.png
+2023-10-02 22:39:41.641 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//4.png
+2023-10-02 22:39:50.904 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//5.png
+2023-10-02 22:39:59.214 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//6.png
+2023-10-02 22:40:07.445 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//7.png
+2023-10-02 22:40:16.846 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//8.png
+2023-10-02 22:40:25.134 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//9.png
+2023-10-02 22:40:33.190 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//10.png
+2023-10-02 22:40:41.743 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//11.png
+2023-10-02 22:40:51.100 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//12.png
+2023-10-02 22:41:00.451 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//13.png
+2023-10-02 22:41:09.674 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//14.png
+2023-10-02 22:41:18.673 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//15.png
+2023-10-02 22:41:29.103 +02:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTC Blazor\text added//variety of 006.png//TopBox2023-10-02 224118006.png.png
+2023-10-02 22:41:29.109 +02:00 [INF] Processing Finished

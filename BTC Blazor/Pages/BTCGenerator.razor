@@ -73,4 +73,8 @@
 
 }
 
-<ImageDisplay @ref="imageDisplayref"></ImageDisplay>
+@if (_processing == false)
+{
+    <ImageDisplay @ref="imageDisplayref"></ImageDisplay>
+
+}
