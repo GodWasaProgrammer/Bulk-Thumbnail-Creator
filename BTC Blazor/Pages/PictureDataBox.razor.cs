@@ -9,6 +9,8 @@ namespace BTC_Blazor.Pages
     public partial class PictureDataBox : IPictureData
     {
         [Parameter]
+        public string ImageURL { get; set; }
+        [Parameter]
         public PictureData PicData { get; set; }
         public string FileName { get; set; }
         public string OutPath { get; set; }

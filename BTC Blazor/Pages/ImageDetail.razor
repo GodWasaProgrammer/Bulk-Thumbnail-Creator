@@ -1,8 +1,6 @@
 ﻿@inject Bulk_Thumbnail_Creator.PictureObjects.PictureDataService PicDataService;
 @page "/imagedetail/{imageUrl}"
 
-<div class="container">
-            <img src="@ImageUrl" style="max-width: 100%;" />
-            <PictureDataBox PicData="@CurrentPagePictureData" />
+    <div class="center-content"><PictureDataBox ImageURL="@ImageUrl" PicData="@CurrentPagePictureData" /></div>
+
             <VarietyDisplay ParentPictureProp="CurrentPagePictureData"></VarietyDisplay>
-</div>
