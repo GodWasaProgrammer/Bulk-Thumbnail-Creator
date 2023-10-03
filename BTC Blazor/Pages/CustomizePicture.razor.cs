@@ -6,7 +6,7 @@ using MudBlazor.Utilities;
 
 namespace BTC_Blazor.Pages
 {
-    public partial class CustomizePicture : IPictureData 
+    public partial class CustomizePicture
     {
         public string FileName { get => CurrentPagePictureData.FileName; set => throw new NotImplementedException(); }
         public string OutPath { get => CurrentPagePictureData.OutPath; set => throw new NotImplementedException(); }
@@ -17,7 +17,6 @@ namespace BTC_Blazor.Pages
         public string Meme { get => CurrentPagePictureData.Meme; set => value = Meme; }
 
         public PictureData CurrentPagePictureData { get; set; }
-        
 
         public PictureData PicDataToCustomize = new();
 
@@ -52,7 +51,7 @@ namespace BTC_Blazor.Pages
         public async void CreateCustomPicDataObject()
         {
             OutputType jobtype = OutputType.Custom;
-            PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(PicDataToCustomize, PickedFont, PickedBox, Dankbox, BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance, fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance, StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance, jobtype);
+            PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(CurrentPagePictureData, PickedFont, PickedBox, Dankbox, BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance, fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance, StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance, jobtype);
             ShowCustomPicture(PicDataToCustomize);
         }
 
@@ -80,7 +79,7 @@ namespace BTC_Blazor.Pages
 
         protected override void OnInitialized()
         {
-            PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(ImageURL);
+            CurrentPagePictureData = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(ImageURL);
             BorderCLRItem = CurrentPagePictureData.ParamForTextCreation.BorderColor;
             fillCLRItem = CurrentPagePictureData.ParamForTextCreation.FillColor;
             StrokeCLRItem = CurrentPagePictureData.ParamForTextCreation.StrokeColor;
