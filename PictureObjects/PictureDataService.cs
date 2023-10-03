@@ -48,13 +48,6 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             return ImageUrls;
         }
 
-        public async Task CreateCustomPicture(PictureData CustomPictureData)
-        {
-            string url = string.Empty;
-
-            PicDataServiceList = await Program.Process(ProductionType.CustomPicture, url, TextToPrint, CustomPictureData);
-        }
-
         public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, string PickedFont, Box PickedBox, Box DankBox, float Borderhue, float Bordersat, float BorderLum, float FillCLRHue, float FillCLRSat, float FillCLRLum, float StrokeCLRHue, float StrokeCLRSat, float strokeCLRLum, OutputType JobType)
         {
             PicToCustomize = new(PicToCustomize);
@@ -82,6 +75,7 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
                 if (Path.GetFileNameWithoutExtension(item.OutPath) == Path.GetFileNameWithoutExtension(imageUrl))
                 {
                     PicData = new PictureData(item);
+                    break;
                 }
             }
             return PicData;
