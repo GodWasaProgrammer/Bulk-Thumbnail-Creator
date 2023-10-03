@@ -41,12 +41,9 @@ namespace BTC_Blazor.Pages
 
         private bool IMGDetailClicked = false;
 
-        private async Task ShowImageDetail(string imageUrl)
+        private void ShowImageDetail(string imageUrl)
         {
             IMGDetailClicked = true;
-
-            // Add an asynchronous delay (if needed) to allow other operations to complete.
-            await Task.Delay(50000); // Adjust the delay time as needed.
 
             NavigationManager.NavigateTo($"/imagedetail/{Uri.EscapeDataString(imageUrl)}");
         }

@@ -12,21 +12,7 @@ namespace BTC_Blazor.Pages
 
         protected override void OnInitialized()
         {
-            SetPictureDataImageDisplayCorrelation(ImageUrl);
-        }
-
-        public void SetPictureDataImageDisplayCorrelation(string imageUrl)
-        {
-            foreach (var item in PicDataService.PicDataServiceList)
-            {
-
-                if (Path.GetFileNameWithoutExtension(item.OutPath) == Path.GetFileNameWithoutExtension(imageUrl))
-                {
-                    CurrentPagePictureData = new PictureData(item);
-                }
-
-            }
-
+            CurrentPagePictureData = PicDataService.SetPictureDataImageDisplayCorrelation(ImageUrl);
         }
 
     }

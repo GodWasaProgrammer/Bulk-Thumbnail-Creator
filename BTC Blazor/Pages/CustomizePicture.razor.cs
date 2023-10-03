@@ -2,6 +2,7 @@
 using Bulk_Thumbnail_Creator.PictureObjects;
 using Microsoft.AspNetCore.Components;
 using Bulk_Thumbnail_Creator.InterFaces;
+using MudBlazor.Utilities;
 
 namespace BTC_Blazor.Pages
 {
@@ -37,6 +38,7 @@ namespace BTC_Blazor.Pages
             }  
             set { _PickedFont = value; }
         }
+
         private string _PickedFont;
 
         [Parameter]
@@ -49,16 +51,8 @@ namespace BTC_Blazor.Pages
 
         public async void CreateCustomPicDataObject()
         {
-            PicDataToCustomize = new(CurrentPagePictureData);
-            PicDataToCustomize.ParamForTextCreation.CurrentBox = PickedBox;
-            PicDataToCustomize.Dankbox = MemeBox;
-            PicDataToCustomize.ParamForTextCreation.Font = PickedFont;
-            PicDataToCustomize.ParamForTextCreation.BorderColor.SetByHSL(BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance);
-            PicDataToCustomize.ParamForTextCreation.FillColor.SetByHSL(fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance);
-            PicDataToCustomize.ParamForTextCreation.StrokeColor.SetByHSL(StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance);
-            PicDataToCustomize.OutPutType = OutputType.Custom;
-
-            await PicDataService.CreateCustomPicture(PicDataToCustomize);
+            OutputType jobtype = OutputType.Custom;
+            PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(PicDataToCustomize, PickedFont, PickedBox, Dankbox, BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance, fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance, StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance, jobtype);
             ShowCustomPicture(PicDataToCustomize);
         }
 
@@ -86,26 +80,60 @@ namespace BTC_Blazor.Pages
 
         protected override void OnInitialized()
         {
-            SetPictureDataImageDisplayCorrelation(ImageURL);
-            initializeColorItems();
+            PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(ImageURL);
+            BorderCLRItem = CurrentPagePictureData.ParamForTextCreation.BorderColor;
+            fillCLRItem = CurrentPagePictureData.ParamForTextCreation.FillColor;
+            StrokeCLRItem = CurrentPagePictureData.ParamForTextCreation.StrokeColor;
         }
 
-        public void SetPictureDataImageDisplayCorrelation(string imageUrl)
+        private bool _processing = false;
+
+        private List<ColorGroup> colorBoxes = Enum.GetValues(typeof(ColorGroup)).Cast<ColorGroup>().ToList();
+
+        private MudColor colorvalue;
+
+        private ColorGroup PickedGroup;
+
+        // get value from picker
+        private MudColor BorderColor;
+        // set value and display it
+        private ColorItem BorderCLRItem;
+
+        // get value from picker
+        private MudColor FillColor;
+        // set value and display it
+        private ColorItem fillCLRItem;
+
+        // get value from picker
+        private MudColor StrokeColor;
+        // set value and display it
+        private ColorItem StrokeCLRItem;
+
+        private enum ColorGroup
         {
-            foreach (var item in PicDataService.PicDataServiceList)
+            FillColor,
+            BorderColor,
+            StrokeColor
+        }
+
+        private void SetColor(ColorGroup clrGRP)
+        {
+            if (clrGRP == ColorGroup.BorderColor)
             {
-                foreach (PictureData variety in item.Varieties)
-                {
-                    if (Path.GetFileNameWithoutExtension(variety.OutPath) == Path.GetFileNameWithoutExtension(imageUrl))
-                    {
-                        CurrentPagePictureData = new PictureData(variety);
-                        break;
-                    }
-
-                }
-
+                BorderColor = colorvalue;
+                BorderCLRItem.SetByHSL((float)BorderColor.H, (float)BorderColor.S, (float)BorderColor.L);
             }
-
+            if (clrGRP == ColorGroup.FillColor)
+            {
+                FillColor = colorvalue;
+                fillCLRItem.SetByHSL((float)FillColor.H, (float)FillColor.S, (float)FillColor.L);
+            }
+            if (clrGRP == ColorGroup.StrokeColor)
+            {
+                StrokeColor = colorvalue;
+                StrokeCLRItem.SetByHSL((float)StrokeColor.H, (float)StrokeColor.S, (float)StrokeColor.L);
+            }
+            StateHasChanged();
         }
 
     }

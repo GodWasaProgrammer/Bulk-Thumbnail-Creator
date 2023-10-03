@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.IO;
+using Bulk_Thumbnail_Creator.Enums;
 
 namespace Bulk_Thumbnail_Creator.PictureObjects
 {
@@ -52,6 +53,58 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             string url = string.Empty;
 
             PicDataServiceList = await Program.Process(ProductionType.CustomPicture, url, TextToPrint, CustomPictureData);
+        }
+
+        public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, string PickedFont, Box PickedBox, Box DankBox, float Borderhue, float Bordersat, float BorderLum, float FillCLRHue, float FillCLRSat, float FillCLRLum, float StrokeCLRHue, float StrokeCLRSat, float strokeCLRLum, OutputType JobType)
+        {
+            PicToCustomize = new(PicToCustomize);
+            PicToCustomize.ParamForTextCreation.CurrentBox = PickedBox;
+            PicToCustomize.Dankbox = DankBox;
+            PicToCustomize.ParamForTextCreation.Font = PickedFont;
+            PicToCustomize.ParamForTextCreation.BorderColor.SetByHSL(Borderhue, Bordersat, BorderLum);
+            PicToCustomize.ParamForTextCreation.FillColor.SetByHSL(FillCLRHue, FillCLRSat, FillCLRLum);
+            PicToCustomize.ParamForTextCreation.StrokeColor.SetByHSL(StrokeCLRHue, StrokeCLRSat, strokeCLRLum);
+            PicToCustomize.OutPutType = JobType;
+
+            string url = string.Empty;
+            PicDataServiceList = await Program.Process(ProductionType.CustomPicture, url, TextToPrint, PicToCustomize);
+
+            return PicToCustomize;
+        }
+
+        public PictureData SetPictureDataImageDisplayCorrelation(string imageUrl)
+        {
+            PictureData PicData = new PictureData();
+
+            foreach (var item in PicDataServiceList)
+            {
+
+                if (Path.GetFileNameWithoutExtension(item.OutPath) == Path.GetFileNameWithoutExtension(imageUrl))
+                {
+                    PicData = new PictureData(item);
+                }
+            }
+            return PicData;
+        }
+
+        public PictureData SetPictureDataImageDisplayCorrelationForVarietyList(string imageUrl)
+        {
+            PictureData PicData = new();
+
+            foreach (var item in PicDataServiceList)
+            {
+                foreach (PictureData variety in item.Varieties)
+                {
+                    if (Path.GetFileNameWithoutExtension(variety.OutPath) == Path.GetFileNameWithoutExtension(imageUrl))
+                    {
+                        PicData = new PictureData(variety);
+                        break;
+                    }
+
+                }
+
+            }
+            return PicData;
         }
 
         public static void ClearBaseOutPutDirectories()
