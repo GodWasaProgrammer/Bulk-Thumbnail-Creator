@@ -26,7 +26,6 @@ namespace Bulk_Thumbnail_Creator
                 BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
 
                 // Adds To DownloadedVideosList if it is not already containing it,
-                // this has some issue where it still writes it...
                 if (!BTCSettings.DownloadedVideosList.Contains(BTCSettings.PathToVideo))
                 {
                     BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);

@@ -10,27 +10,8 @@
 <h1>Bulk Thumbnail Creator</h1>
 
 <div class="grid-container">
-    <div class="picture-data-box">
-        <h3 class="studded-header">Picture Data</h3>
-        <img src="@ImageURL" style="max-width: 100%;" />
 
-        <div class="fact-box">
-            <div class="fact-group">
-                <div class="fact-title">Picture Data names</div>
-                <div class="fact-item">Current font name: @Path.GetFileName(ParamForTextCreation.Font)</div>
-                <div class="fact-item">Base Filename: @FileName</div>
-                <div class="fact-item">Production Filename:@Path.GetFileName(OutPath) </div>
-            </div>
-            <div class="fact-group">
-                <div class="fact-title">Picture Data values</div>
-                <div class="fact-item">Output Type:@OutPutType</div>
-                <div class="fact-item">Current Text Box:@ParamForTextCreation.CurrentBox</div>
-                <div class="fact-item">Text To be Printed:@ParamForTextCreation.Text</div>
-                <div class="fact-item">Width of text box:@ParamForTextCreation.WidthOfBox</div>
-                <div class="fact-item">Position Of text: @ParamForTextCreation.PositionOfText</div>
-            </div>
-        </div>
-    </div>
+    <PictureDataBox ImageURL="@ImageURL" PicData="@CurrentPagePictureData"></PictureDataBox>
 
     <div class="color-box-container">
 

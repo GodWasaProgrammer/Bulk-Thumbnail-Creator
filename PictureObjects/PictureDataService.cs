@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.IO;
 using Bulk_Thumbnail_Creator.Enums;
+using Microsoft.AspNetCore.Components;
 
 namespace Bulk_Thumbnail_Creator.PictureObjects
 {
@@ -67,7 +68,7 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
 
         public PictureData SetPictureDataImageDisplayCorrelation(string imageUrl)
         {
-            PictureData PicData = new PictureData();
+            PictureData PicData = new();
 
             foreach (var item in PicDataServiceList)
             {

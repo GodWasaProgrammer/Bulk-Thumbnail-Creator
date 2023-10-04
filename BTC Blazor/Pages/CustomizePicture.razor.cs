@@ -1,20 +1,24 @@
 ﻿using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using Microsoft.AspNetCore.Components;
-using Bulk_Thumbnail_Creator.InterFaces;
 using MudBlazor.Utilities;
 
 namespace BTC_Blazor.Pages
 {
     public partial class CustomizePicture
     {
-        public string FileName { get => CurrentPagePictureData.FileName; set => throw new NotImplementedException(); }
-        public string OutPath { get => CurrentPagePictureData.OutPath; set => throw new NotImplementedException(); }
-        public ParamForTextCreation ParamForTextCreation { get => CurrentPagePictureData.ParamForTextCreation; set => throw new NotImplementedException(); }
-        public List<PictureData> Varieties { get => CurrentPagePictureData.Varieties; set => throw new NotImplementedException(); }
-        public OutputType OutPutType { get => CurrentPagePictureData.OutPutType; set => throw new NotImplementedException(); }
-        public Box Dankbox { get => CurrentPagePictureData.Dankbox; set => throw new NotImplementedException(); }
-        public string Meme { get => CurrentPagePictureData.Meme; set => value = Meme; }
+        public CustomizePicture()
+        {
+
+        }
+
+        public string FileName { get => CurrentPagePictureData.FileName;  }
+        public string OutPath { get => CurrentPagePictureData.OutPath;  }
+        public ParamForTextCreation ParamForTextCreation { get => CurrentPagePictureData.ParamForTextCreation; }
+        public List<PictureData> Varieties { get => CurrentPagePictureData.Varieties; }
+        public OutputType OutPutType { get => CurrentPagePictureData.OutPutType; }
+        public Box Dankbox { get => CurrentPagePictureData.Dankbox; }
+        public string Meme { get => CurrentPagePictureData.Meme;  }
 
         public PictureData CurrentPagePictureData { get; set; }
 
@@ -28,10 +32,7 @@ namespace BTC_Blazor.Pages
         public string PickedFont { 
             get 
             {
-                if (_PickedFont == null)
-                {
-                    _PickedFont = CurrentPagePictureData.ParamForTextCreation.Font;
-                }
+                _PickedFont ??= CurrentPagePictureData.ParamForTextCreation.Font;
 
                 return _PickedFont;
             }  
@@ -43,10 +44,6 @@ namespace BTC_Blazor.Pages
         [Parameter]
         public string ImageURL { get; set; }
 
-        public CustomizePicture()
-        {
-
-        }
 
         public async void CreateCustomPicDataObject()
         {
@@ -55,10 +52,7 @@ namespace BTC_Blazor.Pages
             ShowCustomPicture(PicDataToCustomize);
         }
 
-        [Inject]
-        NavigationManager NavigationManager { get; set; }
-
-        public PictureData PicData => throw new NotImplementedException();
+        readonly NavigationManager navmanager;
 
         private void NavToCustomizePicture(string imageURL)
         {
@@ -66,7 +60,7 @@ namespace BTC_Blazor.Pages
 
             imageURL = imageURL.Substring(currentdir.Length);
 
-            NavigationManager.NavigateTo($"/CustomizePicture/{Uri.EscapeDataString(imageURL)}");
+            navmanager.NavigateTo($"/CustomizePicture/{Uri.EscapeDataString(imageURL)}");
         }
 
         private void ShowCustomPicture(PictureData CustomPicture)

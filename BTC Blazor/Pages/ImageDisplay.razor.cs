@@ -36,16 +36,14 @@ namespace BTC_Blazor.Pages
             StateHasChanged();
         }
 
-        [Inject]
-        private NavigationManager NavigationManager { get; set; }
-
         private bool IMGDetailClicked = false;
+
 
         private void ShowImageDetail(string imageUrl)
         {
             IMGDetailClicked = true;
 
-            NavigationManager.NavigateTo($"/imagedetail/{Uri.EscapeDataString(imageUrl)}");
+            navmanager.NavigateTo($"/imagedetail/{Uri.EscapeDataString(imageUrl)}");
         }
 
     }
