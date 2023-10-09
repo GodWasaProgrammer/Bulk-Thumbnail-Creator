@@ -1,5 +1,4 @@
 ﻿using Bulk_Thumbnail_Creator;
-using Microsoft.AspNetCore.Components;
 
 namespace BTC_Blazor.Pages
 {

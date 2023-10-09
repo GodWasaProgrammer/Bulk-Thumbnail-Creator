@@ -55,6 +55,7 @@
 
   <ItemGroup>
     <PackageReference Include="MudBlazor" Version="6.10.0" />
+    <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
   </ItemGroup>
 
   <ItemGroup>

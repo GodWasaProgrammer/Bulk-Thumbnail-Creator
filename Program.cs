@@ -13,6 +13,7 @@ namespace Bulk_Thumbnail_Creator
     {
         public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, PictureData PicdataObjToVarietize = null)
         {
+
             BTCSettings.ListOfText = texts;
 
             #region Front Page Picture Line Up Output

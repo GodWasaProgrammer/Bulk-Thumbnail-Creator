@@ -1,10 +1,14 @@
 ﻿using Serilog;
+using Serilog.Core;
+using Bulk_Thumbnail_Creator.Interfaces;
 
 namespace Bulk_Thumbnail_Creator
 {
-    public class LogService 
+    public class LogService : ILogService
     {
         private readonly Serilog.Core.Logger _logger;
+
+        //private readonly ILogService _log;
 
         public LogService()
         {
@@ -13,6 +17,7 @@ namespace Bulk_Thumbnail_Creator
                 .WriteTo.Console()
                 .WriteTo.File("Bulk_Thumbnail_Creator.txt", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
+            //_log = log;
         }
 
         public void LogInformation(string message)
@@ -23,6 +28,10 @@ namespace Bulk_Thumbnail_Creator
         public void LogError(string message)
         {
             _logger.Error(message);
+        }
+        public void LogWarning(string message)
+        {
+            _logger.Warning(message);
         }
 
     }

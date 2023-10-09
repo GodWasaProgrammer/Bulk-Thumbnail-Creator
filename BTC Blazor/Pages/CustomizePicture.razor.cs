@@ -52,8 +52,6 @@ namespace BTC_Blazor.Pages
             ShowCustomPicture(PicDataToCustomize);
         }
 
-        readonly NavigationManager navmanager;
-
         private void NavToCustomizePicture(string imageURL)
         {
            var currentdir = Directory.GetCurrentDirectory();
@@ -69,6 +67,7 @@ namespace BTC_Blazor.Pages
             ImageURL = CurrentPagePictureData.OutPath; // just text data fetch
             NavToCustomizePicture(ImageURL); // trying to set the correlating image
             StateHasChanged();
+            Logger.LogInformation("ShowCustomPicture Has been called in Blazors Component");
         }
 
         protected override void OnInitialized()

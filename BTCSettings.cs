@@ -1,12 +1,31 @@
 ﻿using System.Collections.Generic;
+using Bulk_Thumbnail_Creator.Interfaces;
 using Bulk_Thumbnail_Creator.PictureObjects;
+using Serilog;
 
 namespace Bulk_Thumbnail_Creator
 {
     public class BTCSettings
 	{
-		private static readonly LogService _Logger = new();
-        public static  LogService Logger { get { return _Logger; } }
+		//private static readonly LogService _Logger = new();
+        //public static  LogService Logger { get { return _Logger; } }
+
+        private static ILogService _logService;
+
+        public static ILogService Logger
+        {
+            get
+            {
+                if (_logService == null)
+                {
+                    _logService = new LogService();
+                }
+
+                return _logService;
+            }
+
+        }
+
 
         /// <summary>
         /// The Dir where FFmpeg outputs raw images from the specified video

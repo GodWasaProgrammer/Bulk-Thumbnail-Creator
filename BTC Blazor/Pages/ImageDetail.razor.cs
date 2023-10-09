@@ -5,7 +5,9 @@ namespace BTC_Blazor.Pages
 {
     public partial class ImageDetail
     {
-        public PictureData CurrentPagePictureData;
+
+        [Parameter]
+        public PictureData CurrentPagePictureData { get; set; }
 
         [Parameter]
         public string ImageUrl { get; set; }
