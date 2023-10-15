@@ -9,6 +9,7 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
     [Serializable]
     public class PictureData : IPictureData
     {
+
         /// <summary>
         /// The filename of this object, with relative output path example : output//001.png
         /// </summary>

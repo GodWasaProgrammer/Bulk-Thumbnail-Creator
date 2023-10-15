@@ -1,6 +1,7 @@
 ﻿@page "/imagedisplay"
-@inject Bulk_Thumbnail_Creator.PictureObjects.PictureDataService ds
+
 @inject NavigationManager navmanager;
+@using Bulk_Thumbnail_Creator;
 
 @if (IMGDetailClicked == false)
 {
@@ -19,11 +20,51 @@
 }
 else
 {
-    <div class="horizontal-align">
+    <Loading _processing="true"></Loading>
+}
 
-        <div>
-            <img src="images/pepe-dance.gif" alt="Loading..." style="width: 500px; height: 500px; border:0;" />
-        </div>
-    </div>
+@code
+{
+    private List<string> imageUrls;
 
+    [Inject]
+    private NavigationManager navman { get; set; }
+
+    // Load image URLs in the OnInitializedAsync lifecycle method
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateImageUrls();
+    }
+
+
+    // Method to update the list of image URLs
+    public async Task UpdateImageUrls()
+    {
+        string imagePath = BTCSettings.TextAddedDir;
+
+        // Get the list of image files in the folder asynchronously
+        string[] imageFiles = await Task.Run(() => Directory.GetFiles(imagePath, "*.png"));
+
+        // Initialize the image URLs list
+        imageUrls = new List<string>();
+
+        // Create the URLs for the images and add them to the list
+        foreach (string imageFile in imageFiles)
+        {
+            string imageUrl = $"/{imageFile}";
+            imageUrls.Add(imageUrl);
+        }
+
+        // Notify the component that the state has changed
+        StateHasChanged();
+    }
+
+
+    private bool IMGDetailClicked = false;
+    private void ShowImageDetail(string imageUrl)
+    {
+        IMGDetailClicked = true;
+
+        navman.NavigateTo($"/imagedetail/{Uri.EscapeDataString(imageUrl)}");
+    }
 }

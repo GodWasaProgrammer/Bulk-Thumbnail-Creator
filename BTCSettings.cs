@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Bulk_Thumbnail_Creator.Interfaces;
 using Bulk_Thumbnail_Creator.PictureObjects;
+using Bulk_Thumbnail_Creator.Services;
 using Serilog;
 
 namespace Bulk_Thumbnail_Creator

@@ -1,12 +1,12 @@
 ﻿@page "/CustomizePicture/{imageUrl}"
-
 @using Bulk_Thumbnail_Creator;
 @using Bulk_Thumbnail_Creator.Interfaces;
 @using Bulk_Thumbnail_Creator.PictureObjects;
 @using MudBlazor.Utilities;
 @using UMapx;
+@using Bulk_Thumbnail_Creator.Services;
 
-@inject Bulk_Thumbnail_Creator.PictureObjects.PictureDataService PicDataService
+@inject PictureDataService PicDataService
 @inject NavigationManager navmanager;
 @inject ILogService Logger;
 

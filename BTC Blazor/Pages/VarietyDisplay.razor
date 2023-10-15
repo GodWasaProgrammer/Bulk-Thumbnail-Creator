@@ -1,4 +1,7 @@
-﻿@inject Bulk_Thumbnail_Creator.PictureObjects.PictureDataService PicDataService;
+﻿@using Bulk_Thumbnail_Creator.Services;
+@using Bulk_Thumbnail_Creator.PictureObjects;
+
+@inject PictureDataService PicDataService;
 
 @page "/varietydisplay"
 
@@ -16,14 +19,20 @@
 
 @code 
 {
+    public List<string> imageUrls;
+
+    public VarietyDisplay()
+    {
+        imageUrls = new List<string>();
+    }
+
+    [Parameter]
+    public PictureData ParentPictureProp { get; set; }
+
+
     [Inject]
     private NavigationManager NavigationManager { get; set; }
 
-     private void ShowImageDetail(string imageUrl)
-    {
-        NavigationManager.NavigateTo($"/imagedetail/{Uri.EscapeDataString(imageUrl)}");
-    }
-    
     private void NavToCustomizePicture(string imageURL)
     {
             NavigationManager.NavigateTo($"/CustomizePicture/{Uri.EscapeDataString(imageURL)}");

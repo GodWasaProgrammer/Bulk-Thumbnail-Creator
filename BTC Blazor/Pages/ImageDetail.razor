@@ -1,6 +1,23 @@
-﻿@inject Bulk_Thumbnail_Creator.PictureObjects.PictureDataService PicDataService;
-@page "/imagedetail/{imageUrl}"
+﻿@inject Bulk_Thumbnail_Creator.Services.PictureDataService PicDataService;
+@using Bulk_Thumbnail_Creator.PictureObjects;
 
-    <div class="center-content"><PictureDataBox ImageURL="@ImageUrl" PicData="@CurrentPagePictureData" /></div>
+@page "/imagedetail/{ImageUrl}"
 
-            <VarietyDisplay ParentPictureProp="CurrentPagePictureData"></VarietyDisplay>
+<div class="center-content"><PictureDataBox ImageURL="@ImageUrl" PicData="@CurrentPagePictureData" /></div>
+
+<VarietyDisplay ParentPictureProp="CurrentPagePictureData"></VarietyDisplay>
+
+@code
+{
+        [Parameter]
+        public PictureData CurrentPagePictureData { get; set; }
+
+        [Parameter]
+        public string ImageUrl { get; set; }
+
+        protected override void OnInitialized()
+        {
+            CurrentPagePictureData = PicDataService.SetPictureDataImageDisplayCorrelation(ImageUrl);
+        }
+
+}

@@ -1,0 +1,15 @@
+﻿@if (_processing == true)
+{
+    <div class="horizontal-align">
+
+        <div>
+            <img src="images/pepe-dance.gif" alt="Loading..." style="width: 500px; height: 500px; border:0;" />
+        </div>
+    </div>
+}
+
+@code 
+{
+    [Parameter]
+    public bool _processing { get; set; }
+}

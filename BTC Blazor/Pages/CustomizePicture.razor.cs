@@ -5,20 +5,12 @@ using MudBlazor.Utilities;
 
 namespace BTC_Blazor.Pages
 {
-    public partial class CustomizePicture
+    public partial class CustomizePicture// : PictureData
     {
         public CustomizePicture()
         {
 
         }
-
-        public string FileName { get => CurrentPagePictureData.FileName;  }
-        public string OutPath { get => CurrentPagePictureData.OutPath;  }
-        public ParamForTextCreation ParamForTextCreation { get => CurrentPagePictureData.ParamForTextCreation; }
-        public List<PictureData> Varieties { get => CurrentPagePictureData.Varieties; }
-        public OutputType OutPutType { get => CurrentPagePictureData.OutPutType; }
-        public Box Dankbox { get => CurrentPagePictureData.Dankbox; }
-        public string Meme { get => CurrentPagePictureData.Meme;  }
 
         public PictureData CurrentPagePictureData { get; set; }
 
@@ -44,11 +36,10 @@ namespace BTC_Blazor.Pages
         [Parameter]
         public string ImageURL { get; set; }
 
-
         public async void CreateCustomPicDataObject()
         {
             OutputType jobtype = OutputType.Custom;
-            PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(CurrentPagePictureData, PickedFont, PickedBox, Dankbox, BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance, fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance, StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance, jobtype);
+            PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(CurrentPagePictureData, PickedFont, PickedBox, CurrentPagePictureData.Dankbox, BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance, fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance, StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance, jobtype);
             ShowCustomPicture(PicDataToCustomize);
         }
 

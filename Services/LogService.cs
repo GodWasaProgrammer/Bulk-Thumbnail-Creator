@@ -2,11 +2,11 @@
 using Serilog.Core;
 using Bulk_Thumbnail_Creator.Interfaces;
 
-namespace Bulk_Thumbnail_Creator
+namespace Bulk_Thumbnail_Creator.Services
 {
     public class LogService : ILogService
     {
-        private readonly Serilog.Core.Logger _logger;
+        private readonly Logger _logger;
 
         //private readonly ILogService _log;
 
@@ -34,6 +34,10 @@ namespace Bulk_Thumbnail_Creator
             _logger.Warning(message);
         }
 
+        public void RandomLOL()
+        {
+
+        }
     }
 
 }

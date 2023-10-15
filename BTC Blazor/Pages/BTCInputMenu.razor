@@ -1,0 +1,125 @@
+﻿@inject Bulk_Thumbnail_Creator.Services.PictureDataService ds;
+
+<Loading _processing="@_processing"></Loading>
+
+@if (DisableMenu == false)
+{
+    @if (DownloadedVideosList != null)
+    {
+        <select>
+
+            @foreach (string listobject in DownloadedVideosList)
+            {
+                <option value="@listobject">@listobject</option>
+            }
+        </select>
+
+    }
+
+    <div class="input-container">
+
+        <div class="youtube-link">
+
+            <label class="input-label" for="textInput">Youtube Link:</label>
+
+            <input id="textInput" type="text" @bind="textInput" class="matrix-input" />
+
+        </div>
+
+        <div class="text-to-print">
+
+            <div>
+
+                <label class="input-label" for="textToPrint1">Text To Print 1:</label>
+
+                <input id="textToPrint1" type="text" @bind="@TextToPrint1" class="matrix-input" />
+
+            </div>
+
+            <div>
+
+                <label class="input-label" for="textToPrint2">Text To Print 2:</label>
+
+                <input id="textToPrint2" type="text" @bind="@TextToPrint2" class="matrix-input" />
+
+            </div>
+
+            <div>
+
+                <label class="input-label" for="textToPrint3">Text To Print 3:</label>
+
+                <input id="textToPrint3" type="text" @bind="@TextToPrint3" class="matrix-input" />
+
+            </div>
+
+        </div>
+
+    </div>
+
+      <MudButton Disabled="@_processing" OnClick="AwaitBTC" Variant="Variant.Filled" Color="Color.Primary">
+
+        @if (!_processing)
+        {
+            <MudText>Run BTC</MudText>
+        }
+
+    </MudButton>
+
+    @if (passedNull)
+    {
+        <MudText>You need to give me an actual YoutubeLink</MudText>
+    }
+
+
+    @if (_processing == false)
+    {
+        <ImageDisplay @ref="imageDisplayref"></ImageDisplay>
+    }
+}
+
+@code
+{
+    public ImageDisplay imageDisplayref;
+
+    private bool _processing;
+
+    private bool DisableMenu;
+
+    public List<string> DownloadedVideosList { get; set; }
+
+    private string textInput = string.Empty;
+    private bool passedNull = false;
+    private string TextToPrint1 = "Good Ole Rambler try!";
+    private string TextToPrint2 = "I've Taken Dunkirk! Onwards Men!";
+    private string TextToPrint3 = "Tallyhoo Laddiooo";
+
+    private async Task CallBTC(string url)
+    {
+        List<string> ListOfTextToPrint = new() { TextToPrint1, TextToPrint2, TextToPrint3 };
+        await ds.CreateInitialPictureArrayAsync(url, ListOfTextToPrint);
+    }
+
+    private List<string> DisplayList = new();
+
+    private async void AwaitBTC()
+    {
+        string url = textInput;
+
+        if (url == null || url == string.Empty)
+        {
+            passedNull = true;
+        }
+        else
+        {
+            passedNull = false;
+            DisableMenu = true;
+            _processing = true;
+            await CallBTC(url);
+            _processing = false;
+            StateHasChanged();
+            await imageDisplayref.UpdateImageUrls();
+        }
+
+    }
+
+}

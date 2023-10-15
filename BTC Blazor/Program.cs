@@ -1,9 +1,8 @@
 using Bulk_Thumbnail_Creator;
 using Bulk_Thumbnail_Creator.Interfaces;
-using Bulk_Thumbnail_Creator.PictureObjects;
+using Bulk_Thumbnail_Creator.Services;
 using Microsoft.Extensions.FileProviders;
 using MudBlazor.Services;
-using Serilog;
 
 namespace BTC_Blazor
 {
@@ -18,8 +17,6 @@ namespace BTC_Blazor
             builder.Services.AddServerSideBlazor();
             builder.Services.AddSingleton<PictureDataService>();
             builder.Services.AddSingleton<ILogService, LogService>();
-
-
             builder.Services.AddMudServices();
 
             var app = builder.Build();

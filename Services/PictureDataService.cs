@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using System.IO;
 using Bulk_Thumbnail_Creator.Enums;
-using Microsoft.AspNetCore.Components;
+using Bulk_Thumbnail_Creator.PictureObjects;
 
-namespace Bulk_Thumbnail_Creator.PictureObjects
+namespace Bulk_Thumbnail_Creator.Services
 {
     public class PictureDataService
     {
@@ -110,21 +110,21 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             {
                 file.Delete();
             }
-            foreach(DirectoryInfo dir in di.GetDirectories())
+            foreach (DirectoryInfo dir in di.GetDirectories())
             {
                 dir.Delete(true);
             }
 
             // TODO : for whatever reason these resources are not free for deletion
             DirectoryInfo di2 = new(BTCSettings.OutputDir);
-            
-            foreach(FileInfo file in di2.GetFiles())
+
+            foreach (FileInfo file in di2.GetFiles())
             {
                 file.Delete();
             }
-            foreach(DirectoryInfo dir in di2.GetDirectories())
+            foreach (DirectoryInfo dir in di2.GetDirectories())
             {
-                dir.Delete(true); 
+                dir.Delete(true);
             }
 
         }
