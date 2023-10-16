@@ -27,7 +27,7 @@ namespace Bulk_Thumbnail_Creator
 
             if (SumOfRectanglesX > HalfofPicWidth && SumOfRectanglesY > HalfOfPicHeight)
             {
-                BTCSettings.DiscardedBecauseTooMuchFacePictureData.Add(CurrentFile);
+                Settings.DiscardedBecauseTooMuchFacePictureData.Add(CurrentFile);
             }
 
         }
@@ -39,9 +39,9 @@ namespace Bulk_Thumbnail_Creator
         internal static MagickColor RandomizeColor()
         {
             Random colorRandom = new();
-            byte pickedColorRedRGB = (byte)colorRandom.Next(BTCSettings.MaxRGB);
-            byte pickedColorGreenRGB = (byte)colorRandom.Next(BTCSettings.MaxRGB);
-            byte pickedColorBlueRGB = (byte)colorRandom.Next(BTCSettings.MaxRGB);
+            byte pickedColorRedRGB = (byte)colorRandom.Next(Settings.MaxRGB);
+            byte pickedColorGreenRGB = (byte)colorRandom.Next(Settings.MaxRGB);
+            byte pickedColorBlueRGB = (byte)colorRandom.Next(Settings.MaxRGB);
 
             MagickColor colorRNGPicked;
 
@@ -681,10 +681,10 @@ namespace Bulk_Thumbnail_Creator
                 {
                     // pick a meme
                     Random pickRandomMeme = new();
-                    int PickedMeme = pickRandomMeme.Next(BTCSettings.Memes.Length);
+                    int PickedMeme = pickRandomMeme.Next(Settings.Memes.Length);
 
                     //// write our chosen meme to Meme property
-                    CopiedPicData.Meme = BTCSettings.Memes[PickedMeme];
+                    CopiedPicData.Meme = Settings.Memes[PickedMeme];
 
                     // set the type of output
                     CopiedPicData.OutPutType = OutputType.Dankness;

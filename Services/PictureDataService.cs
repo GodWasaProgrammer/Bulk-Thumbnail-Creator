@@ -104,7 +104,7 @@ namespace Bulk_Thumbnail_Creator.Services
 
         public static void ClearBaseOutPutDirectories()
         {
-            DirectoryInfo di = new(BTCSettings.TextAddedDir);
+            DirectoryInfo di = new(Settings.TextAddedDir);
 
             foreach (FileInfo file in di.GetFiles())
             {
@@ -116,7 +116,7 @@ namespace Bulk_Thumbnail_Creator.Services
             }
 
             // TODO : for whatever reason these resources are not free for deletion
-            DirectoryInfo di2 = new(BTCSettings.OutputDir);
+            DirectoryInfo di2 = new(Settings.OutputDir);
 
             foreach (FileInfo file in di2.GetFiles())
             {

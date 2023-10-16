@@ -40,7 +40,7 @@ else
     // Method to update the list of image URLs
     public async Task UpdateImageUrls()
     {
-        string imagePath = BTCSettings.TextAddedDir;
+        string imagePath = Settings.TextAddedDir;
 
         // Get the list of image files in the folder asynchronously
         string[] imageFiles = await Task.Run(() => Directory.GetFiles(imagePath, "*.png"));

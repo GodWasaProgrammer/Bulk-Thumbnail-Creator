@@ -13,8 +13,8 @@ namespace Bulk_Thumbnail_Creator
 		{
             Process processFFMpeg = new();
 
-			processFFMpeg.StartInfo.FileName = BTCSettings.FfmpegDir;
-			processFFMpeg.StartInfo.WorkingDirectory = BTCSettings.YTDLOutPutDir;
+			processFFMpeg.StartInfo.FileName = Settings.FfmpegDir;
+			processFFMpeg.StartInfo.WorkingDirectory = Settings.YTDLOutPutDir;
 			processFFMpeg.StartInfo.Arguments = parameters;
 			processFFMpeg.StartInfo.UseShellExecute = false;
 			processFFMpeg.StartInfo.CreateNoWindow = false;
@@ -22,7 +22,7 @@ namespace Bulk_Thumbnail_Creator
 
 			processFFMpeg.Start();
 			processFFMpeg.WaitForExit();
-			BTCSettings.Logger.LogInformation("Ffmpeg finished producing pictures");
+			Settings.Logger.LogInformation("Ffmpeg finished producing pictures");
 		}
 
 		/// <summary>

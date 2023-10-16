@@ -23,7 +23,7 @@ namespace Bulk_Thumbnail_Creator.Serialization
             catch (Exception ex)
             {
                 // Handle the exception, log it
-                BTCSettings.Logger.LogError("Error during serialization: " + ex.Message);
+                Settings.Logger.LogError("Error during serialization: " + ex.Message);
             }
 
         }
@@ -47,7 +47,7 @@ namespace Bulk_Thumbnail_Creator.Serialization
             catch (Exception ex)
             {
                 // Handle the exception, log it,
-                BTCSettings.Logger.LogError("Error during deserialization: " + ex.Message);
+                Settings.Logger.LogError("Error during deserialization: " + ex.Message);
                 return null; // return null or throw a custom exception
             }
 
@@ -62,7 +62,7 @@ namespace Bulk_Thumbnail_Creator.Serialization
         /// <returns>The Deserialized List of Strings</returns>
         public static List<string> DeSerializeXMLToListOfStrings(string pathtoXMLToDeSerialize)
         {
-            List<string> ListofStringsToDeSerialize = BTCSettings.DownloadedVideosList;
+            List<string> ListofStringsToDeSerialize = Settings.DownloadedVideosList;
 
             if (File.Exists(pathtoXMLToDeSerialize))
             {

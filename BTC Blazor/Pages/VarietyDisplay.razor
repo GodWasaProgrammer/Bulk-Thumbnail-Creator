@@ -55,7 +55,7 @@
     {
         string parentfilename = Path.GetFileName(ParentPictureProp.FileName);
         string varietyof = "variety of";
-        string ConcatenatedString =$"{Bulk_Thumbnail_Creator.BTCSettings.TextAddedDir}/{varietyof} {parentfilename}";
+        string ConcatenatedString =$"{Bulk_Thumbnail_Creator.Settings.TextAddedDir}/{varietyof} {parentfilename}";
         string[] ArrayOfFilePaths = Directory.GetFiles(ConcatenatedString, "*.png");
 
         foreach (string filepath in ArrayOfFilePaths)

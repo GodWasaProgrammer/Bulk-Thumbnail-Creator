@@ -14,53 +14,53 @@ namespace Bulk_Thumbnail_Creator
         public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, PictureData PicdataObjToVarietize = null)
         {
 
-            BTCSettings.ListOfText = texts;
+            Settings.ListOfText = texts;
 
             #region Front Page Picture Line Up Output
             if (ProdType == ProductionType.FrontPagePictureLineUp)
             {
                 // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
-                Production.CreateDirectories(BTCSettings.OutputDir, BTCSettings.TextAddedDir, BTCSettings.YTDLOutPutDir);
+                Production.CreateDirectories(Settings.OutputDir, Settings.TextAddedDir, Settings.YTDLOutPutDir);
 
                 await Production.VerifyDirectoryAndExeIntegrity();
 
-                BTCSettings.PathToVideo = await Production.YouTubeDL(url);
-                BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
+                Settings.PathToVideo = await Production.YouTubeDL(url);
+                Settings.DownloadedVideosList.Add(Settings.PathToVideo);
 
                 // Adds To DownloadedVideosList if it is not already containing it,
-                if (!BTCSettings.DownloadedVideosList.Contains(BTCSettings.PathToVideo))
+                if (!Settings.DownloadedVideosList.Contains(Settings.PathToVideo))
                 {
-                    BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);
+                    Settings.DownloadedVideosList.Add(Settings.PathToVideo);
                 }
 
                 #region Run FfMpeg
                 var parameters = new Dictionary<string, string>();
 
-                string extractedfilename = Path.GetFileName(BTCSettings.PathToVideo);
+                string extractedfilename = Path.GetFileName(Settings.PathToVideo);
 
                 parameters["i"] = $@"""{extractedfilename}""";
                 parameters["vf"] = @"select=gt(scene\,0.3)";
                 parameters["vsync"] = "vfr";
-                string truePath = Path.GetFullPath(BTCSettings.OutputDir);
+                string truePath = Path.GetFullPath(Settings.OutputDir);
                 string pictureOutput = $@"""{truePath}/%03d.png""";
 
                 FFmpegHandler.RunFFMPG(parameters, pictureOutput);
                 #endregion
 
-                Serializing.SerializeListOfStringsToXML(BTCSettings.PathToXMLListOfDownloadedVideos, BTCSettings.DownloadedVideosList);
+                Serializing.SerializeListOfStringsToXML(Settings.PathToXMLListOfDownloadedVideos, Settings.DownloadedVideosList);
 
-                BTCSettings.Files = Directory.GetFiles(BTCSettings.OutputDir, "*.*", SearchOption.AllDirectories);
+                Settings.Files = Directory.GetFiles(Settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
-                BTCSettings.Memes = Directory.GetFiles(BTCSettings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
+                Settings.Memes = Directory.GetFiles(Settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
 
                 var faceDetector = new FaceDetector(0.95f, 0.5f);
 
-                BTCSettings.Logger.LogInformation($"Processing {BTCSettings.Files.Length} images");
+                Settings.Logger.LogInformation($"Processing {Settings.Files.Length} images");
 
                 // main loop for detecting faces, placing text where face is not
-                Parallel.For(0, BTCSettings.Files.Length, fileIndex =>
+                Parallel.For(0, Settings.Files.Length, fileIndex =>
                 {
-                    string file = BTCSettings.Files[fileIndex];
+                    string file = Settings.Files[fileIndex];
 
                     Bitmap PicToDetectFacesOn = new(file);
 
@@ -68,7 +68,7 @@ namespace Bulk_Thumbnail_Creator
 
                     DataGeneration.DecideIfTooMuchFace(file, PicToDetectFacesOn, detectedFacesRectArray);
 
-                    if (!BTCSettings.DiscardedBecauseTooMuchFacePictureData.Contains(file))
+                    if (!Settings.DiscardedBecauseTooMuchFacePictureData.Contains(file))
                     {
                         ParamForTextCreation currentParameters = new();
 
@@ -80,8 +80,8 @@ namespace Bulk_Thumbnail_Creator
 
                         // picks a random string from the list
                         Random pickAString = new();
-                        int pickedString = pickAString.Next(BTCSettings.ListOfText.Count);
-                        currentParameters.Text = BTCSettings.ListOfText[pickedString];
+                        int pickedString = pickAString.Next(Settings.ListOfText.Count);
+                        currentParameters.Text = Settings.ListOfText[pickedString];
 
                         PictureData PassPictureData = new()
                         {
@@ -89,12 +89,12 @@ namespace Bulk_Thumbnail_Creator
                             ParamForTextCreation = currentParameters,
                         };
 
-                        BTCSettings.PictureDatas.Add(PassPictureData);
+                        Settings.PictureDatas.Add(PassPictureData);
                     }
 
                 });
 
-                BTCSettings.Logger.LogInformation($" Discarded Amount Of Pictures:{BTCSettings.DiscardedBecauseTooMuchFacePictureData.Count}");
+                Settings.Logger.LogInformation($" Discarded Amount Of Pictures:{Settings.DiscardedBecauseTooMuchFacePictureData.Count}");
 
                 #region debugsinglefor
                 // just here for debug purposes
@@ -117,9 +117,9 @@ namespace Bulk_Thumbnail_Creator
                 #endregion
 
                 //// Produce varietydata for the current object
-                Parallel.For(0, BTCSettings.PictureDatas.Count, i =>
+                Parallel.For(0, Settings.PictureDatas.Count, i =>
                 {
-                    var input = BTCSettings.PictureDatas[i];
+                    var input = Settings.PictureDatas[i];
 
                     DataGeneration.GenSaturationVariety(input);
 
@@ -133,13 +133,13 @@ namespace Bulk_Thumbnail_Creator
                 });
 
                 // actual file output
-                Parallel.For(0, BTCSettings.PictureDatas.Count, i =>
+                Parallel.For(0, Settings.PictureDatas.Count, i =>
                 {
-                    string PicObjPath = BTCSettings.PictureDatas[i].FileName;
+                    string PicObjPath = Settings.PictureDatas[i].FileName;
 
-                    if (!BTCSettings.DiscardedBecauseTooMuchFacePictureData.Contains(PicObjPath))
+                    if (!Settings.DiscardedBecauseTooMuchFacePictureData.Contains(PicObjPath))
                     {
-                        Production.ProduceTextPictures(BTCSettings.PictureDatas[i]);
+                        Production.ProduceTextPictures(Settings.PictureDatas[i]);
                     }
 
                 });
@@ -152,7 +152,7 @@ namespace Bulk_Thumbnail_Creator
             {
                 if (PicdataObjToVarietize == null)
                 {
-                    BTCSettings.Logger.LogError("null has been passed to PicdataobjToVarietize");
+                    Settings.Logger.LogError("null has been passed to PicdataobjToVarietize");
                 }
                 else
                 {
@@ -171,7 +171,7 @@ namespace Bulk_Thumbnail_Creator
             {
                 if (PicdataObjToVarietize == null)
                 {
-                    BTCSettings.Logger.LogError("Null has been passed to CustomPicture");
+                    Settings.Logger.LogError("Null has been passed to CustomPicture");
                 }
                 else
                 {
@@ -179,7 +179,7 @@ namespace Bulk_Thumbnail_Creator
                     PicdataObjToVarietize.ParamForTextCreation = DataGeneration.CalculateBoxData(PicdataObjToVarietize.ParamForTextCreation.CurrentBox, srcpic, PicdataObjToVarietize.ParamForTextCreation);
 
                     Production.ProduceTextPictures(PicdataObjToVarietize);
-                    BTCSettings.PictureDatas.Add(PicdataObjToVarietize);
+                    Settings.PictureDatas.Add(PicdataObjToVarietize);
                 }
 
             }
@@ -207,8 +207,8 @@ namespace Bulk_Thumbnail_Creator
             //    BTCSettings.Logger.LogInformation("PictureDatas.xml Serialized from PictureData");
             //}
 
-            BTCSettings.Logger.LogInformation("Processing Finished");
-            return BTCSettings.PictureDatas;
+            Settings.Logger.LogInformation("Processing Finished");
+            return Settings.PictureDatas;
         }
         #endregion
 

@@ -1,6 +1,6 @@
 ﻿@inject Bulk_Thumbnail_Creator.Services.PictureDataService ds;
 
-<Loading _processing="@_processing"></Loading>
+<Loading _processing="@Loading"></Loading>
 
 @if (DisableMenu == false)
 {
@@ -56,14 +56,7 @@
 
     </div>
 
-      <MudButton Disabled="@_processing" OnClick="AwaitBTC" Variant="Variant.Filled" Color="Color.Primary">
-
-        @if (!_processing)
-        {
-            <MudText>Run BTC</MudText>
-        }
-
-    </MudButton>
+      <MudButton OnClick="AwaitBTC" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
 
     @if (passedNull)
     {
@@ -71,24 +64,13 @@
     }
 
 
-    @if (_processing == false)
-    {
-        <ImageDisplay @ref="imageDisplayref"></ImageDisplay>
-    }
 }
+        <ImageDisplay @ref="imageDisplayref"></ImageDisplay>
 
 @code
 {
-    public ImageDisplay imageDisplayref;
-
-    private bool _processing;
-
-    private bool DisableMenu;
-
     public List<string> DownloadedVideosList { get; set; }
 
-    private string textInput = string.Empty;
-    private bool passedNull = false;
     private string TextToPrint1 = "Good Ole Rambler try!";
     private string TextToPrint2 = "I've Taken Dunkirk! Onwards Men!";
     private string TextToPrint3 = "Tallyhoo Laddiooo";
@@ -96,10 +78,16 @@
     private async Task CallBTC(string url)
     {
         List<string> ListOfTextToPrint = new() { TextToPrint1, TextToPrint2, TextToPrint3 };
+
+        // should be callback to update separate component for imagedetail, updateimageurls
         await ds.CreateInitialPictureArrayAsync(url, ListOfTextToPrint);
     }
 
-    private List<string> DisplayList = new();
+    private bool DisableMenu;
+    private string textInput = string.Empty;
+    private bool passedNull = false;
+    private bool Loading;
+    public ImageDisplay imageDisplayref;
 
     private async void AwaitBTC()
     {
@@ -112,12 +100,12 @@
         else
         {
             passedNull = false;
+            Loading = true;
             DisableMenu = true;
-            _processing = true;
             await CallBTC(url);
-            _processing = false;
-            StateHasChanged();
             await imageDisplayref.UpdateImageUrls();
+            Loading = false;
+            StateHasChanged();
         }
 
     }

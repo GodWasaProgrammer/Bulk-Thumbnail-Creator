@@ -6,7 +6,7 @@ using Serilog;
 
 namespace Bulk_Thumbnail_Creator
 {
-    public class BTCSettings
+    public class Settings
 	{
 		//private static readonly LogService _Logger = new();
         //public static  LogService Logger { get { return _Logger; } }

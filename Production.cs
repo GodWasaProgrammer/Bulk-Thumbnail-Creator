@@ -31,73 +31,73 @@ namespace Bulk_Thumbnail_Creator
             string YTDLPDir = Path.Combine(ExePath, "yt-dlp.exe");
             string FfMpegDir = Path.Combine(ExePath, "ffmpeg.exe");
 
-            BTCSettings.Logger.LogInformation($"Current Location: {CurrentLoc}");
-            BTCSettings.Logger.LogInformation($"Parent Directory: {parentDirectory}");
-            BTCSettings.Logger.LogInformation($"New Path: {ExePath}");
+            Settings.Logger.LogInformation($"Current Location: {CurrentLoc}");
+            Settings.Logger.LogInformation($"Parent Directory: {parentDirectory}");
+            Settings.Logger.LogInformation($"New Path: {ExePath}");
 
             if (File.Exists(YTDLPDir))
             {
-                BTCSettings.Logger.LogInformation($"YTDLP Path: {YTDLPDir}");
+                Settings.Logger.LogInformation($"YTDLP Path: {YTDLPDir}");
             }
             else
             {
-                BTCSettings.Logger.LogError("yt-dlp.exe was not found");
-                BTCSettings.Logger.LogInformation("Will Try To Download yt-dlp");
+                Settings.Logger.LogError("yt-dlp.exe was not found");
+                Settings.Logger.LogInformation("Will Try To Download yt-dlp");
                 await YoutubeDLSharp.Utils.DownloadYtDlp(ExePath);
 
                 if (File.Exists(YTDLPDir))
                 {
-                    BTCSettings.Logger.LogInformation("Successfully downloaded yt-dlp");
+                    Settings.Logger.LogInformation("Successfully downloaded yt-dlp");
                 }
                 else
                 {
-                    BTCSettings.Logger.LogError("Failed to download yt-dlp");
+                    Settings.Logger.LogError("Failed to download yt-dlp");
                 }
 
             }
-            BTCSettings.YTDLPDir = YTDLPDir;
+            Settings.YTDLPDir = YTDLPDir;
 
             if (File.Exists(FfMpegDir))
             {
-                BTCSettings.Logger.LogInformation($"FFmpeg Path: {FfMpegDir}");
+                Settings.Logger.LogInformation($"FFmpeg Path: {FfMpegDir}");
             }
             else
             {
                 // we didnt find ffmpeg
-                BTCSettings.Logger.LogError("ffmpeg.exe was not found");
+                Settings.Logger.LogError("ffmpeg.exe was not found");
 
                 // so will download it
-                BTCSettings.Logger.LogInformation("Will Try To Download ffmpeg");
+                Settings.Logger.LogInformation("Will Try To Download ffmpeg");
 
                 //attempts to download the file to local dir
                 await YoutubeDLSharp.Utils.DownloadFFmpeg(ExePath);
 
                 if (File.Exists(FfMpegDir))
                 {
-                    BTCSettings.Logger.LogInformation("File has been successfully downloaded");
+                    Settings.Logger.LogInformation("File has been successfully downloaded");
                 }
                 else
                 {
-                    BTCSettings.Logger.LogInformation("Download of FFMPEG has failed.");
+                    Settings.Logger.LogInformation("Download of FFMPEG has failed.");
                 }
 
             }
 
-            BTCSettings.FfmpegDir = FfMpegDir;
+            Settings.FfmpegDir = FfMpegDir;
 
             string ytdlDir = Path.Combine(parentDirectory, "YTDL");
 
             if (Directory.Exists(ytdlDir))
             {
-                BTCSettings.Logger.LogInformation($"YTDL Dir found:{ytdlDir}");
+                Settings.Logger.LogInformation($"YTDL Dir found:{ytdlDir}");
             }
             else
             {
-                BTCSettings.Logger.LogError("YTDL Dir was not found");
+                Settings.Logger.LogError("YTDL Dir was not found");
                 Directory.CreateDirectory(ytdlDir);
-                BTCSettings.Logger.LogInformation($"Dir Created at:{ytdlDir}");
+                Settings.Logger.LogInformation($"Dir Created at:{ytdlDir}");
             }
-            BTCSettings.YTDLOutPutDir = ytdlDir;
+            Settings.YTDLOutPutDir = ytdlDir;
         }
 
         /// <summary>
@@ -110,9 +110,9 @@ namespace Bulk_Thumbnail_Creator
             var ytdl = new YoutubeDL
             {
                 // set paths
-                YoutubeDLPath = BTCSettings.YTDLPDir,
-                FFmpegPath = BTCSettings.FfmpegDir,
-                OutputFolder = BTCSettings.YTDLOutPutDir,
+                YoutubeDLPath = Settings.YTDLPDir,
+                FFmpegPath = Settings.FfmpegDir,
+                OutputFolder = Settings.YTDLOutPutDir,
             };
 
             // downloads specified video from youtube if it does not already exist.
@@ -120,17 +120,17 @@ namespace Bulk_Thumbnail_Creator
 
             if (URL == null)
             {
-                BTCSettings.Logger.LogError("URL has been passed as null to YTDL");
+                Settings.Logger.LogError("URL has been passed as null to YTDL");
                 throw new ArgumentNullException(nameof(URL));
 
             }
             else
             {
-                BTCSettings.Logger.LogInformation($"Attempting download of: {URL}");
+                Settings.Logger.LogInformation($"Attempting download of: {URL}");
                 res = await ytdl.RunVideoDownload(url: URL);
             }
 
-            BTCSettings.Logger.LogInformation("Download Success:" + res.Success.ToString());
+            Settings.Logger.LogInformation("Download Success:" + res.Success.ToString());
 
             // sets BTC to run on the recently downloaded file res.data is the returned path.
             return res.Data;
@@ -140,17 +140,17 @@ namespace Bulk_Thumbnail_Creator
         {
             if (!Directory.Exists(outputDir))
             {
-                BTCSettings.Logger.LogInformation($"{outputDir} Directory was missing, will be created");
+                Settings.Logger.LogInformation($"{outputDir} Directory was missing, will be created");
                 Directory.CreateDirectory(outputDir);
             }
             if (!Directory.Exists(YTDL))
             {
-                BTCSettings.Logger.LogInformation($"{TextAdded} Directory was missing, will be created");
+                Settings.Logger.LogInformation($"{TextAdded} Directory was missing, will be created");
                 Directory.CreateDirectory(TextAdded);
             }
             if (!Directory.Exists(YTDL))
             {
-                BTCSettings.Logger.LogInformation($"{YTDL} Directory was missing, will be created");
+                Settings.Logger.LogInformation($"{YTDL} Directory was missing, will be created");
                 Directory.CreateDirectory(YTDL);
             }
 
@@ -165,7 +165,7 @@ namespace Bulk_Thumbnail_Creator
         public static void ProduceTextPictures(PictureData PicData)
         {
             string imageName;
-            string OutputPath = Path.GetFullPath(BTCSettings.TextAddedDir);
+            string OutputPath = Path.GetFullPath(Settings.TextAddedDir);
 
             imageName = Path.GetFileName(PicData.FileName);
             DateTime dateTime = DateTime.Now;
@@ -247,7 +247,7 @@ namespace Bulk_Thumbnail_Creator
 
             // outputs the file to the provided path and name
             outputImage.Write(OutputPath);
-            BTCSettings.Logger.LogInformation($"File Created: {OutputPath}");
+            Settings.Logger.LogInformation($"File Created: {OutputPath}");
         }
 
     }
