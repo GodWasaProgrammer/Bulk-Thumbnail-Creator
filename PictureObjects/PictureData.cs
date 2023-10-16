@@ -2,12 +2,11 @@
 using ImageMagick;
 using System.Collections.Generic;
 using System;
-using Bulk_Thumbnail_Creator.InterFaces;
 
 namespace Bulk_Thumbnail_Creator.PictureObjects
 {
     [Serializable]
-    public class PictureData : IPictureData
+    public class PictureData
     {
 
         /// <summary>

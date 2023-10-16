@@ -15,7 +15,7 @@ namespace Bulk_Thumbnail_Creator
         /// <summary>
         /// Checks if we have our directory/executables  in order
         /// </summary>
-        public static async void VerifyDirectoryAndExeIntegrity()
+        public static async Task VerifyDirectoryAndExeIntegrity()
         {
             string CurrentLoc = Assembly.GetExecutingAssembly().Location;
             string parentDirectory = Directory.GetParent(CurrentLoc).FullName;

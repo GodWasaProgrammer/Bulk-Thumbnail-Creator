@@ -21,7 +21,8 @@ namespace Bulk_Thumbnail_Creator
             {
                 // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
                 Production.CreateDirectories(BTCSettings.OutputDir, BTCSettings.TextAddedDir, BTCSettings.YTDLOutPutDir);
-                Production.VerifyDirectoryAndExeIntegrity();
+
+                await Production.VerifyDirectoryAndExeIntegrity();
 
                 BTCSettings.PathToVideo = await Production.YouTubeDL(url);
                 BTCSettings.DownloadedVideosList.Add(BTCSettings.PathToVideo);

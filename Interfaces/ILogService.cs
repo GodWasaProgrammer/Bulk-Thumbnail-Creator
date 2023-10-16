@@ -8,6 +8,7 @@
 
         void LogInformation(string message);
 
+        void LogException(string message);
     }
 
 }

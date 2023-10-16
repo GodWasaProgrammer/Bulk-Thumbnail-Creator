@@ -34,9 +34,9 @@ namespace Bulk_Thumbnail_Creator.Services
             _logger.Warning(message);
         }
 
-        public void RandomLOL()
+        public void LogException(string message) 
         {
-
+            _logger.Fatal(message);
         }
     }
 
