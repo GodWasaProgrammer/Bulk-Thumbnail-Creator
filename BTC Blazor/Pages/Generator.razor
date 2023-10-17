@@ -14,11 +14,7 @@
 
 @code
 {
-    private List<string> DownloadedVideosList = new() { "Video 1", "video 2" };
-
     ImageDisplay imageDisplayref;
-
-    private List<string> DisplayList = new();
 
     private async void BuildImageDisplay(bool dirdone)
     {
@@ -27,22 +23,6 @@
             await imageDisplayref.UpdateImageUrls();
         }
 
-    }
-
-    private void BuildVideosList()
-    {
-        DownloadedVideosList = Serializing.DeSerializeXMLToListOfStrings(Settings.PathToXMLListOfDownloadedVideos);
-
-        foreach (var video in DownloadedVideosList)
-        {
-            DisplayList.Add(Path.GetFileName(video));
-        }
-
-    }
-
-    protected override void OnInitialized()
-    {
-        BuildVideosList();
     }
 
 }
