@@ -8,12 +8,26 @@
 <PageTitle>Bulk Thumbnail Creator</PageTitle>
 <h1>Bulk Thumbnail Creator</h1>
 
-<InputMenu></InputMenu>
+<InputMenu returnStateUpdate="@BuildImageDisplay"></InputMenu>
+
+<ImageDisplay @ref="imageDisplayref">  </ImageDisplay>
 
 @code
 {
     private List<string> DownloadedVideosList = new() { "Video 1", "video 2" };
+
+    ImageDisplay imageDisplayref;
+
     private List<string> DisplayList = new();
+
+    private async void BuildImageDisplay(bool dirdone)
+    {
+        if(dirdone)
+        {
+            await imageDisplayref.UpdateImageUrls();
+        }
+
+    }
 
     private void BuildVideosList()
     {

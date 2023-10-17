@@ -65,7 +65,6 @@
 
 
 }
-        <ImageDisplay @ref="imageDisplayref"></ImageDisplay>
 
 @code
 {
@@ -79,15 +78,17 @@
     {
         List<string> ListOfTextToPrint = new() { TextToPrint1, TextToPrint2, TextToPrint3 };
 
-        // should be callback to update separate component for imagedetail, updateimageurls
         await ds.CreateInitialPictureArrayAsync(url, ListOfTextToPrint);
+
     }
 
     private bool DisableMenu;
     private string textInput = string.Empty;
     private bool passedNull = false;
     private bool Loading;
-    public ImageDisplay imageDisplayref;
+
+    [Parameter]
+    public Action<bool> returnStateUpdate { get; set; }
 
     private async void AwaitBTC()
     {
@@ -103,7 +104,7 @@
             Loading = true;
             DisableMenu = true;
             await CallBTC(url);
-            await imageDisplayref.UpdateImageUrls();
+            returnStateUpdate(DisableMenu);
             Loading = false;
             StateHasChanged();
         }
