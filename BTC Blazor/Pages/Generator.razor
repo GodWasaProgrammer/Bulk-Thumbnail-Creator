@@ -16,6 +16,10 @@
 {
     ImageDisplay imageDisplayref;
 
+    /// <summary>
+    /// Passed to InputMenu as delegate to be able to set the state of child component ImageDisplay
+    /// </summary>
+    /// <param name="dirdone"></param>
     private async void BuildImageDisplay(bool dirdone)
     {
         if(dirdone)

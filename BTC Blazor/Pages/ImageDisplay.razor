@@ -36,8 +36,10 @@ else
         await UpdateImageUrls();
     }
 
-
-    // Method to update the list of image URLs
+    /// <summary>
+    /// Builds Directory List of the produced images
+    /// </summary>
+    /// <returns></returns>
     public async Task UpdateImageUrls()
     {
         string imagePath = Settings.TextAddedDir;
