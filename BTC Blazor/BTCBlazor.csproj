@@ -68,6 +68,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.10" />
     <PackageReference Include="MudBlazor" Version="6.11.0" />
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
+    <PackageReference Include="Serilog.Sinks.ListOfString" Version="4.1.4.3" />
   </ItemGroup>
 
   <ItemGroup>

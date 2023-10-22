@@ -2,36 +2,35 @@
 @inherits LayoutComponentBase
 
 
-<MudThemeProvider />
+<MudThemeProvider IsDarkMode="true"/>
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 <MudLayout>
     <MudAppBar Elevation="0"> 
-        <CascadingAuthenticationState>
-        <UserDisplay/>
-
-        </CascadingAuthenticationState>
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <CascadingAuthenticationState>
+            <UserDisplay/>
+        </CascadingAuthenticationState>
         <MudSpacer />
-        <MudText>Bulk Thumbnail Creator</MudText>
+        <MudText Color="Color.Tertiary">Bulk Thumbnail Creator</MudText>
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" href="https://github.com/GodWasAProgrammer" Target="_blank" />
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
         <MudDrawerHeader>
-            <MudText Typo="Typo.h6">Bulk Thumbnail Creator</MudText>
+            <MudText Color="Color.Tertiary">Bulk Thumbnail Creator</MudText>
         </MudDrawerHeader>
         <NavMenu />
     </MudDrawer>
     <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.Large" Class="my-16 pt-16">
+        <MudContainer Class="align-content-center">
             @Body
         </MudContainer>
     </MudMainContent>
 </MudLayout>
 
 @code {
-    bool _drawerOpen = true;
+    bool _drawerOpen = false;
 
     void DrawerToggle()
     {

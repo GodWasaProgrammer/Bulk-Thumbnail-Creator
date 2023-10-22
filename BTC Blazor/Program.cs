@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 using MudBlazor.Services;
 using Microsoft.EntityFrameworkCore;
-using BTC_Blazor;
 
 namespace BTC_Blazor
 {
@@ -23,16 +22,11 @@ namespace BTC_Blazor
             {
                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-
-
-
-            // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
             builder.Services.AddSingleton<PictureDataService>();
             builder.Services.AddSingleton<ILogService, LogService>();
             builder.Services.AddMudServices();
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

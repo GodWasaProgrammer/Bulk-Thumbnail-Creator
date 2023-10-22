@@ -2,30 +2,28 @@
 @using Bulk_Thumbnail_Creator.PictureObjects
 @inherits ComponentBase
 
-<MudContainer>
-    <MudPaper Elevation="2">
-        <h4 class="mud-text-h4">Picture Data</h4>
-        <img src="@ImageURL" style="max-width: 100%;" />
+    <MudPaper Elevation="2" Class="picture-data-box" Style="max-width: 750px; margin: auto; padding: 16px;">
+        <MudContainer>
+            <MudText GutterBottom="true" Class="studded-header" Variant="Variant.H4">Picture Data</MudText>
+            <MudImage Src="@ImageURL" Style="max-width: 100%;" />
+            <MudContainer Class="picture-data-box">
+                <MudText Class="data-label">Picture Data names</MudText>
+                <MudText>@($"Current font name: {Path.GetFileName(PicData.ParamForTextCreation.Font)}")</MudText>
+                <MudText>@($"Base Filename: {PicData.FileName}")</MudText>
+                <MudText>@($"Production Filename: {Path.GetFileName(PicData.OutPath)}")</MudText>
+            </MudContainer>
 
-        <div>
-            <div>
-                <h6 class="mud-text-h6">Picture Data names</h6>
-                <div>Current font name: @Path.GetFileName(PicData.ParamForTextCreation.Font)</div>
-                <div>Base Filename: @PicData.FileName</div>
-                <div>Production Filename: @Path.GetFileName(PicData.OutPath)</div>
-            </div>
-
-            <div>
-                <h6 class="mud-text-h6">Picture Data values</h6>
-                <div>Output Type: @PicData.OutPutType</div>
-                <div>Current Text Box: @PicData.ParamForTextCreation.CurrentBox</div>
-                <div>Text To be Printed: @PicData.ParamForTextCreation.Text</div>
-                <div>Width of text box: @PicData.ParamForTextCreation.WidthOfBox</div>
-                <div>Position Of text: @PicData.ParamForTextCreation.PositionOfText</div>
-            </div>
-        </div>
+            <MudContainer Class="picture-data-box">
+                <MudText  Class="data-label">Picture Data values</MudText>
+            <MudText Class="data-point">@($"Output Type:")</MudText><MudText Class="data-value">{@PicData.OutPutType}</MudText>
+                <MudText>@($"Current Text Box: {PicData.ParamForTextCreation.CurrentBox}")</MudText>
+                <MudText>@($"Text To be Printed: {PicData.ParamForTextCreation.Text}")</MudText>
+                <MudText>@($"Width of text box: {PicData.ParamForTextCreation.WidthOfBox}")</MudText>
+                <MudText>@($"Position Of text: {PicData.ParamForTextCreation.PositionOfText}")</MudText>
+            </MudContainer>
+        </MudContainer>
     </MudPaper>
-</MudContainer>
+
 
 @code
 {
@@ -36,3 +34,72 @@
     public PictureData PicData { get; set; }
 }
 
+<style>
+    .picture-data-box {
+        border: 1px thick solid;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+        /* Heading style */
+        .picture-data-box h4 {
+            font-size: 18px;
+            color: black;
+            margin: 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        /* Data point style */
+        .picture-data-box .data-point {
+            margin: 10px 0;
+            color: gold;
+        }
+
+        /* Label style */
+        .picture-data-box .data-label {
+            font-weight: bold;
+            color: teal;
+        }
+
+        /* Value style */
+        .picture-data-box .data-value {
+            color: teal;
+        }
+
+    /* Studded Header Style */
+    .studded-header {
+        background-color: #000; /* Background color */
+        color: #FFD700; /* Text color (gold) */
+        padding: 20px; /* Add padding to create space inside the header */
+        text-align: center; /* Center-align text */
+        border-bottom: 2px solid #FFD700; /* Gold border on the bottom */
+    }
+
+        /* Add "studs" using pseudo-elements */
+        .studded-header::before,
+        .studded-header::after {
+            content: '\2022'; /* Bullet character (•) for the "studs" */
+            font-size: 24px; /* Adjust the size of the studs */
+            color: #FFD700; /* Gold color for studs */
+            margin: 0 10px; /* Spacing between studs */
+        }
+
+        /* Center the studs */
+        .studded-header::before {
+            vertical-align: middle;
+        }
+
+        .studded-header::after {
+            vertical-align: middle;
+        }
+
+        /* Adjust spacing and font styles for the text */
+        .studded-header h1 {
+            margin: 0; /* Remove default margin for h1 element */
+            font-size: 36px; /* Adjust the font size for the header text */
+            font-weight: bold; /* Bold font for emphasis */
+        }
+</style>

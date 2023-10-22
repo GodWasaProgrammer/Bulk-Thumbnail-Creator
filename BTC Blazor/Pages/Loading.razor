@@ -1,15 +1,33 @@
-﻿@if (_processing == true)
-{
-    <div class="horizontal-align">
+﻿@using Bulk_Thumbnail_Creator.Services
+@using Bulk_Thumbnail_Creator.Interfaces
+@inject ILogService Logger
 
-        <div>
-            <img src="images/pepe-dance.gif" alt="Loading..." style="width: 500px; height: 500px; border:0;" />
-        </div>
-    </div>
+@if (_processing)
+{
+    @* <div>
+        @foreach (var logEntry in LogEntries)
+        {
+            <p>@logEntry</p>
+        }
+    </div> *@
+    <MudImage src="/images/pepe-dance.gif"></MudImage>
 }
 
-@code 
-{
+@code {
     [Parameter]
     public bool _processing { get; set; }
+
+    private List<string> LogEntries = new List<string>();
+
+    // protected override void OnInitialized()
+    // {
+    //     Logger.LogEntryAdded += OnLogEntryAdded;
+    // }
+
+    // private void OnLogEntryAdded(string logEntry)
+    // {
+    //     LogEntries.Add(logEntry);
+    //     StateHasChanged();
+    // }
+
 }

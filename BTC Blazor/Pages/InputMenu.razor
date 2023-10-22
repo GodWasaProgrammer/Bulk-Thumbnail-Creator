@@ -16,24 +16,18 @@
 
     }
 
-    <MudDivider>
-      
-    </MudDivider>
-
-    <MudPaper Class="input-container" Elevation="3" BackgroundColor="Color.Dark">
-        <MudTextField Label="Youtube Link" Variant="Variant.Filled" Class="matrix-input" @bind-Value="textInput" FullWidth="true" />
-        <div class="text-to-print">
-            <MudTextField Label="Text To Print 1" Variant="Variant.Filled" Class="matrix-input" @bind-Value="TextToPrint1" FullWidth="true" />
-            <MudTextField Label="Text To Print 2" Variant="Variant.Filled" Class="matrix-input" @bind-Value="TextToPrint2" FullWidth="true" />
-            <MudTextField Label="Text To Print 3" Variant="Variant.Filled" Class="matrix-input" @bind-Value="TextToPrint3" FullWidth="true" />
-        </div>
-    </MudPaper>
+            <MudContainer MaxWidth="MaxWidth.Small">
+        <MudTextField Label="Youtube Link" Variant="Variant.Filled" @bind-Value="textInput"/>
+            <MudTextField Label="Text To Print 1" Variant="Variant.Filled"  @bind-Value="TextToPrint1"/>
+            <MudTextField Label="Text To Print 2" Variant="Variant.Filled"  @bind-Value="TextToPrint2"/>
+            <MudTextField Label="Text To Print 3" Variant="Variant.Filled"  @bind-Value="TextToPrint3"/>
+      <MudButton OnClick="AwaitBTC" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
+            </MudContainer>
 
     @code {
 }
 
 
-      <MudButton OnClick="AwaitBTC" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
 
     @if (passedNull)
     {

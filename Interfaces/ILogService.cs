@@ -1,4 +1,7 @@
-﻿namespace Bulk_Thumbnail_Creator.Interfaces
+﻿using System;
+using System.Collections.Generic;
+
+namespace Bulk_Thumbnail_Creator.Interfaces
 {
     public interface ILogService
     {
@@ -9,6 +12,8 @@
         void LogInformation(string message);
 
         void LogException(string message);
+
+        event Action<string> LogEntryAdded;
     }
 
 }
