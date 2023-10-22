@@ -3,7 +3,9 @@
 
 @page "/imagedetail/{ImageUrl}"
 
-<div class="center-content"><PictureDataBox ImageURL="@ImageUrl" PicData="@CurrentPagePictureData" /></div>
+<MudDivider FlexItem="true">
+<div><PictureDataBox ImageURL="@ImageUrl" PicData="@CurrentPagePictureData" /></div>
+</MudDivider>
 
 <VarietyDisplay ParentPictureProp="CurrentPagePictureData"></VarietyDisplay>
 

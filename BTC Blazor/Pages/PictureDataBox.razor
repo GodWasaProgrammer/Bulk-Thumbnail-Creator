@@ -1,32 +1,38 @@
-﻿@using Bulk_Thumbnail_Creator.PictureObjects;
-<div class="grid-container">
-    <div class="picture-data-box">
-        <h3 class="studded-header">Picture Data</h3>
+﻿
+@using Bulk_Thumbnail_Creator.PictureObjects
+@inherits ComponentBase
+
+<MudContainer>
+    <MudPaper Elevation="2">
+        <h4 class="mud-text-h4">Picture Data</h4>
         <img src="@ImageURL" style="max-width: 100%;" />
-        <div class="fact-box">
-            <div class="fact-group">
-                <div class="fact-title">Picture Data names</div>
-                <div class="fact-item">Current font name: @Path.GetFileName(PicData.ParamForTextCreation.Font)</div>
-                <div class="fact-item">Base Filename: @PicData.FileName</div>
-                <div class="fact-item">Production Filename:@Path.GetFileName(PicData.OutPath) </div>
+
+        <div>
+            <div>
+                <h6 class="mud-text-h6">Picture Data names</h6>
+                <div>Current font name: @Path.GetFileName(PicData.ParamForTextCreation.Font)</div>
+                <div>Base Filename: @PicData.FileName</div>
+                <div>Production Filename: @Path.GetFileName(PicData.OutPath)</div>
             </div>
-            <div class="fact-group">
-                <div class="fact-title">Picture Data values</div>
-                <div class="fact-item">Output Type:@PicData.OutPutType</div>
-                <div class="fact-item">Current Text Box:@PicData.ParamForTextCreation.CurrentBox</div>
-                <div class="fact-item">Text To be Printed:@PicData.ParamForTextCreation.Text</div>
-                <div class="fact-item">Width of text box:@PicData.ParamForTextCreation.WidthOfBox</div>
-                <div class="fact-item">Position Of text: @PicData.ParamForTextCreation.PositionOfText</div>
+
+            <div>
+                <h6 class="mud-text-h6">Picture Data values</h6>
+                <div>Output Type: @PicData.OutPutType</div>
+                <div>Current Text Box: @PicData.ParamForTextCreation.CurrentBox</div>
+                <div>Text To be Printed: @PicData.ParamForTextCreation.Text</div>
+                <div>Width of text box: @PicData.ParamForTextCreation.WidthOfBox</div>
+                <div>Position Of text: @PicData.ParamForTextCreation.PositionOfText</div>
             </div>
         </div>
-    </div>
-    </div>
+    </MudPaper>
+</MudContainer>
 
 @code
 {
     [Parameter]
     public string ImageURL { get; set; }
+
     [Parameter]
     public PictureData PicData { get; set; }
-
 }
+

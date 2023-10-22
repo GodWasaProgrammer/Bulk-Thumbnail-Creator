@@ -16,45 +16,22 @@
 
     }
 
-    <div class="input-container">
+    <MudDivider>
+      
+    </MudDivider>
 
-        <div class="youtube-link">
-
-            <label class="input-label" for="textInput">Youtube Link:</label>
-
-            <input id="textInput" type="text" @bind="textInput" class="matrix-input" />
-
-        </div>
-
+    <MudPaper Class="input-container" Elevation="3" BackgroundColor="Color.Dark">
+        <MudTextField Label="Youtube Link" Variant="Variant.Filled" Class="matrix-input" @bind-Value="textInput" FullWidth="true" />
         <div class="text-to-print">
-
-            <div>
-
-                <label class="input-label" for="textToPrint1">Text To Print 1:</label>
-
-                <input id="textToPrint1" type="text" @bind="@TextToPrint1" class="matrix-input" />
-
-            </div>
-
-            <div>
-
-                <label class="input-label" for="textToPrint2">Text To Print 2:</label>
-
-                <input id="textToPrint2" type="text" @bind="@TextToPrint2" class="matrix-input" />
-
-            </div>
-
-            <div>
-
-                <label class="input-label" for="textToPrint3">Text To Print 3:</label>
-
-                <input id="textToPrint3" type="text" @bind="@TextToPrint3" class="matrix-input" />
-
-            </div>
-
+            <MudTextField Label="Text To Print 1" Variant="Variant.Filled" Class="matrix-input" @bind-Value="TextToPrint1" FullWidth="true" />
+            <MudTextField Label="Text To Print 2" Variant="Variant.Filled" Class="matrix-input" @bind-Value="TextToPrint2" FullWidth="true" />
+            <MudTextField Label="Text To Print 3" Variant="Variant.Filled" Class="matrix-input" @bind-Value="TextToPrint3" FullWidth="true" />
         </div>
+    </MudPaper>
 
-    </div>
+    @code {
+}
+
 
       <MudButton OnClick="AwaitBTC" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
 

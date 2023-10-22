@@ -27,7 +27,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="FaceONNX" Version="2.2.0.5" />
+	  <PackageReference Include="FaceONNX" Version="2.3.0.1" />
 	  <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="13.3.0" />
 	  <PackageReference Include="Magick.NET.Core" Version="13.3.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.12" />
@@ -36,7 +36,7 @@
 	  <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
 	  <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 	  <PackageReference Include="System.IO.Abstractions" Version="19.2.69" />
-	  <PackageReference Include="UMapx" Version="5.2.7.1" />
+	  <PackageReference Include="UMapx" Version="5.2.9.2" />
 	  <PackageReference Include="YoutubeDLSharp" Version="1.0.0" />
 	</ItemGroup>
 

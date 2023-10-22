@@ -5,7 +5,7 @@ using MudBlazor.Utilities;
 
 namespace BTC_Blazor.Pages
 {
-    public partial class CustomizePicture// : PictureData
+    public partial class CustomizePicture
     {
         public CustomizePicture()
         {

@@ -1,16 +1,40 @@
-﻿@inherits LayoutComponentBase
-@using MudBlazor
+﻿@using BTC_Blazor.Pages;
+@inherits LayoutComponentBase
 
-<PageTitle>BTC Blazor</PageTitle>
-<MudThemeProvider/>
-<MudDialogProvider/>
-<MudSnackbarProvider/>
-<main class="matrix-background">
-    <div>
-        <a href="https://github.com/GodWasAProgrammer" target="_blank">About BTC</a>
-    </div>
 
-    <article class="content px-4">
-        @Body
-    </article>
-</main>
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="0"> 
+        <CascadingAuthenticationState>
+        <UserDisplay/>
+
+        </CascadingAuthenticationState>
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudSpacer />
+        <MudText>Bulk Thumbnail Creator</MudText>
+        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" href="https://github.com/GodWasAProgrammer" Target="_blank" />
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6">Bulk Thumbnail Creator</MudText>
+        </MudDrawerHeader>
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Large" Class="my-16 pt-16">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    bool _drawerOpen = true;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+}
