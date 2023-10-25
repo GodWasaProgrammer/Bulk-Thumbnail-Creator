@@ -22,7 +22,7 @@ namespace Bulk_Thumbnail_Creator
 
 			processFFMpeg.Start();
 			processFFMpeg.WaitForExit();
-			Settings.Logger.LogInformation("Ffmpeg finished producing pictures");
+			Settings.LogService.LogInformation("Ffmpeg finished producing pictures");
 		}
 
 		/// <summary>

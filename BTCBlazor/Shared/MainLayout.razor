@@ -1,0 +1,39 @@
+﻿@using BTC_Blazor.Pages;
+@inherits LayoutComponentBase
+
+
+<MudThemeProvider IsDarkMode="true"/>
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="0"> 
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <CascadingAuthenticationState>
+            <UserDisplay/>
+        </CascadingAuthenticationState>
+        <MudSpacer />
+        <MudText Color="Color.Tertiary">Bulk Thumbnail Creator</MudText>
+        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" href="https://github.com/GodWasAProgrammer" Target="_blank" />
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
+        <MudDrawerHeader>
+            <MudText Color="Color.Tertiary">Bulk Thumbnail Creator</MudText>
+        </MudDrawerHeader>
+        <NavMenu />
+    </MudDrawer>
+    <MudMainContent>
+        <MudContainer Class="align-content-center">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    bool _drawerOpen = false;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+}

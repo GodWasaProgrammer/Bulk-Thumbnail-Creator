@@ -1,32 +1,17 @@
 ﻿using System.Collections.Generic;
-using Bulk_Thumbnail_Creator.Interfaces;
 using Bulk_Thumbnail_Creator.PictureObjects;
-using Bulk_Thumbnail_Creator.Services;
-using Serilog;
+using Services.Interfaces;
+using Services;
 
 namespace Bulk_Thumbnail_Creator
 {
     public class Settings
 	{
-		//private static readonly LogService _Logger = new();
-        //public static  LogService Logger { get { return _Logger; } }
-
-        private static ILogService _logService;
-
-        public static ILogService Logger
-        {
-            get
-            {
-                if (_logService == null)
-                {
-                    _logService = new LogService();
-                }
-
-                return _logService;
-            }
-
-        }
-
+		internal static ILogService LogService { get; set; }
+		public static void GetLogger()
+		{
+			LogService = ServiceLocator.GetLogService();
+		}
 
         /// <summary>
         /// The Dir where FFmpeg outputs raw images from the specified video

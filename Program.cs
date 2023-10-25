@@ -11,8 +11,10 @@ namespace Bulk_Thumbnail_Creator
 {
     public class Program
     {
+        
         public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, PictureData PicdataObjToVarietize = null)
         {
+            Settings.GetLogger();
 
             Settings.ListOfText = texts;
 
@@ -55,7 +57,7 @@ namespace Bulk_Thumbnail_Creator
 
                 var faceDetector = new FaceDetector(0.95f, 0.5f);
 
-                Settings.Logger.LogInformation($"Processing {Settings.Files.Length} images");
+                Settings.LogService.LogInformation($"Processing {Settings.Files.Length} images");
 
                 // main loop for detecting faces, placing text where face is not
                 Parallel.For(0, Settings.Files.Length, fileIndex =>
@@ -94,7 +96,7 @@ namespace Bulk_Thumbnail_Creator
 
                 });
 
-                Settings.Logger.LogInformation($" Discarded Amount Of Pictures:{Settings.DiscardedBecauseTooMuchFacePictureData.Count}");
+                Settings.LogService.LogInformation($" Discarded Amount Of Pictures:{Settings.DiscardedBecauseTooMuchFacePictureData.Count}");
 
                 #region debugsinglefor
                 // just here for debug purposes
@@ -152,7 +154,7 @@ namespace Bulk_Thumbnail_Creator
             {
                 if (PicdataObjToVarietize == null)
                 {
-                    Settings.Logger.LogError("null has been passed to PicdataobjToVarietize");
+                    Settings.LogService.LogError("null has been passed to PicdataobjToVarietize");
                 }
                 else
                 {
@@ -171,7 +173,7 @@ namespace Bulk_Thumbnail_Creator
             {
                 if (PicdataObjToVarietize == null)
                 {
-                    Settings.Logger.LogError("Null has been passed to CustomPicture");
+                    Settings.LogService.LogError("Null has been passed to CustomPicture");
                 }
                 else
                 {
@@ -207,7 +209,7 @@ namespace Bulk_Thumbnail_Creator
             //    BTCSettings.Logger.LogInformation("PictureDatas.xml Serialized from PictureData");
             //}
 
-            Settings.Logger.LogInformation("Processing Finished");
+            Settings.LogService.LogInformation("Processing Finished");
             return Settings.PictureDatas;
         }
         #endregion

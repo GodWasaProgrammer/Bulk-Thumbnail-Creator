@@ -11,12 +11,15 @@
 
 	<ItemGroup>
 	  <Compile Remove="BTC Blazor\**" />
+	  <Compile Remove="BTCBlazor\**" />
 	  <Compile Remove="Executables\**" />
 	  <Compile Remove="PicturesAndText\**" />
 	  <EmbeddedResource Remove="BTC Blazor\**" />
+	  <EmbeddedResource Remove="BTCBlazor\**" />
 	  <EmbeddedResource Remove="Executables\**" />
 	  <EmbeddedResource Remove="PicturesAndText\**" />
 	  <None Remove="BTC Blazor\**" />
+	  <None Remove="BTCBlazor\**" />
 	  <None Remove="Executables\**" />
 	  <None Remove="PicturesAndText\**" />
 	</ItemGroup>
@@ -28,17 +31,21 @@
 
 	<ItemGroup>
 	  <PackageReference Include="FaceONNX" Version="2.3.0.1" />
-	  <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="13.3.0" />
-	  <PackageReference Include="Magick.NET.Core" Version="13.3.0" />
-	  <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.12" />
+	  <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="13.4.0" />
+	  <PackageReference Include="Magick.NET.Core" Version="13.4.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.13" />
 	  <PackageReference Include="Serilog" Version="3.0.1" />
 	  <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
 	  <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
 	  <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 	  <PackageReference Include="Serilog.Sinks.ListOfString" Version="4.1.4.3" />
 	  <PackageReference Include="System.IO.Abstractions" Version="19.2.69" />
-	  <PackageReference Include="UMapx" Version="5.2.9.2" />
+	  <PackageReference Include="UMapx" Version="5.2.9.4" />
 	  <PackageReference Include="YoutubeDLSharp" Version="1.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Services\Services.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

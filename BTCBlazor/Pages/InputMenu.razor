@@ -1,0 +1,85 @@
+﻿@inject Bulk_Thumbnail_Creator.Services.PictureDataService ds;
+
+<Loading _processing="@Loading"></Loading>
+
+@if (DisableMenu == false)
+{
+    @if (DownloadedVideosList != null)
+    {
+        <select>
+
+            @foreach (string listobject in DownloadedVideosList)
+            {
+                <option value="@listobject">@listobject</option>
+            }
+        </select>
+
+    }
+
+            <MudContainer MaxWidth="MaxWidth.Small">
+        <MudTextField Label="Youtube Link" Variant="Variant.Filled" @bind-Value="textInput"/>
+            <MudTextField Label="Text To Print 1" Variant="Variant.Filled"  @bind-Value="TextToPrint1"/>
+            <MudTextField Label="Text To Print 2" Variant="Variant.Filled"  @bind-Value="TextToPrint2"/>
+            <MudTextField Label="Text To Print 3" Variant="Variant.Filled"  @bind-Value="TextToPrint3"/>
+      <MudButton OnClick="AwaitBTC" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
+            </MudContainer>
+
+    @code {
+}
+
+
+
+    @if (passedNull)
+    {
+        <MudText>You need to give me an actual YoutubeLink</MudText>
+    }
+
+
+}
+
+@code
+{
+    public List<string> DownloadedVideosList { get; set; }
+
+    private string TextToPrint1 = "Good Ole Rambler try!";
+    private string TextToPrint2 = "I've Taken Dunkirk! Onwards Men!";
+    private string TextToPrint3 = "Tallyhoo Laddiooo";
+
+    private async Task CallBTC(string url)
+    {
+        List<string> ListOfTextToPrint = new() { TextToPrint1, TextToPrint2, TextToPrint3 };
+
+        await ds.CreateInitialPictureArrayAsync(url, ListOfTextToPrint);
+
+    }
+
+    private bool DisableMenu;
+    private string textInput = string.Empty;
+    private bool passedNull = false;
+    private bool Loading;
+
+    [Parameter]
+    public Action<bool> returnStateUpdate { get; set; }
+
+    private async void AwaitBTC()
+    {
+        string url = textInput;
+
+        if (url == null || url == string.Empty)
+        {
+            passedNull = true;
+        }
+        else
+        {
+            passedNull = false;
+            Loading = true;
+            DisableMenu = true;
+            await CallBTC(url);
+            returnStateUpdate(DisableMenu);
+            Loading = false;
+            StateHasChanged();
+        }
+
+    }
+
+}

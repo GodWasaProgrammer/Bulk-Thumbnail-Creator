@@ -1,0 +1,36 @@
+﻿@page "/"
+
+@using Microsoft.AspNetCore.Components
+@using Microsoft.JSInterop
+@using Bulk_Thumbnail_Creator;
+@using Bulk_Thumbnail_Creator.Serialization;
+@using Microsoft.Identity;
+
+<PageTitle>Bulk Thumbnail Creator</PageTitle>
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <Authorized>
+            <InputMenu returnStateUpdate="@BuildImageDisplay"></InputMenu>
+            <ImageDisplay @ref="imageDisplayref">  </ImageDisplay>
+        </Authorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+@code
+{
+    ImageDisplay imageDisplayref;
+
+    /// <summary>
+    /// Passed to InputMenu as delegate to be able to set the state of child component ImageDisplay
+    /// </summary>
+    /// <param name="dirdone"></param>
+    private async void BuildImageDisplay(bool dirdone)
+    {
+        if (dirdone)
+        {
+            await imageDisplayref.UpdateImageUrls();
+        }
+
+    }
+
+}

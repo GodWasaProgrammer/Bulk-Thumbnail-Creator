@@ -23,7 +23,7 @@ namespace Bulk_Thumbnail_Creator.Serialization
             catch (Exception ex)
             {
                 // Handle the exception, log it
-                Settings.Logger.LogError("Error during serialization: " + ex.Message);
+                Settings.LogService.LogError("Error during serialization: " + ex.Message);
             }
 
         }
@@ -47,7 +47,7 @@ namespace Bulk_Thumbnail_Creator.Serialization
             catch (Exception ex)
             {
                 // Handle the exception, log it,
-                Settings.Logger.LogError("Error during deserialization: " + ex.Message);
+                Settings.LogService.LogError("Error during deserialization: " + ex.Message);
                 return null; // return null or throw a custom exception
             }
 

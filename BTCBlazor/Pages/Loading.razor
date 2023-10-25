@@ -1,0 +1,33 @@
+﻿@page "/your-page"
+@using Services.Interfaces;
+@inject ILogService Logger
+
+@if (_processing)
+{
+    <MudContainer>
+    <MudPaper Elevation="4" Class="p-4">
+        @foreach(var entry in LogEntries.TakeLast(10))
+        {
+            <MudTextField  AdornmentIcon="" Label="Log Entry" Multiline="true" Variant="Variant.Filled" FullWidth="true" ReadOnly="true" Value="@entry"/>
+        }
+    </MudPaper>
+</MudContainer>
+}
+
+@code {
+    [Parameter]
+    public bool _processing { get; set; }
+
+    private List<string> LogEntries = new List<string>();
+
+    protected override void OnInitialized()
+    {
+        Logger.LogEntryAdded += OnLogEntryAdded;
+    }
+
+    private async void OnLogEntryAdded(string logEntry)
+    {
+        LogEntries.Add(logEntry);
+        await InvokeAsync(() => StateHasChanged());
+    }
+}

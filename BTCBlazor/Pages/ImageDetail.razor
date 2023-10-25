@@ -1,0 +1,25 @@
+﻿@inject Bulk_Thumbnail_Creator.Services.PictureDataService PicDataService;
+@using Bulk_Thumbnail_Creator.PictureObjects;
+
+@page "/imagedetail/{ImageUrl}"
+
+<MudDivider FlexItem="true">
+<div><PictureDataBox ImageURL="@ImageUrl" PicData="@CurrentPagePictureData" /></div>
+</MudDivider>
+
+<VarietyDisplay ParentPictureProp="CurrentPagePictureData"></VarietyDisplay>
+
+@code
+{
+        [Parameter]
+        public PictureData CurrentPagePictureData { get; set; }
+
+        [Parameter]
+        public string ImageUrl { get; set; }
+
+        protected override void OnInitialized()
+        {
+            CurrentPagePictureData = PicDataService.SetPictureDataImageDisplayCorrelation(ImageUrl);
+        }
+
+}

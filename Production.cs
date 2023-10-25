@@ -31,27 +31,27 @@ namespace Bulk_Thumbnail_Creator
             string YTDLPDir = Path.Combine(ExePath, "yt-dlp.exe");
             string FfMpegDir = Path.Combine(ExePath, "ffmpeg.exe");
 
-            Settings.Logger.LogInformation($"Current Location: {CurrentLoc}");
-            Settings.Logger.LogInformation($"Parent Directory: {parentDirectory}");
-            Settings.Logger.LogInformation($"New Path: {ExePath}");
+            Settings.LogService.LogInformation($"Current Location: {CurrentLoc}");
+            Settings.LogService.LogInformation($"Parent Directory: {parentDirectory}");
+            Settings.LogService.LogInformation($"New Path: {ExePath}");
 
             if (File.Exists(YTDLPDir))
             {
-                Settings.Logger.LogInformation($"YTDLP Path: {YTDLPDir}");
+                Settings.LogService.LogInformation($"YTDLP Path: {YTDLPDir}");
             }
             else
             {
-                Settings.Logger.LogError("yt-dlp.exe was not found");
-                Settings.Logger.LogInformation("Will Try To Download yt-dlp");
+                Settings.LogService.LogError("yt-dlp.exe was not found");
+                Settings.LogService.LogInformation("Will Try To Download yt-dlp");
                 await YoutubeDLSharp.Utils.DownloadYtDlp(ExePath);
 
                 if (File.Exists(YTDLPDir))
                 {
-                    Settings.Logger.LogInformation("Successfully downloaded yt-dlp");
+                    Settings.LogService.LogInformation("Successfully downloaded yt-dlp");
                 }
                 else
                 {
-                    Settings.Logger.LogError("Failed to download yt-dlp");
+                    Settings.LogService.LogError("Failed to download yt-dlp");
                 }
 
             }
@@ -59,26 +59,26 @@ namespace Bulk_Thumbnail_Creator
 
             if (File.Exists(FfMpegDir))
             {
-                Settings.Logger.LogInformation($"FFmpeg Path: {FfMpegDir}");
+                Settings.LogService.LogInformation($"FFmpeg Path: {FfMpegDir}");
             }
             else
             {
                 // we didnt find ffmpeg
-                Settings.Logger.LogError("ffmpeg.exe was not found");
+                Settings.LogService.LogError("ffmpeg.exe was not found");
 
                 // so will download it
-                Settings.Logger.LogInformation("Will Try To Download ffmpeg");
+                Settings.LogService.LogInformation("Will Try To Download ffmpeg");
 
                 //attempts to download the file to local dir
                 await YoutubeDLSharp.Utils.DownloadFFmpeg(ExePath);
 
                 if (File.Exists(FfMpegDir))
                 {
-                    Settings.Logger.LogInformation("File has been successfully downloaded");
+                    Settings.LogService.LogInformation("File has been successfully downloaded");
                 }
                 else
                 {
-                    Settings.Logger.LogInformation("Download of FFMPEG has failed.");
+                    Settings.LogService.LogInformation("Download of FFMPEG has failed.");
                 }
 
             }
@@ -89,13 +89,13 @@ namespace Bulk_Thumbnail_Creator
 
             if (Directory.Exists(ytdlDir))
             {
-                Settings.Logger.LogInformation($"YTDL Dir found:{ytdlDir}");
+                Settings.LogService.LogInformation($"YTDL Dir found:{ytdlDir}");
             }
             else
             {
-                Settings.Logger.LogError("YTDL Dir was not found");
+                Settings.LogService.LogError("YTDL Dir was not found");
                 Directory.CreateDirectory(ytdlDir);
-                Settings.Logger.LogInformation($"Dir Created at:{ytdlDir}");
+                Settings.LogService.LogInformation($"Dir Created at:{ytdlDir}");
             }
             Settings.YTDLOutPutDir = ytdlDir;
         }
@@ -120,17 +120,17 @@ namespace Bulk_Thumbnail_Creator
 
             if (URL == null)
             {
-                Settings.Logger.LogError("URL has been passed as null to YTDL");
+                Settings.LogService.LogError("URL has been passed as null to YTDL");
                 throw new ArgumentNullException(nameof(URL));
 
             }
             else
             {
-                Settings.Logger.LogInformation($"Attempting download of: {URL}");
+                Settings.LogService.LogInformation($"Attempting download of: {URL}");
                 res = await ytdl.RunVideoDownload(url: URL);
             }
 
-            Settings.Logger.LogInformation("Download Success:" + res.Success.ToString());
+            Settings.LogService.LogInformation("Download Success:" + res.Success.ToString());
 
             // sets BTC to run on the recently downloaded file res.data is the returned path.
             return res.Data;
@@ -140,17 +140,17 @@ namespace Bulk_Thumbnail_Creator
         {
             if (!Directory.Exists(outputDir))
             {
-                Settings.Logger.LogInformation($"{outputDir} Directory was missing, will be created");
+                Settings.LogService.LogInformation($"{outputDir} Directory was missing, will be created");
                 Directory.CreateDirectory(outputDir);
             }
             if (!Directory.Exists(YTDL))
             {
-                Settings.Logger.LogInformation($"{TextAdded} Directory was missing, will be created");
+                Settings.LogService.LogInformation($"{TextAdded} Directory was missing, will be created");
                 Directory.CreateDirectory(TextAdded);
             }
             if (!Directory.Exists(YTDL))
             {
-                Settings.Logger.LogInformation($"{YTDL} Directory was missing, will be created");
+                Settings.LogService.LogInformation($"{YTDL} Directory was missing, will be created");
                 Directory.CreateDirectory(YTDL);
             }
 
@@ -247,7 +247,7 @@ namespace Bulk_Thumbnail_Creator
 
             // outputs the file to the provided path and name
             outputImage.Write(OutputPath);
-            Settings.Logger.LogInformation($"File Created: {OutputPath}");
+            Settings.LogService.LogInformation($"File Created: {OutputPath}");
         }
 
     }
