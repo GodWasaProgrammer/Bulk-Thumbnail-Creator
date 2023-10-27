@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <Content Remove="libman.json" />
+    <Content Remove="wwwroot\song.mp3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -76,7 +77,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Services\Services.csproj" />
     <ProjectReference Include="..\Bulk Thumbnail Creator.csproj" />
   </ItemGroup>
 

@@ -14,14 +14,17 @@
 	  <Compile Remove="BTCBlazor\**" />
 	  <Compile Remove="Executables\**" />
 	  <Compile Remove="PicturesAndText\**" />
+	  <Compile Remove="Services\**" />
 	  <EmbeddedResource Remove="BTC Blazor\**" />
 	  <EmbeddedResource Remove="BTCBlazor\**" />
 	  <EmbeddedResource Remove="Executables\**" />
 	  <EmbeddedResource Remove="PicturesAndText\**" />
+	  <EmbeddedResource Remove="Services\**" />
 	  <None Remove="BTC Blazor\**" />
 	  <None Remove="BTCBlazor\**" />
 	  <None Remove="Executables\**" />
 	  <None Remove="PicturesAndText\**" />
+	  <None Remove="Services\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -45,7 +48,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Services\Services.csproj" />
+	  <ProjectReference Include="..\..\..\source\repos\GodWasaProgrammer\Services\Services.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

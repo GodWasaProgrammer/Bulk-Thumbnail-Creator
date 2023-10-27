@@ -13,6 +13,9 @@ namespace BTC_Blazor
     {
         public static void Main(string[] args)
         {
+            Directory.CreateDirectory(Settings.OutputDir);
+            Directory.CreateDirectory(Settings.YTDLOutPutDir);
+            Directory.CreateDirectory(Settings.TextAddedDir);
             var builder = WebApplication.CreateBuilder(args);
             // Add configuration settings
             builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
