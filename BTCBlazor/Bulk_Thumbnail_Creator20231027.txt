@@ -155,3 +155,11 @@
 2023-10-27 04:23:57.929 +02:00 [INF] File Created: C:\Users\Björn\Documents\GitHub\BTCCLONE\BTCBlazor\text added//variety of 012.png//BottomLeft.png
 2023-10-27 04:23:58.040 +02:00 [INF] File Created: C:\Users\Björn\Documents\GitHub\BTCCLONE\BTCBlazor\text added//variety of 012.png//BottomBox.png
 2023-10-27 04:23:58.043 +02:00 [INF] Processing Finished
+2023-10-27 04:28:20.415 +02:00 [INF] Current Location: C:\Users\Björn\Documents\GitHub\BTCCLONE\BTCBlazor\bin\x64\Debug\net7.0\Bulk Thumbnail Creator.dll
+2023-10-27 04:28:20.441 +02:00 [INF] Parent Directory: C:\Users\Björn\Documents\GitHub\BTCCLONE\BTCBlazor\bin\x64\Debug\net7.0
+2023-10-27 04:28:20.441 +02:00 [INF] New Path: C:\Users\Björn\Documents\GitHub\BTCCLONE\BTCBlazor\bin\x64\Debug\net7.0\Executables
+2023-10-27 04:28:20.442 +02:00 [INF] YTDLP Path: C:\Users\Björn\Documents\GitHub\BTCCLONE\BTCBlazor\bin\x64\Debug\net7.0\Executables\yt-dlp.exe
+2023-10-27 04:28:20.442 +02:00 [INF] FFmpeg Path: C:\Users\Björn\Documents\GitHub\BTCCLONE\BTCBlazor\bin\x64\Debug\net7.0\Executables\ffmpeg.exe
+2023-10-27 04:28:20.443 +02:00 [INF] YTDL Dir found:C:\Users\Björn\Documents\GitHub\BTCCLONE\BTCBlazor\bin\x64\Debug\net7.0\YTDL
+2023-10-27 04:28:20.445 +02:00 [INF] Attempting download of: https://www.youtube.com/watch?v=EVLUUZZ9mw4
+2023-10-27 04:28:33.033 +02:00 [INF] Download Success:True
