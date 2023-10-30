@@ -1,0 +1,46 @@
+2023-10-30 17:16:00.195 +01:00 [INF] Current Location: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\bin\x64\Debug\net7.0\Bulk Thumbnail Creator.dll
+2023-10-30 17:16:00.341 +01:00 [INF] Parent Directory: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\bin\x64\Debug\net7.0
+2023-10-30 17:16:00.350 +01:00 [INF] New Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\bin\x64\Debug\net7.0\Executables
+2023-10-30 17:16:00.356 +01:00 [ERR] yt-dlp.exe was not found
+2023-10-30 17:16:00.359 +01:00 [INF] Will Try To Download yt-dlp
+2023-10-30 17:16:04.186 +01:00 [INF] Successfully downloaded yt-dlp
+2023-10-30 17:16:04.203 +01:00 [ERR] ffmpeg.exe was not found
+2023-10-30 17:16:04.228 +01:00 [INF] Will Try To Download ffmpeg
+2023-10-30 17:16:12.329 +01:00 [INF] File has been successfully downloaded
+2023-10-30 17:16:12.342 +01:00 [ERR] YTDL Dir was not found
+2023-10-30 17:16:12.395 +01:00 [INF] Dir Created at:C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\bin\x64\Debug\net7.0\YTDL
+2023-10-30 17:16:12.417 +01:00 [INF] Attempting download of: https://www.youtube.com/watch?v=ICfzQVh3lvs
+2023-10-30 17:16:49.858 +01:00 [INF] Download Success:True
+2023-10-30 17:17:36.597 +01:00 [INF] Ffmpeg finished producing pictures
+2023-10-30 17:17:37.519 +01:00 [INF] Processing 27 images
+2023-10-30 17:25:21.281 +01:00 [INF] Current Location: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\bin\x64\Debug\net7.0\Bulk Thumbnail Creator.dll
+2023-10-30 17:25:21.410 +01:00 [INF] Parent Directory: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\bin\x64\Debug\net7.0
+2023-10-30 17:25:21.415 +01:00 [INF] New Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\bin\x64\Debug\net7.0\Executables
+2023-10-30 17:25:21.465 +01:00 [INF] YTDLP Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\bin\x64\Debug\net7.0\Executables\yt-dlp.exe
+2023-10-30 17:25:21.482 +01:00 [INF] FFmpeg Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\bin\x64\Debug\net7.0\Executables\ffmpeg.exe
+2023-10-30 17:25:21.506 +01:00 [INF] YTDL Dir found:C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\bin\x64\Debug\net7.0\YTDL
+2023-10-30 17:25:21.531 +01:00 [INF] Attempting download of: https://www.youtube.com/watch?v=HeHzqAv5yns
+2023-10-30 17:25:35.394 +01:00 [INF] Download Success:True
+2023-10-30 17:26:10.563 +01:00 [INF] Ffmpeg finished producing pictures
+2023-10-30 17:26:11.634 +01:00 [INF] Processing 173 images
+2023-10-30 17:26:59.491 +01:00 [INF]  Discarded Amount Of Pictures:1
+2023-10-30 17:38:16.001 +01:00 [INF] Current Location: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\bin\x64\Debug\net7.0\Bulk Thumbnail Creator.dll
+2023-10-30 17:38:16.080 +01:00 [INF] Parent Directory: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\bin\x64\Debug\net7.0
+2023-10-30 17:38:16.083 +01:00 [INF] New Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\bin\x64\Debug\net7.0\Executables
+2023-10-30 17:38:16.085 +01:00 [INF] YTDLP Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\bin\x64\Debug\net7.0\Executables\yt-dlp.exe
+2023-10-30 17:38:16.089 +01:00 [INF] FFmpeg Path: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\bin\x64\Debug\net7.0\Executables\ffmpeg.exe
+2023-10-30 17:38:16.092 +01:00 [INF] YTDL Dir found:C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\bin\x64\Debug\net7.0\YTDL
+2023-10-30 17:38:16.099 +01:00 [INF] Attempting download of: https://www.youtube.com/watch?v=N8YAjCyn-eg
+2023-10-30 17:38:27.241 +01:00 [INF] Download Success:True
+2023-10-30 17:38:45.552 +01:00 [INF] Ffmpeg finished producing pictures
+2023-10-30 17:38:46.315 +01:00 [INF] Processing 8 images
+2023-10-30 17:38:50.221 +01:00 [INF]  Discarded Amount Of Pictures:0
+2023-10-30 17:39:56.057 +01:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\text added//2023-10-30 173905001.png
+2023-10-30 17:39:58.789 +01:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\text added//2023-10-30 173905007.png
+2023-10-30 17:40:04.066 +01:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\text added//2023-10-30 173905003.png
+2023-10-30 17:40:04.647 +01:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\text added//2023-10-30 173905005.png
+2023-10-30 17:40:04.666 +01:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\text added//2023-10-30 173905006.png
+2023-10-30 17:40:08.156 +01:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\text added//2023-10-30 173905004.png
+2023-10-30 17:40:08.484 +01:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\text added//2023-10-30 173905008.png
+2023-10-30 17:40:10.568 +01:00 [INF] File Created: C:\Users\vemha\Source\Repos\GodWasaProgrammer\Bulk-Thumbnail-Creator\BTCBlazor\text added//2023-10-30 173905002.png
+2023-10-30 17:40:10.593 +01:00 [INF] Processing Finished
