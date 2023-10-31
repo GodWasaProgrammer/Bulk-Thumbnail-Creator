@@ -17,7 +17,7 @@ namespace Services
             _logger = new LoggerConfiguration()
             .MinimumLevel.Information()
             .WriteTo.Console()
-            .WriteTo.File("Bulk_Thumbnail_Creator.txt", rollingInterval: RollingInterval.Day)
+            .WriteTo.File("logs/Bulk_Thumbnail_Creator.txt", rollingInterval: RollingInterval.Day)
             .CreateLogger();
         }
 

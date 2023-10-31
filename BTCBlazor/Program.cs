@@ -16,6 +16,7 @@ namespace BTC_Blazor
             Directory.CreateDirectory(Settings.OutputDir);
             Directory.CreateDirectory(Settings.YTDLOutPutDir);
             Directory.CreateDirectory(Settings.TextAddedDir);
+            Directory.CreateDirectory("logs");
             var builder = WebApplication.CreateBuilder(args);
             // Add configuration settings
             builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
