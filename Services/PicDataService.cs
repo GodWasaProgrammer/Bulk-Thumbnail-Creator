@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.PictureObjects;
-using Services.Interfaces;
+using Bulk_Thumbnail_Creator.Interfaces;
 
 namespace Bulk_Thumbnail_Creator.Services
 {

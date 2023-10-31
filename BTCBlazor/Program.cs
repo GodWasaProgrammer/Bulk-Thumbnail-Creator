@@ -1,12 +1,10 @@
 using Bulk_Thumbnail_Creator;
-using Services;
-using Services.Interfaces;
 using Bulk_Thumbnail_Creator.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 using MudBlazor.Services;
 using Microsoft.EntityFrameworkCore;
-
+using Bulk_Thumbnail_Creator.Interfaces;
 namespace BTC_Blazor
 {
     public class Program

@@ -6,7 +6,7 @@ using FaceONNX;
 using System.Drawing;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using Bulk_Thumbnail_Creator.Serialization;
-using Services.Interfaces;
+using Bulk_Thumbnail_Creator.Interfaces;
 
 namespace Bulk_Thumbnail_Creator
 {

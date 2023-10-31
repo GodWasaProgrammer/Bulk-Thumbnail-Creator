@@ -1,9 +1,9 @@
 ﻿using Serilog;
 using Serilog.Core;
-using Services.Interfaces;
+using Bulk_Thumbnail_Creator.Interfaces;
 using System;
 
-namespace Services
+namespace Bulk_Thumbnail_Creator.Services
 {
     public class LogService : ILogService
     {

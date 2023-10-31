@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Bulk_Thumbnail_Creator.PictureObjects;
-using Services.Interfaces;
-using Services;
+using Bulk_Thumbnail_Creator.Interfaces;
 
 namespace Bulk_Thumbnail_Creator
 {
