@@ -1,5 +1,6 @@
-﻿@inject Bulk_Thumbnail_Creator.Services.PictureDataService ds;
-
+﻿@using Services.Interfaces;
+@inject Bulk_Thumbnail_Creator.Services.PicDataService ds;
+@inject ILogService logger;
 <Loading _processing="@Loading"></Loading>
 
 @if (DisableMenu == false)
@@ -49,7 +50,7 @@
     {
         List<string> ListOfTextToPrint = new() { TextToPrint1, TextToPrint2, TextToPrint3 };
 
-        await ds.CreateInitialPictureArrayAsync(url, ListOfTextToPrint);
+        await ds.CreateInitialPictureArrayAsync(url, ListOfTextToPrint,logger);
 
     }
 

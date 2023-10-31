@@ -5,8 +5,8 @@
 @using MudBlazor.Utilities;
 @using Services.Interfaces
 
-@inject PictureDataService PicDataService
-@inject ILogService Logger;
+@inject PicDataService PicDataService
+@inject ILogService logger;
 @inject NavigationManager navmanager;
 
 
@@ -172,7 +172,7 @@
     public async void CreateCustomPicDataObject()
     {
         OutputType jobtype = OutputType.Custom;
-        PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(CurrentPagePictureData, PickedFont, PickedBox, CurrentPagePictureData.Dankbox, BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance, fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance, StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance, jobtype);
+        PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(CurrentPagePictureData, PickedFont, PickedBox, CurrentPagePictureData.Dankbox, BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance, fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance, StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance, jobtype, logger);
         ShowCustomPicture(PicDataToCustomize);
     }
 
@@ -191,7 +191,7 @@
         ImageURL = CurrentPagePictureData.OutPath; // just text data fetch
         NavToCustomizePicture(ImageURL); // trying to set the correlating image
         StateHasChanged();
-        Logger.LogInformation("ShowCustomPicture Has been called in Blazors Component");
+        logger.LogInformation("ShowCustomPicture Has been called in Blazors Component");
     }
 
     protected override void OnInitialized()

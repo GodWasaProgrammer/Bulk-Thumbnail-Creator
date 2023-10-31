@@ -28,7 +28,7 @@ namespace BTC_Blazor
             });
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
-            builder.Services.AddSingleton<PictureDataService>();
+            builder.Services.AddSingleton<PicDataService>();
             builder.Services.AddSingleton<ILogService, LogService>();
             builder.Services.AddMudServices();
 
@@ -36,9 +36,7 @@ namespace BTC_Blazor
 
             var serviceProvider = app.Services;
             var logService = serviceProvider.GetRequiredService<ILogService>();
-            // Register the ILogService with the service locator
-            ServiceLocator.RegisterLogService(logService);
-
+            
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {

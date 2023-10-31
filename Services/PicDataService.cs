@@ -3,19 +3,20 @@ using System.Threading.Tasks;
 using System.IO;
 using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.PictureObjects;
+using Services.Interfaces;
 
 namespace Bulk_Thumbnail_Creator.Services
 {
-    public class PictureDataService
+    public class PicDataService
     {
-        public PictureDataService()
+        public PicDataService()
         {
             ClearBaseOutPutDirectories();
             PicDataServiceList = new List<PictureData>();
             OutputFileServiceList = new List<string>();
         }
 
-        public PictureDataService(List<PictureData> pictureDatas)
+        public PicDataService(List<PictureData> pictureDatas)
         {
             PicDataServiceList = pictureDatas;
         }
@@ -24,20 +25,20 @@ namespace Bulk_Thumbnail_Creator.Services
         public List<string> OutputFileServiceList { get; set; } = new();
         public List<string> TextToPrint { get; set; } = new();
 
-        public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint)
+        public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint, ILogService logger)
         {
             ProductionType ProdType = ProductionType.FrontPagePictureLineUp;
-            PicDataServiceList = await Program.Process(ProdType, url, ListOfTextToPrint);
+            PicDataServiceList = await Program.Process(ProdType, url, ListOfTextToPrint, logger);
             TextToPrint = ListOfTextToPrint;
         }
 
-        public async Task<List<string>> CreatePictureDataVariety(PictureData PicToVarietize)
+        public async Task<List<string>> CreatePictureDataVariety(PictureData PicToVarietize, ILogService logger)
         {
             string url = string.Empty;
 
             ProductionType ProdType = ProductionType.VarietyList;
 
-            PicDataServiceList = await Program.Process(ProdType, url, TextToPrint, PicToVarietize);
+            PicDataServiceList = await Program.Process(ProdType, url, TextToPrint, logger, PicToVarietize);
 
             List<string> ImageUrls = new();
 
@@ -49,7 +50,7 @@ namespace Bulk_Thumbnail_Creator.Services
             return ImageUrls;
         }
 
-        public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, string PickedFont, Box PickedBox, Box DankBox, float Borderhue, float Bordersat, float BorderLum, float FillCLRHue, float FillCLRSat, float FillCLRLum, float StrokeCLRHue, float StrokeCLRSat, float strokeCLRLum, OutputType JobType)
+        public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, string PickedFont, Box PickedBox, Box DankBox, float Borderhue, float Bordersat, float BorderLum, float FillCLRHue, float FillCLRSat, float FillCLRLum, float StrokeCLRHue, float StrokeCLRSat, float strokeCLRLum, OutputType JobType, ILogService logger)
         {
             PicToCustomize = new(PicToCustomize);
             PicToCustomize.ParamForTextCreation.CurrentBox = PickedBox;
@@ -61,7 +62,7 @@ namespace Bulk_Thumbnail_Creator.Services
             PicToCustomize.OutPutType = JobType;
 
             string url = string.Empty;
-            PicDataServiceList = await Program.Process(ProductionType.CustomPicture, url, TextToPrint, PicToCustomize);
+            PicDataServiceList = await Program.Process(ProductionType.CustomPicture, url, TextToPrint, logger, PicToCustomize);
 
             return PicToCustomize;
         }

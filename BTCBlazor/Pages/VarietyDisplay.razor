@@ -1,7 +1,9 @@
 ﻿@using Bulk_Thumbnail_Creator.Services;
 @using Bulk_Thumbnail_Creator.PictureObjects;
+@using Services.Interfaces;
 
-@inject PictureDataService PicDataService;
+@inject PicDataService PicDataService;
+@inject ILogService logger;
 
 @page "/varietydisplay"
 
@@ -48,7 +50,7 @@
 
     private async Task CreateVarietyAsync()
     {
-        imageUrls = await PicDataService.CreatePictureDataVariety(ParentPictureProp);
+        imageUrls = await PicDataService.CreatePictureDataVariety(ParentPictureProp, logger);
     }
 
     private void LoadImageUrls()

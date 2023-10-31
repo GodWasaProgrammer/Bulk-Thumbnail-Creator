@@ -6,17 +6,17 @@ using FaceONNX;
 using System.Drawing;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using Bulk_Thumbnail_Creator.Serialization;
+using Services.Interfaces;
 
 namespace Bulk_Thumbnail_Creator
 {
     public class Program
     {
-        
-        public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, PictureData PicdataObjToVarietize = null)
+        public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, ILogService logger, PictureData PicdataObjToVarietize = null)
         {
-            Settings.GetLogger();
-
             Settings.ListOfText = texts;
+
+            Settings.LogService = logger;
 
             #region Front Page Picture Line Up Output
             if (ProdType == ProductionType.FrontPagePictureLineUp)

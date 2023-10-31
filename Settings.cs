@@ -7,12 +7,8 @@ namespace Bulk_Thumbnail_Creator
 {
     public class Settings
 	{
-		internal static ILogService LogService { get; set; }
-		public static void GetLogger()
-		{
-			LogService = ServiceLocator.GetLogService();
-		}
-
+		public static ILogService LogService { get; set; }
+		
         /// <summary>
         /// The Dir where FFmpeg outputs raw images from the specified video
         /// </summary>
