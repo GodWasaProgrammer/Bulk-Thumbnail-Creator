@@ -10,89 +10,24 @@
 @inject NavigationManager navmanager;
 @inject ILogService Logger;
 
-<div class="grid-container">
-
+<MudGrid>
+    <MudItem xs="12" sm="6">
     <PictureDataBox ImageURL="@ImageURL" PicData="@CurrentPagePictureData"></PictureDataBox>
+    </MudItem>
+    <MudItem xs="12" sm="6">
+    <CustomizeBox ImageURL="@ImageURL" CurrentPagePictureData="CurrentPagePictureData"></CustomizeBox>
+    </MudItem>
+</MudGrid>
 
-    <div class="color-box-container">
+@code
+{
+    public PictureData CurrentPagePictureData { get; set; }
 
-        <MudColorPicker PickerVariant="PickerVariant.Dialog" ColorPickerMode="ColorPickerMode.HSL" DisableAlpha DisableModeSwitch @bind-Value="colorvalue"></MudColorPicker>
+    [Parameter]
+    public string ImageURL { get; set; }
 
-         <MudSelect AdornmentColor="Color.Primary" Label="Select a Color to edit" @bind-Value="PickedGroup">
-
-             @foreach (var Colorz in colorBoxes)
-            {
-
-                <MudSelectItem Value="@Colorz"><MudText Color="Color.Secondary">@Colorz</MudText></MudSelectItem>
-            }
-
-        </MudSelect>
-        <MudButton Color="Color.Primary" @onclick="() => SetColor(PickedGroup)">Set Color</MudButton>
-
-        <MudSelect AdornmentColor="Color.Primary" Label="Select an output box" @bind-Value="PickedBox">
-
-            @foreach (var key in CurrentPagePictureData.ParamForTextCreation.Boxes.Keys)
-            {
-                var value = CurrentPagePictureData.ParamForTextCreation.Boxes[key];
-                <MudSelectItem Value="@key"><MudText Color="Color.Secondary">@key</MudText></MudSelectItem>
-            }
-
-        </MudSelect>
-
-        <MudSelect AdornmentColor="Color.Primary" Label="Select a font" @bind-Value="PickedFont">
-
-            @foreach (var font in AvailableFonts)
-            {
-
-                <MudSelectItem Value="@font"><MudText Color="Color.Secondary">@font</MudText></MudSelectItem>
-            }
-
-        </MudSelect>
-
-        <div class="fact-box">
-            <div class="fact-group">
-                <div class="fact-title">Picture Data To Produce</div>
-                <div class="fact-item">Chosen Font: @Path.GetFileName(PickedFont)</div>
-                <div class="fact-item">Chosen Box: @PickedBox.ToString()</div>
-            </div>
-
-            <div class="fact-group">
-                <div class="fact-title">BorderColor Values</div>
-                <div class="fact-item">Hue: @BorderCLRItem.Hue</div>
-                <div class="fact-item">Saturation: @BorderCLRItem.Saturation</div>
-                <div class="fact-item">Luminance: @BorderCLRItem.Luminance</div>
-            </div>
-
-            <div class="fact-group">
-                <div class="fact-title">FillColor Values</div>
-                <div class="fact-item">Hue: @fillCLRItem.Hue</div>
-                <div class="fact-item">Saturation: @fillCLRItem.Saturation</div>
-                <div class="fact-item">Luminance: @fillCLRItem.Luminance</div>
-            </div>
-
-            <div class="fact-group">
-                <div class="fact-title">StrokeColor Values</div>
-                <div class="fact-item">Hue: @StrokeCLRItem.Hue</div>
-                <div class="fact-item">Saturation: @StrokeCLRItem.Saturation</div>
-                <div class="fact-item">Luminance: @StrokeCLRItem.Luminance</div>
-            </div>
-
-            <div class="fact-button">
-                <button class="custom-button" disabled="@_processing" @onclick="CreateCustomPicDataObject">
-                    @if (_processing)
-                    {
-                        <div class="loader"></div>
-                        <div class="button-text">Processing</div>
-                    }
-                    else
-                    {
-                        <text>Produce Picture</text>
-                    }
-                </button>
-            </div>
-        </div>
-
-
-    </div>
-
-</div>
+    protected override void OnInitialized()
+    {
+        CurrentPagePictureData = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(ImageURL);
+    }
+}
