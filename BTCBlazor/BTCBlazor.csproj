@@ -50,9 +50,11 @@
     <None Remove="ffplay.exe" />
     <None Remove="ffprobe.exe" />
     <None Remove="ListOfDownloadedVideos.xml" />
+    <None Remove="output.zip" />
     <None Remove="postproc-57.dll" />
     <None Remove="swresample-4.dll" />
     <None Remove="swscale-7.dll" />
+    <None Remove="text added.zip" />
     <None Remove="yt-dlp.exe" />
   </ItemGroup>
 
