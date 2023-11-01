@@ -1,4 +1,7 @@
-﻿<h3>Download Your work here</h3>
+﻿@using Bulk_Thumbnail_Creator.Services;
+@inject PicDataService ds;
+
+<h3>Download Your work here</h3>
 
 <MudText>Download the entire Video</MudText>
 <MudButton>Download</MudButton>
@@ -23,11 +26,13 @@
     private void DownloadOutPutDir()
     {
         // download outputdir
+        ZipService.ZipOutputDir();
     }
 
     private void DownloadTextAddedDir()
     {
         // download TextAddedDir
+        ZipService.ZipTextAddedDir();
     }
 
     private void DownloadVarietyDir()
