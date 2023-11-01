@@ -12,7 +12,9 @@ namespace Bulk_Thumbnail_Creator.Services
 
         public static void ZipVideo()
         {
-            ZipFile.CreateFromDirectory(Settings.PathToVideo, $"{Path.GetFileName(Settings.PathToVideo)}.zip");
+            // ZipFile.CreateFromDirectory(Settings.PathToVideo, $"{Path.GetFileName(Settings.PathToVideo)}.zip");
+            using var zip = ZipFile.Open($"{Settings.PathToVideo}.zip", ZipArchiveMode.Create);
+            zip.CreateEntryFromFile($"{Settings.PathToVideo}", $"{Path.GetFileNameWithoutExtension(Settings.PathToVideo)}");
         }
 
         public static void ZipTextAddedDir()
