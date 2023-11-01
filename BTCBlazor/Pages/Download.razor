@@ -1,21 +1,29 @@
 ﻿@using Bulk_Thumbnail_Creator.Services;
 @inject PicDataService ds;
 
-<h3>Download Your work here</h3>
+<MudGrid>
+    <MudPaper Class="mb-4" Elevation="7" Outlined="true">
+        <MudText Color="Color.Warning">Downloads</MudText>
+        <MudItem>
+            <MudText>Download the entire Video</MudText>
+            <MudButton Color="Color.Tertiary">Download</MudButton>
+        </MudItem>
+        <MudItem>
+            <MudText>Download the output directory of unedited files</MudText>
+            <MudButton Color="Color.Tertiary">Download</MudButton>
+        </MudItem>
+        <MudItem>
+            <MudText>Download the Text Added Directory</MudText>
+            <MudButton Color="Color.Tertiary">Download</MudButton>
+        </MudItem>
+        <MudItem>
+            <MudText>Download Variety Directory</MudText>
+            <MudButton Color="Color.Tertiary">Download</MudButton>
+        </MudItem>
+    </MudPaper>
+</MudGrid>
 
-<MudText>Download the entire Video</MudText>
-<MudButton>Download</MudButton>
-
-<MudText>Download the output directory of unedited files</MudText>
-<MudButton>Download</MudButton>
-
-<MudText>Download the Text Added Directory</MudText>
-<MudButton>Download</MudButton>
-
-<MudText>Download Variety Directory</MudText>
-<MudButton>Download</MudButton>
-
-@code 
+@code
 {
     private void DownloadVideo()
     {
