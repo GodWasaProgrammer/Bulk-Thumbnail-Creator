@@ -1,5 +1,7 @@
 ﻿@using Bulk_Thumbnail_Creator.Services;
+@using Microsoft.JSInterop;
 @inject PicDataService ds;
+@inject IJSRuntime JSRuntime;
 
 <MudGrid>
     <MudPaper Class="mb-4" Elevation="7" Outlined="true">
@@ -25,22 +27,28 @@
 
 @code
 {
+    string JavaDownloadCall = "downloadFile";
+
     private void DownloadVideo()
     {
         // download the video
-        ZipService.ZipVideo();
+        string zippedVideo = ZipService.ZipVideo();
+
+        JSRuntime.InvokeVoidAsync(JavaDownloadCall, zippedVideo);
     }
 
     private void DownloadOutPutDir()
     {
         // download outputdir
-        ZipService.ZipOutputDir();
+        string zippedOutPutDir = ZipService.ZipOutputDir();
+        JSRuntime.InvokeVoidAsync(JavaDownloadCall, zippedOutPutDir);
     }
 
     private void DownloadTextAddedDir()
     {
         // download TextAddedDir
-        ZipService.ZipTextAddedDir();
+        string zippedTextAddedDir = ZipService.ZipTextAddedDir();
+        JSRuntime.InvokeVoidAsync(JavaDownloadCall, zippedTextAddedDir);
     }
 
     private void DownloadVarietyDir()

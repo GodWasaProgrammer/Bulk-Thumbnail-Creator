@@ -5,21 +5,30 @@ namespace Bulk_Thumbnail_Creator.Services
 {
     public class ZipService
     {
-        public static void ZipOutputDir()
+        public static string ZipOutputDir()
         {
-            ZipFile.CreateFromDirectory(Settings.OutputDir, "output.zip");
+            string zippedFile = "output.zip";
+
+            ZipFile.CreateFromDirectory(Settings.OutputDir, zippedFile);
+
+            return zippedFile;
         }
 
-        public static void ZipVideo()
+        public static string ZipVideo()
         {
-            // ZipFile.CreateFromDirectory(Settings.PathToVideo, $"{Path.GetFileName(Settings.PathToVideo)}.zip");
-            using var zip = ZipFile.Open($"{Settings.PathToVideo}.zip", ZipArchiveMode.Create);
+            string zippedvideo = $"{Settings.PathToVideo}.zip";
+            using var zip = ZipFile.Open(zippedvideo, ZipArchiveMode.Create);
             zip.CreateEntryFromFile($"{Settings.PathToVideo}", $"{Path.GetFileNameWithoutExtension(Settings.PathToVideo)}");
+
+            return zippedvideo;
         }
 
-        public static void ZipTextAddedDir()
+        public static string ZipTextAddedDir()
         {
+            string zippedtextAddedDir = $"{Settings.TextAddedDir}.zip";
             ZipFile.CreateFromDirectory(Settings.TextAddedDir, $"{Settings.TextAddedDir}.zip");
+
+            return zippedtextAddedDir;
         }
 
     }
