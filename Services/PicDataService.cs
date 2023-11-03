@@ -4,7 +4,6 @@ using System.IO;
 using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using Bulk_Thumbnail_Creator.Interfaces;
-using System.IO.Compression;
 
 namespace Bulk_Thumbnail_Creator.Services
 {

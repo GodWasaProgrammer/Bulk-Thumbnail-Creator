@@ -9,7 +9,6 @@ namespace Bulk_Thumbnail_Creator.Services
     {
         private readonly Logger _logger;
 
-
         public event Action<string> LogEntryAdded = delegate { };
 
         public LogService()

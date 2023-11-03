@@ -1,22 +1,25 @@
-﻿@using Bulk_Thumbnail_Creator.Services;
+﻿@using Bulk_Thumbnail_Creator.Interfaces
+@using Bulk_Thumbnail_Creator.Services;
 @using Microsoft.JSInterop;
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web
 @inject PicDataService ds;
-@inject IJSRuntime JSRuntime;
+@inject ILogService logger;
 
 <MudGrid>
     <MudPaper Class="mb-4" Elevation="7" Outlined="true">
         <MudText Color="Color.Warning">Downloads</MudText>
         <MudItem>
             <MudText>Download the entire Video</MudText>
-            <MudButton Color="Color.Tertiary" OnClick="DownloadVideo">Download</MudButton>
+            <MudButton href="@dlTextAddedDir" Color="Color.Tertiary">Download</MudButton>
         </MudItem>
         <MudItem>
             <MudText>Download the output directory of unedited files</MudText>
-            <MudButton Color="Color.Tertiary" OnClick="DownloadOutPutDir">Download</MudButton>
+            <MudButton href="@dlOutputDir" Color="Color.Tertiary">Download</MudButton>
         </MudItem>
         <MudItem>
             <MudText>Download the Text Added Directory</MudText>
-            <MudButton Color="Color.Tertiary" OnClick="DownloadTextAddedDir">Download</MudButton>
+            <MudButton href="@dlTextAddedDir" Color="Color.Tertiary">Download</MudButton>
         </MudItem>
         <MudItem>
             <MudText>Download Variety Directory</MudText>
@@ -25,35 +28,45 @@
     </MudPaper>
 </MudGrid>
 
+
 @code
 {
-    string JavaDownloadCall = "downloadFile";
+    private string downloadVideo { get; set; }
+    private string dlOutputDir { get; set; }
+    private string dlTextAddedDir { get; set; }
+
+    protected override void OnInitialized()
+    {
+        DownloadVideo();
+        DownloadOutPutDir();
+        DownloadTextAddedDir();
+    }
 
     private void DownloadVideo()
     {
         // download the video
         string zippedVideo = ZipService.ZipVideo();
-
-        JSRuntime.InvokeVoidAsync(JavaDownloadCall, zippedVideo);
+        downloadVideo = zippedVideo;
     }
 
     private void DownloadOutPutDir()
     {
         // download outputdir
         string zippedOutPutDir = ZipService.ZipOutputDir();
-        JSRuntime.InvokeVoidAsync(JavaDownloadCall, zippedOutPutDir);
+        dlOutputDir = zippedOutPutDir;
     }
 
     private void DownloadTextAddedDir()
     {
         // download TextAddedDir
         string zippedTextAddedDir = ZipService.ZipTextAddedDir();
-        JSRuntime.InvokeVoidAsync(JavaDownloadCall, zippedTextAddedDir);
+        dlTextAddedDir = zippedTextAddedDir;
     }
 
     private void DownloadVarietyDir()
     {
         // download Variety Dir
+
     }
 
 }
