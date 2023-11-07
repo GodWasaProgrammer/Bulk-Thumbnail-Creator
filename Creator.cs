@@ -40,11 +40,25 @@ namespace Bulk_Thumbnail_Creator
 
                 string extractedfilename = Path.GetFileName(Settings.PathToVideo);
 
+                //parameters["i"] = $@"""{extractedfilename}""";
+                //parameters["vf"] = @"select=gt(scene\,0.3)";
+                //parameters["vsync"] = "vfr";
+                //string truePath = Path.GetFullPath(Settings.OutputDir);
+                //string pictureOutput = $@"""{truePath}/%03d.png""";
+
+                // works 
+                //parameters["i"] = $@"""{extractedfilename}""";
+                //parameters["vf"] = "select='gt(scene,0.3)'";
+                //parameters["vsync"] = "vfr";
+                //string truePath = Path.GetFullPath(Settings.OutputDir);
+                //string pictureOutput = $@"""{truePath}/%03d.png""";
+
                 parameters["i"] = $@"""{extractedfilename}""";
-                parameters["vf"] = @"select=gt(scene\,0.3)";
+                parameters["vf"] = "select='gt(scene,0.3)',select=key";
                 parameters["vsync"] = "vfr";
                 string truePath = Path.GetFullPath(Settings.OutputDir);
                 string pictureOutput = $@"""{truePath}/%03d.png""";
+
 
                 FFmpegHandler.RunFFMPG(parameters, pictureOutput);
                 #endregion
