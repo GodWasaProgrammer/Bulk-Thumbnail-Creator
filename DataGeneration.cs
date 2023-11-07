@@ -176,19 +176,8 @@ namespace Bulk_Thumbnail_Creator
 
         }
 
-        /// <summary>
-        /// This Allows you to Get the Text Position, It will Calculate where faces are
-        /// and give you a position that is not colliding with a face
-        /// </summary>
-        /// <param name="parameters"></param>
-        /// <param name="sourcePicture"></param>
-        /// <param name="faceRect"></param>
-        /// <returns></returns>
-        public static ParamForTextCreation GettextPos(ParamForTextCreation parameters, Bitmap sourcePicture, Rectangle[] faceRect)
+        private static Dictionary<Box, Rectangle> BuildBoxes(Dictionary<Box, Rectangle> Boxes, Bitmap sourcePicture)
         {
-            Dictionary<Box, Rectangle> Boxes = new();
-
-            #region Box Declarations
             // top box
             int TopBoxValueX = 0;
             int TopBoxValueY = 0;
@@ -278,7 +267,30 @@ namespace Bulk_Thumbnail_Creator
             };
 
             Boxes.Add(bottomRightBox, bottomRightBoxRectangle);
-            #endregion
+
+            return Boxes;
+        }
+
+        /// <summary>
+        /// This Allows you to Get the Text Position, It will Calculate where faces are
+        /// and give you a position that is not colliding with a face
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="sourcePicture"></param>
+        /// <param name="faceRect"></param>
+        /// <returns></returns>
+        public static ParamForTextCreation GettextPos(ParamForTextCreation parameters, Bitmap sourcePicture, Rectangle[] faceRect)
+        {
+            Dictionary<Box, Rectangle> Boxes = new();
+
+            Box topBox = Box.TopBox;
+            Box bottomBox = Box.BottomBox;
+            Box topLeftBox = Box.TopLeft;
+            Box topRightBox = Box.TopRight;
+            Box bottomLeftBox = Box.BottomLeft;
+            Box bottomRightBox = Box.BottomRight;
+
+            Boxes = BuildBoxes(Boxes, sourcePicture);
 
             if (faceRect.Length != 0)
             {
@@ -306,53 +318,34 @@ namespace Bulk_Thumbnail_Creator
                     int MidPointX = sourcePicture.Width / 2;
                     int MidPointY = sourcePicture.Height / 2;
 
-#pragma warning disable CA1853
-                    if (!Boxes.ContainsKey(topBox))
+                    // if top left cornerbox face detected
+                    if (face.X < MidPointX && face.Y < MidPointY)
                     {
                         Boxes.Remove(topLeftBox);
+                    }
+
+                    // if toprightbox face detected
+                    if (face.X + face.Width > MidPointX && face.Y < MidPointY)
+                    {
                         Boxes.Remove(topRightBox);
                     }
-                    else
-                    {
-                        // if top left cornerbox face detected
-                        if (face.X < MidPointX && face.Y < MidPointY)
-                        {
-                            Boxes.Remove(topLeftBox);
-                        }
-                        // if toprightbox face detected
-                        if (face.X > MidPointX && face.Y < MidPointY)
-                        {
-                            Boxes.Remove(topRightBox);
-                        }
 
-                    }
-#pragma warning disable CA1853
-                    if (!Boxes.ContainsKey(bottomBox))
+                    // if bottomleftbox face detected
+                    if (face.X < MidPointX && face.Y > MidPointY)
                     {
                         Boxes.Remove(bottomLeftBox);
-                        Boxes.Remove(bottomRightBox);
                     }
-                    else
+
+                    // if bottomrightbox face detected
+                    if (face.X > MidPointX && face.Y > MidPointY)
                     {
-
-                        // if bottomleftbox face detected
-                        if (face.X < MidPointX && face.Y > MidPointY)
-                        {
-                            Boxes.Remove(bottomLeftBox);
-                        }
-                        // if bottomrightbox face detected
-                        if (face.X > MidPointX && face.Y > MidPointY)
-                        {
-                            Boxes.Remove(bottomRightBox);
-                        }
-
+                        Boxes.Remove(bottomRightBox);
                     }
 
                 }
 
             }
 
-#pragma warning restore CA1853
             // write surviving boxvalues to object
             parameters.Boxes = Boxes;
 
@@ -362,10 +355,10 @@ namespace Bulk_Thumbnail_Creator
                 Random random = new();
                 Box pickedBoxName;
 
-                // picks a random box that has no face in it
+                Box[] boxes = (Box[])Enum.GetValues(typeof(Box));
                 do
                 {
-                    pickedBoxName = (Box)random.Next(parameters.Boxes.Count);
+                    pickedBoxName = boxes[random.Next(boxes.Length)];
                 }
                 while (!parameters.Boxes.ContainsKey(pickedBoxName));
 
@@ -559,22 +552,6 @@ namespace Bulk_Thumbnail_Creator
                     PickedBox = VarietyData.ParamForTextCreation.CurrentBox;
                 }
 
-                //do
-                //{ //TODO: dont rely on RNG luck lol for it to work
-                //    PickedBox = (Box)random.Next(PictureInputData.ParamForTextCreation.Boxes.Count);
-                //}
-                //while (!AvailableBoxes.ContainsKey(PickedBox));
-
-                //foreach (Box CurrentIterationBox in AvailableBoxes.Keys)
-                //{
-                //    if (CurrentIterationBox != PictureInputData.ParamForTextCreation.CurrentBox)
-                //    {
-                //        PickedBox = CurrentIterationBox;
-                //        break;
-                //    }
-
-                //}
-
                 if (PickedBox != VarietyData.ParamForTextCreation.CurrentBox)
                 {
                     VarietyData.ParamForTextCreation.CurrentBox = PickedBox;
@@ -591,18 +568,18 @@ namespace Bulk_Thumbnail_Creator
                 VarietyData.ParamForTextCreation.Font = Font;
 
                 VarietyData.OutPutType = OutputType.RandomVariety;
-                // VarietyData.OutPath = $"{CurrentIndex}"; // this is super bad form u donkey
 
                 PictureInputData.Varieties.Add(VarietyData);
             }
 
         }
 
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="DankifyTarget"></param>
-        public static void GenMemePosition(PictureData DankifyTarget)
+        public static PictureData GenMemePosition(PictureData DankifyTarget)
         {
             PictureData CopiedPicData = new(DankifyTarget);
             CopiedPicData.Varieties.Clear();
@@ -613,11 +590,13 @@ namespace Bulk_Thumbnail_Creator
 
                 Box currentBox = DankifyTarget.ParamForTextCreation.CurrentBox;
 
-                Box PickedBox = currentBox;
+                Box PickedBox = Box.None;
 
                 List<Box> AvailableBoxes;
 
                 AvailableBoxes = boxesDictionary.Keys.ToList();
+
+                AvailableBoxes.Remove(currentBox);
 
                 foreach (Box key in AvailableBoxes)
                 {
@@ -631,6 +610,7 @@ namespace Bulk_Thumbnail_Creator
                         }
 
                     }
+
                     if (currentBox == Box.TopBox)
                     {
                         // only possible boxes are bot left bot right
@@ -638,7 +618,6 @@ namespace Bulk_Thumbnail_Creator
                         {
                             PickedBox = key;
                         }
-
                     }
 
                     if (currentBox == Box.TopLeft)
@@ -649,6 +628,7 @@ namespace Bulk_Thumbnail_Creator
                         }
 
                     }
+
                     if (currentBox == Box.TopRight)
                     {
                         if (key == Box.TopLeft || key == Box.BottomRight || key == Box.BottomLeft)
@@ -666,6 +646,7 @@ namespace Bulk_Thumbnail_Creator
                         }
 
                     }
+
                     if (currentBox == Box.BottomRight)
                     {
                         if (key == Box.BottomLeft || key == Box.TopLeft || key == Box.TopRight)
@@ -677,23 +658,23 @@ namespace Bulk_Thumbnail_Creator
 
                 }
 
-                if (PickedBox != currentBox)
+                if (PickedBox != Box.None)
                 {
                     // pick a meme
                     Random pickRandomMeme = new();
                     int PickedMeme = pickRandomMeme.Next(Settings.Memes.Length);
 
                     //// write our chosen meme to Meme property
-                    CopiedPicData.Meme = Settings.Memes[PickedMeme];
+                    CopiedPicData.ParamForTextCreation.Meme = Settings.Memes[PickedMeme];
 
                     // set the type of output
                     CopiedPicData.OutPutType = OutputType.Dankness;
 
-                    DankifyTarget.Varieties.Add(CopiedPicData);
+                    //DankifyTarget.Varieties.Add(CopiedPicData);
                 }
 
             }
-
+            return CopiedPicData;
         }
 
     }

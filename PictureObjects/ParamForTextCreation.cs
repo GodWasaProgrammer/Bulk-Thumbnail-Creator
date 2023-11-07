@@ -26,6 +26,9 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             }
         }
 
+        private string _Meme;
+        public string Meme { get { return _Meme; } set { _Meme = value; } }
+
         /// <summary>
         /// Text that will be printed on the image for this object
         /// </summary>

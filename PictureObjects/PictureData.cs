@@ -8,7 +8,6 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
     [Serializable]
     public class PictureData
     {
-
         /// <summary>
         /// The filename of this object, with relative output path example : output//001.png
         /// </summary>
@@ -17,6 +16,11 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
 
         private string _outPath;
         public string OutPath { get { return _outPath; } set { _outPath = value; } }
+
+        //public List<string, Enums.OutputType> AssignedBoxes { get; set; } = new();
+
+        private List<ParamForTextCreation> _BoxParameters = new();
+        public List<ParamForTextCreation> BoxParameters { get { return _BoxParameters; } set { _BoxParameters = value; } }
 
         /// <summary>
         /// Parameters for text creation, contains all necessary info like font,position,colors
@@ -46,8 +50,8 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             _Varieties = new List<PictureData>(pictureDataToCopy.Varieties);
             _OutputType = pictureDataToCopy.OutPutType;
             _outPath = pictureDataToCopy.OutPath;
-            _DankBox = pictureDataToCopy.Dankbox;
-            _Meme = pictureDataToCopy._Meme;
+            //_DankBox = pictureDataToCopy.Dankbox;
+            // _Meme = pictureDataToCopy._Meme;
         }
 
         /// <summary>
@@ -58,18 +62,11 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
 
         }
 
-        private Box _DankBox;
-        public Box Dankbox { get { return _DankBox; } set { _DankBox = value; } }
-
-
-        private string _Meme;
-        public string Meme { get { return _Meme; } set { _Meme = value; } }
-
+        //private Box _DankBox;
+        //public Box Dankbox { get { return _DankBox; } set { _DankBox = value; } }
 
         private OutputType _OutputType;
         public OutputType OutPutType { get { return _OutputType; } set { _OutputType = value; } }
-
-        public PictureData PicData => throw new NotImplementedException();
 
         /// <summary>
         /// Generates MagickReadSettings to be used in a PicturedataObject to decide how text will look
@@ -84,11 +81,11 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
                 FillColor = MagickColor.FromRgb(Parameters.FillColor.Red, Parameters.FillColor.Green, Parameters.FillColor.Blue),
                 StrokeColor = MagickColor.FromRgb(Parameters.StrokeColor.Red, Parameters.StrokeColor.Green, Parameters.StrokeColor.Blue),
                 BorderColor = MagickColor.FromRgb(Parameters.BorderColor.Red, Parameters.BorderColor.Green, Parameters.BorderColor.Blue),
-                StrokeWidth = 5,
-                FontWeight = FontWeight.UltraBold,
+                StrokeWidth = 6,
                 BackgroundColor = MagickColors.Transparent,
                 Height = Parameters.HeightOfBox, // height of text box
                 Width = Parameters.WidthOfBox, // width of text box
+                FontStyle = FontStyleType.Any,
             };
 
             return SettingsTextLinear;

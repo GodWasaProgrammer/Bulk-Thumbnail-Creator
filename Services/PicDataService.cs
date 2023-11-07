@@ -4,6 +4,7 @@ using System.IO;
 using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using Bulk_Thumbnail_Creator.Interfaces;
+using Bulk_Thumbnail_Creator.Serialization;
 
 namespace Bulk_Thumbnail_Creator.Services
 {
@@ -16,11 +17,6 @@ namespace Bulk_Thumbnail_Creator.Services
             OutputFileServiceList = new List<string>();
         }
 
-        public PicDataService(List<PictureData> pictureDatas)
-        {
-            PicDataServiceList = pictureDatas;
-        }
-
         public List<PictureData> PicDataServiceList { get; set; } = new List<PictureData>();
         public List<string> OutputFileServiceList { get; set; } = new();
         public List<string> TextToPrint { get; set; } = new();
@@ -28,7 +24,7 @@ namespace Bulk_Thumbnail_Creator.Services
         public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint, ILogService logger)
         {
             ProductionType ProdType = ProductionType.FrontPagePictureLineUp;
-            PicDataServiceList = await Program.Process(ProdType, url, ListOfTextToPrint, logger);
+            PicDataServiceList = await Creator.Process(ProdType, url, ListOfTextToPrint, logger);
             TextToPrint = ListOfTextToPrint;
         }
 
@@ -38,7 +34,7 @@ namespace Bulk_Thumbnail_Creator.Services
 
             ProductionType ProdType = ProductionType.VarietyList;
 
-            PicDataServiceList = await Program.Process(ProdType, url, TextToPrint, logger, PicToVarietize);
+            PicDataServiceList = await Creator.Process(ProdType, url, TextToPrint, logger, PicToVarietize);
 
             List<string> ImageUrls = new();
 
@@ -50,11 +46,11 @@ namespace Bulk_Thumbnail_Creator.Services
             return ImageUrls;
         }
 
-        public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, string PickedFont, Box PickedBox, Box DankBox, float Borderhue, float Bordersat, float BorderLum, float FillCLRHue, float FillCLRSat, float FillCLRLum, float StrokeCLRHue, float StrokeCLRSat, float strokeCLRLum, OutputType JobType, ILogService logger)
+        public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, string PickedFont, Box PickedBox, float Borderhue, float Bordersat, float BorderLum, float FillCLRHue, float FillCLRSat, float FillCLRLum, float StrokeCLRHue, float StrokeCLRSat, float strokeCLRLum, OutputType JobType, ILogService logger)
         {
             PicToCustomize = new(PicToCustomize);
             PicToCustomize.ParamForTextCreation.CurrentBox = PickedBox;
-            PicToCustomize.Dankbox = DankBox;
+            // PicToCustomize.Dankbox = DankBox;
             PicToCustomize.ParamForTextCreation.Font = PickedFont;
             PicToCustomize.ParamForTextCreation.BorderColor.SetByHSL(Borderhue, Bordersat, BorderLum);
             PicToCustomize.ParamForTextCreation.FillColor.SetByHSL(FillCLRHue, FillCLRSat, FillCLRLum);
@@ -62,7 +58,7 @@ namespace Bulk_Thumbnail_Creator.Services
             PicToCustomize.OutPutType = JobType;
 
             string url = string.Empty;
-            PicDataServiceList = await Program.Process(ProductionType.CustomPicture, url, TextToPrint, logger, PicToCustomize);
+            PicDataServiceList = await Creator.Process(ProductionType.CustomPicture, url, TextToPrint, logger, PicToCustomize);
 
             return PicToCustomize;
         }
@@ -101,6 +97,19 @@ namespace Bulk_Thumbnail_Creator.Services
 
             }
             return PicData;
+        }
+
+        public static void SaveWork()
+        {
+            using (StreamWriter streamWriter = new("Picturedatas.xml"))
+            {
+                foreach (var PictureData in Settings.PictureDatas)
+                {
+                    Serializing.SerializePictureData(streamWriter, PictureData);
+
+                }
+                // logger.LogInformation("PictureDatas.xml Serialized from PictureData");
+            }
         }
 
         public static void ClearBaseOutPutDirectories()

@@ -2,6 +2,7 @@
 {
     public enum Box
     {
+        None,
         TopBox,
         BottomBox,
         TopRight,

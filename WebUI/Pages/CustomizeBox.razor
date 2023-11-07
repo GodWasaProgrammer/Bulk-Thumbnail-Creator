@@ -1,0 +1,202 @@
+﻿@using Bulk_Thumbnail_Creator.Enums;
+@using Bulk_Thumbnail_Creator.PictureObjects;
+@using Bulk_Thumbnail_Creator.Services
+@using Microsoft.AspNetCore.Components;
+@using MudBlazor.Utilities;
+@using Bulk_Thumbnail_Creator.Interfaces;
+
+@inject PicDataService PicDataService
+@inject ILogService logger;
+@inject NavigationManager navmanager;
+
+    <MudPaper Class="mb-4">
+
+    <MudColorPicker PickerVariant="PickerVariant.Dialog" ColorPickerMode="ColorPickerMode.HSL" DisableAlpha DisableModeSwitch @bind-Value="colorvalue"></MudColorPicker>
+
+     <MudSelect AdornmentColor="Color.Primary" Label="Select a Color to edit" @bind-Value="PickedGroup">
+
+         @foreach (var Colorz in colorBoxes)
+        {
+            <MudSelectItem Value="@Colorz"><MudText Color="Color.Secondary">@Colorz</MudText></MudSelectItem>
+        }
+
+    </MudSelect>
+
+    <MudButton Color="Color.Primary" @onclick="() => SetColor(PickedGroup)">Set Color</MudButton>
+
+    <MudSelect AdornmentColor="Color.Primary" Label="Select an output box" @bind-Value="PickedBox">
+
+        @foreach (var key in CurrentPagePictureData.ParamForTextCreation.Boxes.Keys)
+        {
+            var value = CurrentPagePictureData.ParamForTextCreation.Boxes[key];
+            <MudSelectItem Value="@key"><MudText Color="Color.Secondary">@key</MudText></MudSelectItem>
+        }
+
+    </MudSelect>
+
+    <MudSelect AdornmentColor="Color.Primary" Label="Select a font" @bind-Value="PickedFont">
+
+        @foreach (var font in AvailableFonts)
+        {
+
+            <MudSelectItem Value="@font"><MudText Color="Color.Secondary">@font</MudText></MudSelectItem>
+        }
+
+    </MudSelect>
+    </MudPaper>
+
+    <MudPaper Class="mb-4">
+    <MudContainer>
+        <MudGrid>
+            <MudItem xs="12" sm="6">
+                <div class="mb-2">Picture Data To Produce</div>
+                <div class="mb-1">Chosen Font: @Path.GetFileName(PickedFont)</div>
+                <div class="mb-1">Chosen Box: @PickedBox.ToString()</div>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <div class="mb-2">BorderColor Values</div>
+                <div class="mb-1">Hue: @BorderCLRItem.Hue</div>
+                <div class="mb-1">Saturation: @BorderCLRItem.Saturation</div>
+                <div class="mb-1">Luminance: @BorderCLRItem.Luminance</div>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <div class="mb-2">FillColor Values</div>
+                <div class="mb-1">Hue: @fillCLRItem.Hue</div>
+                <div class="mb-1">Saturation: @fillCLRItem.Saturation</div>
+                <div class="mb-1">Luminance: @fillCLRItem.Luminance</div>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <div class="mb-2">StrokeColor Values</div>
+                <div class="mb-1">Hue: @StrokeCLRItem.Hue</div>
+                <div class="mb-1">Saturation: @StrokeCLRItem.Saturation</div>
+                <div class="mb-1">Luminance: @StrokeCLRItem.Luminance</div>
+            </MudItem>
+        </MudGrid>
+        <MudDivider Class="mb-3"></MudDivider>
+        <MudButton Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">
+            @if (_processing)
+            {
+                <div class="mb-1">Processing</div>
+            }
+            else
+            {
+                <div class="mb-1">Produce Picture</div>
+            }
+        </MudButton>
+    </MudContainer>
+</MudPaper>
+
+@code 
+{
+    [Parameter]
+    public PictureData CurrentPagePictureData { get; set; }
+
+    public PictureData PicDataToCustomize = new();
+
+    public Box PickedBox { get; set; }
+
+    public List<string> InputText { get; set; }
+
+    public Box MemeBox { get; set; }
+
+    public List<string> AvailableFonts { get { return Directory.GetFiles("Fonts", "*.TTF*").ToList(); } }
+
+    public string PickedFont
+    {
+        get
+        {
+            _PickedFont ??= CurrentPagePictureData.ParamForTextCreation.Font;
+
+            return _PickedFont;
+        }
+        set { _PickedFont = value; }
+    }
+
+    private string _PickedFont;
+
+    [Parameter]
+    public string ImageURL { get; set; }
+
+
+    private bool _processing = false;
+
+    private List<ColorGroup> colorBoxes = Enum.GetValues(typeof(ColorGroup)).Cast<ColorGroup>().ToList();
+
+    private MudColor colorvalue;
+
+    private ColorGroup PickedGroup;
+
+    // get value from picker
+    private MudColor BorderColor;
+    // set value and display it
+    private ColorItem BorderCLRItem;
+
+    // get value from picker
+    private MudColor FillColor;
+    // set value and display it
+    private ColorItem fillCLRItem;
+
+    // get value from picker
+    private MudColor StrokeColor;
+    // set value and display it
+    private ColorItem StrokeCLRItem;
+
+    private enum ColorGroup
+    {
+        FillColor,
+        BorderColor,
+        StrokeColor
+    }
+
+    private void SetColor(ColorGroup clrGRP)
+    {
+        if (clrGRP == ColorGroup.BorderColor)
+        {
+            BorderColor = colorvalue;
+            BorderCLRItem.SetByHSL((float)BorderColor.H, (float)BorderColor.S, (float)BorderColor.L);
+        }
+        if (clrGRP == ColorGroup.FillColor)
+        {
+            FillColor = colorvalue;
+            fillCLRItem.SetByHSL((float)FillColor.H, (float)FillColor.S, (float)FillColor.L);
+        }
+        if (clrGRP == ColorGroup.StrokeColor)
+        {
+            StrokeColor = colorvalue;
+            StrokeCLRItem.SetByHSL((float)StrokeColor.H, (float)StrokeColor.S, (float)StrokeColor.L);
+        }
+        StateHasChanged();
+    }
+
+    public async void CreateCustomPicDataObject()
+    {
+        OutputType jobtype = OutputType.Custom;
+        PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(CurrentPagePictureData, PickedFont, PickedBox, BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance, fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance, StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance, jobtype, logger);
+        ShowCustomPicture(PicDataToCustomize);
+    }
+
+    private void NavToCustomizePicture(string imageURL)
+    {
+        var currentdir = Directory.GetCurrentDirectory();
+
+        imageURL = imageURL.Substring(currentdir.Length);
+
+        navmanager.NavigateTo($"/CustomizePicture/{Uri.EscapeDataString(imageURL)}");
+    }
+
+    private void ShowCustomPicture(PictureData CustomPicture)
+    {
+        CurrentPagePictureData = new(CustomPicture);
+        ImageURL = CurrentPagePictureData.OutPath; // just text data fetch
+        NavToCustomizePicture(ImageURL); // trying to set the correlating image
+        StateHasChanged();
+        logger.LogInformation("ShowCustomPicture Has been called in Blazors Component");
+    }
+
+    protected override void OnInitialized()
+    {
+        BorderCLRItem = CurrentPagePictureData.ParamForTextCreation.BorderColor;
+        fillCLRItem = CurrentPagePictureData.ParamForTextCreation.FillColor;
+        StrokeCLRItem = CurrentPagePictureData.ParamForTextCreation.StrokeColor;
+    }
+}

@@ -205,11 +205,11 @@ namespace Bulk_Thumbnail_Creator
                 OutputPath += $"{varietyof}{imageName}//{counterRandomOutPut}.png";
                 PicData.OutPath = OutputPath;
             }
-            if (PicData.OutPutType == OutputType.Dankness)
-            {
-                OutputPath += $"{varietyof}{imageName}//{PicData.Dankbox}{trimDateTime}{imageName}.png";
-                PicData.OutPath = OutputPath;
-            }
+            //if (PicData.OutPutType == OutputType.Dankness)
+            //{
+            //    OutputPath += $"{varietyof}{imageName}//{PicData.Dankbox}{trimDateTime}{imageName}.png";
+            //    PicData.OutPath = OutputPath;
+            //}
             if (PicData.OutPutType == OutputType.Custom)
             {
                 OutputPath += $"{varietyof}{imageName}//{trimDateTime}Custom of{imageName}";
@@ -232,17 +232,23 @@ namespace Bulk_Thumbnail_Creator
 
             outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
 
-            if (PicData.OutPutType == OutputType.Dankness)
-            {
-                MagickImage MemeToPutOnPic = new(PicData.Meme);
+            //if (PicData.OutPutType == OutputType.Dankness)
+            //{
+            //    if (PicData.Dankbox != Box.None)
+            //    {
 
-                Rectangle ReadPosition = PicData.ParamForTextCreation.Boxes[PicData.Dankbox];
+            //        MagickImage MemeToPutOnPic = new(PicData.Meme);
 
-                int posX = ReadPosition.X;
-                int posY = ReadPosition.Y;
+            //        Rectangle ReadPosition = PicData.ParamForTextCreation.Boxes[PicData.Dankbox];
+            //        MemeToPutOnPic.Resize(PicData.ParamForTextCreation.WidthOfBox, PicData.ParamForTextCreation.HeightOfBox);
 
-                outputImage.Composite(MemeToPutOnPic, posX, posY, CompositeOperator.Over);
-            }
+
+            //        int posX = ReadPosition.X;
+            //        int posY = ReadPosition.Y;
+
+            //        outputImage.Composite(MemeToPutOnPic, posX, posY, CompositeOperator.Over);
+            //    }
+            //}
             outputImage.Quality = 100;
 
             // outputs the file to the provided path and name

@@ -14,14 +14,17 @@
 	  <Compile Remove="BTCBlazor\**" />
 	  <Compile Remove="Executables\**" />
 	  <Compile Remove="PicturesAndText\**" />
+	  <Compile Remove="WebUI\**" />
 	  <EmbeddedResource Remove="BTC Blazor\**" />
 	  <EmbeddedResource Remove="BTCBlazor\**" />
 	  <EmbeddedResource Remove="Executables\**" />
 	  <EmbeddedResource Remove="PicturesAndText\**" />
+	  <EmbeddedResource Remove="WebUI\**" />
 	  <None Remove="BTC Blazor\**" />
 	  <None Remove="BTCBlazor\**" />
 	  <None Remove="Executables\**" />
 	  <None Remove="PicturesAndText\**" />
+	  <None Remove="WebUI\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -30,7 +33,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="FaceONNX" Version="2.3.0.1" />
+	  <PackageReference Include="FaceONNX" Version="3.0.0.2" />
+	  <PackageReference Include="Google.Apis.Webfonts.v1" Version="1.63.0.3030" />
 	  <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="13.4.0" />
 	  <PackageReference Include="Magick.NET.Core" Version="13.4.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.13" />
@@ -40,7 +44,7 @@
 	  <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 	  <PackageReference Include="Serilog.Sinks.ListOfString" Version="4.1.4.3" />
 	  <PackageReference Include="System.IO.Abstractions" Version="19.2.69" />
-	  <PackageReference Include="UMapx" Version="5.2.9.4" />
+	  <PackageReference Include="UMapx" Version="5.2.9.6" />
 	  <PackageReference Include="YoutubeDLSharp" Version="1.0.0" />
 	</ItemGroup>
 
