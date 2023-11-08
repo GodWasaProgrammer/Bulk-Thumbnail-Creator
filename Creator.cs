@@ -97,7 +97,6 @@ namespace Bulk_Thumbnail_Creator
 
                         facesRectArray[i].Width = faceDetectRes[i].Rectangle.Width;
                         facesRectArray[i].Height = faceDetectRes[i].Rectangle.Height;
-
                     }
 
                     DataGeneration.DecideIfTooMuchFace(file, PicToDetectFacesOn, facesRectArray);

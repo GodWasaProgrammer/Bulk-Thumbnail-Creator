@@ -319,25 +319,25 @@ namespace Bulk_Thumbnail_Creator
                     int MidPointY = sourcePicture.Height / 2;
 
                     // if top left cornerbox face detected
-                    if (face.X - face.Width / 2 < MidPointX && face.Y < MidPointY)
+                    if (face.X - face.Width < MidPointX && face.Y < MidPointY)
                     {
                         Boxes.Remove(topLeftBox);
                     }
 
                     // if toprightbox face detected
-                    if (face.X + face.Width / 2 > MidPointX && face.Y < MidPointY)
+                    if (face.X + face.Width > MidPointX && face.Y < MidPointY)
                     {
                         Boxes.Remove(topRightBox);
                     }
 
                     // if bottomleftbox face detected
-                    if (face.X - face.Width / 2 < MidPointX && face.Y > MidPointY)
+                    if (face.X - face.Width < MidPointX && face.Y > MidPointY)
                     {
                         Boxes.Remove(bottomLeftBox);
                     }
 
                     // if bottomrightbox face detected
-                    if (face.X + face.Width / 2 > MidPointX && face.Y > MidPointY)
+                    if (face.X + face.Width > MidPointX && face.Y > MidPointY)
                     {
                         Boxes.Remove(bottomRightBox);
                     }
