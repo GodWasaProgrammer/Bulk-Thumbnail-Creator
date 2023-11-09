@@ -134,45 +134,89 @@ namespace Bulk_Thumbnail_Creator
         /// <param name="TargetFolder">The target folder to varietize</param>
         public static void GenPlacementOfTextVariety(PictureData PicToVarietize)
         {
-            Box CurrentBox = PicToVarietize.ParamForTextCreation.CurrentBox;
-
-            if (PicToVarietize.ParamForTextCreation.Boxes.Count > 2)
+            for (int boxParam = 0; boxParam < PicToVarietize.NumberOfBoxes; boxParam++)
             {
-                foreach (var CurrentIterationBox in PicToVarietize.ParamForTextCreation.Boxes)
+                Box CurrentBox = PicToVarietize.BoxParameters[boxParam].CurrentBox;
+
+                if (PicToVarietize.BoxParameters[boxParam].Boxes.Count > 2)
                 {
-                    PictureData CopiedPictureData = new(PicToVarietize);
-                    CopiedPictureData.Varieties.Clear();
-
-                    if (CurrentIterationBox.Key != CurrentBox)
+                    foreach (var CurrentIterationBox in PicToVarietize.BoxParameters[boxParam].Boxes)
                     {
-                        // lift Rectangle
-                        Rectangle currentRectangle = CurrentIterationBox.Value;
+                        PictureData CopiedPictureData = new(PicToVarietize);
+                        CopiedPictureData.Varieties.Clear();
 
-                        // write it to a Point
-                        Point CurrentPoint = new(currentRectangle.X, currentRectangle.Y);
-
-                        // feed it back into object
-                        CopiedPictureData.ParamForTextCreation.PositionOfText = CurrentPoint;
-
-                        // set the currentbox to the currentbox key
                         if (CurrentIterationBox.Key != CurrentBox)
                         {
-                            CopiedPictureData.ParamForTextCreation.CurrentBox = CurrentIterationBox.Key;
+                            // lift Rectangle
+                            Rectangle currentRectangle = CurrentIterationBox.Value;
+
+                            // write it to a Point
+                            Point CurrentPoint = new(currentRectangle.X, currentRectangle.Y);
+
+                            // feed it back into object
+                            CopiedPictureData.BoxParameters[boxParam].PositionOfText = CurrentPoint;
+
+                            // set the currentbox to the currentbox key
+                            if (CurrentIterationBox.Key != CurrentBox)
+                            {
+                                CopiedPictureData.BoxParameters[boxParam].CurrentBox = CurrentIterationBox.Key;
+                            }
+
+                            Bitmap sourcePicture = new(CopiedPictureData.FileName);
+
+                            // calculate box data, important for TextSettingsGeneration returning a correct ReadSettings object
+                            CopiedPictureData.BoxParameters[boxParam] = CalculateBoxData(CurrentIterationBox.Key, sourcePicture, CopiedPictureData.BoxParameters[boxParam]);
+
+                            // add it to list of created varieties
+                            CopiedPictureData.OutPutType = OutputType.BoxPositionVariety;
+
+                            PicToVarietize.Varieties.Add(CopiedPictureData);
                         }
 
-                        Bitmap sourcePicture = new(CopiedPictureData.FileName);
-
-                        // calculate box data, important for TextSettingsGeneration returning a correct ReadSettings object
-                        CopiedPictureData.ParamForTextCreation = CalculateBoxData(CurrentIterationBox.Key, sourcePicture, CopiedPictureData.ParamForTextCreation);
-
-                        // add it to list of created varieties
-                        CopiedPictureData.OutPutType = OutputType.BoxPositionVariety;
-
-                        PicToVarietize.Varieties.Add(CopiedPictureData);
                     }
-
                 }
+
             }
+
+            //Box CurrentBox = PicToVarietize.ParamForTextCreation.CurrentBox;
+
+            //if (PicToVarietize.ParamForTextCreation.Boxes.Count > 2)
+            //{
+            //    foreach (var CurrentIterationBox in PicToVarietize.ParamForTextCreation.Boxes)
+            //    {
+            //        PictureData CopiedPictureData = new(PicToVarietize);
+            //        CopiedPictureData.Varieties.Clear();
+
+            //        if (CurrentIterationBox.Key != CurrentBox)
+            //        {
+            //            // lift Rectangle
+            //            Rectangle currentRectangle = CurrentIterationBox.Value;
+
+            //            // write it to a Point
+            //            Point CurrentPoint = new(currentRectangle.X, currentRectangle.Y);
+
+            //            // feed it back into object
+            //            CopiedPictureData.ParamForTextCreation.PositionOfText = CurrentPoint;
+
+            //            // set the currentbox to the currentbox key
+            //            if (CurrentIterationBox.Key != CurrentBox)
+            //            {
+            //                CopiedPictureData.ParamForTextCreation.CurrentBox = CurrentIterationBox.Key;
+            //            }
+
+            //            Bitmap sourcePicture = new(CopiedPictureData.FileName);
+
+            //            // calculate box data, important for TextSettingsGeneration returning a correct ReadSettings object
+            //            CopiedPictureData.ParamForTextCreation = CalculateBoxData(CurrentIterationBox.Key, sourcePicture, CopiedPictureData.ParamForTextCreation);
+
+            //            // add it to list of created varieties
+            //            CopiedPictureData.OutPutType = OutputType.BoxPositionVariety;
+
+            //            PicToVarietize.Varieties.Add(CopiedPictureData);
+            //        }
+
+            //    }
+            //}
 
         }
 
@@ -279,7 +323,7 @@ namespace Bulk_Thumbnail_Creator
         /// <param name="sourcePicture"></param>
         /// <param name="faceRect"></param>
         /// <returns></returns>
-        public static ParamForTextCreation GettextPos(ParamForTextCreation parameters, Bitmap sourcePicture, Rectangle[] faceRect)
+        public static ParamForTextCreation GettextPos(ParamForTextCreation parameters, Bitmap sourcePicture, Rectangle[] faceRect, PictureData pictureData = null)
         {
             Dictionary<Box, Rectangle> Boxes = new();
 
@@ -342,25 +386,65 @@ namespace Bulk_Thumbnail_Creator
                         Boxes.Remove(bottomRightBox);
                     }
 
+                    List<Box> PopulatedBoxes = new();
+
+                    for (int i = 0; i < pictureData.BoxParameters.Count; i++)
+                    {
+                        if (pictureData.BoxParameters[i].Boxes.Count > 0)
+                        {
+                            PopulatedBoxes.Add(pictureData.BoxParameters[i].CurrentBox);
+                        }
+                    }
+
+                    // write surviving boxvalues to object, these are the available boxes, not appropriate,
+                    // it has not yet had populated boxes excluded
+                    parameters.Boxes = Boxes;
+
+                    // if topbox is there, remove the topleft and topright box
+                    if (PopulatedBoxes.Contains(Box.TopBox))
+                    {
+                        Boxes.Remove(Box.TopRight);
+                        Boxes.Remove(Box.TopLeft);
+                        Boxes.Remove(Box.TopBox);
+                        
+                    }
+                    if (PopulatedBoxes.Contains(Box.TopLeft))
+                    {
+                        Boxes.Remove(Box.TopLeft);
+                        Boxes.Remove(Box.TopBox);
+                    }
+
+                    if (PopulatedBoxes.Contains(Box.BottomBox))
+                    {
+                        Boxes.Remove(Box.BottomRight);
+                        Boxes.Remove(Box.BottomLeft);
+                        Boxes.Remove(Box.BottomBox);
+                    }
+                    if (PopulatedBoxes.Contains(Box.BottomLeft))
+                    {
+                        Boxes.Remove(Box.BottomLeft);
+                        Boxes.Remove(Box.BottomBox);
+                    }
+
+                    if (PopulatedBoxes.Contains(Box.BottomRight))
+                    {
+                        Boxes.Remove(Box.BottomRight);
+                        Boxes.Remove(Box.BottomBox);
+                    }
+
                 }
 
             }
 
-            // write surviving boxvalues to object
-            parameters.Boxes = Boxes;
-
-            if (parameters.Boxes.Count != 0)
+            if (Boxes.Count != 0)
             {
-                // all calculations done, pick one box
+                // all calculations done, pick one box if there are any left
                 Random random = new();
                 Box pickedBoxName;
+                Box[] boxes = Boxes.Keys.ToArray();
 
-                Box[] boxes = (Box[])Enum.GetValues(typeof(Box));
-                do
-                {
-                    pickedBoxName = boxes[random.Next(boxes.Length)];
-                }
-                while (!parameters.Boxes.ContainsKey(pickedBoxName));
+                pickedBoxName = boxes[random.Next(boxes.Length)];
+
 
                 // tries to read from dictionary
                 parameters.Boxes.TryGetValue(pickedBoxName, out Rectangle pickedBoxRectangle);
@@ -408,40 +492,44 @@ namespace Bulk_Thumbnail_Creator
         /// <param name="TargetFolder">The target folder of your object</param>
         public static void GenFontVariety(PictureData PicToVarietize)
         {
-            List<string> fontList = new()
+            for (int numberOfBoxes = 0; numberOfBoxes < PicToVarietize.NumberOfBoxes; numberOfBoxes++)
             {
-                PicToVarietize.ParamForTextCreation.Font
+
+                List<string> fontList = new()
+            {
+                PicToVarietize.BoxParameters[numberOfBoxes].Font
             };
 
-            int FontsToPick = 5;
+                int FontsToPick = 5;
 
-            for (int i = 0; i < FontsToPick; i++)
-            {
-                string pickedFont = PickRandomFont();
-
-                // if the list doesnt contain this font already, add it.
-                if (!fontList.Contains(pickedFont))
+                for (int i = 0; i < FontsToPick; i++)
                 {
-                    fontList.Add(pickedFont);
+                    string pickedFont = PickRandomFont();
+
+                    // if the list doesnt contain this font already, add it.
+                    if (!fontList.Contains(pickedFont))
+                    {
+                        fontList.Add(pickedFont);
+                    }
+                    else
+                    {
+                        i--;
+                    }
+
                 }
-                else
+                // variety selection finished, proceed to creating
+
+                foreach (string font in fontList)
                 {
-                    i--;
+                    PictureData createFontVariety = new(PicToVarietize);
+                    createFontVariety.Varieties.Clear();
+
+                    createFontVariety.BoxParameters[numberOfBoxes].Font = font;
+                    createFontVariety.OutPutType = OutputType.FontVariety;
+                    PicToVarietize.Varieties.Add(createFontVariety);
                 }
 
             }
-            // variety selection finished, proceed to creating
-
-            foreach (string font in fontList)
-            {
-                PictureData createFontVariety = new(PicToVarietize);
-                createFontVariety.Varieties.Clear();
-
-                createFontVariety.ParamForTextCreation.Font = font;
-                createFontVariety.OutPutType = OutputType.FontVariety;
-                PicToVarietize.Varieties.Add(createFontVariety);
-            }
-
         }
 
         /// <summary>
@@ -473,51 +561,55 @@ namespace Bulk_Thumbnail_Creator
         /// <param name="PictureInputData">The Image to create variety of</param>
         public static void GenSaturationVariety(PictureData PictureInputData)
         {
-            const float baseLuminanceValue = 0.50F;
-            float fillcolorHue = PictureInputData.ParamForTextCreation.FillColor.Hue;
-            float fillcolorLuminance = baseLuminanceValue;
-
-            float strokecolorHue = PictureInputData.ParamForTextCreation.StrokeColor.Hue;
-            float strokecolorLuminance = baseLuminanceValue;
-
-            float bordercolorHue = PictureInputData.ParamForTextCreation.BorderColor.Hue;
-            float bordercolorLuminance = baseLuminanceValue;
-
-            // create variety based on the current value
-            List<float> VarietyList = new();
-
-            float Variety1 = 0.30F;
-            VarietyList.Add(Variety1);
-
-            float Variety2 = 0.45F;
-            VarietyList.Add(Variety2);
-
-            float Variety3 = 0.55F;
-            VarietyList.Add(Variety3);
-
-            float Variety4 = 0.85F;
-            VarietyList.Add(Variety4);
-
-            float Variety5 = 1F;
-            VarietyList.Add(Variety5);
-
-            foreach (float variety in VarietyList)
+            for (int numberOfBoxes = 0; numberOfBoxes < PictureInputData.NumberOfBoxes; numberOfBoxes++)
             {
-                PictureData VarietyData = new(PictureInputData);
-                VarietyData.Varieties.Clear();
+                const float baseLuminanceValue = 0.50F;
+                float fillcolorHue = PictureInputData.BoxParameters[numberOfBoxes].FillColor.Hue;
+                float fillcolorLuminance = baseLuminanceValue;
 
-                VarietyData.ParamForTextCreation.FillColor.SetByHSL(fillcolorHue, variety, fillcolorLuminance);
+                float strokecolorHue = PictureInputData.BoxParameters[numberOfBoxes].StrokeColor.Hue;
+                float strokecolorLuminance = baseLuminanceValue;
 
-                VarietyData.ParamForTextCreation.StrokeColor.SetByHSL(strokecolorHue, variety, strokecolorLuminance);
+                float bordercolorHue = PictureInputData.BoxParameters[numberOfBoxes].BorderColor.Hue;
+                float bordercolorLuminance = baseLuminanceValue;
 
-                VarietyData.ParamForTextCreation.BorderColor.SetByHSL(bordercolorHue, variety, bordercolorLuminance);
+                // create variety based on the current value
+                List<float> VarietyList = new();
 
-                Bitmap src = new(VarietyData.FileName);
+                float Variety1 = 0.30F;
+                VarietyList.Add(Variety1);
 
-                VarietyData.ParamForTextCreation = CalculateBoxData(VarietyData.ParamForTextCreation.CurrentBox, src, VarietyData.ParamForTextCreation);
+                float Variety2 = 0.45F;
+                VarietyList.Add(Variety2);
 
-                VarietyData.OutPutType = OutputType.SaturationVariety;
-                PictureInputData.Varieties.Add(VarietyData);
+                float Variety3 = 0.55F;
+                VarietyList.Add(Variety3);
+
+                float Variety4 = 0.85F;
+                VarietyList.Add(Variety4);
+
+                float Variety5 = 1F;
+                VarietyList.Add(Variety5);
+
+                foreach (float variety in VarietyList)
+                {
+                    PictureData VarietyData = new(PictureInputData);
+                    VarietyData.Varieties.Clear();
+
+                    VarietyData.BoxParameters[numberOfBoxes].FillColor.SetByHSL(fillcolorHue, variety, fillcolorLuminance);
+
+                    VarietyData.BoxParameters[numberOfBoxes].StrokeColor.SetByHSL(strokecolorHue, variety, strokecolorLuminance);
+
+                    VarietyData.BoxParameters[numberOfBoxes].BorderColor.SetByHSL(bordercolorHue, variety, bordercolorLuminance);
+
+                    Bitmap src = new(VarietyData.FileName);
+
+                    VarietyData.BoxParameters[numberOfBoxes] = CalculateBoxData(VarietyData.BoxParameters[numberOfBoxes].CurrentBox, src, VarietyData.BoxParameters[numberOfBoxes]);
+
+                    VarietyData.OutPutType = OutputType.SaturationVariety;
+                    PictureInputData.Varieties.Add(VarietyData);
+                }
+
             }
 
         }
@@ -532,44 +624,48 @@ namespace Bulk_Thumbnail_Creator
 
             for (int CurrentIndex = 0; CurrentIndex < NumberOfRandomsToProduce; CurrentIndex++)
             {
-                Random random = new();
-                PictureData VarietyData = new(PictureInputData);
-                VarietyData.Varieties.Clear();
-                Dictionary<Box, Rectangle> AvailableBoxes = PictureInputData.ParamForTextCreation.Boxes;
-
-                Box PickedBox;
-
-                var availableBoxesExceptCurrent = AvailableBoxes.Keys.Where(box => box != PictureInputData.ParamForTextCreation.CurrentBox)
-                                                                     .ToList();
-
-                if (availableBoxesExceptCurrent.Count > 0)
+                for (int CurrentBoxes = 0; CurrentBoxes < PictureInputData.NumberOfBoxes; CurrentBoxes++)
                 {
-                    int randomIndex = random.Next(availableBoxesExceptCurrent.Count);
-                    PickedBox = availableBoxesExceptCurrent[randomIndex];
+
+                    Random random = new();
+                    PictureData VarietyData = new(PictureInputData);
+                    VarietyData.Varieties.Clear();
+                    Dictionary<Box, Rectangle> AvailableBoxes = PictureInputData.BoxParameters[CurrentBoxes].Boxes;
+
+                    Box PickedBox;
+
+                    var availableBoxesExceptCurrent = AvailableBoxes.Keys.Where(box => box != PictureInputData.BoxParameters[CurrentBoxes].CurrentBox)
+                                                                         .ToList();
+
+                    if (availableBoxesExceptCurrent.Count > 0)
+                    {
+                        int randomIndex = random.Next(availableBoxesExceptCurrent.Count);
+                        PickedBox = availableBoxesExceptCurrent[randomIndex];
+                    }
+                    else
+                    {
+                        PickedBox = VarietyData.BoxParameters[CurrentBoxes].CurrentBox;
+                    }
+
+                    if (PickedBox != VarietyData.BoxParameters[CurrentBoxes].CurrentBox)
+                    {
+                        VarietyData.BoxParameters[CurrentBoxes].CurrentBox = PickedBox;
+                    }
+
+                    Bitmap src = new(PictureInputData.FileName);
+
+                    VarietyData.BoxParameters[CurrentBoxes] = CalculateBoxData(VarietyData.BoxParameters[CurrentBoxes].CurrentBox, src, VarietyData.BoxParameters[CurrentBoxes]);
+
+                    VarietyData.BoxParameters[CurrentBoxes] = GenerateRandomColorSettings(VarietyData.BoxParameters[CurrentBoxes]);
+
+                    string Font = PickRandomFont();
+                    VarietyData.BoxParameters[CurrentBoxes].Font = Font;
+
+                    VarietyData.OutPutType = OutputType.RandomVariety;
+
+                    PictureInputData.Varieties.Add(VarietyData);
                 }
-                else
-                {
-                    PickedBox = VarietyData.ParamForTextCreation.CurrentBox;
-                }
 
-                if (PickedBox != VarietyData.ParamForTextCreation.CurrentBox)
-                {
-                    VarietyData.ParamForTextCreation.CurrentBox = PickedBox;
-                }
-
-
-                Bitmap src = new(PictureInputData.FileName);
-
-                VarietyData.ParamForTextCreation = CalculateBoxData(VarietyData.ParamForTextCreation.CurrentBox, src, VarietyData.ParamForTextCreation);
-
-                VarietyData.ParamForTextCreation = GenerateRandomColorSettings(VarietyData.ParamForTextCreation);
-
-                string Font = PickRandomFont();
-                VarietyData.ParamForTextCreation.Font = Font;
-
-                VarietyData.OutPutType = OutputType.RandomVariety;
-
-                PictureInputData.Varieties.Add(VarietyData);
             }
 
         }
@@ -584,95 +680,99 @@ namespace Bulk_Thumbnail_Creator
             PictureData CopiedPicData = new(DankifyTarget);
             CopiedPicData.Varieties.Clear();
 
-            if (CopiedPicData.ParamForTextCreation.Boxes.Count > 2)
+            for (int numberOfBoxes = 0; numberOfBoxes < DankifyTarget.NumberOfBoxes; numberOfBoxes++)
             {
-                Dictionary<Box, Rectangle> boxesDictionary = DankifyTarget.ParamForTextCreation.Boxes;
 
-                Box currentBox = DankifyTarget.ParamForTextCreation.CurrentBox;
-
-                Box PickedBox = Box.None;
-
-                List<Box> AvailableBoxes;
-
-                AvailableBoxes = boxesDictionary.Keys.ToList();
-
-                AvailableBoxes.Remove(currentBox);
-
-                foreach (Box key in AvailableBoxes)
+                if (CopiedPicData.BoxParameters[numberOfBoxes].Boxes.Count > 2)
                 {
+                    Dictionary<Box, Rectangle> boxesDictionary = DankifyTarget.BoxParameters[numberOfBoxes].Boxes;
 
-                    if (currentBox == Box.BottomBox)
+                    Box currentBox = DankifyTarget.BoxParameters[numberOfBoxes].CurrentBox;
+
+                    Box PickedBox = Box.None;
+
+                    List<Box> AvailableBoxes;
+
+                    AvailableBoxes = boxesDictionary.Keys.ToList();
+
+                    AvailableBoxes.Remove(currentBox);
+
+                    foreach (Box key in AvailableBoxes)
                     {
-                        // avail boxes is only topright topleft
-                        if (key == Box.TopLeft || key == Box.TopRight)
+
+                        if (currentBox == Box.BottomBox)
                         {
-                            PickedBox = key;
+                            // avail boxes is only topright topleft
+                            if (key == Box.TopLeft || key == Box.TopRight)
+                            {
+                                PickedBox = key;
+                            }
+
+                        }
+
+                        if (currentBox == Box.TopBox)
+                        {
+                            // only possible boxes are bot left bot right
+                            if (key == Box.BottomLeft || key == Box.BottomRight)
+                            {
+                                PickedBox = key;
+                            }
+                        }
+
+                        if (currentBox == Box.TopLeft)
+                        {
+                            if (key == Box.TopRight || key == Box.BottomLeft || key == Box.BottomRight)
+                            {
+                                PickedBox = key;
+                            }
+
+                        }
+
+                        if (currentBox == Box.TopRight)
+                        {
+                            if (key == Box.TopLeft || key == Box.BottomRight || key == Box.BottomLeft)
+                            {
+                                PickedBox = key;
+                            }
+
+                        }
+
+                        if (currentBox == Box.BottomLeft)
+                        {
+                            if (key == Box.BottomRight || key == Box.TopLeft || key == Box.TopRight)
+                            {
+                                PickedBox = key;
+                            }
+
+                        }
+
+                        if (currentBox == Box.BottomRight)
+                        {
+                            if (key == Box.BottomLeft || key == Box.TopLeft || key == Box.TopRight)
+                            {
+                                PickedBox = key;
+                            }
+
                         }
 
                     }
 
-                    if (currentBox == Box.TopBox)
+                    if (PickedBox != Box.None)
                     {
-                        // only possible boxes are bot left bot right
-                        if (key == Box.BottomLeft || key == Box.BottomRight)
-                        {
-                            PickedBox = key;
-                        }
-                    }
+                        // pick a meme
+                        Random pickRandomMeme = new();
+                        int PickedMeme = pickRandomMeme.Next(Settings.Memes.Length);
 
-                    if (currentBox == Box.TopLeft)
-                    {
-                        if (key == Box.TopRight || key == Box.BottomLeft || key == Box.BottomRight)
-                        {
-                            PickedBox = key;
-                        }
+                        //// write our chosen meme to Meme property
+                        CopiedPicData.BoxParameters[numberOfBoxes].Meme = Settings.Memes[PickedMeme];
 
-                    }
+                        // set the type of output
+                        CopiedPicData.OutPutType = OutputType.Dankness;
 
-                    if (currentBox == Box.TopRight)
-                    {
-                        if (key == Box.TopLeft || key == Box.BottomRight || key == Box.BottomLeft)
-                        {
-                            PickedBox = key;
-                        }
-
-                    }
-
-                    if (currentBox == Box.BottomLeft)
-                    {
-                        if (key == Box.BottomRight || key == Box.TopLeft || key == Box.TopRight)
-                        {
-                            PickedBox = key;
-                        }
-
-                    }
-
-                    if (currentBox == Box.BottomRight)
-                    {
-                        if (key == Box.BottomLeft || key == Box.TopLeft || key == Box.TopRight)
-                        {
-                            PickedBox = key;
-                        }
-
+                        //DankifyTarget.Varieties.Add(CopiedPicData);
                     }
 
                 }
-
-                if (PickedBox != Box.None)
-                {
-                    // pick a meme
-                    Random pickRandomMeme = new();
-                    int PickedMeme = pickRandomMeme.Next(Settings.Memes.Length);
-
-                    //// write our chosen meme to Meme property
-                    CopiedPicData.ParamForTextCreation.Meme = Settings.Memes[PickedMeme];
-
-                    // set the type of output
-                    CopiedPicData.OutPutType = OutputType.Dankness;
-
-                    //DankifyTarget.Varieties.Add(CopiedPicData);
-                }
-
             }
             return CopiedPicData;
         }

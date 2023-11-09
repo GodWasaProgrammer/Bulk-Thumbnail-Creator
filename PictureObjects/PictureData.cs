@@ -22,16 +22,23 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
         private List<ParamForTextCreation> _BoxParameters = new();
         public List<ParamForTextCreation> BoxParameters { get { return _BoxParameters; } set { _BoxParameters = value; } }
 
+        public int NumberOfBoxes = 2;
+
         /// <summary>
         /// Parameters for text creation, contains all necessary info like font,position,colors
         /// </summary>
-        private ParamForTextCreation _ParamForTextCreation;
-        public ParamForTextCreation ParamForTextCreation { get { return _ParamForTextCreation; } set { _ParamForTextCreation = value; } }
+        //private ParamForTextCreation _ParamForTextCreation;
+        //public ParamForTextCreation ParamForTextCreation { get { return _ParamForTextCreation; } set { _ParamForTextCreation = value; } }
 
         /// <summary>
         /// ImageMagick settings that belongs to this object, this is used to generate color/textsettings
         /// </summary>
-        public MagickReadSettings ReadSettings { get { return TextSettingsGeneration(ParamForTextCreation); } }
+        public MagickReadSettings ReadSettings { get;  private set; }
+
+        public void MakeTextSettings(ParamForTextCreation Parameters)
+        {
+            ReadSettings = TextSettingsGeneration(Parameters);
+        }
 
         /// <summary>
         /// List of varieties belonging to this image
@@ -46,7 +53,7 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
         public PictureData(PictureData pictureDataToCopy)
         {
             _FileName = (string)pictureDataToCopy.FileName.Clone();
-            _ParamForTextCreation = new ParamForTextCreation(pictureDataToCopy.ParamForTextCreation);
+            BoxParameters = new List<ParamForTextCreation>(pictureDataToCopy.BoxParameters);
             _Varieties = new List<PictureData>(pictureDataToCopy.Varieties);
             _OutputType = pictureDataToCopy.OutPutType;
             _outPath = pictureDataToCopy.OutPath;

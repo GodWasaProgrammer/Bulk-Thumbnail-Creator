@@ -10,23 +10,23 @@ namespace Bulk_Thumbnail_Creator.Serialization
     public class Serializing
     {
         // Serialize PictureData object to XML
-        public static void SerializePictureData(TextWriter writer, PictureData pictureData)
-        {
-            try
-            {
-                XmlSerializer serializer = new(typeof(PictureData));
-                serializer.Serialize(writer, pictureData);
+        //public static void SerializePictureData(TextWriter writer, PictureData pictureData)
+        //{
+        //    try
+        //    {
+        //        XmlSerializer serializer = new(typeof(PictureData));
+        //        serializer.Serialize(writer, pictureData);
 
-                // Serialize ParamForTextCreation dictionary
-                DictionarySerializer.Serialize(writer, pictureData.ParamForTextCreation.BoxesProxy);
-            }
-            catch (Exception ex)
-            {
-                // Handle the exception, log it
-                Settings.LogService.LogError("Error during serialization: " + ex.Message);
-            }
+        //        // Serialize ParamForTextCreation dictionary
+        //        DictionarySerializer.Serialize(writer, pictureData.ParamForTextCreation.BoxesProxy);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Handle the exception, log it
+        //        Settings.LogService.LogError("Error during serialization: " + ex.Message);
+        //    }
 
-        }
+        //}
 
         // Deserialize PictureData object from XML
         public static PictureData DeserializePictureData(TextReader reader)
@@ -38,7 +38,7 @@ namespace Bulk_Thumbnail_Creator.Serialization
 
                 // Deserialize ParamForTextCreation dictionary 
                 Dictionary<string, Rectangle> boxes = new();
-                DictionarySerializer.Deserialize(reader, pictureData.ParamForTextCreation.BoxesProxy);
+                //DictionarySerializer.Deserialize(reader, pictureData.ParamForTextCreation.BoxesProxy);
 
                 // Rest of your deserialization code
 

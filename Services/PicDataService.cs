@@ -49,13 +49,18 @@ namespace Bulk_Thumbnail_Creator.Services
         public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, string PickedFont, Box PickedBox, float Borderhue, float Bordersat, float BorderLum, float FillCLRHue, float FillCLRSat, float FillCLRLum, float StrokeCLRHue, float StrokeCLRSat, float strokeCLRLum, OutputType JobType, ILogService logger)
         {
             PicToCustomize = new(PicToCustomize);
-            PicToCustomize.ParamForTextCreation.CurrentBox = PickedBox;
+
+            for(int BoxParam = 0; BoxParam < PicToCustomize.BoxParameters.Count; BoxParam++)
+            {
+
+                PicToCustomize.BoxParameters[BoxParam].CurrentBox = PickedBox;
             // PicToCustomize.Dankbox = DankBox;
-            PicToCustomize.ParamForTextCreation.Font = PickedFont;
-            PicToCustomize.ParamForTextCreation.BorderColor.SetByHSL(Borderhue, Bordersat, BorderLum);
-            PicToCustomize.ParamForTextCreation.FillColor.SetByHSL(FillCLRHue, FillCLRSat, FillCLRLum);
-            PicToCustomize.ParamForTextCreation.StrokeColor.SetByHSL(StrokeCLRHue, StrokeCLRSat, strokeCLRLum);
+            PicToCustomize.BoxParameters[BoxParam].Font = PickedFont;
+            PicToCustomize.BoxParameters[BoxParam].BorderColor.SetByHSL(Borderhue, Bordersat, BorderLum);
+            PicToCustomize.BoxParameters[BoxParam].FillColor.SetByHSL(FillCLRHue, FillCLRSat, FillCLRLum);
+            PicToCustomize.BoxParameters[BoxParam].StrokeColor.SetByHSL(StrokeCLRHue, StrokeCLRSat, strokeCLRLum);
             PicToCustomize.OutPutType = JobType;
+            }
 
             string url = string.Empty;
             PicDataServiceList = await Creator.Process(ProductionType.CustomPicture, url, TextToPrint, logger, PicToCustomize);
@@ -105,7 +110,7 @@ namespace Bulk_Thumbnail_Creator.Services
             {
                 foreach (var PictureData in Settings.PictureDatas)
                 {
-                    Serializing.SerializePictureData(streamWriter, PictureData);
+                    //Serializing.SerializePictureData(streamWriter, PictureData);
 
                 }
                 // logger.LogInformation("PictureDatas.xml Serialized from PictureData");

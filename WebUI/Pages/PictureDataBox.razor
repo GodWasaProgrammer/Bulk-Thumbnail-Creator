@@ -9,7 +9,11 @@
             <MudImage Src="@ImageURL" Style="max-width: 100%;" />
             <MudContainer Class="picture-data-box">
                 <MudText Class="data-label">Picture Data names</MudText>
-                <MudText>@($"Current font name: {Path.GetFileName(PicData.ParamForTextCreation.Font)}")</MudText>
+                @foreach(var boxparam in PicData.BoxParameters)
+                {
+                    <MudText Class="data-point">@($"Box Name: {boxparam.CurrentBox}")</MudText>
+                <MudText>@($"Current font name: {Path.GetFileName(boxparam.Font)}")</MudText>
+                })
                 <MudText>@($"Base Filename: {PicData.FileName}")</MudText>
                 <MudText>@($"Production Filename: {Path.GetFileName(PicData.OutPath)}")</MudText>
             </MudContainer>
@@ -17,10 +21,13 @@
             <MudContainer Class="picture-data-box">
                 <MudText  Class="data-label">Picture Data values</MudText>
             <MudText Class="data-point">@($"Output Type:")</MudText><MudText Class="data-value">{@PicData.OutPutType}</MudText>
-                <MudText>@($"Current Text Box: {PicData.ParamForTextCreation.CurrentBox}")</MudText>
-                <MudText>@($"Text To be Printed: {PicData.ParamForTextCreation.Text}")</MudText>
-                <MudText>@($"Width of text box: {PicData.ParamForTextCreation.WidthOfBox}")</MudText>
-                <MudText>@($"Position Of text: {PicData.ParamForTextCreation.PositionOfText}")</MudText>
+            @foreach(var boxparam in PicData.BoxParameters)
+            {
+                <MudText>@($"Current Text Box: {boxparam.CurrentBox}")</MudText>
+                <MudText>@($"Text To be Printed: {boxparam.Text}")</MudText>
+                <MudText>@($"Width of text box: {boxparam.WidthOfBox}")</MudText>
+                <MudText>@($"Position Of text: {boxparam.PositionOfText}")</MudText>
+            })
             </MudContainer>
         </MudContainer>
     </MudPaper>

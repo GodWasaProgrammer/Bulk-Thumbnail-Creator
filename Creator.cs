@@ -73,9 +73,8 @@ namespace Bulk_Thumbnail_Creator
 
                 Settings.LogService.LogInformation($"Processing {Settings.Files.Length} images");
 
-                
                 // main loop for detecting faces, placing text where face is not
-                for(int fileIndex = 0; fileIndex < Settings.Files.Length; fileIndex++)
+                for (int fileIndex = 0; fileIndex < Settings.Files.Length; fileIndex++)
                 {
                     string file = Settings.Files[fileIndex];
 
@@ -84,7 +83,7 @@ namespace Bulk_Thumbnail_Creator
                     FaceDetectionResult[] faceDetectRes = faceDetector.Forward(PicToDetectFacesOn);
 
                     Rectangle[] facesRectArray = new Rectangle[faceDetectRes.Length];
-                    
+
                     // convert from FaceDetectionResult to Rectangle
                     for (int i = 0; i < faceDetectRes.Length; i++)
                     {
@@ -103,24 +102,31 @@ namespace Bulk_Thumbnail_Creator
 
                     if (!Settings.DiscardedBecauseTooMuchFacePictureData.Contains(file))
                     {
-                        ParamForTextCreation currentParameters = new();
-
-                        currentParameters = DataGeneration.GettextPos(currentParameters, PicToDetectFacesOn, facesRectArray);
-
-                        currentParameters = DataGeneration.DecideColorGeneration(currentParameters);
-
-                        currentParameters.Font = DataGeneration.PickRandomFont();
-
-                        // picks a random string from the list
-                        Random pickAString = new();
-                        int pickedString = pickAString.Next(Settings.ListOfText.Count);
-                        currentParameters.Text = Settings.ListOfText[pickedString];
 
                         PictureData PassPictureData = new()
                         {
                             FileName = file,
-                            ParamForTextCreation = currentParameters,
+                            //ParamForTextCreation = currentParameters,
+                            NumberOfBoxes = 2,
                         };
+
+                        for (int AmountOfBoxes = 0; AmountOfBoxes < PassPictureData.NumberOfBoxes; AmountOfBoxes++)
+                        {
+                            ParamForTextCreation currentParameters = new();
+
+                            currentParameters = DataGeneration.GettextPos(currentParameters, PicToDetectFacesOn, facesRectArray, PassPictureData);
+
+                            currentParameters = DataGeneration.DecideColorGeneration(currentParameters);
+
+                            currentParameters.Font = DataGeneration.PickRandomFont();
+
+                            // picks a random string from the list
+                            Random pickAString = new();
+                            int pickedString = pickAString.Next(Settings.ListOfText.Count);
+                            currentParameters.Text = Settings.ListOfText[pickedString];
+
+                            PassPictureData.BoxParameters.Add(currentParameters);
+                        }
 
                         Settings.PictureDatas.Add(PassPictureData);
                     }
@@ -128,26 +134,6 @@ namespace Bulk_Thumbnail_Creator
                 }
 
                 Settings.LogService.LogInformation($" Discarded Amount Of Pictures:{Settings.DiscardedBecauseTooMuchFacePictureData.Count}");
-
-                #region debugsinglefor
-                // just here for debug purposes
-
-                //for (int i = 0; i < BTCSettings.PictureDatas.Count; i++)
-                //{
-                //    var input = BTCSettings.PictureDatas[i];
-
-                //    Logic.ProduceSaturationVarietyData(input);
-
-                //    Logic.ProduceFontVarietyData(input);
-
-                //    Logic.ProducePlacementOfTextVarietyData(input);
-
-                //    Logic.ProduceRandomVarietyData(input);
-
-                //    Logic.ProduceMemePositionData(input);
-                //}
-                // _-------------------------------------------------------
-                #endregion
 
                 //// Produce varietydata for the current object
                 Parallel.For(0, Settings.PictureDatas.Count, i =>
@@ -209,7 +195,13 @@ namespace Bulk_Thumbnail_Creator
                 else
                 {
                     Bitmap srcpic = new(PicdataObjToVarietize.FileName);
-                    PicdataObjToVarietize.ParamForTextCreation = DataGeneration.CalculateBoxData(PicdataObjToVarietize.ParamForTextCreation.CurrentBox, srcpic, PicdataObjToVarietize.ParamForTextCreation);
+
+                    for(int numberofBoxes = 0; numberofBoxes < PicdataObjToVarietize.NumberOfBoxes; numberofBoxes++)
+                    {
+                        PicdataObjToVarietize.BoxParameters[numberofBoxes] = DataGeneration.CalculateBoxData(PicdataObjToVarietize.BoxParameters[numberofBoxes].CurrentBox, srcpic, PicdataObjToVarietize.BoxParameters[numberofBoxes]);
+                    }
+
+                    //PicdataObjToVarietize.ParamForTextCreation = DataGeneration.CalculateBoxData(PicdataObjToVarietize.ParamForTextCreation.CurrentBox, srcpic, PicdataObjToVarietize.ParamForTextCreation);
 
                     Production.ProduceTextPictures(PicdataObjToVarietize);
                     Settings.PictureDatas.Add(PicdataObjToVarietize);

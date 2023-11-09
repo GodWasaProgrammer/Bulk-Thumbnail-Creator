@@ -7,6 +7,7 @@ using System.Drawing;
 using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using System.Reflection;
+using Bulk_Thumbnail_Creator.Services;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -186,17 +187,21 @@ namespace Bulk_Thumbnail_Creator
             }
             if (PicData.OutPutType == OutputType.BoxPositionVariety)
             {
-                OutputPath += $"{varietyof}{imageName}//{PicData.ParamForTextCreation.CurrentBox}.png";
+                Guid guid = Guid.NewGuid();
+
+                OutputPath += $"{varietyof}{imageName}//{guid}.png";
                 PicData.OutPath = OutputPath;
             }
             if (PicData.OutPutType == OutputType.SaturationVariety)
             {
-                OutputPath += $"{varietyof}{imageName}//{PicData.ParamForTextCreation.FillColor.Saturation}.png";
+                Guid guid = Guid.NewGuid();
+                OutputPath += $"{varietyof}{imageName}//{guid}.png";
                 PicData.OutPath = OutputPath;
             }
             if (PicData.OutPutType == OutputType.FontVariety)
             {
-                OutputPath += $"{varietyof}{imageName}//{Path.GetFileNameWithoutExtension(PicData.ReadSettings.Font)}.png";
+                Guid guid = Guid.NewGuid();
+                OutputPath += $"{varietyof}{imageName}//{guid}.png";
                 PicData.OutPath = OutputPath;
             }
             if (PicData.OutPutType == OutputType.RandomVariety)
@@ -218,37 +223,42 @@ namespace Bulk_Thumbnail_Creator
 
             using MagickImage outputImage = new(Path.GetFullPath(PicData.FileName));
 
-            using var caption = new MagickImage($"caption:{PicData.ParamForTextCreation.Text}", PicData.ReadSettings);
-
-            // Add the caption layer on top of the background image
-            if (PicData.ParamForTextCreation.Boxes.TryGetValue(PicData.ParamForTextCreation.CurrentBox, out Rectangle value))
+            for (int Box = 0; Box < PicData.BoxParameters.Count; Box++)
             {
-                int takeX = value.X;
+                ParamForTextCreation BoxParam = PicData.BoxParameters[Box];
+                PicData.MakeTextSettings(BoxParam);
 
-                int takeY = value.Y;
+                using var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);
 
-                outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
+                // Add the caption layer on top of the background image
+                if (PicData.OutPutType != OutputType.Dankness)
+                {
+                    if (BoxParam.Boxes.TryGetValue(PicData.BoxParameters[Box].CurrentBox, out Rectangle value))
+                    {
+                        int takeX = value.X;
+
+                        int takeY = value.Y;
+
+                        outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
+                    }
+
+                }
+                //else
+                //{
+                //        MagickImage MemeToPutOnPic = new(PicData.ParamForTextCreation.Meme);
+
+                //        Rectangle ReadPosition = BoxParam.Boxes[BoxParam.CurrentBox];
+                //        MemeToPutOnPic.Resize(PicData.ParamForTextCreation.WidthOfBox, PicData.ParamForTextCreation.HeightOfBox);
+
+                //        int posX = ReadPosition.X;
+                //        int posY = ReadPosition.Y;
+
+                //        outputImage.Composite(MemeToPutOnPic, posX, posY, CompositeOperator.Over);
+                   
+                //}
+
             }
-
             outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
-
-            //if (PicData.OutPutType == OutputType.Dankness)
-            //{
-            //    if (PicData.Dankbox != Box.None)
-            //    {
-
-            //        MagickImage MemeToPutOnPic = new(PicData.Meme);
-
-            //        Rectangle ReadPosition = PicData.ParamForTextCreation.Boxes[PicData.Dankbox];
-            //        MemeToPutOnPic.Resize(PicData.ParamForTextCreation.WidthOfBox, PicData.ParamForTextCreation.HeightOfBox);
-
-
-            //        int posX = ReadPosition.X;
-            //        int posY = ReadPosition.Y;
-
-            //        outputImage.Composite(MemeToPutOnPic, posX, posY, CompositeOperator.Over);
-            //    }
-            //}
             outputImage.Quality = 100;
 
             // outputs the file to the provided path and name
