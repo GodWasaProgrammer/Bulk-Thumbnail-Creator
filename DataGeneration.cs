@@ -3,9 +3,11 @@ using Bulk_Thumbnail_Creator.PictureObjects;
 using ImageMagick;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using UMapx.Imaging;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -220,7 +222,7 @@ namespace Bulk_Thumbnail_Creator
 
         }
 
-        private static Dictionary<Box, Rectangle> BuildBoxes(Dictionary<Box, Rectangle> Boxes, Bitmap sourcePicture)
+        private static Dictionary<Box, Rectangle> BuildDefaultBoxes(Dictionary<Box, Rectangle> Boxes, Bitmap sourcePicture)
         {
             // top box
             int TopBoxValueX = 0;
@@ -232,7 +234,7 @@ namespace Bulk_Thumbnail_Creator
                 X = TopBoxValueX,
                 Y = TopBoxValueY,
                 Width = sourcePicture.Width,
-                Height = TopBoxValueY
+                Height = sourcePicture.Height / 2
             };
 
             Boxes.Add(topBox, TopBoxRectangle);
@@ -262,7 +264,7 @@ namespace Bulk_Thumbnail_Creator
                 X = topLeftBoxValueX,
                 Y = topLeftBoxValueY,
                 Width = sourcePicture.Width / 2,
-                Height = topLeftBoxValueY / 2
+                Height = sourcePicture.Height / 2
             };
 
             Boxes.Add(topLeftBox, topLeftBoxRectangle);
@@ -315,6 +317,37 @@ namespace Bulk_Thumbnail_Creator
             return Boxes;
         }
 
+        // Returns true if two rectangles (l1, r1) 
+        // and (l2, r2) overlap 
+        private static bool DoOverlap(Point l1, Point r1, Point l2, Point r2)
+        {
+            // If one rectangle is on the left side or entirely to the left of the other
+            if (l1.X >= r2.X || l2.X >= r1.X)
+            {
+                return false;
+            }
+
+            // If one rectangle is to the right or entirely to the right of the other
+            if (r1.X <= l2.X || r2.X <= l1.X)
+            {
+                return false;
+            }
+
+            // If one rectangle is above or entirely above the other
+            if (r1.Y <= l2.Y || r2.Y <= l1.Y)
+            {
+                return false;
+            }
+
+            // If one rectangle is below or entirely below the other
+            if (l1.Y >= r2.Y || l2.Y >= r1.Y)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         /// <summary>
         /// This Allows you to Get the Text Position, It will Calculate where faces are
         /// and give you a position that is not colliding with a face
@@ -327,129 +360,157 @@ namespace Bulk_Thumbnail_Creator
         {
             Dictionary<Box, Rectangle> Boxes = new();
 
-            Box topBox = Box.TopBox;
-            Box bottomBox = Box.BottomBox;
-            Box topLeftBox = Box.TopLeft;
-            Box topRightBox = Box.TopRight;
-            Box bottomLeftBox = Box.BottomLeft;
-            Box bottomRightBox = Box.BottomRight;
+            Boxes = BuildDefaultBoxes(Boxes, sourcePicture);
+            parameters.Boxes = Boxes;
 
-            Boxes = BuildBoxes(Boxes, sourcePicture);
+            // boxes that we will pick from after calcs done
+            List<Box> FreeBoxes = Boxes.Keys.ToList();
+
+
 
             if (faceRect.Length != 0)
             {
                 foreach (var face in faceRect)
                 {
-                    // handles the calculation of faces if the boxes are top/bottom boxes
-                    int LocationOfRectangleCenterYpos = face.Y + face.Height / 2;
+                    List<(Box, bool)> FaceInterSectResults = new();
 
-                    // sets the position to the middle of the picture, mid point at X = 0
-                    int sourceIMGMiddleY = sourcePicture.Height / 2;
-
-                    // if middle of image is more then the location of the rectangle height position 
-                    if (sourceIMGMiddleY < LocationOfRectangleCenterYpos)
+                    Boxes.TryGetValue(Box.TopBox, out Rectangle TopBox);
+                    bool TopBoxIntersect = TopBox.IntersectsWith(face);
+                    if (TopBoxIntersect)
                     {
-                        Boxes.Remove(bottomBox);
+                        FreeBoxes.Remove(Box.TopBox);
                     }
+                    FaceInterSectResults.Add((Box.TopBox, TopBoxIntersect));
 
-                    // if middle of image is less then the location of the rectangle height position
-                    if (sourceIMGMiddleY > LocationOfRectangleCenterYpos)
+                    Boxes.TryGetValue(Box.BottomBox, out Rectangle BottomBox);
+                    bool BotBoxInterSect = BottomBox.IntersectsWith(face);
+                    if (BotBoxInterSect)
                     {
-                        Boxes.Remove(topBox);
+                        FreeBoxes.Remove(Box.BottomBox);
                     }
+                    FaceInterSectResults.Add((Box.BottomBox, BotBoxInterSect));
 
-                    // calculate position of face rectangle in relation to boxes
-                    int MidPointX = sourcePicture.Width / 2;
-                    int MidPointY = sourcePicture.Height / 2;
-
-                    // if top left cornerbox face detected
-                    if (face.X - face.Width < MidPointX && face.Y < MidPointY)
+                    Boxes.TryGetValue(Box.TopRight, out Rectangle TopRightBox);
+                    bool TopRightBoxInterSect = TopRightBox.IntersectsWith(face);
+                    if (TopRightBoxInterSect)
                     {
-                        Boxes.Remove(topLeftBox);
+                        FreeBoxes.Remove(Box.TopRight);
                     }
+                    FaceInterSectResults.Add((Box.TopRight, TopRightBoxInterSect));
 
-                    // if toprightbox face detected
-                    if (face.X + face.Width > MidPointX && face.Y < MidPointY)
+                    Boxes.TryGetValue(Box.TopLeft, out Rectangle TopLeftBox);
+                    bool TopLeftBoxInterSect = TopLeftBox.IntersectsWith(face);
+                    if (TopLeftBoxInterSect)
                     {
-                        Boxes.Remove(topRightBox);
+                        FreeBoxes.Remove(Box.TopLeft);
                     }
+                    FaceInterSectResults.Add((Box.TopLeft, TopLeftBoxInterSect));
 
-                    // if bottomleftbox face detected
-                    if (face.X - face.Width < MidPointX && face.Y > MidPointY)
+                    Boxes.TryGetValue(Box.BottomLeft, out Rectangle BottomLeftBox);
+                    bool BottomLeftBoxInterSect = BottomLeftBox.IntersectsWith(face);
+                    if (BottomLeftBoxInterSect)
                     {
-                        Boxes.Remove(bottomLeftBox);
+                        FreeBoxes.Remove(Box.BottomLeft);
                     }
+                    FaceInterSectResults.Add((Box.BottomLeft, BottomLeftBoxInterSect));
 
-                    // if bottomrightbox face detected
-                    if (face.X + face.Width > MidPointX && face.Y > MidPointY)
-                    {
-                        Boxes.Remove(bottomRightBox);
-                    }
 
-                    List<Box> PopulatedBoxes = new();
-
-                    for (int i = 0; i < pictureData.BoxParameters.Count; i++)
+                    Boxes.TryGetValue(Box.BottomRight, out Rectangle BottomRightBox);
+                    bool BottomRightBoxInterSect = BottomRightBox.IntersectsWith(face);
+                    if (BottomRightBoxInterSect)
                     {
-                        if (pictureData.BoxParameters[i].Boxes.Count > 0)
-                        {
-                            PopulatedBoxes.Add(pictureData.BoxParameters[i].CurrentBox);
-                        }
+                        FreeBoxes.Remove(Box.BottomRight);
                     }
-
-                    // write surviving boxvalues to object, these are the available boxes, not appropriate,
-                    // it has not yet had populated boxes excluded
-                    parameters.Boxes = Boxes;
-
-                    // if topbox is there, remove the topleft and topright box
-                    if (PopulatedBoxes.Contains(Box.TopBox))
-                    {
-                        Boxes.Remove(Box.TopRight);
-                        Boxes.Remove(Box.TopLeft);
-                        Boxes.Remove(Box.TopBox);
-                        
-                    }
-                    if (PopulatedBoxes.Contains(Box.TopLeft))
-                    {
-                        Boxes.Remove(Box.TopLeft);
-                        Boxes.Remove(Box.TopBox);
-                    }
-
-                    if (PopulatedBoxes.Contains(Box.BottomBox))
-                    {
-                        Boxes.Remove(Box.BottomRight);
-                        Boxes.Remove(Box.BottomLeft);
-                        Boxes.Remove(Box.BottomBox);
-                    }
-                    if (PopulatedBoxes.Contains(Box.BottomLeft))
-                    {
-                        Boxes.Remove(Box.BottomLeft);
-                        Boxes.Remove(Box.BottomBox);
-                    }
-
-                    if (PopulatedBoxes.Contains(Box.BottomRight))
-                    {
-                        Boxes.Remove(Box.BottomRight);
-                        Boxes.Remove(Box.BottomBox);
-                    }
+                    FaceInterSectResults.Add((Box.BottomRight, BottomRightBoxInterSect));
 
                 }
 
             }
 
-            if (Boxes.Count != 0)
+            // boxes to delete from the list of free boxes
+            List<Box> BoxesToDelete = new();
+
+            // needs to be delete because they are already occupied
+            // or because they are the current box
+            // or because they intersect
+            for (int i = 0; i < pictureData.BoxParameters.Count; i++)
+            {
+                if (pictureData.BoxParameters[i].Boxes.Count > 0)
+                {
+                    BoxesToDelete.Add(pictureData.BoxParameters[i].CurrentBox);
+                }
+            }
+
+            foreach (var box in BoxesToDelete)
+            {
+                if (FreeBoxes.Contains(box))
+                {
+                    FreeBoxes.Remove(box);
+                }
+
+                if (box == Box.BottomBox)
+                {
+                    FreeBoxes.Remove(Box.BottomLeft);
+                    FreeBoxes.Remove(Box.BottomRight);
+                }
+
+                if (box == Box.TopBox)
+                {
+                    FreeBoxes.Remove(Box.TopLeft);
+                    FreeBoxes.Remove(Box.TopRight);
+                }
+
+                if (box == Box.TopLeft)
+                {
+                    if (FreeBoxes.Contains(Box.TopBox))
+                    {
+                        FreeBoxes.Remove(Box.TopBox);
+                    }
+                }
+
+                if (box == Box.TopRight)
+                {
+                    if (FreeBoxes.Contains(Box.TopBox))
+                    {
+                        FreeBoxes.Remove(Box.TopBox);
+                    }
+                }
+
+                if (box == Box.BottomLeft)
+                {
+                    if (FreeBoxes.Contains(Box.BottomBox))
+                    {
+                        FreeBoxes.Remove(Box.BottomBox);
+                    }
+                }
+
+                if (box == Box.BottomRight)
+                {
+                    if (FreeBoxes.Contains(Box.BottomBox))
+                    {
+                        FreeBoxes.Remove(Box.BottomBox);
+                    }
+                }
+
+            }
+
+            // check what boxes are left
+
+            if (FreeBoxes.Count != 0)
             {
                 // all calculations done, pick one box if there are any left
                 Random random = new();
                 Box pickedBoxName;
-                Box[] boxes = Boxes.Keys.ToArray();
+                Box[] boxes = FreeBoxes.ToArray();
 
                 pickedBoxName = boxes[random.Next(boxes.Length)];
-
 
                 // tries to read from dictionary
                 parameters.Boxes.TryGetValue(pickedBoxName, out Rectangle pickedBoxRectangle);
 
                 parameters.CurrentBox = pickedBoxName;
+                parameters.WidthOfBox = pickedBoxRectangle.Width;
+                parameters.HeightOfBox = pickedBoxRectangle.Height;
 
                 // makes a point to feed to the parameters passed in
                 Point pickedBoxPoint = new(pickedBoxRectangle.X, pickedBoxRectangle.Y);
@@ -459,10 +520,9 @@ namespace Bulk_Thumbnail_Creator
 
                 // passes the box width and height to the parameter passed to the method
                 // this is important to avoid boxes being juxtaposed outside of the image
-                parameters = CalculateBoxData(pickedBoxName, sourcePicture, parameters);
+                // parameters = CalculateBoxData(pickedBoxName, sourcePicture, parameters);
             }
 
-            parameters.Boxes = Boxes;
             return parameters;
         }
 

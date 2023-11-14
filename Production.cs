@@ -226,7 +226,7 @@ namespace Bulk_Thumbnail_Creator
             for (int Box = 0; Box < PicData.BoxParameters.Count; Box++)
             {
                 ParamForTextCreation BoxParam = PicData.BoxParameters[Box];
-                PicData.MakeTextSettings(BoxParam);
+                PicData.MakeTextSettings(PicData.BoxParameters[Box]);
 
                 using var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);
 
@@ -256,7 +256,8 @@ namespace Bulk_Thumbnail_Creator
                 //        outputImage.Composite(MemeToPutOnPic, posX, posY, CompositeOperator.Over);
                    
                 //}
-
+                Settings.LogService.LogInformation($"Picture:{Path.GetFileName(PicData.FileName)}Box Type:{PicData.BoxParameters[Box].CurrentBox} Box: {Box + 1} of {PicData.BoxParameters.Count} has been composited");
+                
             }
             outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
             outputImage.Quality = 100;

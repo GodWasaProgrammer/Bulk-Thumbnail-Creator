@@ -136,23 +136,23 @@ namespace Bulk_Thumbnail_Creator
                 Settings.LogService.LogInformation($" Discarded Amount Of Pictures:{Settings.DiscardedBecauseTooMuchFacePictureData.Count}");
 
                 //// Produce varietydata for the current object
-                Parallel.For(0, Settings.PictureDatas.Count, i =>
+                for (int i = 0; i < Settings.PictureDatas.Count; i++)
                 {
                     var input = Settings.PictureDatas[i];
 
-                    DataGeneration.GenSaturationVariety(input);
+                    DataGeneration.GenSaturationVariety(Settings.PictureDatas[i]);
 
-                    DataGeneration.GenFontVariety(input);
+                    DataGeneration.GenFontVariety(Settings.PictureDatas[i]);
 
-                    DataGeneration.GenPlacementOfTextVariety(input);
+                  // DataGeneration.GenPlacementOfTextVariety(input);
 
-                    DataGeneration.GenRandomVariety(input);
+                   // DataGeneration.GenRandomVariety(input);
 
                     // DataGeneration.GenMemePosition(input);
-                });
+                }
 
                 // actual file output
-                Parallel.For(0, Settings.PictureDatas.Count, i =>
+                for (int i = 0; i < Settings.PictureDatas.Count; i++)
                 {
                     string PicObjPath = Settings.PictureDatas[i].FileName;
 
@@ -161,7 +161,7 @@ namespace Bulk_Thumbnail_Creator
                         Production.ProduceTextPictures(Settings.PictureDatas[i]);
                     }
 
-                });
+                }
 
             }
             #endregion
@@ -196,7 +196,7 @@ namespace Bulk_Thumbnail_Creator
                 {
                     Bitmap srcpic = new(PicdataObjToVarietize.FileName);
 
-                    for(int numberofBoxes = 0; numberofBoxes < PicdataObjToVarietize.NumberOfBoxes; numberofBoxes++)
+                    for (int numberofBoxes = 0; numberofBoxes < PicdataObjToVarietize.NumberOfBoxes; numberofBoxes++)
                     {
                         PicdataObjToVarietize.BoxParameters[numberofBoxes] = DataGeneration.CalculateBoxData(PicdataObjToVarietize.BoxParameters[numberofBoxes].CurrentBox, srcpic, PicdataObjToVarietize.BoxParameters[numberofBoxes]);
                     }
