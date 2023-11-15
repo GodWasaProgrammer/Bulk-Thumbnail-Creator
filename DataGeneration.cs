@@ -372,7 +372,7 @@ namespace Bulk_Thumbnail_Creator
                 {
                     List<(BoxType, bool)> FaceInterSectResults = new();
 
-                    foreach(BoxType boxType in Boxes.Keys)
+                    foreach (BoxType boxType in Boxes.Keys)
                     {
                         Boxes.TryGetValue(boxType, out Rectangle Box);
                         bool BoxIntersect = Box.IntersectsWith(face);
@@ -383,6 +383,7 @@ namespace Bulk_Thumbnail_Creator
                         FaceInterSectResults.Add((boxType, BoxIntersect));
                     }
 
+                
                 }
 
             }
@@ -401,61 +402,27 @@ namespace Bulk_Thumbnail_Creator
                 }
             }
 
+            // loops on our populated boxes and runs intersection checks and if they intersects deletes them
             foreach (var box in BoxesToDelete)
             {
-                if (FreeBoxes.Contains(box))
-                {
-                    FreeBoxes.Remove(box);
-                }
+                Boxes.TryGetValue(box, out Rectangle BoxToCheckIntersect);
+                    List<(BoxType, bool)> IntersectResults = new();
 
-                if (box == BoxType.BottomBox)
+                foreach (BoxType boxType in Boxes.Keys)
                 {
-                    FreeBoxes.Remove(BoxType.BottomLeft);
-                    FreeBoxes.Remove(BoxType.BottomRight);
-                }
-
-                if (box == BoxType.TopBox)
-                {
-                    FreeBoxes.Remove(BoxType.TopLeft);
-                    FreeBoxes.Remove(BoxType.TopRight);
-                }
-
-                if (box == BoxType.TopLeft)
-                {
-                    if (FreeBoxes.Contains(BoxType.TopBox))
+                    Boxes.TryGetValue(boxType, out Rectangle Box);
+                    
+                    bool BoxIntersect = Box.IntersectsWith(BoxToCheckIntersect);
+                    if (BoxIntersect)
                     {
-                        FreeBoxes.Remove(BoxType.TopBox);
+                        FreeBoxes.Remove(boxType);
                     }
-                }
-
-                if (box == BoxType.TopRight)
-                {
-                    if (FreeBoxes.Contains(BoxType.TopBox))
-                    {
-                        FreeBoxes.Remove(BoxType.TopBox);
-                    }
-                }
-
-                if (box == BoxType.BottomLeft)
-                {
-                    if (FreeBoxes.Contains(BoxType.BottomBox))
-                    {
-                        FreeBoxes.Remove(BoxType.BottomBox);
-                    }
-                }
-
-                if (box == BoxType.BottomRight)
-                {
-                    if (FreeBoxes.Contains(BoxType.BottomBox))
-                    {
-                        FreeBoxes.Remove(BoxType.BottomBox);
-                    }
+                    IntersectResults.Add((boxType, BoxIntersect));
                 }
 
             }
 
             // check what boxes are left
-
             if (FreeBoxes.Count != 0)
             {
                 // all calculations done, pick one box if there are any left
