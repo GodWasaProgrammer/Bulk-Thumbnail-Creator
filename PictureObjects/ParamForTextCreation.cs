@@ -8,9 +8,9 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
     public class ParamForTextCreation
     {
         [XmlIgnore]
-        private Serialization.SerializableDictionary<Box, Rectangle> _BoxesProxy = new();
+        private Serialization.SerializableDictionary<BoxType, Rectangle> _BoxesProxy = new();
         [XmlIgnore]
-        public Serialization.SerializableDictionary<Box, Rectangle> BoxesProxy
+        public Serialization.SerializableDictionary<BoxType, Rectangle> BoxesProxy
         {
             get
             {
@@ -76,15 +76,15 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
         public ColorItem BorderColor { get { return borderColor; } set { borderColor = BorderColor; } }
 
         [XmlIgnore]
-        private Dictionary<Box, Rectangle> _Boxes = new();
+        private Dictionary<BoxType, Rectangle> _Boxes = new();
 
         // store possible boxes
         [XmlIgnore]
-        public Dictionary<Box, Rectangle> Boxes { get { return _Boxes; } set { _Boxes = value; } }
+        public Dictionary<BoxType, Rectangle> Boxes { get { return _Boxes; } set { _Boxes = value; } }
 
 
-        private Box _CurrentBox;
-        public Box CurrentBox { get { return _CurrentBox; } set { _CurrentBox = value; } }
+        private BoxType _CurrentBox;
+        public BoxType CurrentBox { get { return _CurrentBox; } set { _CurrentBox = value; } }
 
 
         public ParamForTextCreation(ParamForTextCreation param)
@@ -97,7 +97,7 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             fillColor = new ColorItem(param.FillColor); // object
             strokeColor = new ColorItem(param.StrokeColor); // object
             borderColor = new ColorItem(param.BorderColor); // object
-            _Boxes = new Dictionary<Box, Rectangle>(param._Boxes); // dictionary
+            _Boxes = new Dictionary<BoxType, Rectangle>(param._Boxes); // dictionary
             _CurrentBox = param._CurrentBox; // enum
         }
 

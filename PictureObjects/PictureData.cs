@@ -53,7 +53,11 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
         public PictureData(PictureData pictureDataToCopy)
         {
             _FileName = (string)pictureDataToCopy.FileName.Clone();
-            BoxParameters = new List<ParamForTextCreation>(pictureDataToCopy.BoxParameters);
+            BoxParameters = new List<ParamForTextCreation>();
+            foreach (var item in pictureDataToCopy.BoxParameters)
+            {
+                BoxParameters.Add(new ParamForTextCreation(item));
+            }
             _Varieties = new List<PictureData>(pictureDataToCopy.Varieties);
             _OutputType = pictureDataToCopy.OutPutType;
             _outPath = pictureDataToCopy.OutPath;

@@ -10,31 +10,32 @@ namespace Bulk_Thumbnail_Creator.Services
 {
     public class PicDataService
     {
-        public PicDataService()
+        public PicDataService(ILogService _logger)
         {
             ClearBaseOutPutDirectories();
             PicDataServiceList = new List<PictureData>();
             OutputFileServiceList = new List<string>();
+            Settings.LogService = _logger;   
         }
 
         public List<PictureData> PicDataServiceList { get; set; } = new List<PictureData>();
         public List<string> OutputFileServiceList { get; set; } = new();
         public List<string> TextToPrint { get; set; } = new();
 
-        public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint, ILogService logger)
+        public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint)
         {
             ProductionType ProdType = ProductionType.FrontPagePictureLineUp;
-            PicDataServiceList = await Creator.Process(ProdType, url, ListOfTextToPrint, logger);
+            PicDataServiceList = await Creator.Process(ProdType, url, ListOfTextToPrint);
             TextToPrint = ListOfTextToPrint;
         }
 
-        public async Task<List<string>> CreatePictureDataVariety(PictureData PicToVarietize, ILogService logger)
+        public async Task<List<string>> CreatePictureDataVariety(PictureData PicToVarietize)
         {
             string url = string.Empty;
 
             ProductionType ProdType = ProductionType.VarietyList;
 
-            PicDataServiceList = await Creator.Process(ProdType, url, TextToPrint, logger, PicToVarietize);
+            PicDataServiceList = await Creator.Process(ProdType, url, TextToPrint,PicToVarietize);
 
             List<string> ImageUrls = new();
 
@@ -46,7 +47,7 @@ namespace Bulk_Thumbnail_Creator.Services
             return ImageUrls;
         }
 
-        public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, string PickedFont, Box PickedBox, float Borderhue, float Bordersat, float BorderLum, float FillCLRHue, float FillCLRSat, float FillCLRLum, float StrokeCLRHue, float StrokeCLRSat, float strokeCLRLum, OutputType JobType, ILogService logger)
+        public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, string PickedFont, BoxType PickedBox, float Borderhue, float Bordersat, float BorderLum, float FillCLRHue, float FillCLRSat, float FillCLRLum, float StrokeCLRHue, float StrokeCLRSat, float strokeCLRLum, OutputType JobType, ILogService logger)
         {
             PicToCustomize = new(PicToCustomize);
 
@@ -63,7 +64,7 @@ namespace Bulk_Thumbnail_Creator.Services
             }
 
             string url = string.Empty;
-            PicDataServiceList = await Creator.Process(ProductionType.CustomPicture, url, TextToPrint, logger, PicToCustomize);
+            PicDataServiceList = await Creator.Process(ProductionType.CustomPicture, url, TextToPrint, PicToCustomize);
 
             return PicToCustomize;
         }

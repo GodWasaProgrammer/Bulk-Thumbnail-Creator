@@ -8,11 +8,13 @@ using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using System.Reflection;
 using Bulk_Thumbnail_Creator.Services;
+using Bulk_Thumbnail_Creator.Interfaces;
 
 namespace Bulk_Thumbnail_Creator
 {
     public class Production
     {
+        
         /// <summary>
         /// Checks if we have our directory/executables  in order
         /// </summary>

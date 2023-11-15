@@ -7,16 +7,17 @@ using System.Drawing;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using Bulk_Thumbnail_Creator.Serialization;
 using Bulk_Thumbnail_Creator.Interfaces;
+using Bulk_Thumbnail_Creator.Services;
 
 namespace Bulk_Thumbnail_Creator
 {
     public class Creator
     {
-        public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, ILogService logger, PictureData PicdataObjToVarietize = null)
+
+        public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, PictureData PicdataObjToVarietize = null)
         {
             Settings.ListOfText = texts;
 
-            Settings.LogService = logger;
 
             #region Front Page Picture Line Up Output
             if (ProdType == ProductionType.FrontPagePictureLineUp)
@@ -46,19 +47,11 @@ namespace Bulk_Thumbnail_Creator
                 //string truePath = Path.GetFullPath(Settings.OutputDir);
                 //string pictureOutput = $@"""{truePath}/%03d.png""";
 
-                // works 
-                //parameters["i"] = $@"""{extractedfilename}""";
-                //parameters["vf"] = "select='gt(scene,0.3)'";
-                //parameters["vsync"] = "vfr";
-                //string truePath = Path.GetFullPath(Settings.OutputDir);
-                //string pictureOutput = $@"""{truePath}/%03d.png""";
-
                 parameters["i"] = $@"""{extractedfilename}""";
                 parameters["vf"] = "select='gt(scene,0.3)',select=key";
                 parameters["vsync"] = "vfr";
                 string truePath = Path.GetFullPath(Settings.OutputDir);
                 string pictureOutput = $@"""{truePath}/%03d.png""";
-
 
                 FFmpegHandler.RunFFMPG(parameters, pictureOutput);
                 #endregion
@@ -106,7 +99,6 @@ namespace Bulk_Thumbnail_Creator
                         PictureData PassPictureData = new()
                         {
                             FileName = file,
-                            //ParamForTextCreation = currentParameters,
                             NumberOfBoxes = 2,
                         };
 
@@ -144,9 +136,9 @@ namespace Bulk_Thumbnail_Creator
 
                     DataGeneration.GenFontVariety(Settings.PictureDatas[i]);
 
-                  // DataGeneration.GenPlacementOfTextVariety(input);
+                    DataGeneration.GenPlacementOfTextVariety(Settings.PictureDatas[i]);
 
-                   // DataGeneration.GenRandomVariety(input);
+                    DataGeneration.GenRandomVariety(Settings.PictureDatas[i]);
 
                     // DataGeneration.GenMemePosition(input);
                 }
@@ -175,10 +167,14 @@ namespace Bulk_Thumbnail_Creator
                 }
                 else
                 {
-                    Parallel.For(0, PicdataObjToVarietize.Varieties.Count, i =>
+                    //Parallel.For(0, PicdataObjToVarietize.Varieties.Count, i =>
+                    //{
+                    //    Production.ProduceTextPictures(PicdataObjToVarietize.Varieties[i]);
+                    //});
+                    for(int i = 0; i < PicdataObjToVarietize.Varieties.Count; i++)
                     {
                         Production.ProduceTextPictures(PicdataObjToVarietize.Varieties[i]);
-                    });
+                    }
 
                 }
 

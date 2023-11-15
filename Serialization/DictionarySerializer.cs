@@ -7,16 +7,16 @@ namespace Bulk_Thumbnail_Creator.Serialization
 {
     public static class DictionarySerializer
     {
-        public static void Serialize(TextWriter writer, SerializableDictionary<Box,Rectangle> dictionary)
+        public static void Serialize(TextWriter writer, SerializableDictionary<BoxType,Rectangle> dictionary)
         {
-            XmlSerializer serializer = new(typeof(SerializableDictionary<Box, Rectangle>));
+            XmlSerializer serializer = new(typeof(SerializableDictionary<BoxType, Rectangle>));
             serializer.Serialize(writer, dictionary);
         }
 
-        public static void Deserialize(TextReader reader, SerializableDictionary<Box, Rectangle> dictionary)
+        public static void Deserialize(TextReader reader, SerializableDictionary<BoxType, Rectangle> dictionary)
         {
-            XmlSerializer serializer = new(typeof(SerializableDictionary<Box, Rectangle>));
-            SerializableDictionary<Box, Rectangle> deserializedDictionary = (SerializableDictionary<Box, Rectangle>)serializer.Deserialize(reader);
+            XmlSerializer serializer = new(typeof(SerializableDictionary<BoxType, Rectangle>));
+            SerializableDictionary<BoxType, Rectangle> deserializedDictionary = (SerializableDictionary<BoxType, Rectangle>)serializer.Deserialize(reader);
 
             dictionary.Entries.Clear();
             foreach (var entry in deserializedDictionary.Entries)

@@ -138,7 +138,7 @@ namespace Bulk_Thumbnail_Creator
         {
             for (int boxParam = 0; boxParam < PicToVarietize.NumberOfBoxes; boxParam++)
             {
-                Box CurrentBox = PicToVarietize.BoxParameters[boxParam].CurrentBox;
+                BoxType CurrentBox = PicToVarietize.BoxParameters[boxParam].CurrentBox;
 
                 if (PicToVarietize.BoxParameters[boxParam].Boxes.Count > 2)
                 {
@@ -222,12 +222,12 @@ namespace Bulk_Thumbnail_Creator
 
         }
 
-        private static Dictionary<Box, Rectangle> BuildDefaultBoxes(Dictionary<Box, Rectangle> Boxes, Bitmap sourcePicture)
+        private static Dictionary<BoxType, Rectangle> BuildDefaultBoxes(Dictionary<BoxType, Rectangle> Boxes, Bitmap sourcePicture)
         {
             // top box
             int TopBoxValueX = 0;
             int TopBoxValueY = 0;
-            Box topBox = Box.TopBox;
+            BoxType topBox = BoxType.TopBox;
 
             Rectangle TopBoxRectangle = new()
             {
@@ -242,7 +242,7 @@ namespace Bulk_Thumbnail_Creator
             // bottom box
             int bottomBoxValueX = 0;
             int bottomBoxValueY = sourcePicture.Height / 2;
-            Box bottomBox = Box.BottomBox;
+            BoxType bottomBox = BoxType.BottomBox;
 
             Rectangle bottomBoxRectangle = new()
             {
@@ -257,7 +257,7 @@ namespace Bulk_Thumbnail_Creator
             // top left box
             int topLeftBoxValueX = 0;
             int topLeftBoxValueY = 0;
-            Box topLeftBox = Box.TopLeft;
+            BoxType topLeftBox = BoxType.TopLeft;
 
             Rectangle topLeftBoxRectangle = new()
             {
@@ -272,7 +272,7 @@ namespace Bulk_Thumbnail_Creator
             // top right box
             int topRightBoxValueX = sourcePicture.Width / 2;
             int topRightBoxValueY = 0;
-            Box topRightBox = Box.TopRight;
+            BoxType topRightBox = BoxType.TopRight;
 
             Rectangle topRightBoxRectangle = new()
             {
@@ -287,7 +287,7 @@ namespace Bulk_Thumbnail_Creator
             // bottom left box
             int bottomLeftBoxValueX = 0;
             int bottomLeftBoxValueY = sourcePicture.Height / 2;
-            Box bottomLeftBox = Box.BottomLeft;
+            BoxType bottomLeftBox = BoxType.BottomLeft;
 
             Rectangle bottomleftBoxRectangle = new()
             {
@@ -302,7 +302,7 @@ namespace Bulk_Thumbnail_Creator
             // bottom right box
             int bottomRightBoxValueX = sourcePicture.Width / 2;
             int bottomRightBoxValueY = sourcePicture.Height / 2;
-            Box bottomRightBox = Box.BottomRight;
+            BoxType bottomRightBox = BoxType.BottomRight;
 
             Rectangle bottomRightBoxRectangle = new()
             {
@@ -358,77 +358,75 @@ namespace Bulk_Thumbnail_Creator
         /// <returns></returns>
         public static ParamForTextCreation GettextPos(ParamForTextCreation parameters, Bitmap sourcePicture, Rectangle[] faceRect, PictureData pictureData = null)
         {
-            Dictionary<Box, Rectangle> Boxes = new();
+            Dictionary<BoxType, Rectangle> Boxes = new();
 
             Boxes = BuildDefaultBoxes(Boxes, sourcePicture);
             parameters.Boxes = Boxes;
 
             // boxes that we will pick from after calcs done
-            List<Box> FreeBoxes = Boxes.Keys.ToList();
-
-
+            List<BoxType> FreeBoxes = Boxes.Keys.ToList();
 
             if (faceRect.Length != 0)
             {
                 foreach (var face in faceRect)
                 {
-                    List<(Box, bool)> FaceInterSectResults = new();
+                    List<(BoxType, bool)> FaceInterSectResults = new();
 
-                    Boxes.TryGetValue(Box.TopBox, out Rectangle TopBox);
+                    Boxes.TryGetValue(BoxType.TopBox, out Rectangle TopBox);
                     bool TopBoxIntersect = TopBox.IntersectsWith(face);
                     if (TopBoxIntersect)
                     {
-                        FreeBoxes.Remove(Box.TopBox);
+                        FreeBoxes.Remove(BoxType.TopBox);
                     }
-                    FaceInterSectResults.Add((Box.TopBox, TopBoxIntersect));
+                    FaceInterSectResults.Add((BoxType.TopBox, TopBoxIntersect));
 
-                    Boxes.TryGetValue(Box.BottomBox, out Rectangle BottomBox);
+                    Boxes.TryGetValue(BoxType.BottomBox, out Rectangle BottomBox);
                     bool BotBoxInterSect = BottomBox.IntersectsWith(face);
                     if (BotBoxInterSect)
                     {
-                        FreeBoxes.Remove(Box.BottomBox);
+                        FreeBoxes.Remove(BoxType.BottomBox);
                     }
-                    FaceInterSectResults.Add((Box.BottomBox, BotBoxInterSect));
+                    FaceInterSectResults.Add((BoxType.BottomBox, BotBoxInterSect));
 
-                    Boxes.TryGetValue(Box.TopRight, out Rectangle TopRightBox);
+                    Boxes.TryGetValue(BoxType.TopRight, out Rectangle TopRightBox);
                     bool TopRightBoxInterSect = TopRightBox.IntersectsWith(face);
                     if (TopRightBoxInterSect)
                     {
-                        FreeBoxes.Remove(Box.TopRight);
+                        FreeBoxes.Remove(BoxType.TopRight);
                     }
-                    FaceInterSectResults.Add((Box.TopRight, TopRightBoxInterSect));
+                    FaceInterSectResults.Add((BoxType.TopRight, TopRightBoxInterSect));
 
-                    Boxes.TryGetValue(Box.TopLeft, out Rectangle TopLeftBox);
+                    Boxes.TryGetValue(BoxType.TopLeft, out Rectangle TopLeftBox);
                     bool TopLeftBoxInterSect = TopLeftBox.IntersectsWith(face);
                     if (TopLeftBoxInterSect)
                     {
-                        FreeBoxes.Remove(Box.TopLeft);
+                        FreeBoxes.Remove(BoxType.TopLeft);
                     }
-                    FaceInterSectResults.Add((Box.TopLeft, TopLeftBoxInterSect));
+                    FaceInterSectResults.Add((BoxType.TopLeft, TopLeftBoxInterSect));
 
-                    Boxes.TryGetValue(Box.BottomLeft, out Rectangle BottomLeftBox);
+                    Boxes.TryGetValue(BoxType.BottomLeft, out Rectangle BottomLeftBox);
                     bool BottomLeftBoxInterSect = BottomLeftBox.IntersectsWith(face);
                     if (BottomLeftBoxInterSect)
                     {
-                        FreeBoxes.Remove(Box.BottomLeft);
+                        FreeBoxes.Remove(BoxType.BottomLeft);
                     }
-                    FaceInterSectResults.Add((Box.BottomLeft, BottomLeftBoxInterSect));
+                    FaceInterSectResults.Add((BoxType.BottomLeft, BottomLeftBoxInterSect));
 
 
-                    Boxes.TryGetValue(Box.BottomRight, out Rectangle BottomRightBox);
+                    Boxes.TryGetValue(BoxType.BottomRight, out Rectangle BottomRightBox);
                     bool BottomRightBoxInterSect = BottomRightBox.IntersectsWith(face);
                     if (BottomRightBoxInterSect)
                     {
-                        FreeBoxes.Remove(Box.BottomRight);
+                        FreeBoxes.Remove(BoxType.BottomRight);
                     }
-                    FaceInterSectResults.Add((Box.BottomRight, BottomRightBoxInterSect));
+                    FaceInterSectResults.Add((BoxType.BottomRight, BottomRightBoxInterSect));
 
                 }
 
             }
 
             // boxes to delete from the list of free boxes
-            List<Box> BoxesToDelete = new();
+            List<BoxType> BoxesToDelete = new();
 
             // needs to be delete because they are already occupied
             // or because they are the current box
@@ -448,47 +446,47 @@ namespace Bulk_Thumbnail_Creator
                     FreeBoxes.Remove(box);
                 }
 
-                if (box == Box.BottomBox)
+                if (box == BoxType.BottomBox)
                 {
-                    FreeBoxes.Remove(Box.BottomLeft);
-                    FreeBoxes.Remove(Box.BottomRight);
+                    FreeBoxes.Remove(BoxType.BottomLeft);
+                    FreeBoxes.Remove(BoxType.BottomRight);
                 }
 
-                if (box == Box.TopBox)
+                if (box == BoxType.TopBox)
                 {
-                    FreeBoxes.Remove(Box.TopLeft);
-                    FreeBoxes.Remove(Box.TopRight);
+                    FreeBoxes.Remove(BoxType.TopLeft);
+                    FreeBoxes.Remove(BoxType.TopRight);
                 }
 
-                if (box == Box.TopLeft)
+                if (box == BoxType.TopLeft)
                 {
-                    if (FreeBoxes.Contains(Box.TopBox))
+                    if (FreeBoxes.Contains(BoxType.TopBox))
                     {
-                        FreeBoxes.Remove(Box.TopBox);
+                        FreeBoxes.Remove(BoxType.TopBox);
                     }
                 }
 
-                if (box == Box.TopRight)
+                if (box == BoxType.TopRight)
                 {
-                    if (FreeBoxes.Contains(Box.TopBox))
+                    if (FreeBoxes.Contains(BoxType.TopBox))
                     {
-                        FreeBoxes.Remove(Box.TopBox);
+                        FreeBoxes.Remove(BoxType.TopBox);
                     }
                 }
 
-                if (box == Box.BottomLeft)
+                if (box == BoxType.BottomLeft)
                 {
-                    if (FreeBoxes.Contains(Box.BottomBox))
+                    if (FreeBoxes.Contains(BoxType.BottomBox))
                     {
-                        FreeBoxes.Remove(Box.BottomBox);
+                        FreeBoxes.Remove(BoxType.BottomBox);
                     }
                 }
 
-                if (box == Box.BottomRight)
+                if (box == BoxType.BottomRight)
                 {
-                    if (FreeBoxes.Contains(Box.BottomBox))
+                    if (FreeBoxes.Contains(BoxType.BottomBox))
                     {
-                        FreeBoxes.Remove(Box.BottomBox);
+                        FreeBoxes.Remove(BoxType.BottomBox);
                     }
                 }
 
@@ -500,8 +498,8 @@ namespace Bulk_Thumbnail_Creator
             {
                 // all calculations done, pick one box if there are any left
                 Random random = new();
-                Box pickedBoxName;
-                Box[] boxes = FreeBoxes.ToArray();
+                BoxType pickedBoxName;
+                BoxType[] boxes = FreeBoxes.ToArray();
 
                 pickedBoxName = boxes[random.Next(boxes.Length)];
 
@@ -599,9 +597,9 @@ namespace Bulk_Thumbnail_Creator
         /// <param name="sourcePicture">The Picture where the box is to be placed</param>
         /// <param name="CurrentParamForText">the current parameters for text creation input</param>
         /// <returns></returns>
-        public static ParamForTextCreation CalculateBoxData(Box CurrentBox, Bitmap sourcePicture, ParamForTextCreation CurrentParamForText)
+        public static ParamForTextCreation CalculateBoxData(BoxType CurrentBox, Bitmap sourcePicture, ParamForTextCreation CurrentParamForText)
         {
-            if (CurrentBox == Box.TopBox || CurrentBox == Box.BottomBox)
+            if (CurrentBox == BoxType.TopBox || CurrentBox == BoxType.BottomBox)
             {
                 CurrentParamForText.WidthOfBox = sourcePicture.Width;
                 CurrentParamForText.HeightOfBox = sourcePicture.Height / 2;
@@ -690,9 +688,9 @@ namespace Bulk_Thumbnail_Creator
                     Random random = new();
                     PictureData VarietyData = new(PictureInputData);
                     VarietyData.Varieties.Clear();
-                    Dictionary<Box, Rectangle> AvailableBoxes = PictureInputData.BoxParameters[CurrentBoxes].Boxes;
+                    Dictionary<BoxType, Rectangle> AvailableBoxes = PictureInputData.BoxParameters[CurrentBoxes].Boxes;
 
-                    Box PickedBox;
+                    BoxType PickedBox;
 
                     var availableBoxesExceptCurrent = AvailableBoxes.Keys.Where(box => box != PictureInputData.BoxParameters[CurrentBoxes].CurrentBox)
                                                                          .ToList();
@@ -745,70 +743,70 @@ namespace Bulk_Thumbnail_Creator
 
                 if (CopiedPicData.BoxParameters[numberOfBoxes].Boxes.Count > 2)
                 {
-                    Dictionary<Box, Rectangle> boxesDictionary = DankifyTarget.BoxParameters[numberOfBoxes].Boxes;
+                    Dictionary<BoxType, Rectangle> boxesDictionary = DankifyTarget.BoxParameters[numberOfBoxes].Boxes;
 
-                    Box currentBox = DankifyTarget.BoxParameters[numberOfBoxes].CurrentBox;
+                    BoxType currentBox = DankifyTarget.BoxParameters[numberOfBoxes].CurrentBox;
 
-                    Box PickedBox = Box.None;
+                    BoxType PickedBox = BoxType.None;
 
-                    List<Box> AvailableBoxes;
+                    List<BoxType> AvailableBoxes;
 
                     AvailableBoxes = boxesDictionary.Keys.ToList();
 
                     AvailableBoxes.Remove(currentBox);
 
-                    foreach (Box key in AvailableBoxes)
+                    foreach (BoxType key in AvailableBoxes)
                     {
 
-                        if (currentBox == Box.BottomBox)
+                        if (currentBox == BoxType.BottomBox)
                         {
                             // avail boxes is only topright topleft
-                            if (key == Box.TopLeft || key == Box.TopRight)
+                            if (key == BoxType.TopLeft || key == BoxType.TopRight)
                             {
                                 PickedBox = key;
                             }
 
                         }
 
-                        if (currentBox == Box.TopBox)
+                        if (currentBox == BoxType.TopBox)
                         {
                             // only possible boxes are bot left bot right
-                            if (key == Box.BottomLeft || key == Box.BottomRight)
+                            if (key == BoxType.BottomLeft || key == BoxType.BottomRight)
                             {
                                 PickedBox = key;
                             }
                         }
 
-                        if (currentBox == Box.TopLeft)
+                        if (currentBox == BoxType.TopLeft)
                         {
-                            if (key == Box.TopRight || key == Box.BottomLeft || key == Box.BottomRight)
-                            {
-                                PickedBox = key;
-                            }
-
-                        }
-
-                        if (currentBox == Box.TopRight)
-                        {
-                            if (key == Box.TopLeft || key == Box.BottomRight || key == Box.BottomLeft)
+                            if (key == BoxType.TopRight || key == BoxType.BottomLeft || key == BoxType.BottomRight)
                             {
                                 PickedBox = key;
                             }
 
                         }
 
-                        if (currentBox == Box.BottomLeft)
+                        if (currentBox == BoxType.TopRight)
                         {
-                            if (key == Box.BottomRight || key == Box.TopLeft || key == Box.TopRight)
+                            if (key == BoxType.TopLeft || key == BoxType.BottomRight || key == BoxType.BottomLeft)
                             {
                                 PickedBox = key;
                             }
 
                         }
 
-                        if (currentBox == Box.BottomRight)
+                        if (currentBox == BoxType.BottomLeft)
                         {
-                            if (key == Box.BottomLeft || key == Box.TopLeft || key == Box.TopRight)
+                            if (key == BoxType.BottomRight || key == BoxType.TopLeft || key == BoxType.TopRight)
+                            {
+                                PickedBox = key;
+                            }
+
+                        }
+
+                        if (currentBox == BoxType.BottomRight)
+                        {
+                            if (key == BoxType.BottomLeft || key == BoxType.TopLeft || key == BoxType.TopRight)
                             {
                                 PickedBox = key;
                             }
@@ -817,7 +815,7 @@ namespace Bulk_Thumbnail_Creator
 
                     }
 
-                    if (PickedBox != Box.None)
+                    if (PickedBox != BoxType.None)
                     {
                         // pick a meme
                         Random pickRandomMeme = new();

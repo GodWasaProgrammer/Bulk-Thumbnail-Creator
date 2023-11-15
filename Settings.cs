@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using Bulk_Thumbnail_Creator.Interfaces;
+using Serilog.Core;
+using Bulk_Thumbnail_Creator.Services;
 
 namespace Bulk_Thumbnail_Creator
 {
-    public class Settings
+	public class Settings
 	{
-		public static ILogService LogService { get; set; }
+		
+		public static ILogService LogService;
 		
         /// <summary>
         /// The Dir where FFmpeg outputs raw images from the specified video

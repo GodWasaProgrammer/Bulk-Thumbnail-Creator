@@ -1,6 +1,6 @@
 ﻿namespace Bulk_Thumbnail_Creator.Enums
 {
-    public enum Box
+    public enum BoxType
     {
         None,
         TopBox,
