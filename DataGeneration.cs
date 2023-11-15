@@ -372,54 +372,16 @@ namespace Bulk_Thumbnail_Creator
                 {
                     List<(BoxType, bool)> FaceInterSectResults = new();
 
-                    Boxes.TryGetValue(BoxType.TopBox, out Rectangle TopBox);
-                    bool TopBoxIntersect = TopBox.IntersectsWith(face);
-                    if (TopBoxIntersect)
+                    foreach(BoxType boxType in Boxes.Keys)
                     {
-                        FreeBoxes.Remove(BoxType.TopBox);
+                        Boxes.TryGetValue(boxType, out Rectangle Box);
+                        bool BoxIntersect = Box.IntersectsWith(face);
+                        if (BoxIntersect)
+                        {
+                            FreeBoxes.Remove(boxType);
+                        }
+                        FaceInterSectResults.Add((boxType, BoxIntersect));
                     }
-                    FaceInterSectResults.Add((BoxType.TopBox, TopBoxIntersect));
-
-                    Boxes.TryGetValue(BoxType.BottomBox, out Rectangle BottomBox);
-                    bool BotBoxInterSect = BottomBox.IntersectsWith(face);
-                    if (BotBoxInterSect)
-                    {
-                        FreeBoxes.Remove(BoxType.BottomBox);
-                    }
-                    FaceInterSectResults.Add((BoxType.BottomBox, BotBoxInterSect));
-
-                    Boxes.TryGetValue(BoxType.TopRight, out Rectangle TopRightBox);
-                    bool TopRightBoxInterSect = TopRightBox.IntersectsWith(face);
-                    if (TopRightBoxInterSect)
-                    {
-                        FreeBoxes.Remove(BoxType.TopRight);
-                    }
-                    FaceInterSectResults.Add((BoxType.TopRight, TopRightBoxInterSect));
-
-                    Boxes.TryGetValue(BoxType.TopLeft, out Rectangle TopLeftBox);
-                    bool TopLeftBoxInterSect = TopLeftBox.IntersectsWith(face);
-                    if (TopLeftBoxInterSect)
-                    {
-                        FreeBoxes.Remove(BoxType.TopLeft);
-                    }
-                    FaceInterSectResults.Add((BoxType.TopLeft, TopLeftBoxInterSect));
-
-                    Boxes.TryGetValue(BoxType.BottomLeft, out Rectangle BottomLeftBox);
-                    bool BottomLeftBoxInterSect = BottomLeftBox.IntersectsWith(face);
-                    if (BottomLeftBoxInterSect)
-                    {
-                        FreeBoxes.Remove(BoxType.BottomLeft);
-                    }
-                    FaceInterSectResults.Add((BoxType.BottomLeft, BottomLeftBoxInterSect));
-
-
-                    Boxes.TryGetValue(BoxType.BottomRight, out Rectangle BottomRightBox);
-                    bool BottomRightBoxInterSect = BottomRightBox.IntersectsWith(face);
-                    if (BottomRightBoxInterSect)
-                    {
-                        FreeBoxes.Remove(BoxType.BottomRight);
-                    }
-                    FaceInterSectResults.Add((BoxType.BottomRight, BottomRightBoxInterSect));
 
                 }
 
