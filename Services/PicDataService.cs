@@ -15,7 +15,7 @@ namespace Bulk_Thumbnail_Creator.Services
             ClearBaseOutPutDirectories();
             PicDataServiceList = new List<PictureData>();
             OutputFileServiceList = new List<string>();
-            Settings.LogService = _logger;   
+            Settings.LogService = _logger;
         }
 
         public List<PictureData> PicDataServiceList { get; set; } = new List<PictureData>();
@@ -35,32 +35,37 @@ namespace Bulk_Thumbnail_Creator.Services
 
             ProductionType ProdType = ProductionType.VarietyList;
 
-            PicDataServiceList = await Creator.Process(ProdType, url, TextToPrint,PicToVarietize);
+            PicDataServiceList = await Creator.Process(ProdType, url, TextToPrint, PicToVarietize);
 
             List<string> ImageUrls = new();
 
-            for (int i = 0; i < PicToVarietize.Varieties.Count; i++)
+            string parentfilename = Path.GetFileName(PicToVarietize.FileName);
+            string varietyof = "variety of";
+            string ConcatenatedString = $"{Settings.TextAddedDir}/{varietyof} {parentfilename}";
+            string[] ArrayOfFilePaths = await Task.Run(() => Directory.GetFiles(ConcatenatedString, "*.png"));
+
+            foreach (string filepath in ArrayOfFilePaths)
             {
-                ImageUrls.Add(PicToVarietize.Varieties[i].OutPath);
+                string imageurl = $"/{filepath}"; // convert to URL
+                ImageUrls.Add(imageurl);
             }
 
             return ImageUrls;
         }
 
-        public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, string PickedFont, BoxType PickedBox, float Borderhue, float Bordersat, float BorderLum, float FillCLRHue, float FillCLRSat, float FillCLRLum, float StrokeCLRHue, float StrokeCLRSat, float strokeCLRLum, OutputType JobType, ILogService logger)
+        public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, string PickedFont, Box PickedBox, float Borderhue, float Bordersat, float BorderLum, float FillCLRHue, float FillCLRSat, float FillCLRLum, float StrokeCLRHue, float StrokeCLRSat, float strokeCLRLum, OutputType JobType)
         {
             PicToCustomize = new(PicToCustomize);
 
-            for(int BoxParam = 0; BoxParam < PicToCustomize.BoxParameters.Count; BoxParam++)
+            for (int BoxParam = 0; BoxParam < PicToCustomize.BoxParameters.Count; BoxParam++)
             {
-
                 PicToCustomize.BoxParameters[BoxParam].CurrentBox = PickedBox;
-            // PicToCustomize.Dankbox = DankBox;
-            PicToCustomize.BoxParameters[BoxParam].Font = PickedFont;
-            PicToCustomize.BoxParameters[BoxParam].BorderColor.SetByHSL(Borderhue, Bordersat, BorderLum);
-            PicToCustomize.BoxParameters[BoxParam].FillColor.SetByHSL(FillCLRHue, FillCLRSat, FillCLRLum);
-            PicToCustomize.BoxParameters[BoxParam].StrokeColor.SetByHSL(StrokeCLRHue, StrokeCLRSat, strokeCLRLum);
-            PicToCustomize.OutPutType = JobType;
+                // PicToCustomize.Dankbox = DankBox;
+                PicToCustomize.BoxParameters[BoxParam].Font = PickedFont;
+                PicToCustomize.BoxParameters[BoxParam].BorderColor.SetByHSL(Borderhue, Bordersat, BorderLum);
+                PicToCustomize.BoxParameters[BoxParam].FillColor.SetByHSL(FillCLRHue, FillCLRSat, FillCLRLum);
+                PicToCustomize.BoxParameters[BoxParam].StrokeColor.SetByHSL(StrokeCLRHue, StrokeCLRSat, strokeCLRLum);
+                PicToCustomize.OutPutType = JobType;
             }
 
             string url = string.Empty;

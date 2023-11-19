@@ -1,7 +1,7 @@
 ﻿@using Bulk_Thumbnail_Creator.Interfaces;
 @inject Bulk_Thumbnail_Creator.Services.PicDataService ds;
 @inject ILogService logger;
-<Loading _processing="@Loading"></Loading>
+<Loading processing="@Loading"></Loading>
 
 @if (DisableMenu == false)
 {
@@ -17,24 +17,18 @@
 
     }
 
-            <MudContainer MaxWidth="MaxWidth.Small">
-        <MudTextField Label="Youtube Link" Variant="Variant.Filled" @bind-Value="textInput"/>
-            <MudTextField Label="Text To Print 1" Variant="Variant.Filled"  @bind-Value="TextToPrint1"/>
-            <MudTextField Label="Text To Print 2" Variant="Variant.Filled"  @bind-Value="TextToPrint2"/>
-            <MudTextField Label="Text To Print 3" Variant="Variant.Filled"  @bind-Value="TextToPrint3"/>
-      <MudButton OnClick="AwaitBTC" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
-            </MudContainer>
-
-    @code {
-}
-
-
+    <MudContainer MaxWidth="MaxWidth.Small">
+        <MudTextField Label="Youtube Link" Variant="Variant.Filled" @bind-Value="textInput" />
+        <MudTextField Label="Text To Print 1" Variant="Variant.Filled" @bind-Value="TextToPrint1" />
+        <MudTextField Label="Text To Print 2" Variant="Variant.Filled" @bind-Value="TextToPrint2" />
+        <MudTextField Label="Text To Print 3" Variant="Variant.Filled" @bind-Value="TextToPrint3" />
+        <MudButton OnClick="AwaitBTC" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
+    </MudContainer>
 
     @if (passedNull)
     {
         <MudText>You need to give me an actual YoutubeLink</MudText>
     }
-
 
 }
 

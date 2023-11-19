@@ -7,24 +7,24 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
 {
     public class ParamForTextCreation
     {
-        [XmlIgnore]
-        private Serialization.SerializableDictionary<BoxType, Rectangle> _BoxesProxy = new();
-        [XmlIgnore]
-        public Serialization.SerializableDictionary<BoxType, Rectangle> BoxesProxy
-        {
-            get
-            {
-                foreach (var kvp in Boxes)
-                {
-                    _BoxesProxy.Add(kvp.Key, kvp.Value);
-                }
-                return _BoxesProxy;
-            }
-            set
-            {
-                _BoxesProxy = value;
-            }
-        }
+        //[XmlIgnore]
+        //private Serialization.SerializableDictionary<BoxType, Rectangle> _BoxesProxy = new();
+        //[XmlIgnore]
+        //public Serialization.SerializableDictionary<BoxType, Rectangle> BoxesProxy
+        //{
+        //    get
+        //    {
+        //        foreach (var kvp in Boxes)
+        //        {
+        //            _BoxesProxy.Add(kvp.Key, kvp.Value);
+        //        }
+        //        return _BoxesProxy;
+        //    }
+        //    set
+        //    {
+        //        _BoxesProxy = value;
+        //    }
+        //}
 
         private string _Meme;
         public string Meme { get { return _Meme; } set { _Meme = value; } }
@@ -75,16 +75,18 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
         private ColorItem borderColor = new();
         public ColorItem BorderColor { get { return borderColor; } set { borderColor = BorderColor; } }
 
-        [XmlIgnore]
-        private Dictionary<BoxType, Rectangle> _Boxes = new();
+        //[XmlIgnore]
+        //private Dictionary<BoxType, Rectangle> _Boxes = new();
 
-        // store possible boxes
-        [XmlIgnore]
-        public Dictionary<BoxType, Rectangle> Boxes { get { return _Boxes; } set { _Boxes = value; } }
+        //// store possible boxes
+        //[XmlIgnore]
+        //public Dictionary<BoxType, Rectangle> Boxes { get { return _Boxes; } set { _Boxes = value; } }
+        
+        private List<Box> _Boxes = new();
+        public List<Box> Boxes { get { return _Boxes; } set { _Boxes = value; } }
 
-
-        private BoxType _CurrentBox;
-        public BoxType CurrentBox { get { return _CurrentBox; } set { _CurrentBox = value; } }
+        private Box _CurrentBox = new();
+        public Box CurrentBox { get { return _CurrentBox; } set { _CurrentBox = value; } }
 
 
         public ParamForTextCreation(ParamForTextCreation param)
@@ -97,8 +99,8 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             fillColor = new ColorItem(param.FillColor); // object
             strokeColor = new ColorItem(param.StrokeColor); // object
             borderColor = new ColorItem(param.BorderColor); // object
-            _Boxes = new Dictionary<BoxType, Rectangle>(param._Boxes); // dictionary
-            _CurrentBox = param._CurrentBox; // enum
+            Boxes = new List<Box>(param.Boxes); // dictionary
+            _CurrentBox = new(param._CurrentBox); // object
         }
 
         public ParamForTextCreation()

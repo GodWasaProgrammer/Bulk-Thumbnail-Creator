@@ -1,72 +1,39 @@
 ﻿@using Bulk_Thumbnail_Creator.Services;
 @using Bulk_Thumbnail_Creator.PictureObjects;
 @using Bulk_Thumbnail_Creator.Interfaces;
-
 @inject PicDataService PicDataService;
 @inject ILogService logger;
 
-@page "/varietydisplay"
-
 <div class="image-container">
-    @for (int i = 0; i < imageURL.Count; i++)
+    @for (int ClickedImage = 0; ClickedImage < VarietyUrls.Count; ClickedImage++)
     {
-        var imageUrl = imageURL[i]; // Capture the value
-        <img class="image-button" src="@imageUrl" @onclick="(() => NavToCustomizePicture(imageUrl))" />
-        @if ((i + 1) % 3 == 0)
+        var index = ClickedImage;
+
+        <img class="image-button" src="@VarietyUrls[index]" @onclick="(() => NavToCustomizePicture(VarietyUrls[index]))" />
+        @if ((ClickedImage + 1) % 3 == 0)
         {
             <div style="flex-basis: 100%; height: 0;"></div>
         }
     }
 </div>
 
-@code 
+@code
 {
-    public List<string> imageUrls;
-
-    public VarietyDisplay()
-    {
-        imageUrls = new List<string>();
-    }
-
     [Parameter]
     public PictureData ParentPictureProp { get; set; }
-
 
     [Inject]
     private NavigationManager NavigationManager { get; set; }
 
     private void NavToCustomizePicture(string imageURL)
     {
-            NavigationManager.NavigateTo($"/CustomizePicture/{Uri.EscapeDataString(imageURL)}");
+        NavigationManager.NavigateTo($"/CustomizePicture/{Uri.EscapeDataString(imageURL)}");
     }
 
-    private List<string> imageURL = new List<string>();
+    private List<string> _VarietyUrls = new();
 
-    protected override async Task OnInitializedAsync()
-    {
-        await CreateVarietyAsync();
-        LoadImageUrls();
-    }
-
-    private async Task CreateVarietyAsync()
-    {
-        imageUrls = await PicDataService.CreatePictureDataVariety(ParentPictureProp);
-    }
-
-    private void LoadImageUrls()
-    {
-        string parentfilename = Path.GetFileName(ParentPictureProp.FileName);
-        string varietyof = "variety of";
-        string ConcatenatedString =$"{Bulk_Thumbnail_Creator.Settings.TextAddedDir}/{varietyof} {parentfilename}";
-        string[] ArrayOfFilePaths = Directory.GetFiles(ConcatenatedString, "*.png");
-
-        foreach (string filepath in ArrayOfFilePaths)
-        {
-            string imageurl = $"/{filepath}"; // convert to URL
-            imageURL.Add(imageurl);
-        }
-
-     }
+    [Parameter]
+    public List<string> VarietyUrls { get { return _VarietyUrls; } set { _VarietyUrls = value; } }
 
 }
 

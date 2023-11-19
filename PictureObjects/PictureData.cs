@@ -17,18 +17,13 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
         private string _outPath;
         public string OutPath { get { return _outPath; } set { _outPath = value; } }
 
-        //public List<string, Enums.OutputType> AssignedBoxes { get; set; } = new();
+        private List<Box> _boxes = new();
+        public List<Box> Boxes { get { return _boxes; } set { _boxes = value; } }
 
         private List<ParamForTextCreation> _BoxParameters = new();
         public List<ParamForTextCreation> BoxParameters { get { return _BoxParameters; } set { _BoxParameters = value; } }
 
         public int NumberOfBoxes = 2;
-
-        /// <summary>
-        /// Parameters for text creation, contains all necessary info like font,position,colors
-        /// </summary>
-        //private ParamForTextCreation _ParamForTextCreation;
-        //public ParamForTextCreation ParamForTextCreation { get { return _ParamForTextCreation; } set { _ParamForTextCreation = value; } }
 
         /// <summary>
         /// ImageMagick settings that belongs to this object, this is used to generate color/textsettings
@@ -61,20 +56,12 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             _Varieties = new List<PictureData>(pictureDataToCopy.Varieties);
             _OutputType = pictureDataToCopy.OutPutType;
             _outPath = pictureDataToCopy.OutPath;
-            //_DankBox = pictureDataToCopy.Dankbox;
-            // _Meme = pictureDataToCopy._Meme;
         }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
         public PictureData()
         {
 
         }
-
-        //private Box _DankBox;
-        //public Box Dankbox { get { return _DankBox; } set { _DankBox = value; } }
 
         private OutputType _OutputType;
         public OutputType OutPutType { get { return _OutputType; } set { _OutputType = value; } }

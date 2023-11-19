@@ -29,11 +29,11 @@
         @foreach(var box in CurrentPagePictureData.BoxParameters)
         {
             <MudSelectItem Value="@box.CurrentBox"><MudText Color="Color.Secondary">@box.CurrentBox</MudText></MudSelectItem>
-        @foreach (var key in box.Boxes.Keys)
+        @* @foreach (var key in box.Boxes.Keys)
         {
             var value = box.Boxes[key];
             <MudSelectItem Value="@key"><MudText Color="Color.Secondary">@key</MudText></MudSelectItem>
-        }
+        } *@
         }
 
     </MudSelect>
@@ -55,7 +55,12 @@
             <MudItem xs="12" sm="6">
                 <div class="mb-2">Picture Data To Produce</div>
                 <div class="mb-1">Chosen Font: @Path.GetFileName(PickedFont)</div>
-                <div class="mb-1">Chosen Box: @PickedBox.ToString()</div>
+                <div class="mb-1">Chosen Box: @if (@PickedBox != null )
+                    {
+                    @PickedBox.ToString()
+
+                    }
+                    </div>
             </MudItem>
             <MudItem xs="12" sm="6">
                 <div class="mb-2">BorderColor Values</div>
@@ -97,7 +102,7 @@
 
     public PictureData PicDataToCustomize = new();
 
-    public BoxType PickedBox { get; set; }
+    public Box PickedBox { get; set; }
 
     public List<string> InputText { get; set; }
 
@@ -109,7 +114,7 @@
     {
         get
         {
-            // _PickedFont ??= CurrentPagePictureData.ParamForTextCreation.Font;
+            //_PickedFont ??= CurrentPagePictureData.ParamForTextCreation.Font;
 
             return _PickedFont;
         }
@@ -175,7 +180,7 @@
     public async void CreateCustomPicDataObject()
     {
         OutputType jobtype = OutputType.Custom;
-        PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(CurrentPagePictureData, PickedFont, PickedBox, BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance, fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance, StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance, jobtype, logger);
+        PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(CurrentPagePictureData, PickedFont, PickedBox, BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance, fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance, StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance, jobtype);
         ShowCustomPicture(PicDataToCustomize);
     }
 

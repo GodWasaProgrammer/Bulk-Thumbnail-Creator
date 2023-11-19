@@ -1,9 +1,10 @@
-﻿@page "/imagedisplay"
-
-@inject NavigationManager navmanager;
+﻿@inject NavigationManager navmanager;
+@inject PicDataService PicDataService;
 @using Bulk_Thumbnail_Creator;
+@using Bulk_Thumbnail_Creator.PictureObjects
+@using Bulk_Thumbnail_Creator.Services
 
-<Loading _processing="IMGDetailClicked"></Loading>
+ <Loading processing="processing"></Loading>
 
 @if (IMGDetailClicked == false)
 {
@@ -11,18 +12,30 @@
     {
         @foreach (var imageUrl in imageUrls)
         {
+            imgurl = imageUrl;
             <button class="image-button" @onclick="() => ShowImageDetail(imageUrl)">
                 <img src="@imageUrl" style="max-width: 300px; margin: 10px;" />
             </button>
         }
 
     }
+}
 
+
+@if (VarietyDone)
+{
+    <ImageDetail CurrentPagePictureData="picdata" ImageUrl="imageUrl" VarietyUrls="VarietyUrls"></ImageDetail>
 }
 
 @code
 {
     private List<string> imageUrls;
+
+    private string imgurl;
+
+    private List<string> VarietyUrls;
+
+    ImageDetail imageDetailref = new ImageDetail();
 
     [Inject]
     private NavigationManager navman { get; set; }
@@ -60,11 +73,29 @@
 
     private bool IMGDetailClicked = false;
 
-    private void ShowImageDetail(string imageUrl)
+    private bool processing = false;
+
+    private bool VarietyDone = false;
+
+    private PictureData picdata = new();
+
+    private async void ShowImageDetail(string imageUrl)
     {
         IMGDetailClicked = true;
 
-        navman.NavigateTo($"/imagedetail/{Uri.EscapeDataString(imageUrl)}");
+        processing = true;
+
+        picdata = PicDataService.SetPictureDataImageDisplayCorrelation(imageUrl);
+
+        //List<string> VarietyUrls = new();
+
+        VarietyUrls = await PicDataService.CreatePictureDataVariety(picdata);
+
+        VarietyDone = true;
+
+        processing = false;
+
+        StateHasChanged();
     }
 }
 <style>

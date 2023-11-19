@@ -2,11 +2,11 @@
 @using Bulk_Thumbnail_Creator.Interfaces;
 @inject ILogService Logger
 
-@if (_processing)
+@if (processing)
 {
     <MudContainer>
     <MudPaper Elevation="4" Class="p-4">
-        @foreach(var entry in LogEntries.TakeLast(10))
+        @foreach(var entry in LogEntries.TakeLast(1))
         {
             <MudTextField  AdornmentIcon="" Label="Log Entry" Multiline="true" Variant="Variant.Filled" FullWidth="true" ReadOnly="true" Value="@entry"/>
         }
@@ -16,7 +16,7 @@
 
 @code {
     [Parameter]
-    public bool _processing { get; set; }
+    public bool processing { get; set; }
 
     private List<string> LogEntries = new List<string>();
 

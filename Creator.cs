@@ -6,8 +6,6 @@ using FaceONNX;
 using System.Drawing;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using Bulk_Thumbnail_Creator.Serialization;
-using Bulk_Thumbnail_Creator.Interfaces;
-using Bulk_Thumbnail_Creator.Services;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -17,7 +15,6 @@ namespace Bulk_Thumbnail_Creator
         public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, PictureData PicdataObjToVarietize = null)
         {
             Settings.ListOfText = texts;
-
 
             #region Front Page Picture Line Up Output
             if (ProdType == ProductionType.FrontPagePictureLineUp)
@@ -130,13 +127,12 @@ namespace Bulk_Thumbnail_Creator
                 //// Produce varietydata for the current object
                 for (int i = 0; i < Settings.PictureDatas.Count; i++)
                 {
-                    var input = Settings.PictureDatas[i];
 
                     DataGeneration.GenSaturationVariety(Settings.PictureDatas[i]);
 
                     DataGeneration.GenFontVariety(Settings.PictureDatas[i]);
 
-                    DataGeneration.GenPlacementOfTextVariety(Settings.PictureDatas[i]);
+                    //DataGeneration.GenPlacementOfTextVariety(Settings.PictureDatas[i]);
 
                     DataGeneration.GenRandomVariety(Settings.PictureDatas[i]);
 
@@ -144,7 +140,7 @@ namespace Bulk_Thumbnail_Creator
                 }
 
                 // actual file output
-                for (int i = 0; i < Settings.PictureDatas.Count; i++)
+                Parallel.For(0, Settings.PictureDatas.Count, i =>
                 {
                     string PicObjPath = Settings.PictureDatas[i].FileName;
 
@@ -154,6 +150,7 @@ namespace Bulk_Thumbnail_Creator
                     }
 
                 }
+                );
 
             }
             #endregion
@@ -167,14 +164,14 @@ namespace Bulk_Thumbnail_Creator
                 }
                 else
                 {
-                    //Parallel.For(0, PicdataObjToVarietize.Varieties.Count, i =>
-                    //{
-                    //    Production.ProduceTextPictures(PicdataObjToVarietize.Varieties[i]);
-                    //});
-                    for(int i = 0; i < PicdataObjToVarietize.Varieties.Count; i++)
+                    Parallel.For(0, PicdataObjToVarietize.Varieties.Count, i =>
                     {
                         Production.ProduceTextPictures(PicdataObjToVarietize.Varieties[i]);
-                    }
+                    });
+                    //for (int i = 0; i < PicdataObjToVarietize.Varieties.Count; i++)
+                    //{
+                    //    Production.ProduceTextPictures(PicdataObjToVarietize.Varieties[i]);
+                    //}
 
                 }
 
@@ -191,13 +188,6 @@ namespace Bulk_Thumbnail_Creator
                 else
                 {
                     Bitmap srcpic = new(PicdataObjToVarietize.FileName);
-
-                    for (int numberofBoxes = 0; numberofBoxes < PicdataObjToVarietize.NumberOfBoxes; numberofBoxes++)
-                    {
-                        PicdataObjToVarietize.BoxParameters[numberofBoxes] = DataGeneration.CalculateBoxData(PicdataObjToVarietize.BoxParameters[numberofBoxes].CurrentBox, srcpic, PicdataObjToVarietize.BoxParameters[numberofBoxes]);
-                    }
-
-                    //PicdataObjToVarietize.ParamForTextCreation = DataGeneration.CalculateBoxData(PicdataObjToVarietize.ParamForTextCreation.CurrentBox, srcpic, PicdataObjToVarietize.ParamForTextCreation);
 
                     Production.ProduceTextPictures(PicdataObjToVarietize);
                     Settings.PictureDatas.Add(PicdataObjToVarietize);

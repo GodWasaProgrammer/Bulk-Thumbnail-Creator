@@ -14,7 +14,7 @@ namespace Bulk_Thumbnail_Creator
 {
     public class Production
     {
-        
+
         /// <summary>
         /// Checks if we have our directory/executables  in order
         /// </summary>
@@ -227,39 +227,28 @@ namespace Bulk_Thumbnail_Creator
 
             for (int Box = 0; Box < PicData.BoxParameters.Count; Box++)
             {
-                ParamForTextCreation BoxParam = PicData.BoxParameters[Box];
-                PicData.MakeTextSettings(PicData.BoxParameters[Box]);
-
-                using var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);
-
-                // Add the caption layer on top of the background image
-                if (PicData.OutPutType != OutputType.Dankness)
+                if (PicData.BoxParameters[Box].CurrentBox.Type == BoxType.None)
                 {
-                    if (BoxParam.Boxes.TryGetValue(PicData.BoxParameters[Box].CurrentBox, out Rectangle value))
-                    {
-                        int takeX = value.X;
-
-                        int takeY = value.Y;
-
-                        outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
-                    }
-
+                    break;
                 }
-                //else
-                //{
-                //        MagickImage MemeToPutOnPic = new(PicData.ParamForTextCreation.Meme);
+                else
+                {
+                    ParamForTextCreation BoxParam = PicData.BoxParameters[Box];
+                    PicData.MakeTextSettings(PicData.BoxParameters[Box]);
 
-                //        Rectangle ReadPosition = BoxParam.Boxes[BoxParam.CurrentBox];
-                //        MemeToPutOnPic.Resize(PicData.ParamForTextCreation.WidthOfBox, PicData.ParamForTextCreation.HeightOfBox);
+                    using var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);
 
-                //        int posX = ReadPosition.X;
-                //        int posY = ReadPosition.Y;
+                    // Add the caption layer on top of the background image
 
-                //        outputImage.Composite(MemeToPutOnPic, posX, posY, CompositeOperator.Over);
-                   
-                //}
-                Settings.LogService.LogInformation($"Picture:{Path.GetFileName(PicData.FileName)}Box Type:{PicData.BoxParameters[Box].CurrentBox} Box: {Box + 1} of {PicData.BoxParameters.Count} has been composited");
-                
+                    int takeX = BoxParam.CurrentBox.X;
+
+                    int takeY = BoxParam.CurrentBox.Y;
+
+                    outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
+
+                    Settings.LogService.LogInformation($"Picture:{Path.GetFileName(PicData.FileName)}Box Type:{PicData.BoxParameters[Box].CurrentBox} Box: {Box + 1} of {PicData.BoxParameters.Count} has been composited");
+                }
+
             }
             outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
             outputImage.Quality = 100;
