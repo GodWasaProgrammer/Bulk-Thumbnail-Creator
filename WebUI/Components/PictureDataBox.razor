@@ -3,34 +3,33 @@
 @inject PicDataService ds;
 @inherits ComponentBase
 
-    <MudPaper Elevation="2" Class="picture-data-box" Style="max-width: 750px; margin: auto; padding: 16px;">
-        <MudContainer>
-            <MudText GutterBottom="true" Class="studded-header" Variant="Variant.H4">Picture Data</MudText>
-            <MudImage Src="@ImageURL" Style="max-width: 100%;" />
-            <MudContainer Class="picture-data-box">
-                <MudText Class="data-label">Picture Data names</MudText>
-                @foreach(var boxparam in PicData.BoxParameters)
-                {
-                    <MudText Class="data-point">@($"Box Name: {boxparam.CurrentBox}")</MudText>
-                <MudText>@($"Current font name: {Path.GetFileName(boxparam.Font)}")</MudText>
-                })
-                <MudText>@($"Base Filename: {PicData.FileName}")</MudText>
-                <MudText>@($"Production Filename: {Path.GetFileName(PicData.OutPath)}")</MudText>
-            </MudContainer>
-
-            <MudContainer Class="picture-data-box">
-                <MudText  Class="data-label">Picture Data values</MudText>
+<MudPaper Elevation="2" Class="picture-data-box" Style="max-width: 750px; margin: auto; padding: 16px;">
+    <MudContainer>
+        <MudText GutterBottom="true" Class="studded-header" Variant="Variant.H4">Picture Data</MudText>
+        <MudImage Src="@ImageURL" Style="max-width: 100%;" />
+        <MudContainer Class="picture-data-box">
+            <MudText Class="data-label">Picture Data names</MudText>
+            @foreach (var boxparam in PicData.BoxParameters)
+            {
+                <MudText Class="data-point"> @("Box Name:")</MudText> <MudText Class="data-value">@($"{boxparam.CurrentBox.Type}")</MudText>
+                <MudText Class="data-point"> @("Current font name:")</MudText><MudText Class="data-value">@($"{Path.GetFileName(boxparam.Font)}")</MudText>
+            })
+            <MudText Class="data-point">@($"Base Filename:")</MudText> <MudText Class="data-value">@($"{PicData.FileName}")</MudText>
+            <MudText Class="data-point">@($"Production Filename:")</MudText> <MudText Class="data-value">@($"{Path.GetFileName(PicData.OutPath)}")</MudText>
+        </MudContainer>
+        <MudContainer Class="picture-data-box">
+            <MudText Class="data-label">Picture Data values</MudText>
             <MudText Class="data-point">@($"Output Type:")</MudText><MudText Class="data-value">{@PicData.OutPutType}</MudText>
-            @foreach(var boxparam in PicData.BoxParameters)
+                @foreach (var boxparam in PicData.BoxParameters)
             {
                 <MudText>@($"Current Text Box: {boxparam.CurrentBox}")</MudText>
                 <MudText>@($"Text To be Printed: {boxparam.Text}")</MudText>
                 <MudText>@($"Width of text box: {boxparam.WidthOfBox}")</MudText>
                 <MudText>@($"Position Of text: {boxparam.PositionOfText}")</MudText>
             })
-            </MudContainer>
         </MudContainer>
-    </MudPaper>
+    </MudContainer>
+</MudPaper>
 
 
 @code

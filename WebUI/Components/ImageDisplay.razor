@@ -4,7 +4,7 @@
 @using Bulk_Thumbnail_Creator.PictureObjects
 @using Bulk_Thumbnail_Creator.Services
 
- <Loading processing="processing"></Loading>
+<Loading processing="@processing"></Loading>
 
 @if (IMGDetailClicked == false)
 {
@@ -12,7 +12,6 @@
     {
         @foreach (var imageUrl in imageUrls)
         {
-            imgurl = imageUrl;
             <button class="image-button" @onclick="() => ShowImageDetail(imageUrl)">
                 <img src="@imageUrl" style="max-width: 300px; margin: 10px;" />
             </button>
@@ -20,7 +19,6 @@
 
     }
 }
-
 
 @if (VarietyDone)
 {
@@ -30,8 +28,6 @@
 @code
 {
     private List<string> imageUrls;
-
-    private string imgurl;
 
     private List<string> VarietyUrls;
 
@@ -85,6 +81,7 @@
 
         processing = true;
 
+        StateHasChanged();
         picdata = PicDataService.SetPictureDataImageDisplayCorrelation(imageUrl);
 
         //List<string> VarietyUrls = new();
@@ -97,6 +94,7 @@
 
         StateHasChanged();
     }
+
 }
 <style>
     .image-container {

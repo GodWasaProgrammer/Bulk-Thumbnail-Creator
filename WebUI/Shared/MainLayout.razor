@@ -1,4 +1,5 @@
 ﻿@using BTC_Blazor.Pages;
+@using WebUI.Components
 @inherits LayoutComponentBase
 
 <MudThemeProvider IsDarkMode="true" />
@@ -9,7 +10,7 @@
     <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <CascadingAuthenticationState>
-            <UserDisplay />
+            <UserDisplay/>
         </CascadingAuthenticationState>
         <MudSpacer />
         <MudText Color="Color.Tertiary">Bulk Thumbnail Creator</MudText>

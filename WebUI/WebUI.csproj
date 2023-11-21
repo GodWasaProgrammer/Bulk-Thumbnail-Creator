@@ -4,7 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>BTC_Blazor</RootNamespace>
+    <RootNamespace>WebUI</RootNamespace>
     <OutputType>Exe</OutputType>
     <PlatformTarget>x64</PlatformTarget>
     <Configurations>Debug;Release</Configurations>
@@ -60,7 +60,6 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Components\" />
   </ItemGroup>
 
   <ItemGroup>
