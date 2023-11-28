@@ -7,8 +7,6 @@ using System.Drawing;
 using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using System.Reflection;
-using Bulk_Thumbnail_Creator.Services;
-using Bulk_Thumbnail_Creator.Interfaces;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -212,11 +210,12 @@ namespace Bulk_Thumbnail_Creator
                 OutputPath += $"{varietyof}{imageName}//{counterRandomOutPut}.png";
                 PicData.OutPath = OutputPath;
             }
-            //if (PicData.OutPutType == OutputType.Dankness)
-            //{
-            //    OutputPath += $"{varietyof}{imageName}//{PicData.Dankbox}{trimDateTime}{imageName}.png";
-            //    PicData.OutPath = OutputPath;
-            //}
+            if (PicData.OutPutType == OutputType.Dankness)
+            {
+                Guid guid = Guid.NewGuid();
+                OutputPath += $"{varietyof}{imageName}//{guid}{PicData.OutPutType}{trimDateTime}{imageName}.png";
+                PicData.OutPath = OutputPath;
+            }
             if (PicData.OutPutType == OutputType.Custom)
             {
                 OutputPath += $"{varietyof}{imageName}//{trimDateTime}Custom of{imageName}";
@@ -236,15 +235,24 @@ namespace Bulk_Thumbnail_Creator
                     ParamForTextCreation BoxParam = PicData.BoxParameters[Box];
                     PicData.MakeTextSettings(PicData.BoxParameters[Box]);
 
-                    using var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);
+                    if (BoxParam.Meme != null)
+                    {
+                        using MagickImage meme = new(BoxParam.Meme);
+                        meme.Resize(BoxParam.CurrentBox.Width, BoxParam.CurrentBox.Height);
+                        outputImage.Composite(meme, BoxParam.CurrentBox.X, BoxParam.CurrentBox.Y, CompositeOperator.Over);
+                    }
+                    else
+                    {
+                        using var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);
+
+                        int takeX = BoxParam.CurrentBox.X;
+
+                        int takeY = BoxParam.CurrentBox.Y;
+
+                        outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
+                    }
 
                     // Add the caption layer on top of the background image
-
-                    int takeX = BoxParam.CurrentBox.X;
-
-                    int takeY = BoxParam.CurrentBox.Y;
-
-                    outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
 
                     Settings.LogService.LogInformation($"Picture:{Path.GetFileName(PicData.FileName)}Box Type:{PicData.BoxParameters[Box].CurrentBox} Box: {Box + 1} of {PicData.BoxParameters.Count} has been composited");
                 }

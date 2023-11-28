@@ -7,26 +7,56 @@
     <MudContainer>
         <MudText GutterBottom="true" Class="studded-header" Variant="Variant.H4">Picture Data</MudText>
         <MudImage Src="@ImageURL" Style="max-width: 100%;" />
+
         <MudContainer Class="picture-data-box">
-            <MudText Class="data-label">Picture Data names</MudText>
-            @foreach (var boxparam in PicData.BoxParameters)
-            {
-                <MudText Class="data-point"> @("Box Name:")</MudText> <MudText Class="data-value">@($"{boxparam.CurrentBox.Type}")</MudText>
-                <MudText Class="data-point"> @("Current font name:")</MudText><MudText Class="data-value">@($"{Path.GetFileName(boxparam.Font)}")</MudText>
-            })
-            <MudText Class="data-point">@($"Base Filename:")</MudText> <MudText Class="data-value">@($"{PicData.FileName}")</MudText>
-            <MudText Class="data-point">@($"Production Filename:")</MudText> <MudText Class="data-value">@($"{Path.GetFileName(PicData.OutPath)}")</MudText>
+            <MudGrid>
+                @foreach (var boxparam in PicData.BoxParameters)
+                {
+                    <MudGrid>
+                        <MudItem Class="horizontal-item">
+                            <MudText Class="data-point"> @($"Box Name: ")</MudText>
+                            <MudText Class="data-value">@($"{boxparam.CurrentBox.Type}")</MudText>
+                        </MudItem>
+
+                        <MudItem Class="horizontal-item">
+                            <MudText Class="data-point"> @("Current font name:")</MudText>
+                            <MudText Class="data-value">@($"{Path.GetFileName(boxparam.Font)}")</MudText>
+                        </MudItem>
+                    </MudGrid>
+                }
+                <MudItem Class="horizontal-item">
+                    <MudText Class="data-point">@($"Base Filename:")</MudText> <MudText Class="data-value">@($"{PicData.FileName}")</MudText>
+                </MudItem>
+                <MudItem Class="horizontal-item">
+                    <MudText Class="data-point">@($"Production Filename:")</MudText> <MudText Class="data-value">@($"{Path.GetFileName(PicData.OutPath)}")</MudText>
+                </MudItem>
+            </MudGrid>
+
         </MudContainer>
         <MudContainer Class="picture-data-box">
-            <MudText Class="data-label">Picture Data values</MudText>
-            <MudText Class="data-point">@($"Output Type:")</MudText><MudText Class="data-value">{@PicData.OutPutType}</MudText>
+            <MudItem Class="horizontal-item">
+                <MudText Class="data-point">@($"Output Type:")</MudText><MudText Class="data-value">@PicData.OutPutType</MudText>
+                </MudItem>
                 @foreach (var boxparam in PicData.BoxParameters)
             {
-                <MudText>@($"Current Text Box: {boxparam.CurrentBox}")</MudText>
-                <MudText>@($"Text To be Printed: {boxparam.Text}")</MudText>
-                <MudText>@($"Width of text box: {boxparam.WidthOfBox}")</MudText>
-                <MudText>@($"Position Of text: {boxparam.PositionOfText}")</MudText>
-            })
+                <MudItem Class="horizontal-item">
+                    <MudText Class="data-point">@($"Current Text Box:")</MudText> <MudText Class="data-value">@($"{boxparam.CurrentBox.Type}")</MudText>
+                </MudItem>
+                <MudItem Class="horizontal-item">
+
+                    <MudText Class="data-point">@($"Text To be Printed:")</MudText>
+                    <MudText Class="data-value">@($"{boxparam.Text}")</MudText>
+                </MudItem>
+                <MudItem Class="horizontal-item">
+
+                    <MudText Class="data-point">@($"Width of text box:")</MudText>
+                    <MudText Class="data-value">@boxparam.WidthOfBox</MudText>
+                </MudItem>
+                <MudItem Class="horizontal-item">
+                    <MudText Class="data-point">@($"Position Of text:")</MudText>
+                    <MudText Class="data-value">@boxparam.PositionOfText</MudText>
+                </MudItem>
+            }
         </MudContainer>
     </MudContainer>
 </MudPaper>
@@ -42,8 +72,19 @@
 }
 
 <style>
+    .horizontal-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center; /* Optional: Center items vertically within the flex container */
+    }
+
+        .horizontal-item .data-point {
+            padding-right: 5px; /* Adjust padding as needed to separate the text items */
+        }
+
+
     .picture-data-box {
-        border: 1px thick solid;
+        border: 5px thick solid;
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -62,6 +103,10 @@
         /* Data point style */
         .picture-data-box .data-point {
             margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: black;
             color: gold;
         }
 
@@ -73,8 +118,10 @@
 
         /* Value style */
         .picture-data-box .data-value {
+            margin-left: 10px; /* Add margin between label and value */
             color: teal;
         }
+
 
     /* Studded Header Style */
     .studded-header {

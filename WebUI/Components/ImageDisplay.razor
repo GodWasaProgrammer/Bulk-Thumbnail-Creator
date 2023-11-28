@@ -12,6 +12,7 @@
     {
         @foreach (var imageUrl in imageUrls)
         {
+            imgURL = imageUrl;
             <button class="image-button" @onclick="() => ShowImageDetail(imageUrl)">
                 <img src="@imageUrl" style="max-width: 300px; margin: 10px;" />
             </button>
@@ -22,11 +23,13 @@
 
 @if (VarietyDone)
 {
-    <ImageDetail CurrentPagePictureData="picdata" ImageUrl="imageUrl" VarietyUrls="VarietyUrls"></ImageDetail>
+    <ImageDetail CurrentPagePictureData="picdata" ImageUrl="imgURL" VarietyUrls="VarietyUrls"></ImageDetail>
 }
 
 @code
 {
+    private string imgURL;
+
     private List<string> imageUrls;
 
     private List<string> VarietyUrls;
@@ -81,10 +84,7 @@
 
         processing = true;
 
-        StateHasChanged();
         picdata = PicDataService.SetPictureDataImageDisplayCorrelation(imageUrl);
-
-        //List<string> VarietyUrls = new();
 
         VarietyUrls = await PicDataService.CreatePictureDataVariety(picdata);
 

@@ -6,11 +6,12 @@ using Bulk_Thumbnail_Creator.Services;
 
 namespace Bulk_Thumbnail_Creator
 {
-	public class Settings
+    public static class Settings
 	{
-		
-		public static ILogService LogService;
-		
+        public static ILogService LogService { get => logService; set => logService = value; }
+
+        private static ILogService logService;
+
         /// <summary>
         /// The Dir where FFmpeg outputs raw images from the specified video
         /// </summary>
@@ -109,6 +110,8 @@ namespace Bulk_Thumbnail_Creator
 		/// </summary>
 		private static readonly string _PathToXMLListOfDownloadedVideos = "ListOfDownloadedVideos.xml";
 		public static string PathToXMLListOfDownloadedVideos { get { return _PathToXMLListOfDownloadedVideos; } }
-	}
+
+        
+    }
 
 }

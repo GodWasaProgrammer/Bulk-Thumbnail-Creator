@@ -78,9 +78,8 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
         //[XmlIgnore]
         //private Dictionary<BoxType, Rectangle> _Boxes = new();
 
-        //// store possible boxes
-        //[XmlIgnore]
-        //public Dictionary<BoxType, Rectangle> Boxes { get { return _Boxes; } set { _Boxes = value; } }
+        private List<BoxType> _boxesWithNoFaceIntersect = new();
+        public List<BoxType> BoxesWithNoFaceIntersect { get { return _boxesWithNoFaceIntersect; } set { _boxesWithNoFaceIntersect = value; } }
         
         private List<Box> _Boxes = new();
         public List<Box> Boxes { get { return _Boxes; } set { _Boxes = value; } }

@@ -380,12 +380,14 @@ namespace Bulk_Thumbnail_Creator
                 box.Rectangle = pickedBoxRectangle;
                 box.Type = pickedBoxName;
 
-                //parameters.CurrentBox.Type = pickedBoxName;
-
                 parameters.CurrentBox = box;
 
                 parameters.WidthOfBox = pickedBoxRectangle.Width;
                 parameters.HeightOfBox = pickedBoxRectangle.Height;
+
+                FreeBoxes.Remove(pickedBoxName);
+
+                parameters.BoxesWithNoFaceIntersect = FreeBoxes;
 
                 // makes a point to feed to the parameters passed in
                 Point pickedBoxPoint = new(pickedBoxRectangle.X, pickedBoxRectangle.Y);
@@ -570,107 +572,46 @@ namespace Bulk_Thumbnail_Creator
         /// 
         /// </summary>
         /// <param name="DankifyTarget"></param>
-        //public static PictureData GenMemePosition(PictureData DankifyTarget)
-        //{
-        //    PictureData CopiedPicData = new(DankifyTarget);
-        //    CopiedPicData.Varieties.Clear();
+        public static void GenMemePosition(PictureData DankifyTarget)
+        {
+            PictureData CopiedPicData = new(DankifyTarget);
+            CopiedPicData.Varieties.Clear();
 
-        //    for (int numberOfBoxes = 0; numberOfBoxes < DankifyTarget.NumberOfBoxes; numberOfBoxes++)
-        //    {
+            for (int IndexofCurrentBoxes = 0; IndexofCurrentBoxes < DankifyTarget.NumberOfBoxes; IndexofCurrentBoxes++)
+            {
+                List<BoxType> availableBoxesList = DankifyTarget.BoxParameters[IndexofCurrentBoxes].BoxesWithNoFaceIntersect;
 
-        //        if (CopiedPicData.BoxParameters[numberOfBoxes].Boxes.Count > 2)
-        //        {
-        //            Dictionary<BoxType, Rectangle> boxesDictionary = DankifyTarget.BoxParameters[numberOfBoxes].Boxes;
+                BoxType currentBox = CopiedPicData.BoxParameters[IndexofCurrentBoxes].CurrentBox.Type;
 
-        //            BoxType currentBox = DankifyTarget.BoxParameters[numberOfBoxes].CurrentBox;
+                BoxType PickedBox = BoxType.None;
 
-        //            BoxType PickedBox = BoxType.None;
+                foreach (BoxType box in availableBoxesList)
+                {
+                    if (box != currentBox)
+                    {
+                        PickedBox = box;
+                        break;
+                    }
+                }
 
-        //            List<BoxType> AvailableBoxes;
+                if (PickedBox != BoxType.None)
+                {
+                    // pick a meme
+                    Random pickRandomMeme = new();
+                    int PickedMeme = pickRandomMeme.Next(Settings.Memes.Length);
 
-        //            AvailableBoxes = boxesDictionary.Keys.ToList();
+                    //// write our chosen meme to Meme property
+                    CopiedPicData.BoxParameters[IndexofCurrentBoxes].Meme = Settings.Memes[PickedMeme];
 
-        //            AvailableBoxes.Remove(currentBox);
+                    // set the type of output
+                    CopiedPicData.OutPutType = OutputType.Dankness;
 
-        //            foreach (BoxType key in AvailableBoxes)
-        //            {
+                    DankifyTarget.Varieties.Add(CopiedPicData);
+                }
 
-        //                if (currentBox == BoxType.BottomBox)
-        //                {
-        //                    // avail boxes is only topright topleft
-        //                    if (key == BoxType.TopLeft || key == BoxType.TopRight)
-        //                    {
-        //                        PickedBox = key;
-        //                    }
+            }
 
-        //                }
-
-        //                if (currentBox == BoxType.TopBox)
-        //                {
-        //                    // only possible boxes are bot left bot right
-        //                    if (key == BoxType.BottomLeft || key == BoxType.BottomRight)
-        //                    {
-        //                        PickedBox = key;
-        //                    }
-        //                }
-
-        //                if (currentBox == BoxType.TopLeft)
-        //                {
-        //                    if (key == BoxType.TopRight || key == BoxType.BottomLeft || key == BoxType.BottomRight)
-        //                    {
-        //                        PickedBox = key;
-        //                    }
-
-        //                }
-
-        //                if (currentBox == BoxType.TopRight)
-        //                {
-        //                    if (key == BoxType.TopLeft || key == BoxType.BottomRight || key == BoxType.BottomLeft)
-        //                    {
-        //                        PickedBox = key;
-        //                    }
-
-        //                }
-
-        //                if (currentBox == BoxType.BottomLeft)
-        //                {
-        //                    if (key == BoxType.BottomRight || key == BoxType.TopLeft || key == BoxType.TopRight)
-        //                    {
-        //                        PickedBox = key;
-        //                    }
-
-        //                }
-
-        //                if (currentBox == BoxType.BottomRight)
-        //                {
-        //                    if (key == BoxType.BottomLeft || key == BoxType.TopLeft || key == BoxType.TopRight)
-        //                    {
-        //                        PickedBox = key;
-        //                    }
-
-        //                }
-
-        //            }
-
-        //            if (PickedBox != BoxType.None)
-        //            {
-        //                // pick a meme
-        //                Random pickRandomMeme = new();
-        //                int PickedMeme = pickRandomMeme.Next(Settings.Memes.Length);
-
-        //                //// write our chosen meme to Meme property
-        //                CopiedPicData.BoxParameters[numberOfBoxes].Meme = Settings.Memes[PickedMeme];
-
-        //                // set the type of output
-        //                CopiedPicData.OutPutType = OutputType.Dankness;
-
-        //                //DankifyTarget.Varieties.Add(CopiedPicData);
-        //            }
-
-        //        }
-        //    }
-        //    return CopiedPicData;
-        //}
+        }
 
     }
 
