@@ -28,7 +28,6 @@
     <EmbeddedResource Remove="output\**" />
     <EmbeddedResource Remove="text added\**" />
     <EmbeddedResource Remove="YTDL\**" />
-    <None Remove="Fonts\**" />
     <None Remove="logs\**" />
     <None Remove="output\**" />
     <None Remove="text added\**" />
