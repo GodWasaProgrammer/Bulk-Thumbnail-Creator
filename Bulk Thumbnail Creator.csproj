@@ -10,28 +10,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="BTC Blazor\**" />
-	  <Compile Remove="BTCBlazor\**" />
 	  <Compile Remove="Executables\**" />
-	  <Compile Remove="PicturesAndText\**" />
 	  <Compile Remove="WebUI\**" />
-	  <EmbeddedResource Remove="BTC Blazor\**" />
-	  <EmbeddedResource Remove="BTCBlazor\**" />
 	  <EmbeddedResource Remove="Executables\**" />
-	  <EmbeddedResource Remove="PicturesAndText\**" />
 	  <EmbeddedResource Remove="WebUI\**" />
-	  <None Remove="BTC Blazor\**" />
-	  <None Remove="BTCBlazor\**" />
 	  <None Remove="Executables\**" />
-	  <None Remove="PicturesAndText\**" />
 	  <None Remove="WebUI\**" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Content Remove="C:\Users\Björn\.nuget\packages\facerecognitiondotnet\1.3.0.7\build\..\runtimes\win-AnyCPU\native\DlibDotNetNativeDnnAgeClassification.dll" />
-	  <Content Remove="C:\Users\Björn\.nuget\packages\facerecognitiondotnet\1.3.0.7\build\..\runtimes\win-AnyCPU\native\DlibDotNetNativeDnnGenderClassification.dll" />
-	</ItemGroup>
-
+	
 	<ItemGroup>
 	  <PackageReference Include="FaceONNX" Version="3.0.0.2" />
 	  <PackageReference Include="Google.Apis.Webfonts.v1" Version="1.63.0.3030" />

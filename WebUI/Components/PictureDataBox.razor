@@ -51,11 +51,11 @@
 
                     <MudText Class="data-point">@($"Width of text box:")</MudText>
                     <MudText Class="data-value">@boxparam.WidthOfBox</MudText>
-                </MudItem>
+                    </MudItem>
                 <MudItem Class="horizontal-item">
                     <MudText Class="data-point">@($"Position Of text:")</MudText>
                     <MudText Class="data-value">@boxparam.PositionOfText</MudText>
-                </MudItem>
+                    </MudItem>
             }
         </MudContainer>
     </MudContainer>
@@ -120,6 +120,9 @@
         .picture-data-box .data-value {
             margin-left: 10px; /* Add margin between label and value */
             color: teal;
+            border: 2px solid green;
+            border-radius: 4px;
+            padding: 5px;
         }
 
 

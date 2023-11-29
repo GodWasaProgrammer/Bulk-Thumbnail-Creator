@@ -40,24 +40,7 @@
     <Content Remove="wwwroot\song.mp3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="avcodec-60.dll" />
-    <None Remove="avdevice-60.dll" />
-    <None Remove="avfilter-9.dll" />
-    <None Remove="avformat-60.dll" />
-    <None Remove="avutil-58.dll" />
-    <None Remove="ffmpeg.exe" />
-    <None Remove="ffplay.exe" />
-    <None Remove="ffprobe.exe" />
-    <None Remove="ListOfDownloadedVideos.xml" />
-    <None Remove="output.zip" />
-    <None Remove="postproc-57.dll" />
-    <None Remove="swresample-4.dll" />
-    <None Remove="swscale-7.dll" />
-    <None Remove="text added.zip" />
-    <None Remove="yt-dlp.exe" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <Folder Include="Data\" />
   </ItemGroup>
