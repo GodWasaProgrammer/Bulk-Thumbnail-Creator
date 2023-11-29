@@ -13,12 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Fonts\**" />
     <Compile Remove="logs\**" />
     <Compile Remove="output\**" />
     <Compile Remove="text added\**" />
     <Compile Remove="YTDL\**" />
-    <Content Remove="Fonts\**" />
     <Content Remove="logs\**" />
     <Content Remove="output\**" />
     <Content Remove="text added\**" />

@@ -363,28 +363,10 @@ MigrationBackup/
 FodyWeavers.xsd
 /WebUI/YTDL
 /WebUI/output
-/WebUI/Fonts
 /WebUI/wwwroot/song.mp3
-/WebUI/avcodec-60.dll
-/WebUI/avdevice-60.dll
-/WebUI/avfilter-9.dll
-/WebUI/avformat-60.dll
-/WebUI/avutil-58.dll
-/WebUI/ffmpeg.exe
-/WebUI/ffplay.exe
-/WebUI/ffprobe.exe
-/WebUI/postproc-57.dll
-/WebUI/swresample-4.dll
-/WebUI/swscale-7.dll
-/WebUI/yt-dlp.exe
-/ffmpeg.exe
 /WebUI/text added
 /Executables/old dlp
 /Executables
 /WebUI/Picturedatas.xml
-/WebUIoutput.zip
-/WebUI/text added.zip
-/WebUI/wwwroot/Sabaton - Ghost Division [HeHzqAv5yns].webm.zip
-/WebUI/wwwroot/Sabaton - Ghost Division [HeHzqAv5yns].webm.zip
 *.zip
 /WebUI/ListOfDownloadedVideos.xml
