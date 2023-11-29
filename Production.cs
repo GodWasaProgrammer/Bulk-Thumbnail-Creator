@@ -156,8 +156,6 @@ namespace Bulk_Thumbnail_Creator
 
         }
 
-        private static int counterRandomOutPut;
-
         /// <summary>
         /// Produces Picture using the ImageMagick Library
         /// </summary>
@@ -205,8 +203,8 @@ namespace Bulk_Thumbnail_Creator
             }
             if (PicData.OutPutType == OutputType.RandomVariety)
             {
-                counterRandomOutPut++;
-                OutputPath += $"{varietyof}{imageName}//{counterRandomOutPut}.png";
+                Guid guid = Guid.NewGuid();
+                OutputPath += $"{varietyof}{imageName}//{guid}.png";
                 PicData.OutPath = OutputPath;
             }
             if (PicData.OutPutType == OutputType.Dankness)
