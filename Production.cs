@@ -1,12 +1,11 @@
-﻿using ImageMagick;
+﻿using Bulk_Thumbnail_Creator.Enums;
+using Bulk_Thumbnail_Creator.PictureObjects;
+using ImageMagick;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using YoutubeDLSharp;
-using System.Drawing;
-using Bulk_Thumbnail_Creator.Enums;
-using Bulk_Thumbnail_Creator.PictureObjects;
-using System.Reflection;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -254,7 +253,7 @@ namespace Bulk_Thumbnail_Creator
 
                     // Add the caption layer on top of the background image
 
-                    Settings.LogService.LogInformation($"Picture:{Path.GetFileName(PicData.FileName)}Box Type:{PicData.BoxParameters[Box].CurrentBox} Box: {Box + 1} of {PicData.BoxParameters.Count} has been composited");
+                    Settings.LogService.LogInformation($"Picture:{Path.GetFileName(PicData.FileName)}Box Type:{PicData.BoxParameters[Box].CurrentBox.Type} Box: {Box + 1} of {PicData.BoxParameters.Count} has been composited");
                 }
 
             }

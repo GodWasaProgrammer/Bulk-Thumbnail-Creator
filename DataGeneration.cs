@@ -3,11 +3,9 @@ using Bulk_Thumbnail_Creator.PictureObjects;
 using ImageMagick;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using UMapx.Imaging;
 
 namespace Bulk_Thumbnail_Creator
 {
