@@ -298,8 +298,6 @@ namespace Bulk_Thumbnail_Creator
                 parameters.Boxes.Add(PassBox);
             }
 
-            // parameters.Boxes = Boxes;
-
             // boxes that we will pick from after calcs done
             List<BoxType> FreeBoxes = Boxes.Keys.ToList();
 
@@ -375,6 +373,8 @@ namespace Bulk_Thumbnail_Creator
 
                 box.X = pickedBoxRectangle.X;
                 box.Y = pickedBoxRectangle.Y;
+                box.Width = pickedBoxRectangle.Width;
+                box.Height = pickedBoxRectangle.Height;
                 box.Rectangle = pickedBoxRectangle;
                 box.Type = pickedBoxName;
 

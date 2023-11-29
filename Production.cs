@@ -232,7 +232,7 @@ namespace Bulk_Thumbnail_Creator
                     ParamForTextCreation BoxParam = PicData.BoxParameters[Box];
                     PicData.MakeTextSettings(PicData.BoxParameters[Box]);
 
-                    if (BoxParam.Meme != null)
+                    if (PicData.OutPutType == OutputType.Dankness)
                     {
                         using MagickImage meme = new(BoxParam.Meme);
                         meme.Resize(BoxParam.CurrentBox.Width, BoxParam.CurrentBox.Height);
@@ -240,6 +240,7 @@ namespace Bulk_Thumbnail_Creator
                     }
                     else
                     {
+                        // Add the caption layer on top of the background image
                         using var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);
 
                         int takeX = BoxParam.CurrentBox.X;
@@ -248,8 +249,6 @@ namespace Bulk_Thumbnail_Creator
 
                         outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
                     }
-
-                    // Add the caption layer on top of the background image
 
                     Settings.LogService.LogInformation($"Picture:{Path.GetFileName(PicData.FileName)}Box Type:{PicData.BoxParameters[Box].CurrentBox.Type} Box: {Box + 1} of {PicData.BoxParameters.Count} has been composited");
                 }
