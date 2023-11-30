@@ -185,7 +185,6 @@ namespace Bulk_Thumbnail_Creator
             if (PicData.OutPutType == OutputType.BoxPositionVariety)
             {
                 Guid guid = Guid.NewGuid();
-
                 OutputPath += $"{varietyof}{imageName}//{guid}.png";
                 PicData.OutPath = OutputPath;
             }
@@ -234,9 +233,18 @@ namespace Bulk_Thumbnail_Creator
 
                     if (PicData.OutPutType == OutputType.Dankness)
                     {
+                        if (PicData.BoxParameters[Box].Meme != null)
+                        {
                         using MagickImage meme = new(BoxParam.Meme);
                         meme.Resize(BoxParam.CurrentBox.Width, BoxParam.CurrentBox.Height);
                         outputImage.Composite(meme, BoxParam.CurrentBox.X, BoxParam.CurrentBox.Y, CompositeOperator.Over);
+                            
+                        }
+                        else
+                        {
+                            Settings.LogService.LogError("Meme was null");
+                        }
+
                     }
                     else
                     {

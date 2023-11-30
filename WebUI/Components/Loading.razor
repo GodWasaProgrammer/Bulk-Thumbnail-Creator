@@ -1,11 +1,20 @@
 ﻿@using Bulk_Thumbnail_Creator.Interfaces;
 @inject ILogService Logger
 
+@* @if (IsInitialized)
+{
+    <p>Component is initialized.</p>
+}
+else
+{
+    <p>Component is not initialized.</p>
+} *@
+
 @if (processing)
 {
     <MudContainer>
     <MudPaper Elevation="4" Class="p-4">
-        @foreach(var entry in LogEntries.TakeLast(5))
+        @foreach(var entry in LogEntries.TakeLast(1))
         {
             <MudTextField  AdornmentIcon="" Label="Log Entry" Multiline="true" Variant="Variant.Filled" FullWidth="true" ReadOnly="true" Value="@entry"/>
         }
@@ -14,6 +23,8 @@
 }
 
 @code {
+    private bool IsInitialized { get; set; } = false;
+
     [Parameter]
     public bool processing { get; set; }
 
@@ -22,11 +33,12 @@
     protected override void OnInitialized()
     {
         Logger.LogEntryAdded += OnLogEntryAdded;
+        IsInitialized = true;
     }
 
-    private async void OnLogEntryAdded(string logEntry)
+    private void OnLogEntryAdded(string logEntry)
     {
         LogEntries.Add(logEntry);
-        await InvokeAsync(() => StateHasChanged());
+        InvokeAsync(() => StateHasChanged());
     }
 }

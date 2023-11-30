@@ -41,7 +41,7 @@ namespace Bulk_Thumbnail_Creator.Services
             string parentfilename = Path.GetFileName(PicToVarietize.FileName);
             string varietyof = "variety of";
             string ConcatenatedString = $"{Settings.TextAddedDir}/{varietyof} {parentfilename}";
-            string[] ArrayOfFilePaths = await Task.Run(() => Directory.GetFiles(ConcatenatedString, "*.png"));
+            string[] ArrayOfFilePaths =  Directory.GetFiles(ConcatenatedString, "*.png");
 
             foreach (string filepath in ArrayOfFilePaths)
             {
@@ -73,7 +73,7 @@ namespace Bulk_Thumbnail_Creator.Services
         }
 
 
-        public async Task<PictureData> SetPictureDataImageDisplayCorrelation(string imageUrl)
+        public Task<PictureData> SetPictureDataImageDisplayCorrelation(string imageUrl)
         {
             PictureData PicData = new();
 
@@ -86,7 +86,7 @@ namespace Bulk_Thumbnail_Creator.Services
                     break;
                 }
             }
-            return PicData;
+            return Task.FromResult(PicData);
         }
 
         public PictureData SetPictureDataImageDisplayCorrelationForVarietyList(string imageUrl)

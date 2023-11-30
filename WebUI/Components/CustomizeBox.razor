@@ -26,14 +26,9 @@
 
     <MudSelect AdornmentColor="Color.Primary" Label="Select an output box" @bind-Value="PickedBox">
 
-        @foreach(var box in CurrentPagePictureData.BoxParameters)
+        @foreach(var box in CurrentPagePictureData.Boxes)
         {
-            <MudSelectItem Value="@box.CurrentBox"><MudText Color="Color.Secondary">@box.CurrentBox</MudText></MudSelectItem>
-        @* @foreach (var key in box.Boxes.Keys)
-        {
-            var value = box.Boxes[key];
-            <MudSelectItem Value="@key"><MudText Color="Color.Secondary">@key</MudText></MudSelectItem>
-        } *@
+            <MudSelectItem Value="@box.Type"><MudText Color="Color.Secondary">@box.Type</MudText></MudSelectItem>
         }
 
     </MudSelect>

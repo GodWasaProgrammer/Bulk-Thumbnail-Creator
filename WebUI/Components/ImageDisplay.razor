@@ -4,7 +4,7 @@
 @using Bulk_Thumbnail_Creator.PictureObjects
 @using Bulk_Thumbnail_Creator.Services
 
-<Loading processing="@processing"></Loading>
+<Loading processing="true"></Loading>
 
 @if (IMGDetailClicked == false)
 {
@@ -20,10 +20,9 @@
     }
 }
 
-@if (VarietyDone)
-{
+
         <VarietyDisplay ParentPictureProp="picdata" VarietyUrls="VarietyUrls"></VarietyDisplay>
-}
+
 
 @code
 {
@@ -76,18 +75,14 @@
     private async Task ShowImageDetail(string imageToDisplayVarietyOf)
     {
         IMGDetailClicked = true;
-
         processing = true;
+        await InvokeAsync(() => StateHasChanged());
 
         picdata = await PicDataService.SetPictureDataImageDisplayCorrelation(imageToDisplayVarietyOf);
-
         VarietyUrls = await PicDataService.CreatePictureDataVariety(picdata);
-
         VarietyDone = true;
 
         processing = false;
-
-        StateHasChanged();
     }
 
 }
