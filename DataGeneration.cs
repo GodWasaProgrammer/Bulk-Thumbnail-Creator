@@ -569,15 +569,15 @@ namespace Bulk_Thumbnail_Creator
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="DankifyTarget"></param>
-        public static void GenMemePosition(PictureData DankifyTarget)
+        /// <param name="PicDataTarget"></param>
+        public static void GenMemePosition(PictureData PicDataTarget)
         {
-            PictureData CopiedPicData = new(DankifyTarget);
+            PictureData CopiedPicData = new(PicDataTarget);
             CopiedPicData.Varieties.Clear();
 
-            for (int IndexofCurrentBoxes = 0; IndexofCurrentBoxes < DankifyTarget.NumberOfBoxes; IndexofCurrentBoxes++)
+            for (int IndexofCurrentBoxes = 0; IndexofCurrentBoxes < PicDataTarget.NumberOfBoxes; IndexofCurrentBoxes++)
             {
-                List<BoxType> availableBoxesList = DankifyTarget.BoxParameters[IndexofCurrentBoxes].BoxesWithNoFaceIntersect;
+                List<BoxType> availableBoxesList = PicDataTarget.BoxParameters[IndexofCurrentBoxes].BoxesWithNoFaceIntersect;
 
                 BoxType currentBox = CopiedPicData.BoxParameters[IndexofCurrentBoxes].CurrentBox.Type;
 
@@ -604,7 +604,7 @@ namespace Bulk_Thumbnail_Creator
                     // set the type of output
                     CopiedPicData.OutPutType = OutputType.Dankness;
 
-                    DankifyTarget.Varieties.Add(CopiedPicData);
+                    PicDataTarget.Varieties.Add(CopiedPicData);
                 }
 
             }

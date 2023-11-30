@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.IO;
-using Bulk_Thumbnail_Creator.Enums;
-using Bulk_Thumbnail_Creator.PictureObjects;
+﻿using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.Interfaces;
-using Bulk_Thumbnail_Creator.Serialization;
+using Bulk_Thumbnail_Creator.PictureObjects;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Bulk_Thumbnail_Creator.Services
 {
@@ -60,7 +59,6 @@ namespace Bulk_Thumbnail_Creator.Services
             for (int BoxParam = 0; BoxParam < PicToCustomize.BoxParameters.Count; BoxParam++)
             {
                 PicToCustomize.BoxParameters[BoxParam].CurrentBox = PickedBox;
-                // PicToCustomize.Dankbox = DankBox;
                 PicToCustomize.BoxParameters[BoxParam].Font = PickedFont;
                 PicToCustomize.BoxParameters[BoxParam].BorderColor.SetByHSL(Borderhue, Bordersat, BorderLum);
                 PicToCustomize.BoxParameters[BoxParam].FillColor.SetByHSL(FillCLRHue, FillCLRSat, FillCLRLum);
@@ -74,7 +72,8 @@ namespace Bulk_Thumbnail_Creator.Services
             return PicToCustomize;
         }
 
-        public PictureData SetPictureDataImageDisplayCorrelation(string imageUrl)
+
+        public async Task<PictureData> SetPictureDataImageDisplayCorrelation(string imageUrl)
         {
             PictureData PicData = new();
 

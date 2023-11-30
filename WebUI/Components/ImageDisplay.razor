@@ -27,8 +27,6 @@
 
 @code
 {
-    private string imgURL;
-
     private List<string> imageUrls;
 
     private List<string> VarietyUrls;
@@ -75,13 +73,13 @@
 
     private PictureData picdata = new();
 
-    private async void ShowImageDetail(string imageToDisplayVarietyOf)
+    private async Task ShowImageDetail(string imageToDisplayVarietyOf)
     {
         IMGDetailClicked = true;
 
         processing = true;
 
-        picdata = PicDataService.SetPictureDataImageDisplayCorrelation(imageToDisplayVarietyOf);
+        picdata = await PicDataService.SetPictureDataImageDisplayCorrelation(imageToDisplayVarietyOf);
 
         VarietyUrls = await PicDataService.CreatePictureDataVariety(picdata);
 

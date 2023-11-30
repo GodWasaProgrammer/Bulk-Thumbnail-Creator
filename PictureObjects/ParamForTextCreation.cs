@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Bulk_Thumbnail_Creator.Enums;
+using System.Collections.Generic;
 using System.Drawing;
-using System.Xml.Serialization;
-using Bulk_Thumbnail_Creator.Enums;
 
 namespace Bulk_Thumbnail_Creator.PictureObjects
 {
