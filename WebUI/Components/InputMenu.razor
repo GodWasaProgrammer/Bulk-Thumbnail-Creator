@@ -21,7 +21,7 @@
         <MudTextField Label="Text To Print 1" Variant="Variant.Filled" @bind-Value="TextToPrint1" />
         <MudTextField Label="Text To Print 2" Variant="Variant.Filled" @bind-Value="TextToPrint2" />
         <MudTextField Label="Text To Print 3" Variant="Variant.Filled" @bind-Value="TextToPrint3" />
-        <MudButton OnClick="AwaitBTC" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
+        <MudButton OnClick="() => AwaitBTC()" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
     </MudContainer>
 
     @if (passedNull)
@@ -33,6 +33,8 @@
 
 @code
 {
+
+
     public List<string> DownloadedVideosList { get; set; }
 
     private string TextToPrint1 = "Good Ole Rambler try!";
