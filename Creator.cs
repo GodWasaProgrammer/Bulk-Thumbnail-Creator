@@ -11,7 +11,36 @@ namespace Bulk_Thumbnail_Creator
 {
     public class Creator
     {
+        /// <summary>
+        /// Mocking version of Process for debugging and testing
+        /// </summary>
+        /// <param name="prodtype"></param>
+        /// <param name="url"></param>
+        /// <param name="texts"></param>
+        /// <param name="picdatatoMock"></param>
+        /// <returns></returns>
+        public static async Task<List<PictureData>> MockProcess(ProductionType prodtype, string url, List<string> texts, PictureData picdatatoMock)
+        {
+            Settings.ListOfText = texts;
 
+            if (prodtype == ProductionType.FrontPagePictureLineUp)
+            {
+                // pretend to make line up
+            }
+
+            if (prodtype == ProductionType.VarietyList)
+            {
+                // fake variety list
+            }
+
+            if (prodtype == ProductionType.CustomPicture)
+            {
+                // mock custom pic 
+            }
+
+
+            return null;
+        }
         public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, PictureData PicdataObjToVarietize = null)
         {
             Settings.ListOfText = texts;
