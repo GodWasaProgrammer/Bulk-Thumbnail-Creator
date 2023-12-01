@@ -169,17 +169,16 @@ namespace Bulk_Thumbnail_Creator
                 }
 
                 // actual file output
-                Parallel.For(0, Settings.PictureDatas.Count, i =>
+                for(int i = 0; i < Settings.PictureDatas.Count; i++)
                 {
                     string PicObjPath = Settings.PictureDatas[i].FileName;
 
                     if (!Settings.DiscardedBecauseTooMuchFacePictureData.Contains(PicObjPath))
                     {
-                        Production.ProduceTextPictures(Settings.PictureDatas[i]);
+                       await Production.ProduceTextPictures(Settings.PictureDatas[i]);
                     }
 
                 }
-                );
 
             }
             #endregion
@@ -193,14 +192,10 @@ namespace Bulk_Thumbnail_Creator
                 }
                 else
                 {
-                    Parallel.For(0, PicdataObjToVarietize.Varieties.Count, i =>
+                    for (int i = 0; i < PicdataObjToVarietize.Varieties.Count; i++)
                     {
-                        Production.ProduceTextPictures(PicdataObjToVarietize.Varieties[i]);
-                    });
-                    //for (int i = 0; i < PicdataObjToVarietize.Varieties.Count; i++)
-                    //{
-                    //    Production.ProduceTextPictures(PicdataObjToVarietize.Varieties[i]);
-                    //}
+                        await Production.ProduceTextPictures(PicdataObjToVarietize.Varieties[i]);
+                    }
 
                 }
 
@@ -218,7 +213,7 @@ namespace Bulk_Thumbnail_Creator
                 {
                     Bitmap srcpic = new(PicdataObjToVarietize.FileName);
 
-                    Production.ProduceTextPictures(PicdataObjToVarietize);
+                    await Production.ProduceTextPictures(PicdataObjToVarietize);
                     Settings.PictureDatas.Add(PicdataObjToVarietize);
                 }
 

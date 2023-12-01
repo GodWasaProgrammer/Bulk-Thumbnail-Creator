@@ -2,6 +2,8 @@
 @inject Bulk_Thumbnail_Creator.Services.PicDataService ds;
 @inject ILogService logger;
 
+<Loading processing="@Loading" />
+
 @if (DisableMenu == false)
 {
     @if (DownloadedVideosList != null)
@@ -33,8 +35,6 @@
 
 @code
 {
-
-
     public List<string> DownloadedVideosList { get; set; }
 
     private string TextToPrint1 = "Good Ole Rambler try!";
@@ -46,7 +46,6 @@
         List<string> ListOfTextToPrint = new() { TextToPrint1, TextToPrint2, TextToPrint3 };
 
         await ds.CreateInitialPictureArrayAsync(url, ListOfTextToPrint);
-
     }
 
     private bool DisableMenu;
@@ -57,7 +56,7 @@
     [Parameter]
     public Action<bool> returnStateUpdate { get; set; }
 
-    private async void AwaitBTC()
+    private async Task AwaitBTC()
     {
         string url = textInput;
 
@@ -71,9 +70,11 @@
             Loading = true;
             DisableMenu = true;
             await CallBTC(url);
-            returnStateUpdate(DisableMenu);
             Loading = false;
-            StateHasChanged();
+
+            returnStateUpdate(DisableMenu);
+
+            await InvokeAsync(() => StateHasChanged());
         }
 
     }

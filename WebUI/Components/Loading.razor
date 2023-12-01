@@ -13,7 +13,7 @@ else
 @if (processing)
 {
     <MudContainer>
-    <MudPaper Elevation="4" Class="p-4">
+    <MudPaper Elevation="4" Class="small">
         @foreach(var entry in LogEntries.TakeLast(1))
         {
             <MudTextField  AdornmentIcon="" Label="Log Entry" Multiline="true" Variant="Variant.Filled" FullWidth="true" ReadOnly="true" Value="@entry"/>

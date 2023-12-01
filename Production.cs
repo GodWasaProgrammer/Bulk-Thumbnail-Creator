@@ -160,7 +160,7 @@ namespace Bulk_Thumbnail_Creator
         /// Produces Picture using the ImageMagick Library
         /// </summary>
         /// <param name="PicData">PictureDataObject Containing everything needed to create an image</param>
-        public static void ProduceTextPictures(PictureData PicData)
+        public static async Task ProduceTextPictures(PictureData PicData)
         {
             string imageName;
             string OutputPath = Path.GetFullPath(Settings.TextAddedDir);
@@ -266,7 +266,7 @@ namespace Bulk_Thumbnail_Creator
             outputImage.Quality = 100;
 
             // outputs the file to the provided path and name
-            outputImage.Write(OutputPath);
+            await Task.Run(() => outputImage.Write(OutputPath));
             Settings.LogService.LogInformation($"File Created: {OutputPath}");
         }
 

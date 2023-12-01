@@ -4,30 +4,24 @@
 @using Bulk_Thumbnail_Creator.PictureObjects
 @using Bulk_Thumbnail_Creator.Services
 
-<Loading processing="true"></Loading>
-
-@if (IMGDetailClicked == false)
+@if (IMGDetailClicked == false && imageUrls != null)
 {
-    @if (imageUrls != null)
+    @foreach (var imageUrl in imageUrls)
     {
-        @foreach (var imageUrl in imageUrls)
-        {
-            <MudButton class="image-button" @onclick="@(e => ShowImageDetail(imageUrl))">
-                <img src="@imageUrl" style="max-width: 300px; margin: 10px;" />
-            </MudButton>
-
-        }
+        <MudButton class="image-button" @onclick="@(e => ShowImageDetail(imageUrl))">
+            <MudImage src="@imageUrl" style="max-width: 300px; margin: 10px;" />
+        </MudButton>
 
     }
 }
-
-        <VarietyDisplay ParentPictureProp="picdata" VarietyUrls="VarietyUrls"></VarietyDisplay>
+else
+{
+    <VarietyDisplay ParentPictureProp="picdata" VarietyUrls="VarietyUrls"></VarietyDisplay>
+}
 
 @code
 {
     private List<string> imageUrls;
-
-    private string chosenIMG;
 
     private List<string> VarietyUrls;
 
@@ -38,11 +32,6 @@
     protected override async Task OnInitializedAsync()
     {
         await UpdateImageUrls();
-    }
-
-    public static void SetCurrentObject()
-    {
-
     }
 
     /// <summary>
@@ -66,13 +55,11 @@
             imageUrls.Add(imageUrl);
         }
 
-        // Notify the component that the state has changed
-        StateHasChanged();
+        // Update the UI
+        await InvokeAsync(() => StateHasChanged());
     }
 
     private bool IMGDetailClicked = false;
-
-    private bool processing = false;
 
     private bool VarietyDone = false;
 
@@ -81,14 +68,13 @@
     private async Task ShowImageDetail(string imageToDisplayVarietyOf)
     {
         IMGDetailClicked = true;
-        processing = true;
         await InvokeAsync(() => StateHasChanged());
 
         picdata = await PicDataService.SetPictureDataImageDisplayCorrelation(imageToDisplayVarietyOf);
-        VarietyUrls = await PicDataService.CreatePictureDataVariety(picdata);
-        VarietyDone = true;
 
-        processing = false;
+        VarietyUrls = await PicDataService.CreatePictureDataVariety(picdata);
+
+        VarietyDone = true;
     }
 
 }
