@@ -12,9 +12,10 @@
     {
         @foreach (var imageUrl in imageUrls)
         {
-            <MudButton class="image-button" OnClick="ShowImageDetail">
+            <MudButton class="image-button" @onclick="@(e => ShowImageDetail(imageUrl))">
                 <img src="@imageUrl" style="max-width: 300px; margin: 10px;" />
             </MudButton>
+
         }
 
     }
@@ -77,9 +78,8 @@
 
     private PictureData picdata = new();
 
-    private async Task ShowImageDetail()
+    private async Task ShowImageDetail(string imageToDisplayVarietyOf)
     {
-        string imageToDisplayVarietyOf = imageUrls[0];
         IMGDetailClicked = true;
         processing = true;
         await InvokeAsync(() => StateHasChanged());

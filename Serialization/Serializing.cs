@@ -1,7 +1,6 @@
 ﻿using Bulk_Thumbnail_Creator.PictureObjects;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Xml.Serialization;
 
@@ -9,24 +8,24 @@ namespace Bulk_Thumbnail_Creator.Serialization
 {
     public class Serializing
     {
-        // Serialize PictureData object to XML
-        //public static void SerializePictureData(TextWriter writer, PictureData pictureData)
-        //{
-        //    try
-        //    {
-        //        XmlSerializer serializer = new(typeof(PictureData));
-        //        serializer.Serialize(writer, pictureData);
+        //Serialize PictureData object to XML
+        public static void SerializePictureData(TextWriter writer, PictureData pictureData)
+        {
+            try
+            {
+                XmlSerializer serializer = new(typeof(PictureData));
+                serializer.Serialize(writer, pictureData);
 
-        //        // Serialize ParamForTextCreation dictionary
-        //        DictionarySerializer.Serialize(writer, pictureData.ParamForTextCreation.BoxesProxy);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Handle the exception, log it
-        //        Settings.LogService.LogError("Error during serialization: " + ex.Message);
-        //    }
+                //// Serialize ParamForTextCreation dictionary
+                //DictionarySerializer.Serialize(writer, pictureData.ParamForTextCreation.BoxesProxy);
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception, log it
+                Settings.LogService.LogError("Error during serialization: " + ex.Message);
+            }
 
-        //}
+        }
 
         // Deserialize PictureData object from XML
         public static PictureData DeserializePictureData(TextReader reader)
@@ -35,12 +34,6 @@ namespace Bulk_Thumbnail_Creator.Serialization
             {
                 XmlSerializer serializer = new(typeof(PictureData));
                 PictureData pictureData = (PictureData)serializer.Deserialize(reader);
-
-                // Deserialize ParamForTextCreation dictionary 
-                Dictionary<string, Rectangle> boxes = new();
-                //DictionarySerializer.Deserialize(reader, pictureData.ParamForTextCreation.BoxesProxy);
-
-                // Rest of your deserialization code
 
                 return pictureData;
             }

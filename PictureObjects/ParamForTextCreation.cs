@@ -6,25 +6,6 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
 {
     public class ParamForTextCreation
     {
-        //[XmlIgnore]
-        //private Serialization.SerializableDictionary<BoxType, Rectangle> _BoxesProxy = new();
-        //[XmlIgnore]
-        //public Serialization.SerializableDictionary<BoxType, Rectangle> BoxesProxy
-        //{
-        //    get
-        //    {
-        //        foreach (var kvp in Boxes)
-        //        {
-        //            _BoxesProxy.Add(kvp.Key, kvp.Value);
-        //        }
-        //        return _BoxesProxy;
-        //    }
-        //    set
-        //    {
-        //        _BoxesProxy = value;
-        //    }
-        //}
-
         private string _Meme;
         public string Meme { get { return _Meme; } set { _Meme = value; } }
 
