@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using FaceONNX;
 using System.Drawing;
 using Bulk_Thumbnail_Creator.PictureObjects;
-using Bulk_Thumbnail_Creator.Serialization;
 using System.Xml.Serialization;
 using Serilog.Core;
 
@@ -119,7 +118,7 @@ namespace Bulk_Thumbnail_Creator
                 await FFmpegHandler.RunFFMPG(parameters, pictureOutput);
                 #endregion
 
-                Serializing.SerializeListOfStringsToXML(Settings.PathToXMLListOfDownloadedVideos, Settings.DownloadedVideosList);
+                //Serializing.SerializeListOfStringsToXML(Settings.PathToXMLListOfDownloadedVideos, Settings.DownloadedVideosList);
 
                 Settings.Files = Directory.GetFiles(Settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
