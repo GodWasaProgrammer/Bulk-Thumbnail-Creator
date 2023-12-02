@@ -370,3 +370,5 @@ FodyWeavers.xsd
 /WebUI/Picturedatas.xml
 *.zip
 /WebUI/ListOfDownloadedVideos.xml
+/Mocking/FrontpagePictureLineUp
+*.xml
