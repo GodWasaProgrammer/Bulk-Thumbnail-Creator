@@ -6,6 +6,8 @@ using FaceONNX;
 using System.Drawing;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using Bulk_Thumbnail_Creator.Serialization;
+using System.Xml.Serialization;
+using Serilog.Core;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -19,7 +21,7 @@ namespace Bulk_Thumbnail_Creator
         /// <param name="texts"></param>
         /// <param name="picdatatoMock"></param>
         /// <returns></returns>
-        public static async Task<List<PictureData>> MockProcess(ProductionType prodtype, string url, List<string> texts, PictureData picdatatoMock)
+        public static async Task<List<PictureData>> MockProcess(ProductionType prodtype, string url, List<string> texts, PictureData picdatatoMock = null)
         {
             Settings.ListOfText = texts;
 
@@ -27,10 +29,32 @@ namespace Bulk_Thumbnail_Creator
             {
                 // pretend to make line up
 
-                // copy pictures to text added dir
 
-                // read xml of picdata objects
-                // feed that to picdataservice
+                // copy pictures to text added dir
+                string sourceDirectory = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "text added");
+
+                string[] files = Directory.GetFiles(sourceDirectory);
+
+                foreach (string file in files)
+                {
+                    await Task.Run(() => File.Copy(file, $"{Settings.TextAddedDir}/{Path.GetFileName(file)}"));
+                }
+
+                string srcXml = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp");
+                srcXml = Path.Combine(srcXml, "mockFP.xml");
+
+                List<PictureData> deserializedList;
+
+                // Create a XmlSerializer for the list of PictureData
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<PictureData>));
+
+                using (StreamReader streamReader = new StreamReader(srcXml))
+                {
+                    deserializedList = (List<PictureData>)xmlSerializer.Deserialize(streamReader);
+                }
+                // add the deserialized list to the PictureDatas list
+                // this completes the mocking of the process
+                 Settings.PictureDatas = deserializedList;
             }
 
             if (prodtype == ProductionType.VarietyList)
@@ -51,8 +75,9 @@ namespace Bulk_Thumbnail_Creator
             }
 
 
-            return null;
+            return Settings.PictureDatas;
         }
+
         public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, PictureData PicdataObjToVarietize = null)
         {
             Settings.ListOfText = texts;
@@ -126,6 +151,7 @@ namespace Bulk_Thumbnail_Creator
                             Width = faceDetectRes[i].Rectangle.Width,
                             Height = faceDetectRes[i].Rectangle.Height
                         };
+
                     }
 
                     DataGeneration.DecideIfTooMuchFace(file, PicToDetectFacesOn, facesRectArray);
@@ -180,18 +206,21 @@ namespace Bulk_Thumbnail_Creator
                 }
 
                 // actual file output
-                for(int i = 0; i < Settings.PictureDatas.Count; i++)
+                for (int i = 0; i < Settings.PictureDatas.Count; i++)
                 {
                     string PicObjPath = Settings.PictureDatas[i].FileName;
 
                     if (!Settings.DiscardedBecauseTooMuchFacePictureData.Contains(PicObjPath))
                     {
-                       await Production.ProduceTextPictures(Settings.PictureDatas[i]);
+                        await Production.ProduceTextPictures(Settings.PictureDatas[i]);
                     }
 
                 }
 
             }
+
+
+
             #endregion
 
             #region Variety Picture Output
@@ -241,16 +270,39 @@ namespace Bulk_Thumbnail_Creator
 
             #region Picdata serialization
 
-            //using (StreamWriter streamWriter = new("Picturedatas.xml"))
-            //{
-            //    foreach (var PictureData in BTCSettings.PictureDatas)
-            //    {
-            //        Serializing.SerializePictureData(streamWriter, PictureData);
 
-            //    }
-            //    BTCSettings.Logger.LogInformation("PictureDatas.xml Serialized from PictureData");
-            //}
+            XmlSerializer xmlSerializer2 = new XmlSerializer(typeof(List<PictureData>));
 
+            // Open the file for writing or create a new one if it doesn't exist
+            using (StreamWriter streamWriter = new StreamWriter("mockFP.xml"))
+            {
+                // Serialize the entire list at once
+                xmlSerializer2.Serialize(streamWriter, Settings.PictureDatas);
+            }
+            Settings.LogService.LogInformation("Settings.PictureDatas Serialized to mockFP.xml");
+
+            string mockDir = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "mockFP.xml");
+            File.Copy("mockFP.xml", mockDir,true);
+
+            // clean up the text added dir of mockfolder
+            string mockdir3 = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "text added");
+
+            DirectoryInfo di3 = new(mockdir3);
+
+            foreach (FileInfo file in di3.GetFiles())
+            {
+                file.Delete();
+            }
+
+            string mockdir2 = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "text added");
+
+            string[] Mockfiles = Directory.GetFiles(Settings.TextAddedDir);
+
+            foreach (string file in Mockfiles)
+            {
+                File.Copy(file, $"{mockdir2}/{Path.GetFileName(file)}", true);
+            }
+            
             Settings.LogService.LogInformation("Processing Finished");
             return Settings.PictureDatas;
         }

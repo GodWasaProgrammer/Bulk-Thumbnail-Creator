@@ -4,6 +4,7 @@ using Bulk_Thumbnail_Creator.PictureObjects;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Bulk_Thumbnail_Creator.Services
 {
@@ -24,8 +25,16 @@ namespace Bulk_Thumbnail_Creator.Services
         public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint)
         {
             ProductionType ProdType = ProductionType.FrontPagePictureLineUp;
-            PicDataServiceList = await Creator.Process(ProdType, url, ListOfTextToPrint);
             TextToPrint = ListOfTextToPrint;
+
+            if (Settings.Mocking == true)
+            {
+                await Creator.MockProcess(ProdType, url, ListOfTextToPrint);
+            }
+            else
+            {
+                PicDataServiceList = await Creator.Process(ProdType, url, ListOfTextToPrint);
+            }
         }
 
         public async Task<List<string>> CreatePictureDataVariety(PictureData PicToVarietize)
@@ -41,7 +50,7 @@ namespace Bulk_Thumbnail_Creator.Services
             string parentfilename = Path.GetFileName(PicToVarietize.FileName);
             string varietyof = "variety of";
             string ConcatenatedString = $"{Settings.TextAddedDir}/{varietyof} {parentfilename}";
-            string[] ArrayOfFilePaths =  Directory.GetFiles(ConcatenatedString, "*.png");
+            string[] ArrayOfFilePaths = Directory.GetFiles(ConcatenatedString, "*.png");
 
             foreach (string filepath in ArrayOfFilePaths)
             {

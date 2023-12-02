@@ -2,6 +2,7 @@
 using ImageMagick;
 using System.Collections.Generic;
 using System;
+using System.Xml.Serialization;
 
 namespace Bulk_Thumbnail_Creator.PictureObjects
 {
@@ -28,6 +29,8 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
         /// <summary>
         /// ImageMagick settings that belongs to this object, this is used to generate color/textsettings
         /// </summary>
+        /// 
+        [XmlIgnore]
         public MagickReadSettings ReadSettings { get;  private set; }
 
         public void MakeTextSettings(ParamForTextCreation Parameters)
@@ -38,6 +41,7 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
         /// <summary>
         /// List of varieties belonging to this image
         /// </summary>
+        /// 
         private List<PictureData> _Varieties = new();
         public List<PictureData> Varieties { get { return _Varieties; } set { _Varieties = value; } }
 

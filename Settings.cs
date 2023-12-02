@@ -1,13 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using Bulk_Thumbnail_Creator.Interfaces;
 using Bulk_Thumbnail_Creator.PictureObjects;
-using Bulk_Thumbnail_Creator.Interfaces;
-using Serilog.Core;
-using Bulk_Thumbnail_Creator.Services;
+using System.Collections.Generic;
 
 namespace Bulk_Thumbnail_Creator
 {
     public static class Settings
 	{
+		/// <summary>
+		/// Enables Mocking of the Process calls to the Creator class
+		/// true = Mocking
+		/// false = Production
+		private static bool _Mocking = true;
+		public static bool Mocking { get { return _Mocking; } set { _Mocking = value; } }
+
         public static ILogService LogService { get => logService; set => logService = value; }
 
         private static ILogService logService;
