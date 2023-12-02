@@ -29,7 +29,7 @@ namespace Bulk_Thumbnail_Creator.Services
 
             if (Settings.Mocking == true)
             {
-                await Creator.MockProcess(ProdType, url, ListOfTextToPrint);
+               PicDataServiceList = await Creator.MockProcess(ProdType, url, ListOfTextToPrint);
             }
             else
             {
@@ -43,7 +43,7 @@ namespace Bulk_Thumbnail_Creator.Services
 
             if (Settings.Mocking == true)
             {
-                await Creator.MockProcess(ProductionType.VarietyList, string.Empty, TextToPrint, PicToVarietize);
+                PicDataServiceList = await Creator.MockProcess(ProductionType.VarietyList, string.Empty, TextToPrint, PicToVarietize);
 
                 string parentfilename = Path.GetFileName(PicToVarietize.FileName);
 
@@ -116,15 +116,52 @@ namespace Bulk_Thumbnail_Creator.Services
         {
             PictureData PicData = new();
 
-            foreach (var item in PicDataServiceList)
+            if(Settings.Mocking == true)
             {
+                string DirToMockPicture = Path.Combine("..", "Mocking","FrontpagePictureLineUp", $"{Settings.TextAddedDir}");
 
-                if (Path.GetFileNameWithoutExtension(item.OutPath) == Path.GetFileNameWithoutExtension(imageUrl))
+                DirectoryInfo di = new DirectoryInfo(DirToMockPicture);
+
+                DirectoryInfo[] di2 = di.GetDirectories();
+
+                string MockCorrelation = "";
+
+                foreach (DirectoryInfo directory in di2)
                 {
-                    PicData = new PictureData(item);
-                    break;
+                    MockCorrelation = Path.GetFileName(directory.FullName);
+                }
+
+                foreach (var item in PicDataServiceList)
+                {
+                    string NumberOfPicture = Path.GetFileNameWithoutExtension(item.FileName);
+
+                    string NumberOfPicture2 = Path.GetFileNameWithoutExtension(MockCorrelation);
+
+                    string varof = "variety of ";
+
+                    NumberOfPicture2 = NumberOfPicture2.Remove(0, varof.Length);
+
+                    if (NumberOfPicture == NumberOfPicture2)
+                    {
+                        PicData = new PictureData(item);
+                        break;
+                    }
+                }
+
+            }
+            else
+            {
+                foreach (var item in PicDataServiceList)
+                {
+
+                    if (Path.GetFileNameWithoutExtension(item.OutPath) == Path.GetFileNameWithoutExtension(imageUrl))
+                    {
+                        PicData = new PictureData(item);
+                        break;
+                    }
                 }
             }
+
             return Task.FromResult(PicData);
         }
 
@@ -132,14 +169,46 @@ namespace Bulk_Thumbnail_Creator.Services
         {
             PictureData PicData = new();
 
-            foreach (var item in PicDataServiceList)
+            if (Settings.Mocking == true)
             {
-                foreach (PictureData variety in item.Varieties)
+                DirectoryInfo di = new DirectoryInfo(Settings.TextAddedDir);
+
+                DirectoryInfo[] di2 = di.GetDirectories();
+
+                string MockCorrelation = "";
+
+                foreach (DirectoryInfo directory in di2)
                 {
-                    if (Path.GetFileNameWithoutExtension(variety.OutPath) == Path.GetFileNameWithoutExtension(imageUrl))
+                    MockCorrelation = Path.GetFileName(directory.FullName);
+                }
+
+                foreach (var item in PicDataServiceList)
+                {
+                    foreach (PictureData variety in item.Varieties)
                     {
-                        PicData = new PictureData(variety);
-                        break;
+                        if (Path.GetFileNameWithoutExtension(variety.OutPath) == Path.GetFileNameWithoutExtension(MockCorrelation))
+                        {
+                            PicData = new PictureData(variety);
+                            break;
+                        }
+
+                    }
+
+                }
+
+            }
+            else
+            {
+                foreach (var item in PicDataServiceList)
+                {
+                    foreach (PictureData variety in item.Varieties)
+                    {
+                        if (Path.GetFileNameWithoutExtension(variety.OutPath) == Path.GetFileNameWithoutExtension(imageUrl))
+                        {
+                            PicData = new PictureData(variety);
+                            break;
+                        }
+
                     }
 
                 }
