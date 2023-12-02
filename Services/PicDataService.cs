@@ -39,23 +39,53 @@ namespace Bulk_Thumbnail_Creator.Services
 
         public async Task<List<string>> CreatePictureDataVariety(PictureData PicToVarietize)
         {
-            string url = string.Empty;
-
-            ProductionType ProdType = ProductionType.VarietyList;
-
-            PicDataServiceList = await Creator.Process(ProdType, url, TextToPrint, PicToVarietize);
-
             List<string> ImageUrls = new();
 
-            string parentfilename = Path.GetFileName(PicToVarietize.FileName);
-            string varietyof = "variety of";
-            string ConcatenatedString = $"{Settings.TextAddedDir}/{varietyof} {parentfilename}";
-            string[] ArrayOfFilePaths = Directory.GetFiles(ConcatenatedString, "*.png");
-
-            foreach (string filepath in ArrayOfFilePaths)
+            if (Settings.Mocking == true)
             {
-                string imageurl = $"/{filepath}"; // convert to URL
-                ImageUrls.Add(imageurl);
+                await Creator.MockProcess(ProductionType.VarietyList, string.Empty, TextToPrint, PicToVarietize);
+
+                string parentfilename = Path.GetFileName(PicToVarietize.FileName);
+
+                DirectoryInfo di = new DirectoryInfo(Settings.TextAddedDir);
+
+                DirectoryInfo[] di2 = di.GetDirectories();
+
+                foreach (DirectoryInfo di3 in di2)
+                {
+
+                }
+
+                string varietyof = "variety of";
+                string ConcatenatedString = $"{Settings.TextAddedDir}/{varietyof} {parentfilename}";
+                string[] ArrayOfFilePaths = Directory.GetFiles(ConcatenatedString, "*.png");
+
+                foreach (string filepath in ArrayOfFilePaths)
+                {
+                    string imageurl = $"/{filepath}"; // convert to URL
+                    ImageUrls.Add(imageurl);
+                }
+
+            }
+            else
+            {
+                string url = string.Empty;
+
+                ProductionType ProdType = ProductionType.VarietyList;
+
+                PicDataServiceList = await Creator.Process(ProdType, url, TextToPrint, PicToVarietize);
+
+                string parentfilename = Path.GetFileName(PicToVarietize.FileName);
+                string varietyof = "variety of";
+                string ConcatenatedString = $"{Settings.TextAddedDir}/{varietyof} {parentfilename}";
+                string[] ArrayOfFilePaths = Directory.GetFiles(ConcatenatedString, "*.png");
+
+                foreach (string filepath in ArrayOfFilePaths)
+                {
+                    string imageurl = $"/{filepath}"; // convert to URL
+                    ImageUrls.Add(imageurl);
+                }
+
             }
 
             return ImageUrls;
