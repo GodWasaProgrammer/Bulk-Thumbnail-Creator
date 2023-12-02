@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using RunProcessAsTask;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -9,7 +12,7 @@ namespace Bulk_Thumbnail_Creator
 		/// This runs the process of ffmpeg and feeds it with parameters for file extraction
 		/// </summary>
 		/// <param name="parameters"></param>
-		private static void ExecuteFFMPG(string parameters)
+		private static async Task ExecuteFFMPG(string parameters)
 		{
             Process processFFMpeg = new();
 
@@ -20,8 +23,20 @@ namespace Bulk_Thumbnail_Creator
 			processFFMpeg.StartInfo.CreateNoWindow = false;
 			processFFMpeg.StartInfo.RedirectStandardOutput = true;
 
-			processFFMpeg.Start();
-			processFFMpeg.WaitForExit();
+			bool ProcessStarted = processFFMpeg.Start();
+			
+			if (!ProcessStarted)
+			{
+                Settings.LogService.LogError("FFMpeg failed to start");
+                return;
+            }
+			else
+			{
+                Settings.LogService.LogInformation("FFMpeg started");
+            }
+
+			await Task.Run(() => processFFMpeg.WaitForExit());
+
 			Settings.LogService.LogInformation("Ffmpeg finished producing pictures");
 		}
 
@@ -30,7 +45,7 @@ namespace Bulk_Thumbnail_Creator
 		/// </summary>
 		/// <param name="parameters"></param>
 		/// <param name="outPath"></param>
-		public static void RunFFMPG(Dictionary<string,string> parameters, string outPath) 
+		public static async Task RunFFMPG(Dictionary<string,string> parameters, string outPath) 
 		{
 			var exePars = "";
 			foreach (var parameter in parameters) 
@@ -40,7 +55,7 @@ namespace Bulk_Thumbnail_Creator
 			}
 
 			exePars += outPath;
-			ExecuteFFMPG(exePars);
+			await ExecuteFFMPG(exePars);
 		}
 
 	}

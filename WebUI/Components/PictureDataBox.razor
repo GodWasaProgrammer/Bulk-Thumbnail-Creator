@@ -9,54 +9,65 @@
         <MudImage Src="@ImageURL" Style="max-width: 100%;" />
 
         <MudContainer Class="picture-data-box">
-            <MudGrid>
-                @foreach (var boxparam in PicData.BoxParameters)
-                {
-                    <MudGrid>
-                        <MudItem Class="horizontal-item">
-                            <MudText Class="data-point"> @($"Box Name: ")</MudText>
-                            <MudText Class="data-value">@($"{boxparam.CurrentBox.Type}")</MudText>
-                        </MudItem>
 
-                        <MudItem Class="horizontal-item">
-                            <MudText Class="data-point"> @("Current font name:")</MudText>
-                            <MudText Class="data-value">@($"{Path.GetFileName(boxparam.Font)}")</MudText>
-                        </MudItem>
-                    </MudGrid>
+            <MudGrid>
+
+                <MudItem>
+                    <div class="mb-1">
+                        <MudText Class="property-header"> Base output name: @Path.GetFileName(PicData.FileName) </MudText>
+                            <MudText Class="property-header"> Produced File: @Path.GetFileName(PicData.OutPath)</MudText>
+                        </div>
+                    </MudItem>
+
+                    @foreach (ParamForTextCreation boxParam in PicData.BoxParameters)
+                {
+                    <div class="row property-row">
+                        <div class="col-md-12">
+                            <div class="property-box">
+                                <MudItem>
+                                    <div class="mb-1">
+                                        <MudText Class="property-header"> Box : @boxParam.CurrentBox.Type </MudText>
+                                            <MudText Class="property-header"> Font : @boxParam.Font </MudText>
+                                        </div>
+                                    </MudItem>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <MudItem Class="property-box">
+                                                <div class="property-header">BorderColor</div>
+                                                <div class="mb-1">Hue:@boxParam.BorderColor.Hue</div>
+                                            <div class="mb-1">Saturation: @boxParam.BorderColor.Saturation</div>
+                                            <div class="mb-1">Luminance: @boxParam.BorderColor.Luminance</div>
+                                        </MudItem>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <MudItem Class="property-box">
+                                            <div class="property-header">FillColor</div>
+                                            <div class="mb-1">Hue: @boxParam.FillColor.Hue</div>
+                                            <div class="mb-1">Saturation: @boxParam.FillColor.Saturation</div>
+                                            <div class="mb-1">Luminance: @boxParam.FillColor.Luminance</div>
+                                        </MudItem>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <MudItem Class="property-box">
+                                            <div class="property-header">StrokeColor</div>
+                                            <div class="mb-1">Hue: @boxParam.StrokeColor.Hue</div>
+                                            <div class="mb-1">Saturation: @boxParam.StrokeColor.Saturation</div>
+                                            <div class="mb-1">Luminance: @boxParam.StrokeColor.Luminance</div>
+                                        </MudItem>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 }
-                <MudItem Class="horizontal-item">
-                    <MudText Class="data-point">@($"Base Filename:")</MudText> <MudText Class="data-value">@($"{PicData.FileName}")</MudText>
-                </MudItem>
-                <MudItem Class="horizontal-item">
-                    <MudText Class="data-point">@($"Production Filename:")</MudText> <MudText Class="data-value">@($"{Path.GetFileName(PicData.OutPath)}")</MudText>
-                </MudItem>
+
             </MudGrid>
 
-        </MudContainer>
-        <MudContainer Class="picture-data-box">
-            <MudItem Class="horizontal-item">
-                <MudText Class="data-point">@($"Output Type:")</MudText><MudText Class="data-value">@PicData.OutPutType</MudText>
-                </MudItem>
-                @foreach (var boxparam in PicData.BoxParameters)
-            {
-                <MudItem Class="horizontal-item">
-                    <MudText Class="data-point">@($"Current Text Box:")</MudText> <MudText Class="data-value">@($"{boxparam.CurrentBox.Type}")</MudText>
-                </MudItem>
-                <MudItem Class="horizontal-item">
-
-                    <MudText Class="data-point">@($"Text To be Printed:")</MudText>
-                    <MudText Class="data-value">@($"{boxparam.Text}")</MudText>
-                </MudItem>
-                <MudItem Class="horizontal-item">
-
-                    <MudText Class="data-point">@($"Width of text box:")</MudText>
-                    <MudText Class="data-value">@boxparam.WidthOfBox</MudText>
-                    </MudItem>
-                <MudItem Class="horizontal-item">
-                    <MudText Class="data-point">@($"Position Of text:")</MudText>
-                    <MudText Class="data-value">@boxparam.PositionOfText</MudText>
-                    </MudItem>
-            }
         </MudContainer>
     </MudContainer>
 </MudPaper>
@@ -72,6 +83,43 @@
 }
 
 <style>
+
+    .property-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .property-header {
+        font-size: 18px;
+        font-weight: bold;
+        color: forestgreen; /* Adjust the color as needed */
+        margin-bottom: 10px;
+    }
+
+    .property-box {
+        border: 1px solid thick; /* Border color */
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle lift effect */
+        background-color: dimgrey; /* Background color */
+        margin-bottom: 20px;
+    }
+
+    .property-name {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333; /* Property name color */
+        margin-bottom: 10px;
+    }
+
+    .property-value {
+        font-size: 16px;
+        color: #555; /* Property value color */
+    }
+
+
     .horizontal-item {
         display: flex;
         flex-direction: row;

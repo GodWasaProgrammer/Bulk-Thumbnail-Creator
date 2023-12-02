@@ -51,7 +51,7 @@ namespace BTC_Blazor
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), $"{Settings.TextAddedDir}")),
-                RequestPath = "/text added"
+            RequestPath = "/text added"
 
             });
 

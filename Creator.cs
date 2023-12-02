@@ -26,16 +26,28 @@ namespace Bulk_Thumbnail_Creator
             if (prodtype == ProductionType.FrontPagePictureLineUp)
             {
                 // pretend to make line up
+
+                // copy pictures to text added dir
+
+                // read xml of picdata objects
+                // feed that to picdataservice
             }
 
             if (prodtype == ProductionType.VarietyList)
             {
                 // fake variety list
+
+                // copy pictures to text added dir / var dir
+
+                // read xml of picdata objects
+                // feed that to picdataservice
             }
 
             if (prodtype == ProductionType.CustomPicture)
             {
                 // mock custom pic 
+                // copy picture to textadded dir / var dir 
+                // read xml of picdata object to mock
             }
 
 
@@ -79,7 +91,7 @@ namespace Bulk_Thumbnail_Creator
                 string truePath = Path.GetFullPath(Settings.OutputDir);
                 string pictureOutput = $@"""{truePath}/%03d.png""";
 
-                FFmpegHandler.RunFFMPG(parameters, pictureOutput);
+                await FFmpegHandler.RunFFMPG(parameters, pictureOutput);
                 #endregion
 
                 Serializing.SerializeListOfStringsToXML(Settings.PathToXMLListOfDownloadedVideos, Settings.DownloadedVideosList);
@@ -106,15 +118,14 @@ namespace Bulk_Thumbnail_Creator
                     // convert from FaceDetectionResult to Rectangle
                     for (int i = 0; i < faceDetectRes.Length; i++)
                     {
-                        var facedetection = faceDetectRes[i];
+                        facesRectArray[i] = new Rectangle
+                        {
+                            X = faceDetectRes[i].Rectangle.X,
+                            Y = faceDetectRes[i].Rectangle.Y,
 
-                        facesRectArray[i] = new Rectangle();
-
-                        facesRectArray[i].X = faceDetectRes[i].Rectangle.X;
-                        facesRectArray[i].Y = faceDetectRes[i].Rectangle.Y;
-
-                        facesRectArray[i].Width = faceDetectRes[i].Rectangle.Width;
-                        facesRectArray[i].Height = faceDetectRes[i].Rectangle.Height;
+                            Width = faceDetectRes[i].Rectangle.Width,
+                            Height = faceDetectRes[i].Rectangle.Height
+                        };
                     }
 
                     DataGeneration.DecideIfTooMuchFace(file, PicToDetectFacesOn, facesRectArray);
@@ -211,8 +222,6 @@ namespace Bulk_Thumbnail_Creator
                 }
                 else
                 {
-                    Bitmap srcpic = new(PicdataObjToVarietize.FileName);
-
                     await Production.ProduceTextPictures(PicdataObjToVarietize);
                     Settings.PictureDatas.Add(PicdataObjToVarietize);
                 }
