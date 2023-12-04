@@ -9,13 +9,13 @@
 @inject ILogService logger;
 @inject NavigationManager navmanager;
 
-    <MudPaper Class="mb-4">
+<MudPaper Class="mb-4">
 
     <MudColorPicker PickerVariant="PickerVariant.Dialog" ColorPickerMode="ColorPickerMode.HSL" DisableAlpha DisableModeSwitch @bind-Value="colorvalue"></MudColorPicker>
 
-     <MudSelect AdornmentColor="Color.Primary" Label="Select a Color to edit" @bind-Value="PickedGroup">
+    <MudSelect AdornmentColor="Color.Primary" Label="Select a Color to edit" @bind-Value="PickedGroup">
 
-         @foreach (var Colorz in colorBoxes)
+        @foreach (var Colorz in colorBoxes)
         {
             <MudSelectItem Value="@Colorz"><MudText Color="Color.Secondary">@Colorz</MudText></MudSelectItem>
         }
@@ -26,9 +26,15 @@
 
     <MudSelect AdornmentColor="Color.Primary" Label="Select an output box" @bind-Value="PickedBox">
 
-        @foreach(var box in CurrentPagePictureData.Boxes)
+        @if (CurrentPagePictureData.BoxParameters != null)
         {
-            <MudSelectItem Value="@box.Type"><MudText Color="Color.Secondary">@box.Type</MudText></MudSelectItem>
+
+            @foreach (ParamForTextCreation boxParam in CurrentPagePictureData.BoxParameters)
+            {
+                BoxType boxType = boxParam.CurrentBox.Type;
+
+                <MudSelectItem Value="@boxParam.CurrentBox.Type"><MudText Color="Color.Secondary">@boxParam.CurrentBox.Type</MudText></MudSelectItem>
+            }
         }
 
     </MudSelect>
@@ -42,20 +48,18 @@
         }
 
     </MudSelect>
-    </MudPaper>
+</MudPaper>
 
-    <MudPaper Class="mb-4">
+<MudPaper Class="mb-4">
     <MudContainer>
         <MudGrid>
             <MudItem xs="12" sm="6">
                 <div class="mb-2">Picture Data To Produce</div>
                 <div class="mb-1">Chosen Font: @Path.GetFileName(PickedFont)</div>
-                <div class="mb-1">Chosen Box: @if (@PickedBox != null )
-                    {
-                    @PickedBox.ToString()
-
-                    }
-                    </div>
+                <div class="mb-1">
+                    Chosen Box: 
+                        @PickedBox.ToString()
+                </div>
             </MudItem>
             <MudItem xs="12" sm="6">
                 <div class="mb-2">BorderColor Values</div>
@@ -90,14 +94,14 @@
     </MudContainer>
 </MudPaper>
 
-@code 
+@code
 {
     [Parameter]
     public PictureData CurrentPagePictureData { get; set; }
 
     public PictureData PicDataToCustomize = new();
 
-    public Box PickedBox { get; set; }
+    public BoxType PickedBox { get; set; }
 
     public List<string> InputText { get; set; }
 
@@ -201,10 +205,10 @@
     {
         foreach (var boxparam in CurrentPagePictureData.BoxParameters)
         {
-            
-        BorderCLRItem = boxparam.BorderColor;
-        fillCLRItem = boxparam.FillColor;
-        StrokeCLRItem = boxparam.StrokeColor;
+
+            BorderCLRItem = boxparam.BorderColor;
+            fillCLRItem = boxparam.FillColor;
+            StrokeCLRItem = boxparam.StrokeColor;
         }
     }
 }

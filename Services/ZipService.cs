@@ -6,14 +6,14 @@ namespace Bulk_Thumbnail_Creator.Services
 {
     public class ZipService
     {
-        
+
         static string wwwrootloc = "wwwroot";
 
         public static string ZipOutputDir()
         {
             string zippedFile = $"{wwwrootloc}/output.zip";
 
-            if(File.Exists(zippedFile)) 
+            if (File.Exists(zippedFile))
             {
                 File.Delete(zippedFile);
             }
@@ -27,13 +27,16 @@ namespace Bulk_Thumbnail_Creator.Services
             string videoname = Path.GetFileName(Settings.PathToVideo);
             string zippedvideo = $"{wwwrootloc}/{videoname}.zip";
 
-            if (File.Exists(zippedvideo)) 
+            if (File.Exists(zippedvideo))
             {
                 File.Delete(zippedvideo);
             }
 
             using var zip = ZipFile.Open(zippedvideo, ZipArchiveMode.Create);
-            zip.CreateEntryFromFile($"{Settings.PathToVideo}", $"{Path.GetFileNameWithoutExtension(Settings.PathToVideo)}");
+            if (Settings.Mocking != true)
+            {
+                zip.CreateEntryFromFile($"{Settings.PathToVideo}", $"{Path.GetFileNameWithoutExtension(Settings.PathToVideo)}");
+            }
             return Path.GetFileName(zippedvideo);
         }
 
@@ -41,7 +44,7 @@ namespace Bulk_Thumbnail_Creator.Services
         {
             string zippedtextAddedDir = $"{wwwrootloc}/{Settings.TextAddedDir}.zip";
 
-            if(File.Exists(zippedtextAddedDir))
+            if (File.Exists(zippedtextAddedDir))
             {
                 File.Delete(zippedtextAddedDir);
             }

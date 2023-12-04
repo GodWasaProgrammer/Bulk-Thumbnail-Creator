@@ -18,7 +18,6 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             Height = currentBox.Height; // int
             Type = currentBox.Type; // BoxType
             Rectangle = currentBox.Rectangle; // Rectangle
-
         }
         private int _X; 
         public int X { get { return _X; } set { _X = value; } }
