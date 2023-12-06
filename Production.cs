@@ -154,6 +154,37 @@ namespace Bulk_Thumbnail_Creator
                 Directory.CreateDirectory(YTDL);
             }
 
+            // Build Directory structure for Mocking process
+            string CreateMockDir = "..";
+
+            CreateMockDir = Path.Combine(CreateMockDir, "Mocking");
+
+            if (!Directory.Exists(CreateMockDir))
+            {
+                Directory.CreateDirectory(CreateMockDir);
+                Settings.LogService.LogInformation($"{CreateMockDir} Created");
+            }
+
+            string FrontPageLineupMockDir = Path.Combine(CreateMockDir, "FrontpagePictureLineUp");
+            if (!Directory.Exists(FrontPageLineupMockDir))
+            {
+                Directory.CreateDirectory(FrontPageLineupMockDir);
+                Settings.LogService.LogInformation($"{FrontPageLineupMockDir} Created");
+            }
+
+            string outputMockDir = Path.Combine(FrontPageLineupMockDir, Settings.OutputDir);
+            if (!Directory.Exists(outputMockDir))
+            {
+                Directory.CreateDirectory (outputMockDir);
+            }
+
+            string textaddedMockDir = Path.Combine(FrontPageLineupMockDir, Settings.TextAddedDir);
+            if (!Directory.Exists(textaddedMockDir))
+            {
+                Directory.CreateDirectory(textaddedMockDir);
+                Settings.LogService.LogInformation($"{textaddedMockDir} Created");
+            }
+
         }
 
         /// <summary>

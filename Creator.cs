@@ -27,7 +27,14 @@ namespace Bulk_Thumbnail_Creator
             if (prodtype == ProductionType.FrontPagePictureLineUp)
             {
                 // pretend to make line up
+                string[] outputDirList = Directory.GetFiles(Settings.OutputDir);
+                string srcMockFolder = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp");
 
+                foreach (string outputFile in outputDirList)
+                {
+                    string completePath = Path.Combine(srcMockFolder, outputFile);
+                    await Task.Run(() => File.Copy(outputFile, completePath));
+                }
 
                 // copy pictures to text added dir
                 string sourceDirectory = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "text added");
@@ -39,15 +46,14 @@ namespace Bulk_Thumbnail_Creator
                     await Task.Run(() => File.Copy(file, $"{Settings.TextAddedDir}/{Path.GetFileName(file)}"));
                 }
 
-                string srcXml = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp");
-                srcXml = Path.Combine(srcXml, "mockFP.xml");
+                srcMockFolder = Path.Combine(srcMockFolder, "mockFP.xml");
 
                 List<PictureData> deserializedList;
 
                 // Create a XmlSerializer for the list of PictureData
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<PictureData>));
 
-                using (StreamReader streamReader = new StreamReader(srcXml))
+                using (StreamReader streamReader = new StreamReader(srcMockFolder))
                 {
                     deserializedList = (List<PictureData>)xmlSerializer.Deserialize(streamReader);
                 }
@@ -72,7 +78,7 @@ namespace Bulk_Thumbnail_Creator
 
                     string[] Directories = Directory.GetDirectories(sourceDirectory);
 
-                    foreach(string dir in Directories)
+                    foreach (string dir in Directories)
                     {
                         // this should only have one directory to copy
                         // since we are mocking the variety list
@@ -96,10 +102,6 @@ namespace Bulk_Thumbnail_Creator
 
                 }
 
-                // copy pictures to text added dir / var dir
-
-                // read xml of picdata objects
-                // feed that to picdataservice
             }
 
             if (prodtype == ProductionType.CustomPicture)
@@ -154,9 +156,35 @@ namespace Bulk_Thumbnail_Creator
                 await FFmpegHandler.RunFFMPG(parameters, pictureOutput);
                 #endregion
 
-                //Serializing.SerializeListOfStringsToXML(Settings.PathToXMLListOfDownloadedVideos, Settings.DownloadedVideosList);
+                // ffmpeg has finished, lets copy our mock data
 
+                // first we will clear the directory of any files
+                string mockOutPutDir = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "output");
+                string[] mockOutPutDirFiles = Directory.GetFiles(mockOutPutDir);
+
+                foreach (var MockOutPutFile in mockOutPutDirFiles)
+                {
+                    File.Delete(MockOutPutFile);
+                }
+
+
+                // Mock copying 
+
+                string[] OutPutDirFiles = Directory.GetFiles(Settings.OutputDir);
                 Settings.Files = Directory.GetFiles(Settings.OutputDir, "*.*", SearchOption.AllDirectories);
+
+                if (Directory.Exists(mockOutPutDir))
+                {
+                    foreach (var file in Settings.Files)
+                    {
+                        string filename = Path.GetFileName(file);
+                        string writePath = Path.Combine(mockOutPutDir, filename);
+                        File.Copy(file, writePath);
+                    }
+
+                }
+
+                //Serializing.SerializeListOfStringsToXML(Settings.PathToXMLListOfDownloadedVideos, Settings.DownloadedVideosList);
 
                 Settings.Memes = Directory.GetFiles(Settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
 
@@ -254,8 +282,6 @@ namespace Bulk_Thumbnail_Creator
 
             }
 
-
-
             #endregion
 
             #region Variety Picture Output
@@ -327,8 +353,7 @@ namespace Bulk_Thumbnail_Creator
             //FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
             #endregion
 
-            #region Picdata serialization
-
+            #region Picdata serialization & Mock Setup
 
             XmlSerializer xmlSerializer2 = new XmlSerializer(typeof(List<PictureData>));
 
@@ -353,6 +378,7 @@ namespace Bulk_Thumbnail_Creator
                 file.Delete();
             }
 
+            // Copy the Text Added Directory to Mock Folder
             string mockdir2 = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "text added");
 
             string[] Mockfiles = Directory.GetFiles(Settings.TextAddedDir);
@@ -361,6 +387,8 @@ namespace Bulk_Thumbnail_Creator
             {
                 File.Copy(file, $"{mockdir2}/{Path.GetFileName(file)}", true);
             }
+
+            Settings.Files = Directory.GetFiles(Settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
             Settings.LogService.LogInformation("Processing Finished");
             return Settings.PictureDatas;
