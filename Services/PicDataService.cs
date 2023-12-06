@@ -29,7 +29,7 @@ namespace Bulk_Thumbnail_Creator.Services
 
             if (Settings.Mocking == true)
             {
-               PicDataServiceList = await Creator.MockProcess(ProdType, url, ListOfTextToPrint);
+                PicDataServiceList = await Creator.MockProcess(ProdType, url, ListOfTextToPrint);
             }
             else
             {
@@ -41,52 +41,31 @@ namespace Bulk_Thumbnail_Creator.Services
         {
             List<string> ImageUrls = new();
 
+
+
+            string url = string.Empty;
+
+            ProductionType ProdType = ProductionType.VarietyList;
             if (Settings.Mocking == true)
             {
-                PicDataServiceList = await Creator.MockProcess(ProductionType.VarietyList, string.Empty, TextToPrint, PicToVarietize);
-
-                string parentfilename = Path.GetFileName(PicToVarietize.FileName);
-
-                DirectoryInfo di = new DirectoryInfo(Settings.TextAddedDir);
-
-                DirectoryInfo[] di2 = di.GetDirectories();
-
-                foreach (DirectoryInfo di3 in di2)
-                {
-
-                }
-
-                string varietyof = "variety of";
-                string ConcatenatedString = $"{Settings.TextAddedDir}/{varietyof} {parentfilename}";
-                string[] ArrayOfFilePaths = Directory.GetFiles(ConcatenatedString, "*.png");
-
-                foreach (string filepath in ArrayOfFilePaths)
-                {
-                    string imageurl = $"/{filepath}"; // convert to URL
-                    ImageUrls.Add(imageurl);
-                }
-
+                PicDataServiceList = await Creator.MockProcess(ProdType, url, TextToPrint, PicToVarietize);
             }
             else
             {
-                string url = string.Empty;
-
-                ProductionType ProdType = ProductionType.VarietyList;
-
                 PicDataServiceList = await Creator.Process(ProdType, url, TextToPrint, PicToVarietize);
-
-                string parentfilename = Path.GetFileName(PicToVarietize.FileName);
-                string varietyof = "variety of";
-                string ConcatenatedString = $"{Settings.TextAddedDir}/{varietyof} {parentfilename}";
-                string[] ArrayOfFilePaths = Directory.GetFiles(ConcatenatedString, "*.png");
-
-                foreach (string filepath in ArrayOfFilePaths)
-                {
-                    string imageurl = $"/{filepath}"; // convert to URL
-                    ImageUrls.Add(imageurl);
-                }
-
             }
+
+            string parentfilename = Path.GetFileName(PicToVarietize.FileName);
+            string varietyof = "variety of";
+            string ConcatenatedString = $"{Settings.TextAddedDir}/{varietyof} {parentfilename}";
+            string[] ArrayOfFilePaths = Directory.GetFiles(ConcatenatedString, "*.png");
+
+            foreach (string filepath in ArrayOfFilePaths)
+            {
+                string imageurl = $"/{filepath}"; // convert to URL
+                ImageUrls.Add(imageurl);
+            }
+
 
             return ImageUrls;
         }
@@ -116,9 +95,9 @@ namespace Bulk_Thumbnail_Creator.Services
         {
             PictureData PicData = new();
 
-            if(Settings.Mocking == true)
+            if (Settings.Mocking == true)
             {
-                string DirToMockPicture = Path.Combine("..", "Mocking","FrontpagePictureLineUp", $"{Settings.TextAddedDir}");
+                string DirToMockPicture = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", $"{Settings.TextAddedDir}");
 
                 DirectoryInfo di = new DirectoryInfo(DirToMockPicture);
 
@@ -186,8 +165,8 @@ namespace Bulk_Thumbnail_Creator.Services
                 {
                     foreach (PictureData variety in item.Varieties)
                     {
-                            PicData = new PictureData(variety);
-                            break;
+                        PicData = new PictureData(variety);
+                        break;
                     }
 
                 }
