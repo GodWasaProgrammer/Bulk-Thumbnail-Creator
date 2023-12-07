@@ -167,9 +167,7 @@ namespace Bulk_Thumbnail_Creator
                     File.Delete(MockOutPutFile);
                 }
 
-
                 // Mock copying 
-
                 string[] OutPutDirFiles = Directory.GetFiles(Settings.OutputDir);
                 Settings.Files = Directory.GetFiles(Settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
@@ -268,18 +266,26 @@ namespace Bulk_Thumbnail_Creator
                     DataGeneration.GenMemePosition(Settings.PictureDatas[i]);
                 }
 
-                // actual file output
-                for (int i = 0; i < Settings.PictureDatas.Count; i++)
+                //// to control threads and tasks
+                //List<Task> productionTasks = new();
+                //// parallel foreach for producing the text pictures
+                //Parallel.ForEach(Settings.PictureDatas, pictureData =>
+                //{
+                //    Task productionTask = Production.ProduceTextPictures(pictureData);
+                //    productionTasks.Add(productionTask);
+                //});
+
+                //await Task.WhenAll(productionTasks);
+
+                List<Task> productionTasks = new List<Task>();
+
+                Parallel.ForEach(Settings.PictureDatas, pictureData =>
                 {
-                    string PicObjPath = Settings.PictureDatas[i].FileName;
+                    Task productionTask = Task.Run(() => Production.ProduceTextPictures(pictureData));
+                    productionTasks.Add(productionTask);
+                });
 
-                    if (!Settings.DiscardedBecauseTooMuchFacePictureData.Contains(PicObjPath))
-                    {
-                        await Production.ProduceTextPictures(Settings.PictureDatas[i]);
-                    }
-
-                }
-
+                await Task.WhenAll(productionTasks);
             }
 
             #endregion
@@ -294,11 +300,15 @@ namespace Bulk_Thumbnail_Creator
                 }
                 else
                 {
-                    for (int i = 0; i < PicdataObjToVarietize.Varieties.Count; i++)
-                    {
-                        await Production.ProduceTextPictures(PicdataObjToVarietize.Varieties[i]);
-                    }
+                    List<Task> productionVarietyTaskList = new List<Task>();
 
+                    Parallel.ForEach(PicdataObjToVarietize.Varieties, (i) =>
+                    {
+                        Task productionTask = Task.Run(() => Production.ProduceTextPictures(i));
+                        productionVarietyTaskList.Add(productionTask);
+                    });
+
+                    await Task.WhenAll(productionVarietyTaskList);
                 }
 
                 DirectoryInfo di = new(Settings.TextAddedDir);
