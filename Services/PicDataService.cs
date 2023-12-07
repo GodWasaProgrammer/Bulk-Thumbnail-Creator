@@ -99,7 +99,7 @@ namespace Bulk_Thumbnail_Creator.Services
             {
                 string DirToMockPicture = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", $"{Settings.TextAddedDir}");
 
-                DirectoryInfo di = new DirectoryInfo(DirToMockPicture);
+                DirectoryInfo di = new(DirToMockPicture);
 
                 DirectoryInfo[] di2 = di.GetDirectories();
 
@@ -150,17 +150,7 @@ namespace Bulk_Thumbnail_Creator.Services
 
             if (Settings.Mocking == true)
             {
-                DirectoryInfo di = new DirectoryInfo(Settings.TextAddedDir);
-
-                DirectoryInfo[] di2 = di.GetDirectories();
-
-                string MockCorrelation = "";
-
-                foreach (DirectoryInfo directory in di2)
-                {
-                    MockCorrelation = Path.GetFileName(directory.FullName);
-                }
-
+                // nonsense to just pick the first one
                 foreach (var item in PicDataServiceList)
                 {
                     foreach (PictureData variety in item.Varieties)
@@ -194,15 +184,13 @@ namespace Bulk_Thumbnail_Creator.Services
 
         public static void SaveWork()
         {
-            using (StreamWriter streamWriter = new("Picturedatas.xml"))
+            using StreamWriter streamWriter = new("Picturedatas.xml");
+            foreach (var PictureData in Settings.PictureDatas)
             {
-                foreach (var PictureData in Settings.PictureDatas)
-                {
-                    //Serializing.SerializePictureData(streamWriter, PictureData);
+                //Serializing.SerializePictureData(streamWriter, PictureData);
 
-                }
-                // logger.LogInformation("PictureDatas.xml Serialized from PictureData");
             }
+            // logger.LogInformation("PictureDatas.xml Serialized from PictureData");
         }
 
         public static void ClearBaseOutPutDirectories()

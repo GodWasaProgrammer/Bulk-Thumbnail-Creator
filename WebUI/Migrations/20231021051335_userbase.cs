@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BTC_Blazor.Migrations
+namespace WebUI.Migrations
 {
     /// <inheritdoc />
-    public partial class userbase : Migration
+    public partial class Userbase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

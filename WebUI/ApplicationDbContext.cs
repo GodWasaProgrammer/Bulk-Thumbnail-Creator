@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace BTC_Blazor
+namespace WebUI
 {
     public class ApplicationDbContext : IdentityDbContext
     {

@@ -5,7 +5,7 @@ using Microsoft.Extensions.FileProviders;
 using MudBlazor.Services;
 using Microsoft.EntityFrameworkCore;
 using Bulk_Thumbnail_Creator.Interfaces;
-namespace BTC_Blazor
+namespace WebUI
 {
     public class Program
     {
