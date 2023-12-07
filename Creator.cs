@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -26,7 +24,7 @@ namespace Bulk_Thumbnail_Creator
 
             if (prodtype == ProductionType.FrontPagePictureLineUp)
             {
-                await Mocking.SetupFrontPagePictureLineupMock();
+                await Mocking.SetupFrontPagePictureLineUp();
                 Settings.LogService.LogInformation("Mocking of FrontPagePictureLineUp complete");
             }
 
@@ -41,7 +39,7 @@ namespace Bulk_Thumbnail_Creator
                 }
                 else
                 {
-                    await Mocking.SetupVarietyDisplayMock();
+                    await Mocking.SetupVarietyDisplay();
                     Settings.LogService.LogInformation("Mocking of Variety List complete");
                 }
 
@@ -93,7 +91,7 @@ namespace Bulk_Thumbnail_Creator
                 #endregion
 
                 // ffmpeg has finished, lets copy our mock data
-                Mocking.FrontPagePictureLineUpCopy();
+                Mocking.FrontPagePictureLineUp();
 
                 //Serializing.SerializeListOfStringsToXML(Settings.PathToXMLListOfDownloadedVideos, Settings.DownloadedVideosList);
 
@@ -221,7 +219,7 @@ namespace Bulk_Thumbnail_Creator
                     await Task.WhenAll(productionVarietyTaskList);
                 }
 
-                await Mocking.CopyVarietiesListMock();
+                await Mocking.VarietiesList();
             }
             #endregion
 
@@ -253,7 +251,7 @@ namespace Bulk_Thumbnail_Creator
 
             #region Picdata serialization & Mock Setup
 
-            Mocking.SerializePicDataMock();
+            Mocking.SerializePicData();
 
             Settings.Files = Directory.GetFiles(Settings.OutputDir, "*.*", SearchOption.AllDirectories);
 

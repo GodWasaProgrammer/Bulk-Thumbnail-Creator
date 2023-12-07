@@ -1,9 +1,6 @@
 ﻿using Bulk_Thumbnail_Creator.PictureObjects;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
@@ -11,7 +8,7 @@ namespace Bulk_Thumbnail_Creator
 {
     internal class Mocking
     {
-        internal static void SerializePicDataMock()
+        internal static void SerializePicData()
         {
             XmlSerializer Serializer = new(typeof(List<PictureData>));
 
@@ -47,7 +44,7 @@ namespace Bulk_Thumbnail_Creator
             }
         }
 
-        internal static async Task SetupVarietyDisplayMock()
+        internal static async Task SetupVarietyDisplay()
         {
             // copy pictures to text added dir / var dir                    // copy pictures to text added dir / var dir
             string sourceDirectory = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "text added");
@@ -77,7 +74,7 @@ namespace Bulk_Thumbnail_Creator
             }
         }
 
-        internal static async Task SetupFrontPagePictureLineupMock()
+        internal static async Task SetupFrontPagePictureLineUp()
         {
             // pretend to make line up
             string[] outputDirList = Directory.GetFiles(Settings.OutputDir);
@@ -115,7 +112,7 @@ namespace Bulk_Thumbnail_Creator
             Settings.PictureDatas = deserializedList;
         }
 
-        internal static void FrontPagePictureLineUpCopy()
+        internal static void FrontPagePictureLineUp()
         {
             // first we will clear the directory of any files
             string mockOutPutDir = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "output");
@@ -141,7 +138,7 @@ namespace Bulk_Thumbnail_Creator
             }
         }
 
-        internal static async Task CopyVarietiesListMock()
+        internal static async Task VarietiesList()
         {
             DirectoryInfo di = new(Settings.TextAddedDir);
 
