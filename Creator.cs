@@ -47,9 +47,17 @@ namespace Bulk_Thumbnail_Creator
 
             if (prodtype == ProductionType.CustomPicture)
             {
-                // mock custom pic 
-                // copy picture to textadded dir / var dir 
-                // read xml of picdata object to mock
+
+                if (picdatatoMock == null)
+                {
+                    Settings.LogService.LogError("Null has been passed to CustomPicture");
+                }
+                else
+                {
+                    await Production.ProduceTextPictures(picdatatoMock);
+                    Settings.PictureDatas.Add(picdatatoMock);
+                }
+
             }
 
             return Settings.PictureDatas;

@@ -158,6 +158,10 @@ namespace Bulk_Thumbnail_Creator.Services
                         PicData = new PictureData(variety);
                         break;
                     }
+                    if (PicData != null)
+                    {
+                        break;
+                    }
 
                 }
 
