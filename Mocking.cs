@@ -77,12 +77,14 @@ namespace Bulk_Thumbnail_Creator
         internal static async Task SetupFrontPagePictureLineUp()
         {
             // pretend to make line up
-            string[] outputDirList = Directory.GetFiles(Settings.OutputDir);
-            string srcMockFolder = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp");
+            string srcMockFolder = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp","output");
+            string[] outputDirList = Directory.GetFiles(srcMockFolder);
 
+
+            // copy outputDir to mockOutPutDir ??
             foreach (string outputFile in outputDirList)
             {
-                string completePath = Path.Combine(srcMockFolder, outputFile);
+                string completePath = Path.Combine(Settings.OutputDir, Path.GetFileName(outputFile));
                 await Task.Run(() => File.Copy(outputFile, completePath));
             }
 
@@ -96,7 +98,17 @@ namespace Bulk_Thumbnail_Creator
                 await Task.Run(() => File.Copy(file, $"{Settings.TextAddedDir}/{Path.GetFileName(file)}"));
             }
 
+            srcMockFolder = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp");
+
+            try
+            {
             srcMockFolder = Path.Combine(srcMockFolder, "mockFP.xml");
+            }
+            catch (System.Exception)
+            {
+                Settings.LogService.LogError("Could not find mockFP.xml");
+                throw;
+            }
 
             List<PictureData> deserializedList;
 
@@ -123,7 +135,7 @@ namespace Bulk_Thumbnail_Creator
                 File.Delete(MockOutPutFile);
             }
 
-            // Mock copying 
+            // Mock copying of outputDir to mockOutPutDir
             Settings.Files = Directory.GetFiles(Settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
             if (Directory.Exists(mockOutPutDir))
@@ -165,6 +177,8 @@ namespace Bulk_Thumbnail_Creator
             }
 
         }
+
+        
 
     }
 
