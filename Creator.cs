@@ -194,11 +194,11 @@ namespace Bulk_Thumbnail_Creator
                 //// File Production
                 List<Task> productionTasks = new();
 
-                Parallel.ForEach(Settings.PictureDatas, pictureData =>
+                foreach (PictureData picData in Settings.PictureDatas)
                 {
-                    Task productionTask = Task.Run(() => Production.ProduceTextPictures(pictureData));
+                    Task productionTask = Task.Run(() => Production.ProduceTextPictures(picData));
                     productionTasks.Add(productionTask);
-                });
+                }
 
                 await Task.WhenAll(productionTasks);
                 #endregion
@@ -218,11 +218,11 @@ namespace Bulk_Thumbnail_Creator
                 {
                     List<Task> productionVarietyTaskList = new();
 
-                    Parallel.ForEach(PicdataObjToVarietize.Varieties, (i) =>
+                    foreach(PictureData picData in PicdataObjToVarietize.Varieties)
                     {
-                        Task productionTask = Task.Run(() => Production.ProduceTextPictures(i));
+                        Task productionTask = Task.Run(() => Production.ProduceTextPictures(picData));
                         productionVarietyTaskList.Add(productionTask);
-                    });
+                    }
 
                     await Task.WhenAll(productionVarietyTaskList);
                 }

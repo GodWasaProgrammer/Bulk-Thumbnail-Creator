@@ -130,7 +130,7 @@ namespace Bulk_Thumbnail_Creator
             string mockOutPutDir = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "output");
             string[] mockOutPutDirFiles = Directory.GetFiles(mockOutPutDir);
 
-            foreach (var MockOutPutFile in mockOutPutDirFiles)
+           foreach (var MockOutPutFile in mockOutPutDirFiles)
             {
                 File.Delete(MockOutPutFile);
             }
