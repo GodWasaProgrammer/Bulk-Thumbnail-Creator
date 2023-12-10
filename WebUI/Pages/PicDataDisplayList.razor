@@ -5,11 +5,10 @@
 @using System.Net.Http
 @inject PicDataService PicDataService
 
-<MudDataGrid Items="@Elements" Filterable="true" FilterMode="@_filterMode" FilterCaseSensitivity="@_caseSensitivity">
+<MudDataGrid Items="@PicDataList" Filterable="true" FilterMode="@_filterMode" FilterCaseSensitivity="@_caseSensitivity">
     <Columns>
         <PropertyColumn Property="x => x.OutPutType" Title="Nr" Filterable="false" />
-        <PropertyColumn Property="x => x.BoxParameters[0].CurrentBox" />
-        <PropertyColumn Property="x => x.BoxParameters[1].CurrentBox" />
+       
         <PropertyColumn Property="x => x.FileName" Filterable="false" />
         <PropertyColumn Property="x => x.Varieties.Count" Title="Molar mass" />
     </Columns>
@@ -35,13 +34,13 @@
 
 
 @code {
-    IEnumerable<PictureData> Elements = new List<PictureData>();
+    IEnumerable<PictureData> PicDataList = new List<PictureData>();
 
     DataGridFilterMode _filterMode = DataGridFilterMode.Simple;
     DataGridFilterCaseSensitivity _caseSensitivity = DataGridFilterCaseSensitivity.Default;
 
     protected override async Task OnInitializedAsync()
     {
-        Elements = PicDataService.PicDataServiceList;
+        PicDataList = PicDataService.PicDataServiceList;
     }
 }

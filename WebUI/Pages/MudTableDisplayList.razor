@@ -1,0 +1,84 @@
+﻿@page "/mudtabledisplaylist"
+
+@using Bulk_Thumbnail_Creator.PictureObjects
+@using Bulk_Thumbnail_Creator.Services
+@using WebUI.Components
+
+@inject PicDataService PicDataService
+
+<MudTable Items="@PicDataDisplayList.Take(int.MaxValue)" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loading" LoadingProgressColor="Color.Info">
+    <HeaderContent>
+        <MudTh>Filename</MudTh>
+        <MudTh>Outpath</MudTh>
+        <MudTh>No.Of Varieties</MudTh>
+        <MudTh>No.Of BoxParameters</MudTh>
+        <MudTh>No.Of Boxes</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Filename">@context.FileName</MudTd>
+        <MudTd DataLabel="Outpath">@Path.GetFileName(context.OutPath)</MudTd>
+        <MudTd DataLabel="No.Of Varieties">@context.Varieties.Count</MudTd>
+        <MudTd DataLabel="BoxParameters" HideSmall="_hidePosition">@context.BoxParameters.Count</MudTd>
+        <MudTd DataLabel="No.Of Boxes">@context.Boxes.Count</MudTd>
+
+        <MudButton OnClick="@(() => ViewBoxParameters())" Color="Color.Secondary">View BoxParameters</MudButton>
+        @if (ViewBoxParam == true)
+        {
+            @foreach (var CurrentBoxParam in context.BoxParameters)
+            {
+                @if (CurrentBoxParam.CurrentBox.Type != Bulk_Thumbnail_Creator.Enums.BoxType.None)
+                {
+                    <Row>
+                        <MudTh>
+                            BoxParameters
+
+                            <Row>
+                                <MudTh>BorderColor</MudTh>
+                                <MudTh>Height</MudTh>
+                                <MudTh>CurrentBox</MudTh>
+                                <MudTh>Width</MudTh>
+                                <MudTh>Meme</MudTh>
+                                <MudTh>Text</MudTh>
+                            </Row>
+
+                            <MudTd DataLabel="BorderColor">@CurrentBoxParam.BorderColor.Hue @CurrentBoxParam.BorderColor.Saturation @CurrentBoxParam.BorderColor.Luminance</MudTd>
+                            <MudTd DataLabel="Height">@CurrentBoxParam.CurrentBox.Height</MudTd>
+                            <MudTd DataLabel="CurrentBox">@CurrentBoxParam.CurrentBox.Type</MudTd>
+                            <MudTd DataLabel="Width">@CurrentBoxParam.CurrentBox.Width</MudTd>
+                            <MudTd DataLabel="Meme">@CurrentBoxParam.Meme</MudTd>
+                            <MudTd DataLabel="Text">@CurrentBoxParam.Text</MudTd>
+                        </MudTh>
+                    </Row>
+                }
+            }
+        }
+
+    </RowTemplate>
+</MudTable>
+
+<MudSwitch @bind-Checked="_hidePosition">Hide <b>position</b> when Breakpoint=Xs</MudSwitch>
+<MudSwitch @bind-Checked="_loading">Show Loading</MudSwitch>
+
+@code {
+    private bool _hidePosition;
+    private bool _loading;
+    private bool ViewBoxParam = false;
+    private IEnumerable<PictureData> PicDataDisplayList = new List<PictureData>();
+
+    private void ViewBoxParameters()
+    {
+        if (ViewBoxParam == false)
+        {
+            ViewBoxParam = true;
+        }
+        else
+        {
+            ViewBoxParam = false;
+        }
+
+    }
+
+
+    protected override async Task OnInitializedAsync() => PicDataDisplayList = PicDataService.PicDataServiceList;
+
+}
