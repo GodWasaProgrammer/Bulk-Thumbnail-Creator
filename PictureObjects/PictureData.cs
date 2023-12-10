@@ -31,7 +31,7 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
         /// </summary>
         /// 
         [XmlIgnore]
-        public MagickReadSettings ReadSettings { get;  private set; }
+        public MagickReadSettings ReadSettings { get; private set; }
 
         public void MakeTextSettings(ParamForTextCreation Parameters)
         {
@@ -59,7 +59,11 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             }
             _Varieties = new List<PictureData>(pictureDataToCopy.Varieties);
             _OutputType = pictureDataToCopy.OutPutType;
-            _outPath = pictureDataToCopy.OutPath;
+            if (pictureDataToCopy.OutPath != null)
+            {
+                _outPath = (string)pictureDataToCopy.OutPath.Clone();
+            }
+
         }
 
         public PictureData()
