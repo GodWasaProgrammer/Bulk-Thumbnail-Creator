@@ -1,11 +1,12 @@
 ﻿@using Bulk_Thumbnail_Creator.Services;
 @using Bulk_Thumbnail_Creator.PictureObjects;
 @using Bulk_Thumbnail_Creator.Interfaces;
+@using WebUI.Pages;
 @inject PicDataService PicDataService;
 @inject ILogService logger;
 
 <div class="image-container">
-    @if (VarietyUrls != null)
+    @if (VarietyUrls != null && CustomPicture == false)
     {
 
         @for (int ClickedImage = 0; ClickedImage < VarietyUrls.Count; ClickedImage++)
@@ -17,8 +18,16 @@
             {
                 <div style="flex-basis: 100%; height: 0;"></div>
             }
+
         }
+
     }
+
+    @if (CustomPicture)
+    {
+        <CustomizePicture CurrentPagePictureData="_passData" ImageURL="@passURL" />
+    }
+
 </div>
 
 @code
@@ -26,12 +35,31 @@
     [Parameter]
     public PictureData ParentPictureProp { get; set; }
 
+    // pass to customize box
+    private PictureData _passData;
+
+    // pass to customize box
+    private string passURL;
+
     [Inject]
     private NavigationManager NavigationManager { get; set; }
 
+    private bool CustomPicture = false;
+
+
     private void NavToCustomizePicture(string imageURL)
     {
-        NavigationManager.NavigateTo($"/CustomizePicture/{Uri.EscapeDataString(imageURL)}");
+        CustomPicture = true;
+
+        PictureData passData = new();
+
+        string passURL = imageURL;
+
+        passData = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(imageURL);
+
+        _passData = passData;
+
+        /// NavigationManager.NavigateTo($"/CustomizePicture/{Uri.EscapeDataString(imageURL)}");
     }
 
     private List<string> _VarietyUrls = new();

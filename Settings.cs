@@ -10,9 +10,10 @@ namespace Bulk_Thumbnail_Creator
 		/// Enables Mocking of the Process calls to the Creator class
 		/// true = Mocking
 		/// false = Production
-		private static bool _Mocking = true;
+		private static bool _Mocking = false;
 		public static bool Mocking { get { return _Mocking; } set { _Mocking = value; } }
 
+		// log service access
         public static ILogService LogService { get => logService; set => logService = value; }
 
         private static ILogService logService;
@@ -76,16 +77,6 @@ namespace Bulk_Thumbnail_Creator
 
 
 		/// <summary>
-		/// Link to the provided Youtube Link
-		/// </summary>
-		private static string _YoutubeLink;
-		public static string YoutubeLink { get { return _YoutubeLink; } set { _YoutubeLink = value; } }
-
-
-		private static string _TextToAdd = "Bulk Thumbnail Creator";
-		public static string TextToAdd { get { return _TextToAdd; } set { _TextToAdd = value; } }
-
-		/// <summary>
 		/// Exists only to limit randomization to a 255 correct RGB end value
 		/// </summary>
 		private const int _MaxRGB = 256;
@@ -115,8 +106,6 @@ namespace Bulk_Thumbnail_Creator
 		/// </summary>
 		private static readonly string _PathToXMLListOfDownloadedVideos = "ListOfDownloadedVideos.xml";
 		public static string PathToXMLListOfDownloadedVideos { get { return _PathToXMLListOfDownloadedVideos; } }
-
-        
     }
 
 }

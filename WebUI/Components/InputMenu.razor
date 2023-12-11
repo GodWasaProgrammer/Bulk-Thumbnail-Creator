@@ -2,7 +2,6 @@
 @inject Bulk_Thumbnail_Creator.Services.PicDataService ds;
 @inject ILogService logger;
 
-<Loading processing="@Loading" />
 
 @if (DisableMenu == false)
 {
@@ -67,10 +66,8 @@
         else
         {
             passedNull = false;
-            Loading = true;
             DisableMenu = true;
             await CallBTC(url);
-            Loading = false;
 
             returnStateUpdate(DisableMenu);
 

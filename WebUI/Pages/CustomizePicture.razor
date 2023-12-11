@@ -13,25 +13,26 @@
 
 <MudGrid>
     <MudItem xs="12" sm="6">
-    <PictureDataBox ImageURL="@ImageURL" PicData="@CurrentPagePictureData"></PictureDataBox>
+        <PictureDataBox ImageURL="@ImageURL" PicData="@CurrentPagePictureData"></PictureDataBox>
     </MudItem>
     <MudItem xs="12" sm="6">
-    <CustomizeBox ImageURL="@ImageURL" CurrentPagePictureData="CurrentPagePictureData"></CustomizeBox>
-    <MudItem>
-        <Download></Download>
-    </MudItem>
+        <CustomizeBox ImageURL="@ImageURL" CurrentPagePictureData="CurrentPagePictureData"></CustomizeBox>
+        <MudItem>
+            <Download></Download>
+        </MudItem>
     </MudItem>
 </MudGrid>
 
 @code
 {
+    [Parameter]
     public PictureData CurrentPagePictureData { get; set; }
 
     [Parameter]
     public string ImageURL { get; set; }
 
-    protected override void OnInitialized()
-    {
-        CurrentPagePictureData = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(ImageURL);
-    }
+    // protected override void OnInitialized()
+    // {
+    //     // CurrentPagePictureData = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(ImageURL);
+    // }
 }
