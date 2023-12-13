@@ -175,7 +175,7 @@ namespace Bulk_Thumbnail_Creator
             string outputMockDir = Path.Combine(FrontPageLineupMockDir, Settings.OutputDir);
             if (!Directory.Exists(outputMockDir))
             {
-                Directory.CreateDirectory (outputMockDir);
+                Directory.CreateDirectory(outputMockDir);
             }
 
             string textaddedMockDir = Path.Combine(FrontPageLineupMockDir, Settings.TextAddedDir);
@@ -266,10 +266,10 @@ namespace Bulk_Thumbnail_Creator
                     {
                         if (PicData.BoxParameters[Box].Meme != null)
                         {
-                        using MagickImage meme = new(BoxParam.Meme);
-                        meme.Resize(BoxParam.CurrentBox.Width, BoxParam.CurrentBox.Height);
-                        outputImage.Composite(meme, BoxParam.CurrentBox.X, BoxParam.CurrentBox.Y, CompositeOperator.Over);
-                            
+                            using MagickImage meme = new(BoxParam.Meme);
+                            meme.Resize(BoxParam.CurrentBox.Width, BoxParam.CurrentBox.Height);
+                            outputImage.Composite(meme, BoxParam.CurrentBox.X, BoxParam.CurrentBox.Y, CompositeOperator.Over);
+
                         }
                         else
                         {

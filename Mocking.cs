@@ -77,7 +77,7 @@ namespace Bulk_Thumbnail_Creator
         internal static async Task SetupFrontPagePictureLineUp()
         {
             // pretend to make line up
-            string srcMockFolder = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp","output");
+            string srcMockFolder = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "output");
             string[] outputDirList = Directory.GetFiles(srcMockFolder);
 
 
@@ -102,7 +102,7 @@ namespace Bulk_Thumbnail_Creator
 
             try
             {
-            srcMockFolder = Path.Combine(srcMockFolder, "mockFP.xml");
+                srcMockFolder = Path.Combine(srcMockFolder, "mockFP.xml");
             }
             catch (System.Exception)
             {
@@ -130,7 +130,7 @@ namespace Bulk_Thumbnail_Creator
             string mockOutPutDir = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "output");
             string[] mockOutPutDirFiles = Directory.GetFiles(mockOutPutDir);
 
-           foreach (var MockOutPutFile in mockOutPutDirFiles)
+            foreach (var MockOutPutFile in mockOutPutDirFiles)
             {
                 File.Delete(MockOutPutFile);
             }
@@ -178,7 +178,7 @@ namespace Bulk_Thumbnail_Creator
 
         }
 
-        
+
 
     }
 

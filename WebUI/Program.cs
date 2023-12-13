@@ -1,10 +1,10 @@
 using Bulk_Thumbnail_Creator;
+using Bulk_Thumbnail_Creator.Interfaces;
 using Bulk_Thumbnail_Creator.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using MudBlazor.Services;
-using Microsoft.EntityFrameworkCore;
-using Bulk_Thumbnail_Creator.Interfaces;
 namespace WebUI
 {
     public class Program
@@ -35,7 +35,7 @@ namespace WebUI
 
             var serviceProvider = app.Services;
             var logService = serviceProvider.GetRequiredService<ILogService>();
-            
+
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -51,7 +51,7 @@ namespace WebUI
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), $"{Settings.TextAddedDir}")),
-            RequestPath = "/text added"
+                RequestPath = "/text added"
 
             });
 

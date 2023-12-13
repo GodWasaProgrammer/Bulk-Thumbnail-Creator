@@ -4,7 +4,6 @@ using Bulk_Thumbnail_Creator.PictureObjects;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace Bulk_Thumbnail_Creator.Services
 {

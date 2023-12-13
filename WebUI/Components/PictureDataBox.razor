@@ -3,68 +3,51 @@
 @inject PicDataService ds;
 @inherits ComponentBase
 
-<MudPaper Elevation="2" Class="picture-data-box" Style="max-width: 750px; margin: auto; padding: 16px;">
-    <MudContainer>
-        <MudText GutterBottom="true" Class="studded-header" Variant="Variant.H4">Picture Data</MudText>
-        <MudImage Src="@ImageURL" Style="max-width: 100%;" />
+<MudPaper Elevation="6" Style="align-items">
+    <MudContainer Class="picture-data-box">
+        <MudItem Style="max-width">
+            <MudText GutterBottom="true" Class="studded-header" Variant="Variant.H4">Picture Data</MudText>
+        </MudItem>
+        <MudItem>
 
-        <MudContainer Class="picture-data-box">
-            <MudGrid>
+            <MudImage Src="@ImageURL" />
+        </MudItem>
+        <MudGrid>
+            <MudItem>
+                <div class="mb-1">
+                    <MudText Class="property-header"> Base output name: @Path.GetFileName(PicData.FileName) </MudText>
+                    <MudText Class="property-header"> Produced File: @Path.GetFileName(PicData.OutPath)</MudText>
+                </div>
+            </MudItem>
+            @foreach (ParamForTextCreation boxParam in PicData.BoxParameters)
+            {
                 <MudItem>
                     <div class="mb-1">
-                        <MudText Class="property-header"> Base output name: @Path.GetFileName(PicData.FileName) </MudText>
-                            <MudText Class="property-header"> Produced File: @Path.GetFileName(PicData.OutPath)</MudText>
-                        </div>
-                    </MudItem>
-
-                    @foreach (ParamForTextCreation boxParam in PicData.BoxParameters)
-                {
-                    <div class="row property-row">
-                        <div class="col-md-12">
-                            <div class="property-box">
-                                <MudItem>
-                                    <div class="mb-1">
-                                        <MudText Class="property-header"> Box : @boxParam.CurrentBox.Type </MudText>
-                                            <MudText Class="property-header"> Font : @boxParam.Font </MudText>
-                                        </div>
-                                    </MudItem>
-
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <MudItem Class="property-box">
-                                                <div class="property-header">BorderColor</div>
-                                                <div class="mb-1">Hue:@boxParam.BorderColor.Hue</div>
-                                            <div class="mb-1">Saturation: @boxParam.BorderColor.Saturation</div>
-                                            <div class="mb-1">Luminance: @boxParam.BorderColor.Luminance</div>
-                                        </MudItem>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <MudItem Class="property-box">
-                                            <div class="property-header">FillColor</div>
-                                            <div class="mb-1">Hue: @boxParam.FillColor.Hue</div>
-                                            <div class="mb-1">Saturation: @boxParam.FillColor.Saturation</div>
-                                            <div class="mb-1">Luminance: @boxParam.FillColor.Luminance</div>
-                                        </MudItem>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <MudItem Class="property-box">
-                                            <div class="property-header">StrokeColor</div>
-                                            <div class="mb-1">Hue: @boxParam.StrokeColor.Hue</div>
-                                            <div class="mb-1">Saturation: @boxParam.StrokeColor.Saturation</div>
-                                            <div class="mb-1">Luminance: @boxParam.StrokeColor.Luminance</div>
-                                        </MudItem>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <MudText Class="property-header"> Box : @boxParam.CurrentBox.Type </MudText>
+                        <MudText Class="property-header"> Font : @boxParam.Font </MudText>
                     </div>
-                }
-            </MudGrid>
-        </MudContainer>
+                </MudItem>
+                <MudItem Class="property-box">
+                    <div class="property-header">BorderColor</div>
+                    <div class="mb-1">Hue:@boxParam.BorderColor.Hue</div>
+                    <div class="mb-1">Saturation: @boxParam.BorderColor.Saturation</div>
+                    <div class="mb-1">Luminance: @boxParam.BorderColor.Luminance</div>
+                </MudItem>
+                <MudItem Class="property-box">
+                    <div class="property-header">FillColor</div>
+                    <div class="mb-1">Hue: @boxParam.FillColor.Hue</div>
+                    <div class="mb-1">Saturation: @boxParam.FillColor.Saturation</div>
+                    <div class="mb-1">Luminance: @boxParam.FillColor.Luminance</div>
+                </MudItem>
+
+                <MudItem Class="property-box" style="align-content">
+                    <div class="property-header">StrokeColor</div>
+                    <div class="mb-1">Hue: @boxParam.StrokeColor.Hue</div>
+                    <div class="mb-1">Saturation: @boxParam.StrokeColor.Saturation</div>
+                    <div class="mb-1">Luminance: @boxParam.StrokeColor.Luminance</div>
+                </MudItem>
+            }
+        </MudGrid>
     </MudContainer>
 </MudPaper>
 

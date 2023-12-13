@@ -218,7 +218,7 @@ namespace Bulk_Thumbnail_Creator
                 {
                     List<Task> productionVarietyTaskList = new();
 
-                    foreach(PictureData picData in PicdataObjToVarietize.Varieties)
+                    foreach (PictureData picData in PicdataObjToVarietize.Varieties)
                     {
                         Task productionTask = Task.Run(() => Production.ProduceTextPictures(picData));
                         productionVarietyTaskList.Add(productionTask);

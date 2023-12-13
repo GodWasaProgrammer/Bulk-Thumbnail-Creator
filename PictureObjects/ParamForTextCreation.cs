@@ -60,7 +60,7 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
 
         private List<BoxType> _boxesWithNoFaceIntersect = new();
         public List<BoxType> BoxesWithNoFaceIntersect { get { return _boxesWithNoFaceIntersect; } set { _boxesWithNoFaceIntersect = value; } }
-        
+
         private List<Box> _Boxes = new();
         public List<Box> Boxes { get { return _Boxes; } set { _Boxes = value; } }
 

@@ -1,7 +1,7 @@
 ﻿using Bulk_Thumbnail_Creator.Enums;
 using ImageMagick;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Bulk_Thumbnail_Creator.PictureObjects
