@@ -1,0 +1,34 @@
+﻿@using Bulk_Thumbnail_Creator.PictureObjects
+
+
+@if (param.CurrentBox.Type != Bulk_Thumbnail_Creator.Enums.BoxType.None)
+{
+    <Row>
+        <MudTh>
+            BoxParameters
+
+            <Row>
+                <MudTh>BorderColor</MudTh>
+                <MudTh>Height</MudTh>
+                <MudTh>CurrentBox</MudTh>
+                <MudTh>Width</MudTh>
+                <MudTh>Meme</MudTh>
+                <MudTh>Text</MudTh>
+            </Row>
+
+            <MudTd DataLabel="BorderColor">@param.BorderColor.Hue @param.BorderColor.Saturation @param.BorderColor.Luminance</MudTd>
+            <MudTd DataLabel="Height">@param.CurrentBox.Height</MudTd>
+            <MudTd DataLabel="CurrentBox">@param.CurrentBox.Type</MudTd>
+            <MudTd DataLabel="Width">@param.CurrentBox.Width</MudTd>
+            <MudTd DataLabel="Meme">@param.Meme</MudTd>
+            <MudTd DataLabel="Text">@param.Text</MudTd>
+        </MudTh>
+    </Row>
+}
+
+
+@code
+{
+    [Parameter]
+    public ParamForTextCreation param { get; set; }
+}
