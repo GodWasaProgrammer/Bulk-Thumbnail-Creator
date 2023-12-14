@@ -21,7 +21,7 @@
             </MudItem>
             @foreach (ParamForTextCreation boxParam in PicData.BoxParameters)
             {
-                <MudItem>
+                @* <MudItem>
                     <div class="mb-1">
                         <MudText Class="property-header"> Box : @boxParam.CurrentBox.Type </MudText>
                         <MudText Class="property-header"> Font : @boxParam.Font </MudText>
@@ -45,7 +45,8 @@
                     <div class="mb-1">Hue: @boxParam.StrokeColor.Hue</div>
                     <div class="mb-1">Saturation: @boxParam.StrokeColor.Saturation</div>
                     <div class="mb-1">Luminance: @boxParam.StrokeColor.Luminance</div>
-                </MudItem>
+                </MudItem> *@
+                <ParamDisplay param="boxParam"></ParamDisplay>
             }
         </MudGrid>
     </MudContainer>
