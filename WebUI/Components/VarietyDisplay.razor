@@ -32,17 +32,15 @@
 
 @code
 {
+
     [Parameter]
     public PictureData ParentPictureProp { get; set; }
 
-    // pass to customize box
+    // pass to customize Picture
     private PictureData _passData;
 
-    // pass to customize box
+    // pass to customize Picture
     private string passURL;
-
-    [Inject]
-    private NavigationManager NavigationManager { get; set; }
 
     private bool CustomPicture = false;
 
@@ -58,8 +56,6 @@
         passData = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(imageURL);
 
         _passData = passData;
-
-        /// NavigationManager.NavigateTo($"/CustomizePicture/{Uri.EscapeDataString(imageURL)}");
     }
 
     private List<string> _VarietyUrls = new();

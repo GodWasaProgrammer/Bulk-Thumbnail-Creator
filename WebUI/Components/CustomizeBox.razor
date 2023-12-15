@@ -149,6 +149,9 @@
     // set value and display it
     private ColorItem StrokeCLRItem;
 
+    [Parameter]
+    public Action<PictureData,string> OnCustomBoxHasProducedPicture { get; set; }
+
     private enum ColorGroup
     {
         FillColor,
@@ -180,7 +183,9 @@
     {
         OutputType jobtype = OutputType.Custom;
         PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(CurrentPagePictureData, PickedFont, PickedBox, BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance, fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance, StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance, jobtype);
-        ShowCustomPicture(PicDataToCustomize);
+        // ShowCustomPicture(PicDataToCustomize);
+        ImageURL = PicDataToCustomize.OutPath;
+        OnCustomBoxHasProducedPicture?.Invoke(PicDataToCustomize,ImageURL);
     }
 
     private void NavToCustomizePicture(string imageURL)

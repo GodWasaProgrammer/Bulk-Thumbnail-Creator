@@ -8,9 +8,8 @@
         <MudItem Style="max-width">
             <MudText GutterBottom="true" Class="studded-header" Variant="Variant.H4">Picture Data</MudText>
         </MudItem>
-        <MudItem>
-
-            <MudImage Src="@ImageURL" />
+        <MudItem >
+            <MudImage Src="@ImageURL" Style="max-width"/>
         </MudItem>
         <MudGrid>
             <MudItem>
@@ -21,31 +20,6 @@
             </MudItem>
             @foreach (ParamForTextCreation boxParam in PicData.BoxParameters)
             {
-                @* <MudItem>
-                    <div class="mb-1">
-                        <MudText Class="property-header"> Box : @boxParam.CurrentBox.Type </MudText>
-                        <MudText Class="property-header"> Font : @boxParam.Font </MudText>
-                    </div>
-                </MudItem>
-                <MudItem Class="property-box">
-                    <div class="property-header">BorderColor</div>
-                    <div class="mb-1">Hue:@boxParam.BorderColor.Hue</div>
-                    <div class="mb-1">Saturation: @boxParam.BorderColor.Saturation</div>
-                    <div class="mb-1">Luminance: @boxParam.BorderColor.Luminance</div>
-                </MudItem>
-                <MudItem Class="property-box">
-                    <div class="property-header">FillColor</div>
-                    <div class="mb-1">Hue: @boxParam.FillColor.Hue</div>
-                    <div class="mb-1">Saturation: @boxParam.FillColor.Saturation</div>
-                    <div class="mb-1">Luminance: @boxParam.FillColor.Luminance</div>
-                </MudItem>
-
-                <MudItem Class="property-box" style="align-content">
-                    <div class="property-header">StrokeColor</div>
-                    <div class="mb-1">Hue: @boxParam.StrokeColor.Hue</div>
-                    <div class="mb-1">Saturation: @boxParam.StrokeColor.Saturation</div>
-                    <div class="mb-1">Luminance: @boxParam.StrokeColor.Luminance</div>
-                </MudItem> *@
                 <ParamDisplay param="boxParam"></ParamDisplay>
             }
         </MudGrid>

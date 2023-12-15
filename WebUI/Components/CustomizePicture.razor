@@ -15,7 +15,7 @@
         <PictureDataBox ImageURL="@ImageURL" PicData="@CurrentPagePictureData"></PictureDataBox>
     </MudItem>
     <MudItem xs="12" sm="6">
-        <CustomizeBox ImageURL="@ImageURL" CurrentPagePictureData="CurrentPagePictureData"></CustomizeBox>
+        <CustomizeBox @ref="@CustomizeBoxRef" ImageURL="@ImageURL" CurrentPagePictureData="CurrentPagePictureData" OnCustomBoxHasProducedPicture="SetCustomPicture"></CustomizeBox>
         <MudItem>
             <Download></Download>
         </MudItem>
@@ -27,6 +27,18 @@
     [Parameter]
     public PictureData CurrentPagePictureData { get; set; }
 
+    CustomizeBox CustomizeBoxRef;
+
     [Parameter]
     public string ImageURL { get; set; }
+
+    public void SetCustomPicture(PictureData pictureData, string ImageURL)
+    {
+        CurrentPagePictureData = pictureData;
+        string imgUrlRelative = Path.GetRelativePath(navmanager.Uri, ImageURL);
+        imgUrlRelative = ImageURL;
+
+
+        StateHasChanged();
+    }
 }

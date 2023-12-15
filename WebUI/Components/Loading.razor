@@ -1,15 +1,6 @@
 ﻿@using Bulk_Thumbnail_Creator.Interfaces;
 @inject ILogService Logger
 
-@* @if (IsInitialized)
-{
-    <p>Component is initialized.</p>
-}
-else
-{
-    <p>Component is not initialized.</p>
-} *@
-
 @if (processing)
 {
     <MudContainer>

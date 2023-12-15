@@ -89,7 +89,6 @@ namespace Bulk_Thumbnail_Creator.Services
             return PicToCustomize;
         }
 
-
         public Task<PictureData> SetPictureDataImageDisplayCorrelation(string imageUrl)
         {
             PictureData PicData = new();
@@ -183,17 +182,6 @@ namespace Bulk_Thumbnail_Creator.Services
 
             }
             return PicData;
-        }
-
-        public static void SaveWork()
-        {
-            using StreamWriter streamWriter = new("Picturedatas.xml");
-            foreach (var PictureData in Settings.PictureDatas)
-            {
-                //Serializing.SerializePictureData(streamWriter, PictureData);
-
-            }
-            // logger.LogInformation("PictureDatas.xml Serialized from PictureData");
         }
 
         public static void ClearBaseOutPutDirectories()
