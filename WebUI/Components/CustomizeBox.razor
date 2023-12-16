@@ -50,9 +50,14 @@
     </MudSelect>
 </MudPaper>
 
+
+
 <MudPaper Class="mb-4">
+
     <MudContainer>
-        <MudGrid>
+
+        <MudGrid Justify="Justify.SpaceBetween">
+
             <MudItem xs="12" sm="6">
                 <div class="mb-2">Picture Data To Produce</div>
                 <div class="mb-1">Chosen Font: @Path.GetFileName(PickedFont)</div>
@@ -61,37 +66,40 @@
                         @PickedBox.ToString()
                 </div>
             </MudItem>
+
             <MudItem xs="12" sm="6">
                 <div class="mb-2">BorderColor Values</div>
                 <div class="mb-1">Hue: @BorderCLRItem.Hue</div>
                 <div class="mb-1">Saturation: @BorderCLRItem.Saturation</div>
                 <div class="mb-1">Luminance: @BorderCLRItem.Luminance</div>
             </MudItem>
+
             <MudItem xs="12" sm="6">
                 <div class="mb-2">FillColor Values</div>
                 <div class="mb-1">Hue: @fillCLRItem.Hue</div>
                 <div class="mb-1">Saturation: @fillCLRItem.Saturation</div>
                 <div class="mb-1">Luminance: @fillCLRItem.Luminance</div>
             </MudItem>
+
             <MudItem xs="12" sm="6">
                 <div class="mb-2">StrokeColor Values</div>
                 <div class="mb-1">Hue: @StrokeCLRItem.Hue</div>
                 <div class="mb-1">Saturation: @StrokeCLRItem.Saturation</div>
                 <div class="mb-1">Luminance: @StrokeCLRItem.Luminance</div>
             </MudItem>
+
+            <MudItem>
+        <MudButton Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">Produce</MudButton>
+        </MudItem>
         </MudGrid>
-        <MudDivider Class="mb-3"></MudDivider>
-        <MudButton Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">
-            @if (_processing)
-            {
-                <div class="mb-1">Processing</div>
-            }
-            else
-            {
-                <div class="mb-1">Produce Picture</div>
-            }
-        </MudButton>
+
+        
+
+        <MudItem Style="nav-right">
+                    <Download></Download>
+                </MudItem>
     </MudContainer>
+    
 </MudPaper>
 
 @code
