@@ -3,9 +3,9 @@
 
 @if (processing)
 {
-    <MudContainer>
+    <MudContainer @onclick="ExpandLog">
     <MudPaper Elevation="4" Class="small">
-        @foreach(var entry in LogEntries.TakeLast(1))
+        @foreach(var entry in LogEntries.TakeLast(takeEntries))
         {
             <MudTextField  AdornmentIcon="" Label="Log Entry" Multiline="true" Variant="Variant.Filled" FullWidth="true" ReadOnly="true" Value="@entry"/>
         }
@@ -15,6 +15,9 @@
 
 @code {
     private bool IsInitialized { get; set; } = false;
+
+    [Parameter]
+    public int takeEntries { get; set; } = 1;
 
     [Parameter]
     public bool processing { get; set; }
@@ -31,5 +34,19 @@
     {
         LogEntries.Add(logEntry);
         InvokeAsync(() => StateHasChanged());
+    }
+
+    private void ExpandLog()
+    {
+        if (takeEntries == int.MaxValue)
+        {
+            takeEntries = 1;
+        }
+        else
+        {
+            // Set TakeEntries to its maximum value when the loading component is clicked
+            takeEntries = int.MaxValue;
+        }
+
     }
 }

@@ -11,7 +11,7 @@
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <CascadingAuthenticationState>
             <UserDisplay />
-                <Loading processing="true"/>
+                <Loading processing="true" takeEntries="@TakeEntries"/>
         </CascadingAuthenticationState>
         <MudSpacer />
         <MudText Color="Color.Tertiary">Bulk Thumbnail Creator</MudText>
@@ -32,6 +32,8 @@
 
 @code {
     bool _drawerOpen = false;
+
+    private int TakeEntries { get; set; } = 1;
 
     void DrawerToggle()
     {
