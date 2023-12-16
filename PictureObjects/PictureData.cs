@@ -1,6 +1,7 @@
 ﻿using Bulk_Thumbnail_Creator.Enums;
 using ImageMagick;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -74,6 +75,7 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
         private OutputType _OutputType;
         public OutputType OutPutType { get { return _OutputType; } set { _OutputType = value; } }
 
+        
         /// <summary>
         /// Generates MagickReadSettings to be used in a PicturedataObject to decide how text will look
         /// </summary>

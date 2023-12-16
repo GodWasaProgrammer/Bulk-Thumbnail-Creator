@@ -3,27 +3,31 @@
 @inject PicDataService ds;
 @inherits ComponentBase
 
-<MudPaper Elevation="6" Style="align-items">
-    <MudContainer Class="picture-data-box">
-        <MudItem Style="max-width">
-            <MudText GutterBottom="true" Class="studded-header" Variant="Variant.H4">Picture Data</MudText>
+<MudPaper Elevation="6">
+
+    <MudContainer>
+
+        <MudItem>
+
+            <MudImage Fluid="true" Src="@ImageURL" />
+
         </MudItem>
-        <MudItem >
-            <MudImage Src="@ImageURL" Style="width:100%"/>
-        </MudItem>
+
+        <MudTextField Disabled=true Label="Image URL" @bind-Value="@ImageURL" />
+        <MudTextField Disabled=true Label="FileName" @bind-Value="@PicData.FileName" />
+        <MudTextField Disabled=true Label="OutPath" @bind-Value="@PicData.OutPath" />
+
         <MudGrid>
-            <MudItem>
-                <div class="mb-1">
-                    <MudText Class="property-header"> Base output name: @Path.GetFileName(PicData.FileName) </MudText>
-                    <MudText Class="property-header"> Produced File: @Path.GetFileName(PicData.OutPath)</MudText>
-                </div>
-            </MudItem>
+
             @foreach (ParamForTextCreation boxParam in PicData.BoxParameters)
             {
                 <ParamDisplay param="boxParam"></ParamDisplay>
             }
+
         </MudGrid>
+
     </MudContainer>
+
 </MudPaper>
 
 @code
@@ -33,100 +37,22 @@
 
     [Parameter]
     public PictureData PicData { get; set; }
+
+    private IEnumerable<PictureData> PicDataEnumerable;
+
+    private void makePicDataEnumerable()
+    {
+        PicDataEnumerable = new List<PictureData>() { PicData };
+    }
+
+    protected override void OnInitialized()
+    {
+        makePicDataEnumerable();
+    }
+
 }
 
 <style>
-
-    .property-row {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        margin-bottom: 20px;
-    }
-
-    .property-header {
-        font-size: 18px;
-        font-weight: bold;
-        color: forestgreen; /* Adjust the color as needed */
-        margin-bottom: 10px;
-    }
-
-    .property-box {
-        border: 1px solid thick; /* Border color */
-        padding: 15px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle lift effect */
-        background-color: dimgrey; /* Background color */
-        margin-bottom: 20px;
-    }
-
-    .property-name {
-        font-size: 18px;
-        font-weight: bold;
-        color: #333; /* Property name color */
-        margin-bottom: 10px;
-    }
-
-    .property-value {
-        font-size: 16px;
-        color: #555; /* Property value color */
-    }
-
-
-    .horizontal-item {
-        display: flex;
-        flex-direction: row;
-        align-items: center; /* Optional: Center items vertically within the flex container */
-    }
-
-        .horizontal-item .data-point {
-            padding-right: 5px; /* Adjust padding as needed to separate the text items */
-        }
-
-
-    .picture-data-box {
-        border: 5px thick solid;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-    }
-
-        /* Heading style */
-        .picture-data-box h4 {
-            font-size: 18px;
-            color: black;
-            margin: 0;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #ccc;
-        }
-
-        /* Data point style */
-        .picture-data-box .data-point {
-            margin: 10px 0;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background-color: black;
-            color: gold;
-        }
-
-        /* Label style */
-        .picture-data-box .data-label {
-            font-weight: bold;
-            color: teal;
-        }
-
-        /* Value style */
-        .picture-data-box .data-value {
-            margin-left: 10px; /* Add margin between label and value */
-            color: teal;
-            border: 2px solid green;
-            border-radius: 4px;
-            padding: 5px;
-        }
-
-
     /* Studded Header Style */
     .studded-header {
         background-color: #000; /* Background color */
