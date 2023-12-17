@@ -37,19 +37,6 @@
 
     [Parameter]
     public PictureData PicData { get; set; }
-
-    private IEnumerable<PictureData> PicDataEnumerable;
-
-    private void makePicDataEnumerable()
-    {
-        PicDataEnumerable = new List<PictureData>() { PicData };
-    }
-
-    protected override void OnInitialized()
-    {
-        makePicDataEnumerable();
-    }
-
 }
 
 <style>
