@@ -192,7 +192,15 @@
         OutputType jobtype = OutputType.Custom;
         PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(CurrentPagePictureData, PickedFont, PickedBox, BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance, fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance, StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance, jobtype);
         // ShowCustomPicture(PicDataToCustomize);
-        ImageURL = PicDataToCustomize.OutPath;
+
+        // get relative path of the outpath
+        string currentDir = Directory.GetCurrentDirectory();
+        string imgUrlRelative = Path.GetRelativePath(currentDir, PicDataToCustomize.OutPath);
+        string addBackSlash = "/" + imgUrlRelative;
+        string replacefrontslash = addBackSlash.Replace('\\', '/');
+
+        ImageURL = replacefrontslash;
+        StateHasChanged();
         OnCustomBoxHasProducedPicture?.Invoke(PicDataToCustomize,ImageURL);
     }
 
