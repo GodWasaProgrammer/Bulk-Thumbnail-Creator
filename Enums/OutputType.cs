@@ -7,7 +7,7 @@
         BoxPositionVariety,
         FontVariety,
         RandomVariety,
-        Dankness,
+        MemeVariety,
         Custom,
     }
 

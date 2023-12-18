@@ -10,7 +10,7 @@ namespace Bulk_Thumbnail_Creator
         /// Enables Mocking of the Process calls to the Creator class
         /// true = Mocking
         /// false = Production
-        private static bool _Mocking = true;
+        private static bool _Mocking = false;
         public static bool Mocking { get { return _Mocking; } set { _Mocking = value; } }
 
         // log service access

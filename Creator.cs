@@ -186,6 +186,8 @@ namespace Bulk_Thumbnail_Creator
 
                     DataGeneration.GenRandomVariety(Settings.PictureDatas[i]);
 
+                    // DataGeneration.GenMemePosition(Settings.PictureDatas[i]);
+
                     DataGeneration.GenMemePosition(Settings.PictureDatas[i]);
                 }
                 #endregion

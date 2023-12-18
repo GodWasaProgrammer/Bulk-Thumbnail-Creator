@@ -237,7 +237,7 @@ namespace Bulk_Thumbnail_Creator
                 OutputPath += $"{varietyof}{imageName}//{guid}.png";
                 PicData.OutPath = OutputPath;
             }
-            if (PicData.OutPutType == OutputType.Dankness)
+            if (PicData.OutPutType == OutputType.MemeVariety)
             {
                 Guid guid = Guid.NewGuid();
                 OutputPath += $"{varietyof}{imageName}//{guid}{PicData.OutPutType}{trimDateTime}{imageName}.png";
@@ -262,7 +262,7 @@ namespace Bulk_Thumbnail_Creator
                     ParamForTextCreation BoxParam = PicData.BoxParameters[Box];
                     PicData.MakeTextSettings(PicData.BoxParameters[Box]);
 
-                    if (PicData.OutPutType == OutputType.Dankness)
+                    if (PicData.OutPutType == OutputType.MemeVariety)
                     {
                         if (PicData.BoxParameters[Box].Meme != null)
                         {
@@ -273,7 +273,18 @@ namespace Bulk_Thumbnail_Creator
                         }
                         else
                         {
-                            Settings.LogService.LogError("Meme was null");
+                            // if meme was null, we will just add the caption layer
+                            /// if meme is null this just means that the box read is not a meme box and should print its text instead
+                            Settings.LogService.LogInformation($"Meme was null, will print text instead");
+
+                            // Add the caption layer on top of the background image
+                            using var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);
+
+                            int takeX = BoxParam.CurrentBox.X;
+
+                            int takeY = BoxParam.CurrentBox.Y;
+
+                            outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
                         }
 
                     }
