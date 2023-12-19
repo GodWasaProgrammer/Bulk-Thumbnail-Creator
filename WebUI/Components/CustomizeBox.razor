@@ -220,11 +220,6 @@
 
     List<ParamForTextCreation> BoxParameters = new();
 
-    private void AddParameterToList(ParamForTextCreation paramIn)
-    {
-        BoxParameters.Add(paramIn);
-    }
-
     public async void CreateCustomPicDataObject()
     {
         // makes a copy of our current page picture data to avoid reference issues
@@ -234,7 +229,7 @@
         PicDataToCustomize.BoxParameters = BoxParameters;
 
         OutputType jobtype = OutputType.Custom;
-        PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(CurrentPagePictureData, jobtype);
+        PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(PicDataToCustomize, jobtype);
         // ShowCustomPicture(PicDataToCustomize);
 
         // get relative path of the outpath
