@@ -69,20 +69,9 @@ namespace Bulk_Thumbnail_Creator.Services
             return ImageUrls;
         }
 
-        public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, string PickedFont, BoxType PickedBox, float Borderhue, float Bordersat, float BorderLum, float FillCLRHue, float FillCLRSat, float FillCLRLum, float StrokeCLRHue, float StrokeCLRSat, float strokeCLRLum, OutputType JobType)
+        public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, OutputType JobType)
         {
             PicToCustomize = new(PicToCustomize);
-
-            for (int BoxParam = 0; BoxParam < PicToCustomize.BoxParameters.Count; BoxParam++)
-            {
-                PicToCustomize.BoxParameters[BoxParam].CurrentBox.Type = PickedBox;
-                PicToCustomize.BoxParameters[BoxParam].Font = PickedFont;
-                PicToCustomize.BoxParameters[BoxParam].BorderColor.SetByHSL(Borderhue, Bordersat, BorderLum);
-                PicToCustomize.BoxParameters[BoxParam].FillColor.SetByHSL(FillCLRHue, FillCLRSat, FillCLRLum);
-                PicToCustomize.BoxParameters[BoxParam].StrokeColor.SetByHSL(StrokeCLRHue, StrokeCLRSat, strokeCLRLum);
-                PicToCustomize.OutPutType = JobType;
-            }
-
             string url = string.Empty;
             PicDataServiceList = await Creator.Process(ProductionType.CustomPicture, url, TextToPrint, PicToCustomize);
 

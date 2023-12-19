@@ -39,6 +39,13 @@
 
     </MudSelect>
 
+    <MudButton Color="Color.Primary" @onclick="DecideWhichBoxToEdit">Edit Box</MudButton>
+
+    @foreach(ParamForTextCreation param in BoxParameters)
+    {
+        <ParamDisplay param="param"></ParamDisplay>
+    }
+
     <MudSelect AdornmentColor="Color.Primary" Label="Select a font" @bind-Value="PickedFont">
 
         @foreach (var font in AvailableFonts)
@@ -48,9 +55,8 @@
         }
 
     </MudSelect>
+
 </MudPaper>
-
-
 
 <MudPaper Class="mb-4">
 
@@ -93,8 +99,6 @@
         </MudItem>
         </MudGrid>
 
-        
-
         <MudItem Style="nav-right">
                     <Download></Download>
                 </MudItem>
@@ -132,7 +136,6 @@
 
     [Parameter]
     public string ImageURL { get; set; }
-
 
     private bool _processing = false;
 
@@ -187,10 +190,51 @@
         StateHasChanged();
     }
 
+    private void DecideWhichBoxToEdit()
+    {
+        var boxToEdit = BoxParameters.Find(x => x.CurrentBox.Type == PickedBox);
+
+        ConstructParameter(boxToEdit);
+
+    }
+
+    private void ConstructParameter(ParamForTextCreation paramIn)
+    {
+        Box liftBoxData = new();
+
+        // this needs to happen because the PickedBox is an enum, and the boxdata is a class
+        liftBoxData = CurrentPagePictureData.BoxParameters[0].Boxes.Find( x => x.Type == PickedBox);
+
+        // makes sure that your boxdata object is correctly set
+        paramIn.CurrentBox = liftBoxData;
+        paramIn.Font = PickedFont;
+
+        // construct color objects
+
+        paramIn.BorderColor.SetByHSL(BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance);
+        paramIn.FillColor.SetByHSL(fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance);
+        paramIn.StrokeColor.SetByHSL(StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance);
+
+        // colors are set
+    }
+
+    List<ParamForTextCreation> BoxParameters = new();
+
+    private void AddParameterToList(ParamForTextCreation paramIn)
+    {
+        BoxParameters.Add(paramIn);
+    }
+
     public async void CreateCustomPicDataObject()
     {
+        // makes a copy of our current page picture data to avoid reference issues
+        PictureData PicDataToCustomize = new(CurrentPagePictureData);
+
+        /// these are our edited boxes that we will write to the picturedata object
+        PicDataToCustomize.BoxParameters = BoxParameters;
+
         OutputType jobtype = OutputType.Custom;
-        PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(CurrentPagePictureData, PickedFont, PickedBox, BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance, fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance, StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance, jobtype);
+        PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(CurrentPagePictureData, jobtype);
         // ShowCustomPicture(PicDataToCustomize);
 
         // get relative path of the outpath
@@ -204,24 +248,14 @@
         OnCustomBoxHasProducedPicture?.Invoke(PicDataToCustomize,ImageURL);
     }
 
-    private void NavToCustomizePicture(string imageURL)
+    private void BuildBoxParameters()
     {
-        var currentdir = Directory.GetCurrentDirectory();
-
-        imageURL = imageURL.Substring(currentdir.Length);
-
-        navmanager.NavigateTo($"/CustomizePicture/{Uri.EscapeDataString(imageURL)}");
+        BoxParameters = new List<ParamForTextCreation>(CurrentPagePictureData.BoxParameters);
     }
 
-    private void ShowCustomPicture(PictureData CustomPicture)
-    {
-        CurrentPagePictureData = new(CustomPicture);
-        ImageURL = CurrentPagePictureData.OutPath; // just text data fetch
-        NavToCustomizePicture(ImageURL); // trying to set the correlating image
-        StateHasChanged();
-        logger.LogInformation("ShowCustomPicture Has been called in Blazors Component");
-    }
-
+    /// <summary>
+    /// this isnt correct, this only displays one of the boxes
+    /// </summary>
     protected override void OnInitialized()
     {
         foreach (var boxparam in CurrentPagePictureData.BoxParameters)
@@ -231,5 +265,7 @@
             fillCLRItem = boxparam.FillColor;
             StrokeCLRItem = boxparam.StrokeColor;
         }
+
+        BuildBoxParameters();
     }
 }
