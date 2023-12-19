@@ -257,53 +257,32 @@ namespace Bulk_Thumbnail_Creator
                 {
                     break;
                 }
+
+                ParamForTextCreation BoxParam = PicData.BoxParameters[Box];
+                PicData.MakeTextSettings(PicData.BoxParameters[Box]);
+
+
+                if (PicData.OutPutType == OutputType.MemeVariety && PicData.BoxParameters[Box].Meme != null)
+                {
+                    using MagickImage meme = new(BoxParam.Meme);
+                    meme.Resize(BoxParam.CurrentBox.Width, BoxParam.CurrentBox.Height);
+                    outputImage.Composite(meme, BoxParam.CurrentBox.X, BoxParam.CurrentBox.Y, CompositeOperator.Over);
+                }
                 else
                 {
-                    ParamForTextCreation BoxParam = PicData.BoxParameters[Box];
-                    PicData.MakeTextSettings(PicData.BoxParameters[Box]);
+                    // Add the caption layer on top of the background image
+                    using var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);
 
-                    if (PicData.OutPutType == OutputType.MemeVariety)
-                    {
-                        if (PicData.BoxParameters[Box].Meme != null)
-                        {
-                            using MagickImage meme = new(BoxParam.Meme);
-                            meme.Resize(BoxParam.CurrentBox.Width, BoxParam.CurrentBox.Height);
-                            outputImage.Composite(meme, BoxParam.CurrentBox.X, BoxParam.CurrentBox.Y, CompositeOperator.Over);
+                    int takeX = BoxParam.CurrentBox.X;
 
-                        }
-                        else
-                        {
-                            // if meme was null, we will just add the caption layer
-                            /// if meme is null this just means that the box read is not a meme box and should print its text instead
-                            Settings.LogService.LogInformation($"Meme was null, will print text instead");
+                    int takeY = BoxParam.CurrentBox.Y;
 
-                            // Add the caption layer on top of the background image
-                            using var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);
-
-                            int takeX = BoxParam.CurrentBox.X;
-
-                            int takeY = BoxParam.CurrentBox.Y;
-
-                            outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
-                        }
-
-                    }
-                    else
-                    {
-                        // Add the caption layer on top of the background image
-                        using var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);
-
-                        int takeX = BoxParam.CurrentBox.X;
-
-                        int takeY = BoxParam.CurrentBox.Y;
-
-                        outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
-                    }
-
-                    Settings.LogService.LogInformation($"Picture:{Path.GetFileName(PicData.FileName)}Box Type:{PicData.BoxParameters[Box].CurrentBox.Type} Box: {Box + 1} of {PicData.BoxParameters.Count} has been composited");
+                    outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
                 }
 
+                Settings.LogService.LogInformation($"Picture:{Path.GetFileName(PicData.FileName)}Box Type:{PicData.BoxParameters[Box].CurrentBox.Type} Box: {Box + 1} of {PicData.BoxParameters.Count} has been composited");
             }
+
             outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
             outputImage.Quality = 100;
 
