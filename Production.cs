@@ -268,7 +268,7 @@ namespace Bulk_Thumbnail_Creator
                     meme.Resize(BoxParam.CurrentBox.Width, BoxParam.CurrentBox.Height);
                     outputImage.Composite(meme, BoxParam.CurrentBox.X, BoxParam.CurrentBox.Y, CompositeOperator.Over);
                 }
-                else
+                if(PicData.BoxParameters[Box].Meme == null)
                 {
                     // Add the caption layer on top of the background image
                     using var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);
