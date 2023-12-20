@@ -17,12 +17,16 @@ namespace Bulk_Thumbnail_Creator.Services
             Settings.LogService = _logger;
         }
 
+        public List<Job> Jobs { get; set; } = new List<Job>();
+
         public List<PictureData> PicDataServiceList { get; set; } = new List<PictureData>();
         public List<string> OutputFileServiceList { get; set; } = new();
         public List<string> TextToPrint { get; set; } = new();
 
         public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint)
         {
+            Job job = await CreateJob("test", url, "test");
+
             ProductionType ProdType = ProductionType.FrontPagePictureLineUp;
             TextToPrint = ListOfTextToPrint;
 
@@ -34,6 +38,7 @@ namespace Bulk_Thumbnail_Creator.Services
             {
                 PicDataServiceList = await Creator.Process(ProdType, url, ListOfTextToPrint);
             }
+
         }
 
         public async Task<List<string>> CreatePictureDataVariety(PictureData PicToVarietize)
@@ -67,6 +72,15 @@ namespace Bulk_Thumbnail_Creator.Services
 
 
             return ImageUrls;
+        }
+
+        public Task<Job> CreateJob(string videoName, string videoUrl, string VideoPath)
+        {
+            Job job = new(videoName, videoUrl, VideoPath);
+
+            Jobs.Add(job);
+
+            return job != null ? Task.FromResult(job) : null;
         }
 
         public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, OutputType JobType)
