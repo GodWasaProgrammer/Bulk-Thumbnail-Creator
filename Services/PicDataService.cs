@@ -43,11 +43,20 @@ namespace Bulk_Thumbnail_Creator.Services
             {
                 PicDataServiceList = await Creator.Process(ProdType, url, ListOfTextToPrint);
             }
+
+
+            CurrentJob.VideoPath = Settings.PathToVideo;
+
+            CurrentJob.VideoName = Path.GetFileNameWithoutExtension(Settings.PathToVideo);
+
             CurrentJob.PictureDatas = PicDataServiceList;
+
         }
 
         public async Task<List<string>> CreatePictureDataVariety(PictureData PicToVarietize)
         {
+            CurrentJob.State = States.varietyList;
+
             List<string> ImageUrls = new();
             string url = string.Empty;
 
@@ -89,10 +98,12 @@ namespace Bulk_Thumbnail_Creator.Services
 
         public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, OutputType JobType)
         {
+            CurrentJob.State = States.CustomPicture;
+
             PicToCustomize = new(PicToCustomize);
             string url = string.Empty;
             PicDataServiceList = await Creator.Process(ProductionType.CustomPicture, url, TextToPrint, PicToCustomize);
-
+            CurrentJob.PictureDatas = PicDataServiceList;
             return PicToCustomize;
         }
 
