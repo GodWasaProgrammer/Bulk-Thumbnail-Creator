@@ -23,9 +23,14 @@ namespace Bulk_Thumbnail_Creator.Services
         public List<string> OutputFileServiceList { get; set; } = new();
         public List<string> TextToPrint { get; set; } = new();
 
+        private Job CurrentJob;
+
         public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint)
         {
-            Job job = await CreateJob("test", url, "test");
+             CurrentJob = await CreateJob(url);
+
+            CurrentJob.TextToPrint = ListOfTextToPrint;
+            
 
             ProductionType ProdType = ProductionType.FrontPagePictureLineUp;
             TextToPrint = ListOfTextToPrint;
@@ -38,15 +43,12 @@ namespace Bulk_Thumbnail_Creator.Services
             {
                 PicDataServiceList = await Creator.Process(ProdType, url, ListOfTextToPrint);
             }
-
+            CurrentJob.PictureDatas = PicDataServiceList;
         }
 
         public async Task<List<string>> CreatePictureDataVariety(PictureData PicToVarietize)
         {
             List<string> ImageUrls = new();
-
-
-
             string url = string.Empty;
 
             ProductionType ProdType = ProductionType.VarietyList;
@@ -59,6 +61,9 @@ namespace Bulk_Thumbnail_Creator.Services
                 PicDataServiceList = await Creator.Process(ProdType, url, TextToPrint, PicToVarietize);
             }
 
+            // sets the list on the job object
+            CurrentJob.PictureDatas = PicDataServiceList;
+
             string parentfilename = Path.GetFileName(PicToVarietize.FileName);
             string varietyof = "variety of";
             string ConcatenatedString = $"{Settings.TextAddedDir}/{varietyof} {parentfilename}";
@@ -69,14 +74,13 @@ namespace Bulk_Thumbnail_Creator.Services
                 string imageurl = $"/{filepath}"; // convert to URL
                 ImageUrls.Add(imageurl);
             }
-
-
             return ImageUrls;
+
         }
 
-        public Task<Job> CreateJob(string videoName, string videoUrl, string VideoPath)
+        public Task<Job> CreateJob( string videoUrl)
         {
-            Job job = new(videoName, videoUrl, VideoPath);
+            Job job = new(videoUrl);
 
             Jobs.Add(job);
 
