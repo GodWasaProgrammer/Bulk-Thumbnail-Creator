@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/Generator"
 
 @using WebUI.Components
 @using Microsoft.AspNetCore.Components
@@ -10,11 +10,12 @@
 <CascadingAuthenticationState>
     <AuthorizeView>
         <Authorized>
-            <InputMenu returnStateUpdate="@BuildImageDisplay"></InputMenu>
-            <ImageDisplay @ref="imageDisplayref">  </ImageDisplay>
+            <InputMenu returnStateUpdate="BuildImageDisplay"></InputMenu>
+            <ImageDisplay @ref="imageDisplayref"></ImageDisplay>
         </Authorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
+
 @code
 {
     ImageDisplay imageDisplayref;
@@ -32,3 +33,4 @@
 
     }
 }
+

@@ -28,9 +28,7 @@ namespace Bulk_Thumbnail_Creator.Services
         public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint)
         {
              CurrentJob = await CreateJob(url);
-
             CurrentJob.TextToPrint = ListOfTextToPrint;
-            
 
             ProductionType ProdType = ProductionType.FrontPagePictureLineUp;
             TextToPrint = ListOfTextToPrint;
@@ -44,13 +42,14 @@ namespace Bulk_Thumbnail_Creator.Services
                 PicDataServiceList = await Creator.Process(ProdType, url, ListOfTextToPrint);
             }
 
-
+            if (Settings.PathToVideo != null)
             CurrentJob.VideoPath = Settings.PathToVideo;
 
+            if (Settings.PathToVideo != null)
             CurrentJob.VideoName = Path.GetFileNameWithoutExtension(Settings.PathToVideo);
 
             CurrentJob.PictureDatas = PicDataServiceList;
-
+            CurrentJob.State = States.FrontPagePictureLineUp;
         }
 
         public async Task<List<string>> CreatePictureDataVariety(PictureData PicToVarietize)
@@ -83,6 +82,11 @@ namespace Bulk_Thumbnail_Creator.Services
                 string imageurl = $"/{filepath}"; // convert to URL
                 ImageUrls.Add(imageurl);
             }
+
+            // the list of urls to be displayed in variety display
+
+            CurrentJob.VideoUrls = ImageUrls;
+
             return ImageUrls;
 
         }
