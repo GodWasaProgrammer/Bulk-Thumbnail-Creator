@@ -1,20 +1,26 @@
 ﻿@using Bulk_Thumbnail_Creator.Interfaces;
+@using Bulk_Thumbnail_Creator;
+@using Bulk_Thumbnail_Creator.Services;
 @inject ILogService Logger
+@inject PicDataService PicDataService
 
 @if (processing)
 {
     <MudContainer @onclick="ExpandLog">
-    <MudPaper Elevation="4" Class="small">
-        @foreach(var entry in LogEntries.TakeLast(takeEntries))
-        {
-            <MudTextField  AdornmentIcon="" Label="Log Entry" Multiline="true" Variant="Variant.Filled" FullWidth="true" ReadOnly="true" Value="@entry"/>
-        }
-    </MudPaper>
-</MudContainer>
+        <MudPaper Elevation="4" Class="small">
+            @foreach (var entry in LogEntries.TakeLast(takeEntries))
+            {
+                <MudTextField AdornmentIcon="" Label="Log Entry" Multiline="true" Variant="Variant.Filled" FullWidth="true" ReadOnly="true" Value="@entry" />
+            }
+        </MudPaper>
+    </MudContainer>
 }
 
 @code {
     private bool IsInitialized { get; set; } = false;
+
+    [Parameter]
+    public Job CurrentJob { get; set; }
 
     [Parameter]
     public int takeEntries { get; set; } = 1;
@@ -32,6 +38,16 @@
 
     private void OnLogEntryAdded(string logEntry)
     {
+        // so its supposed to request a job if its null, otherwise it shouldnt disrupt anything
+        if (CurrentJob == null)
+        {
+            CurrentJob = PicDataService.RequestCurrentJob().Result;
+        }
+        // if however the job has now been created, we will copy the logentries to the job
+        // this way we dont have to worry about the job being null before it passes the download stage
+        if (CurrentJob != null)
+            CurrentJob.LogEntries = LogEntries;
+
         LogEntries.Add(logEntry);
         InvokeAsync(() => StateHasChanged());
     }
@@ -46,6 +62,20 @@
         {
             // Set TakeEntries to its maximum value when the loading component is clicked
             takeEntries = int.MaxValue;
+        }
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (CurrentJob == null)
+        {
+            CurrentJob = await PicDataService.RequestCurrentJob();
+        }
+
+        if (CurrentJob != null)
+        {
+            LogEntries = CurrentJob.LogEntries;
         }
 
     }
