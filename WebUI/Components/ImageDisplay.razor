@@ -3,6 +3,7 @@
 @using Bulk_Thumbnail_Creator;
 @using Bulk_Thumbnail_Creator.PictureObjects
 @using Bulk_Thumbnail_Creator.Services
+@using Bulk_Thumbnail_Creator.Enums
 
 @if (IMGDetailClicked == false && imageUrls != null)
 {
@@ -11,24 +12,70 @@
         <MudButton class="image-button" @onclick="@(e => ShowImageDetail(imageUrl))">
             <MudImage src="@imageUrl" style="max-width: 300px; margin: 10px;" />
         </MudButton>
-
     }
+
 }
 else
 {
-    <VarietyDisplay ParentPictureProp="picdata" VarietyUrls="VarietyUrls"></VarietyDisplay>
+    <VarietyDisplay CurrentJob="CurrentJob" ParentPictureProp="picdata" VarietyUrls="VarietyUrls"></VarietyDisplay>
 }
 
 @code
 {
+    [Parameter]
+    public Job CurrentJob { get; set; }
+
     private List<string> imageUrls;
 
     private List<string> VarietyUrls;
 
+    private PictureData picdata = new();
+
+    private bool IMGDetailClicked = false;
+
     // Load image URLs in the OnInitializedAsync lifecycle method
+    // decide which state the current job is in and load the appropriate image urls
     protected override async Task OnInitializedAsync()
     {
-        await UpdateImageUrls();
+        if (CurrentJob != null)
+        {
+            if (CurrentJob.State == States.FrontPagePictureLineUp)
+            {
+                imageUrls = CurrentJob.VideoUrls;
+            }
+            if (CurrentJob.State == States.varietyList)
+            {
+                VarietyUrls = CurrentJob.VarietyUrls;
+            }
+            if (CurrentJob.State == States.CustomPicture)
+            {
+                IMGDetailClicked = true;
+                picdata = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(CurrentJob.ClickedImage);
+                VarietyUrls = CurrentJob.VarietyUrls;
+            }
+
+        }
+        else
+        {
+            CurrentJob = await PicDataService.RequestCurrentJob();
+
+            if (CurrentJob != null)
+            {
+                if (CurrentJob.State == States.FrontPagePictureLineUp)
+                {
+                    imageUrls = CurrentJob.VideoUrls;
+                    StateHasChanged();
+                }
+                if (CurrentJob.State == States.varietyList)
+                {
+                    VarietyUrls = CurrentJob.VarietyUrls;
+                    StateHasChanged();
+                }
+
+            }
+
+        }
+
     }
 
     /// <summary>
@@ -37,6 +84,8 @@ else
     /// <returns></returns>
     public async Task UpdateImageUrls()
     {
+        CurrentJob = await PicDataService.RequestCurrentJob();
+
         string imagePath = Settings.TextAddedDir;
 
         // Get the list of image files in the folder asynchronously
@@ -52,22 +101,23 @@ else
             imageUrls.Add(imageUrl);
         }
 
+        // write the url list to the currentjob
+        CurrentJob.VideoUrls = imageUrls;
+
         // Update the UI
         await InvokeAsync(() => StateHasChanged());
     }
 
-    private bool IMGDetailClicked = false;
-
-    private PictureData picdata = new();
-
     private async Task ShowImageDetail(string imageToDisplayVarietyOf)
     {
         IMGDetailClicked = true;
+
         await InvokeAsync(() => StateHasChanged());
 
         picdata = await PicDataService.SetPictureDataImageDisplayCorrelation(imageToDisplayVarietyOf);
 
         VarietyUrls = await PicDataService.CreatePictureDataVariety(picdata);
+        CurrentJob.VarietyUrls = VarietyUrls;
     }
 
 }

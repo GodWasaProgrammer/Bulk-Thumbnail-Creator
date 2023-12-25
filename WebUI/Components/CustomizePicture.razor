@@ -5,6 +5,7 @@
 @using UMapx;
 @using Bulk_Thumbnail_Creator.Services;
 @using WebUI.Components;
+@using Bulk_Thumbnail_Creator.Enums;
 
 @inject PicDataService PicDataService
 @inject NavigationManager navmanager;
@@ -23,6 +24,9 @@
 @code
 {
     [Parameter]
+    public Job CurrentJob { get; set; }
+
+    [Parameter]
     public PictureData CurrentPagePictureData { get; set; }
 
     CustomizeBox CustomizeBoxRef;
@@ -40,4 +44,35 @@
 
         StateHasChanged();
     }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (CurrentJob == null)
+        {
+            CurrentJob = await PicDataService.RequestCurrentJob();
+
+            // if we fetched a job lets set the values
+
+            if (CurrentJob != null)
+            {
+                if (CurrentJob.State == States.CustomPicture)
+                {
+
+                }
+
+            }
+
+        }
+        else
+        {
+            if (CurrentJob.State == States.CustomPicture)
+            {
+                CurrentPagePictureData = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(CurrentJob.ClickedImage);
+                ImageURL = CurrentJob.ClickedImage;
+            }
+
+        }
+
+    }
+
 }

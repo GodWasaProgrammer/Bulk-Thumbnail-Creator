@@ -5,19 +5,33 @@
 @using Microsoft.JSInterop
 @using Bulk_Thumbnail_Creator;
 @using Microsoft.Identity;
+@using Bulk_Thumbnail_Creator.Services;
+
+@inject PicDataService ds;
 
 <PageTitle>Bulk Thumbnail Creator</PageTitle>
 <CascadingAuthenticationState>
     <AuthorizeView>
         <Authorized>
-            <InputMenu returnStateUpdate="BuildImageDisplay"></InputMenu>
-            <ImageDisplay @ref="imageDisplayref"></ImageDisplay>
+            <InputMenu job="CurrentJob" returnStateUpdate="BuildImageDisplay"></InputMenu>
+            <ImageDisplay CurrentJob="CurrentJob" @ref="imageDisplayref"></ImageDisplay>
         </Authorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
 
 @code
 {
+    public Job CurrentJob;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (CurrentJob == null)
+        {
+            CurrentJob = await ds.RequestCurrentJob();
+        }
+
+    }
+
     ImageDisplay imageDisplayref;
 
     /// <summary>
@@ -32,5 +46,5 @@
         }
 
     }
-}
 
+}

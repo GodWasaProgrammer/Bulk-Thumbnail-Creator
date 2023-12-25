@@ -21,6 +21,9 @@ namespace Bulk_Thumbnail_Creator
 
         public List<string> VideoUrls { get; set; } = new List<string>();
 
+        
+        public List<string> VarietyUrls { get; set; } = new List<string>();
+
 
         private string _VideoName;
         public string VideoName { get { return _VideoName; } set { _VideoName = value; } }
@@ -41,6 +44,9 @@ namespace Bulk_Thumbnail_Creator
         private List<string> _TextToPrint;
         public List<string> TextToPrint { get { return _TextToPrint; } set { _TextToPrint = value; } }
 
+
+        private string _ClickedImage;
+        public string ClickedImage { get { return _ClickedImage; } set { _ClickedImage = value; } }
 
         public Job(string VideoUrl)
         {

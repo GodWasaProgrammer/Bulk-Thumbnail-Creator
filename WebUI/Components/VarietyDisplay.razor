@@ -1,6 +1,9 @@
 ﻿@using Bulk_Thumbnail_Creator.Services;
 @using Bulk_Thumbnail_Creator.PictureObjects;
 @using Bulk_Thumbnail_Creator.Interfaces;
+@using Bulk_Thumbnail_Creator;
+@using Bulk_Thumbnail_Creator.Enums;
+
 @using WebUI.Pages;
 @inject PicDataService PicDataService;
 @inject ILogService logger;
@@ -25,13 +28,15 @@
 
     @if (CustomPicture)
     {
-        <CustomizePicture CurrentPagePictureData="_passData" ImageURL="@passURL" />
+        <CustomizePicture CurrentJob="CurrentJob" CurrentPagePictureData="_passData" ImageURL="@passURL" />
     }
 
 </div>
 
 @code
 {
+    [Parameter]
+    public Job CurrentJob { get; set; }
 
     [Parameter]
     public PictureData ParentPictureProp { get; set; }
@@ -39,14 +44,63 @@
     // pass to customize Picture
     private PictureData _passData;
 
+    private List<string> _VarietyUrls = new();
+
+    [Parameter]
+    public List<string> VarietyUrls { get { return _VarietyUrls; } set { _VarietyUrls = value; } }
+
     // pass to customize Picture
     private string passURL;
 
     private bool CustomPicture = false;
 
+    protected override async Task OnInitializedAsync()
+    {
+        if (CurrentJob == null)
+        {
+            CurrentJob = await PicDataService.RequestCurrentJob();
+        }
+        else
+        {
+            if (CurrentJob != null)
+            {
+                // if its not null we have to set the values for the respective child components to pass state
+                // first we figure out which state, should be VarietyList or Custom
+
+                // if it state of varietylist we will set the correlating varietylist.
+                if (CurrentJob.State == States.varietyList)
+                {
+                    VarietyUrls = CurrentJob.VarietyUrls;
+                    StateHasChanged();
+                }
+                if (CurrentJob.State == States.CustomPicture)
+                {
+                    // disable the varietylist from being shown since we have already clicked an image
+                    // lifts the clicked image
+                    passURL = CurrentJob.ClickedImage;
+
+                    // creates an instance of a picdata to pass to child
+
+                    PictureData passData = new();
+
+                    passData = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(passURL);
+                    CustomPicture = true;
+                    StateHasChanged();
+                }
+
+            }
+        }
+
+    }
 
     private void NavToCustomizePicture(string imageURL)
     {
+        // set the correct state of the currentjob
+        CurrentJob.State = States.CustomPicture;
+
+        // passes which image we have clicked to preserve state on load
+        CurrentJob.ClickedImage = imageURL;
+
         CustomPicture = true;
 
         PictureData passData = new();
@@ -57,11 +111,6 @@
 
         _passData = passData;
     }
-
-    private List<string> _VarietyUrls = new();
-
-    [Parameter]
-    public List<string> VarietyUrls { get { return _VarietyUrls; } set { _VarietyUrls = value; } }
 
 }
 

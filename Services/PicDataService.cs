@@ -91,12 +91,23 @@ namespace Bulk_Thumbnail_Creator.Services
 
         }
 
+        public Task<Job> RequestCurrentJob()
+        {
+            return Task.FromResult(CurrentJob);
+        }
+
         public Task<Job> CreateJob( string videoUrl)
         {
             Job job = new(videoUrl);
 
-            Jobs.Add(job);
+            // set the current job to the job that was just created
+            // so we are able to lift it on demand
+            CurrentJob = job;
 
+            // add the job the joblist
+            Jobs.Add(job);
+            
+            // will return the job if it was created successfully, otherwise will return a null object
             return job != null ? Task.FromResult(job) : null;
         }
 

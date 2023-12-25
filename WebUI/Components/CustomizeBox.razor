@@ -248,11 +248,11 @@
         BoxParameters = new List<ParamForTextCreation>(CurrentPagePictureData.BoxParameters);
     }
 
-    /// <summary>
-    /// this isnt correct, this only displays one of the boxes
-    /// </summary>
     protected override void OnInitialized()
     {
+        if (CurrentPagePictureData != null)
+        {
+            
         foreach (var boxparam in CurrentPagePictureData.BoxParameters)
         {
 
@@ -260,7 +260,8 @@
             fillCLRItem = boxparam.FillColor;
             StrokeCLRItem = boxparam.StrokeColor;
         }
+            BuildBoxParameters();
+        }
 
-        BuildBoxParameters();
     }
 }
