@@ -1,9 +1,10 @@
-﻿@inject NavigationManager navmanager;
-@inject PicDataService PicDataService;
-@using Bulk_Thumbnail_Creator;
+﻿@using Bulk_Thumbnail_Creator;
 @using Bulk_Thumbnail_Creator.PictureObjects
 @using Bulk_Thumbnail_Creator.Services
 @using Bulk_Thumbnail_Creator.Enums
+
+@inject PicDataService PicDataService;
+@inject JobService JobService;
 
 @if (IMGDetailClicked == false && imageUrls != null)
 {
@@ -57,7 +58,7 @@ else
         }
         else
         {
-            CurrentJob = await PicDataService.RequestCurrentJob();
+            CurrentJob = await JobService.RequestCurrentJob();
 
             if (CurrentJob != null)
             {
@@ -84,7 +85,7 @@ else
     /// <returns></returns>
     public async Task UpdateImageUrls()
     {
-        CurrentJob = await PicDataService.RequestCurrentJob();
+        CurrentJob = await JobService.RequestCurrentJob();
 
         string imagePath = Settings.TextAddedDir;
 

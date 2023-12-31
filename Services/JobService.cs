@@ -1,16 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Bulk_Thumbnail_Creator.Services
 {
     public class JobService
     {
-        public JobService(string user)
-        {
-            user = User;
-            CreateOutPutFileUrlList();
-        }
-
         /// <summary>
         /// not implemented yet
         /// </summary>
@@ -21,20 +16,28 @@ namespace Bulk_Thumbnail_Creator.Services
         public Job CurrentJob { get; set; }
 
         // store all the jobs that have been created
-        public List<Job> JobList { get; set; } = new List<Job>();
+        public List<Job> Jobs { get; set; } = new List<Job>();
 
-        public void CreateJob(string url)
+        public Task<Job> RequestCurrentJob()
         {
-            CurrentJob = new Job(url);
-            JobList.Add(CurrentJob);
+            return Task.FromResult(CurrentJob);
         }
 
-        string[] outPutDirUrls;
-
-        public void CreateOutPutFileUrlList()
+        public Task<Job> CreateJob(string videoUrl)
         {
-            outPutDirUrls = Directory.GetFiles(Settings.OutputDir);
+            Job job = new(videoUrl);
+
+            // set the current job to the job that was just created
+            // so we are able to lift it on demand
+            CurrentJob = job;
+
+            // add the job the joblist
+            Jobs.Add(job);
+
+            // will return the job if it was created successfully, otherwise will return a null object
+            return job != null ? Task.FromResult(job) : null;
         }
+
 
     }
 

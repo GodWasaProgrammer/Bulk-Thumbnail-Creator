@@ -8,6 +8,7 @@
 @using Bulk_Thumbnail_Creator.Services;
 
 @inject PicDataService ds;
+@inject JobService js;
 
 <PageTitle>Bulk Thumbnail Creator</PageTitle>
 <CascadingAuthenticationState>
@@ -27,7 +28,7 @@
     {
         if (CurrentJob == null)
         {
-            CurrentJob = await ds.RequestCurrentJob();
+            CurrentJob = await js.RequestCurrentJob();
         }
 
     }

@@ -8,8 +8,9 @@
 @using Bulk_Thumbnail_Creator.Enums;
 
 @inject PicDataService PicDataService
-@inject NavigationManager navmanager;
 @inject ILogService Logger;
+@inject JobService JobService;
+
 <MudPaper>
     <MudGrid>
         <MudItem xs="12" sm="6">
@@ -49,7 +50,7 @@
     {
         if (CurrentJob == null)
         {
-            CurrentJob = await PicDataService.RequestCurrentJob();
+            CurrentJob = await JobService.RequestCurrentJob();
 
             // if we fetched a job lets set the values
 

@@ -1,8 +1,10 @@
 ﻿@using Bulk_Thumbnail_Creator.Interfaces;
 @using Bulk_Thumbnail_Creator;
 @using Bulk_Thumbnail_Creator.Services;
+
 @inject ILogService Logger
 @inject PicDataService PicDataService
+@inject JobService JobService
 
 @if (processing)
 {
@@ -41,7 +43,7 @@
         // so its supposed to request a job if its null, otherwise it shouldnt disrupt anything
         if (CurrentJob == null)
         {
-            CurrentJob = PicDataService.RequestCurrentJob().Result;
+            CurrentJob = JobService.RequestCurrentJob().Result;
         }
         // if however the job has now been created, we will copy the logentries to the job
         // this way we dont have to worry about the job being null before it passes the download stage
@@ -70,7 +72,7 @@
     {
         if (CurrentJob == null)
         {
-            CurrentJob = await PicDataService.RequestCurrentJob();
+            CurrentJob = await JobService.RequestCurrentJob();
         }
 
         if (CurrentJob != null)

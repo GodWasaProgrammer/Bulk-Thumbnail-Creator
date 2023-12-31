@@ -1,9 +1,11 @@
 ﻿@using Bulk_Thumbnail_Creator.Interfaces;
 @using Bulk_Thumbnail_Creator;
 @using Bulk_Thumbnail_Creator.Enums;
+@using Bulk_Thumbnail_Creator.Services;
 
 @inject Bulk_Thumbnail_Creator.Services.PicDataService ds;
 @inject ILogService logger;
+@inject JobService JobService;
 
 @if (DisableMenu == false)
 {
@@ -73,7 +75,7 @@
         {
             passedNull = false;
             DisableMenu = true;
-            job = await ds.CreateJob(url);
+            job = await JobService.CreateJob(url);
 
             // should perhaps be called from the job ?
             // like await callbtc(job.url)

@@ -1,5 +1,6 @@
 ﻿using Bulk_Thumbnail_Creator.Interfaces;
 using Bulk_Thumbnail_Creator.PictureObjects;
+using Bulk_Thumbnail_Creator.Services;
 using System.Collections.Generic;
 
 namespace Bulk_Thumbnail_Creator
@@ -14,9 +15,12 @@ namespace Bulk_Thumbnail_Creator
         public static bool Mocking { get { return _Mocking; } set { _Mocking = value; } }
 
         // log service access
+        private static ILogService logService;
         public static ILogService LogService { get => logService; set => logService = value; }
 
-        private static ILogService logService;
+
+        private static JobService jobService;
+        public static JobService JobService { get => jobService; set => jobService = value; }
 
         /// <summary>
         /// The Dir where FFmpeg outputs raw images from the specified video

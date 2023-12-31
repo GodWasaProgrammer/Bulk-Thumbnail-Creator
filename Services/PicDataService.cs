@@ -9,29 +9,32 @@ namespace Bulk_Thumbnail_Creator.Services
 {
     public class PicDataService
     {
-        public PicDataService(ILogService _logger)
+        public PicDataService(ILogService _logger , JobService JS)
         {
             ClearBaseOutPutDirectories();
             PicDataServiceList = new List<PictureData>();
             OutputFileServiceList = new List<string>();
             Settings.LogService = _logger;
+            Settings.JobService = JS;
         }
 
-        public List<Job> Jobs { get; set; } = new List<Job>();
-
+        // should also perhaps be derived from a current job?
         public List<PictureData> PicDataServiceList { get; set; } = new List<PictureData>();
-        public List<string> OutputFileServiceList { get; set; } = new();
-        public List<string> TextToPrint { get; set; } = new();
 
+        // not implemented yet but should store all the produced files location of output
+        public List<string> OutputFileServiceList { get; set; } = new();
+
+        // TODO : this should be part of the jobservice and not of the picdata service
         private Job CurrentJob;
 
         public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint)
         {
-             CurrentJob = await CreateJob(url);
+            CurrentJob = await Settings.JobService.CreateJob(url);
+
             CurrentJob.TextToPrint = ListOfTextToPrint;
 
             ProductionType ProdType = ProductionType.FrontPagePictureLineUp;
-            TextToPrint = ListOfTextToPrint;
+            CurrentJob.TextToPrint = ListOfTextToPrint;
 
             if (Settings.Mocking == true)
             {
@@ -43,10 +46,10 @@ namespace Bulk_Thumbnail_Creator.Services
             }
 
             if (Settings.PathToVideo != null)
-            CurrentJob.VideoPath = Settings.PathToVideo;
+                CurrentJob.VideoPath = Settings.PathToVideo;
 
             if (Settings.PathToVideo != null)
-            CurrentJob.VideoName = Path.GetFileNameWithoutExtension(Settings.PathToVideo);
+                CurrentJob.VideoName = Path.GetFileNameWithoutExtension(Settings.PathToVideo);
 
             CurrentJob.PictureDatas = PicDataServiceList;
             CurrentJob.State = States.FrontPagePictureLineUp;
@@ -62,11 +65,11 @@ namespace Bulk_Thumbnail_Creator.Services
             ProductionType ProdType = ProductionType.VarietyList;
             if (Settings.Mocking == true)
             {
-                PicDataServiceList = await Creator.MockProcess(ProdType, url, TextToPrint, PicToVarietize);
+                PicDataServiceList = await Creator.MockProcess(ProdType, url, CurrentJob.TextToPrint, PicToVarietize);
             }
             else
             {
-                PicDataServiceList = await Creator.Process(ProdType, url, TextToPrint, PicToVarietize);
+                PicDataServiceList = await Creator.Process(ProdType, url, CurrentJob.TextToPrint, PicToVarietize);
             }
 
             // sets the list on the job object
@@ -91,33 +94,13 @@ namespace Bulk_Thumbnail_Creator.Services
 
         }
 
-        public Task<Job> RequestCurrentJob()
-        {
-            return Task.FromResult(CurrentJob);
-        }
-
-        public Task<Job> CreateJob( string videoUrl)
-        {
-            Job job = new(videoUrl);
-
-            // set the current job to the job that was just created
-            // so we are able to lift it on demand
-            CurrentJob = job;
-
-            // add the job the joblist
-            Jobs.Add(job);
-            
-            // will return the job if it was created successfully, otherwise will return a null object
-            return job != null ? Task.FromResult(job) : null;
-        }
-
         public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, OutputType JobType)
         {
             CurrentJob.State = States.CustomPicture;
 
             PicToCustomize = new(PicToCustomize);
             string url = string.Empty;
-            PicDataServiceList = await Creator.Process(ProductionType.CustomPicture, url, TextToPrint, PicToCustomize);
+            PicDataServiceList = await Creator.Process(ProductionType.CustomPicture, url, CurrentJob.TextToPrint, PicToCustomize);
             CurrentJob.PictureDatas = PicDataServiceList;
             return PicToCustomize;
         }

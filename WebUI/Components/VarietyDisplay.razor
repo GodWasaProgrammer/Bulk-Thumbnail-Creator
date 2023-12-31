@@ -7,6 +7,7 @@
 @using WebUI.Pages;
 @inject PicDataService PicDataService;
 @inject ILogService logger;
+@inject JobService JobService;
 
 <div class="image-container">
     @if (VarietyUrls != null && CustomPicture == false)
@@ -58,7 +59,7 @@
     {
         if (CurrentJob == null)
         {
-            CurrentJob = await PicDataService.RequestCurrentJob();
+            CurrentJob = await JobService.RequestCurrentJob();
         }
         else
         {

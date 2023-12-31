@@ -28,6 +28,7 @@ namespace WebUI
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
             builder.Services.AddSingleton<PicDataService>();
+            builder.Services.AddSingleton<JobService>();
             builder.Services.AddSingleton<ILogService, LogService>();
             builder.Services.AddMudServices();
 
