@@ -28,7 +28,7 @@
 
     @if (CustomPicture)
     {
-        <CustomizePicture CurrentJob="CurrentJob" CurrentPagePictureData="_passData" ImageURL="@passURL" />
+        <CustomizePicture CurrentJob="CurrentJob" CurrentPagePictureData="passData" ImageURL="@passURL" />
     }
 
 </div>
@@ -42,7 +42,7 @@
     public PictureData ParentPictureProp { get; set; }
 
     // pass to customize Picture
-    private PictureData _passData;
+    private PictureData passData;
 
     private List<string> _VarietyUrls = new();
 
@@ -109,7 +109,7 @@
 
         passData = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(imageURL);
 
-        _passData = passData;
+        this.passData = passData;
     }
 
 }
