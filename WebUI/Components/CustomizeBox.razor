@@ -7,11 +7,7 @@
 
 @inject PicDataService PicDataService
 @inject ILogService logger;
-@inject NavigationManager navmanager;
  
-
-@*     <MudButton Color="Color.Primary" @onclick="DecideWhichBoxToEdit">Edit Box</MudButton> *@
-
 <PickedBox OnBoxSelected="HandleBoxSelection" CurrentPagePictureData="CurrentPagePictureData" PickBox="PickedBox"></PickedBox>
 
 @if(PickedBox != BoxType.None)
@@ -31,73 +27,27 @@
 
     <MudButton Color="Color.Primary" @onclick="() => SetColor(PickedGroup)">Set Color</MudButton>
 
-   
-    @foreach(ParamForTextCreation param in BoxParameters)
-    {
-        <ParamDisplay param="param"></ParamDisplay>
-    }
-
     <MudSelect AdornmentColor="Color.Primary" Label="Select a font" @bind-Value="PickedFont">
 
         @foreach (var font in AvailableFonts)
         {
-
             <MudSelectItem Value="@font"><MudText Color="Color.Secondary">@font</MudText></MudSelectItem>
         }
 
     </MudSelect>
 
+    @if(PickedBox != BoxType.None)
+        {
+            // find the box that we are editing
+            var param = CurrentPagePictureData.BoxParameters.FirstOrDefault(p => p.CurrentBox.Type == PickedBox);
+
+            <ParamDisplay param="param"></ParamDisplay>
+        }
+
+        <MudButton Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">Produce</MudButton>
+
 </MudPaper>
 }
-
-<MudPaper Class="mb-4">
-
-    <MudContainer>
-
-        <MudGrid Justify="Justify.SpaceBetween">
-
-            <MudItem xs="12" sm="6">
-                <div class="mb-2">Picture Data To Produce</div>
-                <div class="mb-1">Chosen Font: @Path.GetFileName(PickedFont)</div>
-                <div class="mb-1">
-                    Chosen Box: 
-                        @PickedBox.ToString()
-                </div>
-            </MudItem>
-
-            <MudItem xs="12" sm="6">
-                <div class="mb-2">BorderColor Values</div>
-                <div class="mb-1">Hue: @BorderCLRItem.Hue</div>
-                <div class="mb-1">Saturation: @BorderCLRItem.Saturation</div>
-                <div class="mb-1">Luminance: @BorderCLRItem.Luminance</div>
-            </MudItem>
-
-            <MudItem xs="12" sm="6">
-                <div class="mb-2">FillColor Values</div>
-                <div class="mb-1">Hue: @fillCLRItem.Hue</div>
-                <div class="mb-1">Saturation: @fillCLRItem.Saturation</div>
-                <div class="mb-1">Luminance: @fillCLRItem.Luminance</div>
-            </MudItem>
-
-            <MudItem xs="12" sm="6">
-                <div class="mb-2">StrokeColor Values</div>
-                <div class="mb-1">Hue: @StrokeCLRItem.Hue</div>
-                <div class="mb-1">Saturation: @StrokeCLRItem.Saturation</div>
-                <div class="mb-1">Luminance: @StrokeCLRItem.Luminance</div>
-            </MudItem>
-
-            <MudItem>
-        <MudButton Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">Produce</MudButton>
-        </MudItem>
-        </MudGrid>
-
-        <MudItem Style="nav-right">
-                    <Download></Download>
-                </MudItem>
-    </MudContainer>
-    
-</MudPaper>
-
 @code
 {
     private void HandleBoxSelection(BoxType selectedBox)
@@ -167,7 +117,6 @@
     /// wtf is this
     /// </summary>
     private MudColor colorvalue;
-
 
     // get value from picker
     private MudColor BorderColor;
