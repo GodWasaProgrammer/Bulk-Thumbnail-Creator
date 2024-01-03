@@ -14,10 +14,10 @@
 <MudPaper>
     <MudGrid>
         <MudItem xs="12" sm="6">
-            <PictureDataBox @ref="@PictureDataBoxRef" ImageURL="@ImageURL" PicData="@CurrentPagePictureData"></PictureDataBox>
+            <PictureDataBox ImageURL="@ImageURL" PicData="@CurrentPagePictureData"></PictureDataBox>
         </MudItem>
         <MudItem xs="12" sm="6">
-            <CustomizeBox @ref="@CustomizeBoxRef" ImageURL="@ImageURL" CurrentPagePictureData="CurrentPagePictureData" OnCustomBoxHasProducedPicture="SetCustomPicture"></CustomizeBox>
+            <CustomizeBox ImageURL="@ImageURL" CurrentPagePictureData="CurrentPagePictureData" OnCustomBoxHasProducedPicture="SetCustomPicture"></CustomizeBox>
         </MudItem>
     </MudGrid>
 </MudPaper>
@@ -29,10 +29,6 @@
 
     [Parameter]
     public PictureData CurrentPagePictureData { get; set; }
-
-    CustomizeBox CustomizeBoxRef;
-
-    PictureDataBox PictureDataBoxRef;
 
     [Parameter]
     public string ImageURL { get; set; }

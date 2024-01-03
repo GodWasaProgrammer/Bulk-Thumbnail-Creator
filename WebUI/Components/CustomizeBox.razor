@@ -8,7 +8,14 @@
 @inject PicDataService PicDataService
 @inject ILogService logger;
 @inject NavigationManager navmanager;
+ 
 
+@*     <MudButton Color="Color.Primary" @onclick="DecideWhichBoxToEdit">Edit Box</MudButton> *@
+
+<PickedBox OnBoxSelected="HandleBoxSelection" CurrentPagePictureData="CurrentPagePictureData" PickBox="PickedBox"></PickedBox>
+
+@if(PickedBox != BoxType.None)
+{
 <MudPaper Class="mb-4">
 
     <MudColorPicker PickerVariant="PickerVariant.Dialog" ColorPickerMode="ColorPickerMode.HSL" DisableAlpha DisableModeSwitch @bind-Value="colorvalue"></MudColorPicker>
@@ -24,23 +31,7 @@
 
     <MudButton Color="Color.Primary" @onclick="() => SetColor(PickedGroup)">Set Color</MudButton>
 
-    <MudSelect AdornmentColor="Color.Primary" Label="Select an output box" @bind-Value="PickedBox">
-
-        @if (CurrentPagePictureData.BoxParameters != null)
-        {
-
-            @foreach (ParamForTextCreation boxParam in CurrentPagePictureData.BoxParameters)
-            {
-                BoxType boxType = boxParam.CurrentBox.Type;
-
-                <MudSelectItem Value="@boxParam.CurrentBox.Type"><MudText Color="Color.Secondary">@boxParam.CurrentBox.Type</MudText></MudSelectItem>
-            }
-        }
-
-    </MudSelect>
-
-    <MudButton Color="Color.Primary" @onclick="DecideWhichBoxToEdit">Edit Box</MudButton>
-
+   
     @foreach(ParamForTextCreation param in BoxParameters)
     {
         <ParamDisplay param="param"></ParamDisplay>
@@ -57,6 +48,7 @@
     </MudSelect>
 
 </MudPaper>
+}
 
 <MudPaper Class="mb-4">
 
@@ -108,19 +100,46 @@
 
 @code
 {
+    private void HandleBoxSelection(BoxType selectedBox)
+    {
+        PickedBox = selectedBox;
+        StateHasChanged();
+    }
+    /// <summary>
+    /// Delegate to let our parent components know we have produced a new picture
+    /// </summary>
+    [Parameter]
+    public Action<PictureData,string> OnCustomBoxHasProducedPicture { get; set; }
+
+    // this is the image URL of the image being edited
+    [Parameter]
+    public string ImageURL { get; set; }
+
+    // our passed in picturedata, this represents the current image being edited
     [Parameter]
     public PictureData CurrentPagePictureData { get; set; }
 
+    // this is the separate PicData object being passed back in as you create a custom Picture, every production will be considered a new picture
     public PictureData PicDataToCustomize = new();
 
-    public BoxType PickedBox { get; set; }
+    // The PickedBox that we have chosen to edit
+    public BoxType PickedBox { get; set; } = BoxType.None;
 
+    // the text that we are producing on the pictures
     public List<string> InputText { get; set; }
 
     public BoxType MemeBox { get; set; }
 
+    /// <summary>
+    /// List of the fonts available on drive
+    /// </summary>
     public List<string> AvailableFonts { get { return Directory.GetFiles("Fonts", "*.TTF*").ToList(); } }
 
+
+    private string _PickedFont;
+    /// <summary>
+    /// Our Font that has been selected for production
+    /// </summary>
     public string PickedFont
     {
         get
@@ -132,18 +151,23 @@
         set { _PickedFont = value; }
     }
 
-    private string _PickedFont;
-
-    [Parameter]
-    public string ImageURL { get; set; }
-
+    /// <summary>
+    /// If this is true, then we are currently processing results with Bulk Thumbnail Creator
+    /// </summary>
     private bool _processing = false;
 
+    /// <summary>
+    /// our list of ColorGroup items 
+    /// </summary>
     private List<ColorGroup> colorBoxes = Enum.GetValues(typeof(ColorGroup)).Cast<ColorGroup>().ToList();
 
+    private ColorGroup PickedGroup;
+    
+    /// <summary>
+    /// wtf is this
+    /// </summary>
     private MudColor colorvalue;
 
-    private ColorGroup PickedGroup;
 
     // get value from picker
     private MudColor BorderColor;
@@ -160,9 +184,6 @@
     // set value and display it
     private ColorItem StrokeCLRItem;
 
-    [Parameter]
-    public Action<PictureData,string> OnCustomBoxHasProducedPicture { get; set; }
-
     private enum ColorGroup
     {
         FillColor,
@@ -172,6 +193,8 @@
 
     private void SetColor(ColorGroup clrGRP)
     {
+        DecideWhichBoxToEdit();
+
         if (clrGRP == ColorGroup.BorderColor)
         {
             BorderColor = colorvalue;
@@ -195,7 +218,6 @@
         var boxToEdit = BoxParameters.Find(x => x.CurrentBox.Type == PickedBox);
 
         ConstructParameter(boxToEdit);
-
     }
 
     private void ConstructParameter(ParamForTextCreation paramIn)
