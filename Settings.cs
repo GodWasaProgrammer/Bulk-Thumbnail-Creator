@@ -75,11 +75,6 @@ namespace Bulk_Thumbnail_Creator
         private static List<PictureData> _PictureDatas = new();
         public static List<PictureData> PictureDatas { get { return _PictureDatas; } set { _PictureDatas = value; } }
 
-
-        private static List<string> _DiscardedBecauseTooMuchFacefiles = new();
-        public static List<string> DiscardedBecauseTooMuchFacePictureData { get { return _DiscardedBecauseTooMuchFacefiles; } set { _DiscardedBecauseTooMuchFacefiles = value; } }
-
-
         /// <summary>
         /// Exists only to limit randomization to a 255 correct RGB end value
         /// </summary>

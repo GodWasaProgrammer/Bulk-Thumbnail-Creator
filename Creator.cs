@@ -59,8 +59,6 @@ namespace Bulk_Thumbnail_Creator
                 // ffmpeg has finished, lets copy our mock data
                 Mocking.FrontPagePictureLineUp();
 
-                //Serializing.SerializeListOfStringsToXML(Settings.PathToXMLListOfDownloadedVideos, Settings.DownloadedVideosList);
-
                 Settings.Memes = Directory.GetFiles(Settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
 
                 #region Face Detection
@@ -95,41 +93,34 @@ namespace Bulk_Thumbnail_Creator
                     #endregion
 
                     #region Data Generation
-                    DataGeneration.DecideIfTooMuchFace(file, PicToDetectFacesOn, facesRectArray);
 
-                    if (!Settings.DiscardedBecauseTooMuchFacePictureData.Contains(file))
+                    PictureData PassPictureData = new()
                     {
+                        FileName = file,
+                        NumberOfBoxes = 2,
+                    };
 
-                        PictureData PassPictureData = new()
-                        {
-                            FileName = file,
-                            NumberOfBoxes = 2,
-                        };
+                    for (int AmountOfBoxes = 0; AmountOfBoxes < PassPictureData.NumberOfBoxes; AmountOfBoxes++)
+                    {
+                        ParamForTextCreation currentParameters = new();
 
-                        for (int AmountOfBoxes = 0; AmountOfBoxes < PassPictureData.NumberOfBoxes; AmountOfBoxes++)
-                        {
-                            ParamForTextCreation currentParameters = new();
+                        currentParameters = DataGeneration.GettextPos(currentParameters, PicToDetectFacesOn, facesRectArray, PassPictureData);
 
-                            currentParameters = DataGeneration.GettextPos(currentParameters, PicToDetectFacesOn, facesRectArray, PassPictureData);
+                        currentParameters = DataGeneration.DecideColorGeneration(currentParameters);
 
-                            currentParameters = DataGeneration.DecideColorGeneration(currentParameters);
+                        currentParameters.Font = DataGeneration.PickRandomFont();
 
-                            currentParameters.Font = DataGeneration.PickRandomFont();
+                        // picks a random string from the list
+                        Random pickAString = new();
+                        int pickedString = pickAString.Next(Settings.ListOfText.Count);
+                        currentParameters.Text = Settings.ListOfText[pickedString];
 
-                            // picks a random string from the list
-                            Random pickAString = new();
-                            int pickedString = pickAString.Next(Settings.ListOfText.Count);
-                            currentParameters.Text = Settings.ListOfText[pickedString];
-
-                            PassPictureData.BoxParameters.Add(currentParameters);
-                        }
-
-                        Settings.PictureDatas.Add(PassPictureData);
+                        PassPictureData.BoxParameters.Add(currentParameters);
                     }
-                    #endregion
-                }
 
-                Settings.LogService.LogInformation($" Discarded Amount Of Pictures:{Settings.DiscardedBecauseTooMuchFacePictureData.Count}");
+                    Settings.PictureDatas.Add(PassPictureData);
+                }
+                #endregion
 
                 #region Variety Data Generation
                 //// Produce varietydata for the current object
@@ -153,8 +144,8 @@ namespace Bulk_Thumbnail_Creator
 
                 foreach (PictureData picData in Settings.PictureDatas)
                 {
-                   bool NoBoxes = picData.BoxParameters.All(bp => bp.CurrentBox.Type == BoxType.None);
-                    
+                    bool NoBoxes = picData.BoxParameters.All(bp => bp.CurrentBox.Type == BoxType.None);
+
                     if (!NoBoxes)
                     {
                         Task productionTask = Task.Run(() => Production.ProduceTextPictures(picData));

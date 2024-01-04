@@ -11,27 +11,6 @@ namespace Bulk_Thumbnail_Creator
 {
     public class DataGeneration
     {
-        public static void DecideIfTooMuchFace(string CurrentFile, Bitmap PictureWhereFacesWereDetected, Rectangle[] rectangleArray)
-        {
-            int SumOfRectanglesX = 0;
-            int SumOfRectanglesY = 0;
-
-            foreach (Rectangle currentrectangle in rectangleArray)
-            {
-                SumOfRectanglesX += currentrectangle.X;
-                SumOfRectanglesY += currentrectangle.Y;
-            }
-
-            int HalfOfPicHeight = PictureWhereFacesWereDetected.Height / 2;
-            int HalfofPicWidth = PictureWhereFacesWereDetected.Width / 2;
-
-            if (SumOfRectanglesX > HalfofPicWidth && SumOfRectanglesY > HalfOfPicHeight)
-            {
-                Settings.DiscardedBecauseTooMuchFacePictureData.Add(CurrentFile);
-            }
-
-        }
-
         /// <summary>
         /// Generates random colors in bytes
         /// </summary>
