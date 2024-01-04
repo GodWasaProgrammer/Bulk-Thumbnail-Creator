@@ -173,7 +173,6 @@
     {
         Box liftBoxData = new();
 
-        // this needs to happen because the PickedBox is an enum, and the boxdata is a class
         liftBoxData = CurrentPagePictureData.BoxParameters[0].Boxes.Find( x => x.Type == PickedBox);
 
         // makes sure that your boxdata object is correctly set
@@ -226,7 +225,6 @@
             
         foreach (var boxparam in CurrentPagePictureData.BoxParameters)
         {
-
             BorderCLRItem = boxparam.BorderColor;
             fillCLRItem = boxparam.FillColor;
             StrokeCLRItem = boxparam.StrokeColor;

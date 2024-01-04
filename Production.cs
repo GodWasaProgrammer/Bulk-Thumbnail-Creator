@@ -271,7 +271,7 @@ namespace Bulk_Thumbnail_Creator
                 if(PicData.BoxParameters[Box].Meme == null)
                 {
                     // Add the caption layer on top of the background image
-                    using var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);
+                    var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);
 
                     int takeX = BoxParam.CurrentBox.X;
 

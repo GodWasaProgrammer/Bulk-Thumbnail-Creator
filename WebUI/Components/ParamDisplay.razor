@@ -7,24 +7,23 @@
             BoxParameters
 
             <Row>
-                <MudTh>BorderColor</MudTh>
-                <MudTh>Height</MudTh>
+                <MudTh>HSL values</MudTh>
+                <MudTh>Height and Width</MudTh>
                 <MudTh>CurrentBox</MudTh>
-                <MudTh>Width</MudTh>
                 <MudTh>Meme</MudTh>
                 <MudTh>Text</MudTh>
+                <MudTh>Font</MudTh>
             </Row>
 
-            <MudTd DataLabel="BorderColor">@param.BorderColor.Hue @param.BorderColor.Saturation @param.BorderColor.Luminance</MudTd>
-            <MudTd DataLabel="Height">@param.CurrentBox.Height</MudTd>
+            <MudTd DataLabel="HSL values">@param.BorderColor.Hue @param.BorderColor.Saturation @param.BorderColor.Luminance</MudTd>
+            <MudTd DataLabel="Height">@param.CurrentBox.Height @param.CurrentBox.Width</MudTd>
             <MudTd DataLabel="CurrentBox">@param.CurrentBox.Type</MudTd>
-            <MudTd DataLabel="Width">@param.CurrentBox.Width</MudTd>
             <MudTd DataLabel="Meme">@param.Meme</MudTd>
             <MudTd DataLabel="Text">@param.Text</MudTd>
+            <MudTd DataLabel="Font">@Path.GetFileNameWithoutExtension(param.Font)</MudTd>
         </MudTh>
     </Row>
 }
-
 
 @code
 {
