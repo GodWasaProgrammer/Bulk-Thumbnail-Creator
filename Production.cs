@@ -249,7 +249,7 @@ namespace Bulk_Thumbnail_Creator
                 PicData.OutPath = OutputPath;
             }
 
-            using MagickImage outputImage = new(Path.GetFullPath(PicData.FileName));
+            MagickImage outputImage = new(Path.GetFullPath(PicData.FileName));
 
             for (int Box = 0; Box < PicData.BoxParameters.Count; Box++)
             {
@@ -264,11 +264,11 @@ namespace Bulk_Thumbnail_Creator
 
                 if (PicData.OutPutType == OutputType.MemeVariety && PicData.BoxParameters[Box].Meme != null)
                 {
-                    using MagickImage meme = new(BoxParam.Meme);
+                    MagickImage meme = new(BoxParam.Meme);
                     meme.Resize(BoxParam.CurrentBox.Width, BoxParam.CurrentBox.Height);
                     outputImage.Composite(meme, BoxParam.CurrentBox.X, BoxParam.CurrentBox.Y, CompositeOperator.Over);
                 }
-                if(PicData.BoxParameters[Box].Meme == null)
+                if (PicData.BoxParameters[Box].Meme == null)
                 {
                     // Add the caption layer on top of the background image
                     var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);

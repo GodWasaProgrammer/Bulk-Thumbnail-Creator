@@ -1,9 +1,11 @@
-﻿using Bulk_Thumbnail_Creator.PictureObjects;
+﻿using Bulk_Thumbnail_Creator.Enums;
+using Bulk_Thumbnail_Creator.PictureObjects;
 using FaceONNX;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Bulk_Thumbnail_Creator
@@ -18,50 +20,6 @@ namespace Bulk_Thumbnail_Creator
         /// <param name="texts"></param>
         /// <param name="picdatatoMock"></param>
         /// <returns></returns>
-        public static async Task<List<PictureData>> MockProcess(ProductionType prodtype, string url, List<string> texts, PictureData picdatatoMock = null)
-        {
-            Settings.ListOfText = texts;
-
-            if (prodtype == ProductionType.FrontPagePictureLineUp)
-            {
-                await Mocking.SetupFrontPagePictureLineUp();
-                Settings.LogService.LogInformation("Mocking of FrontPagePictureLineUp complete");
-            }
-
-            if (prodtype == ProductionType.VarietyList)
-            {
-                // fake variety list
-                // this will never let you actually pick one, it will automatically mock to whatever was clicked
-                // when the code ran last time
-                if (picdatatoMock == null)
-                {
-                    Settings.LogService.LogError("null has been passed to PicdataobjToVarietize");
-                }
-                else
-                {
-                    await Mocking.SetupVarietyDisplay();
-                    Settings.LogService.LogInformation("Mocking of Variety List complete");
-                }
-
-            }
-
-            if (prodtype == ProductionType.CustomPicture)
-            {
-
-                if (picdatatoMock == null)
-                {
-                    Settings.LogService.LogError("Null has been passed to CustomPicture");
-                }
-                else
-                {
-                    await Production.ProduceTextPictures(picdatatoMock);
-                    Settings.PictureDatas.Add(picdatatoMock);
-                }
-
-            }
-
-            return Settings.PictureDatas;
-        }
 
         public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, PictureData PicdataObjToVarietize = null)
         {
@@ -177,7 +135,6 @@ namespace Bulk_Thumbnail_Creator
                 //// Produce varietydata for the current object
                 for (int i = 0; i < Settings.PictureDatas.Count; i++)
                 {
-
                     DataGeneration.GenSaturationVariety(Settings.PictureDatas[i]);
 
                     DataGeneration.GenFontVariety(Settings.PictureDatas[i]);
@@ -186,20 +143,23 @@ namespace Bulk_Thumbnail_Creator
 
                     DataGeneration.GenRandomVariety(Settings.PictureDatas[i]);
 
-                    // DataGeneration.GenMemePosition(Settings.PictureDatas[i]);
-
                     DataGeneration.GenMemePosition(Settings.PictureDatas[i]);
                 }
                 #endregion
 
                 #region File Production
                 //// File Production
-                List<Task> productionTasks = new();
+                List<Task> productionTasks = [];
 
                 foreach (PictureData picData in Settings.PictureDatas)
                 {
-                    Task productionTask = Task.Run(() => Production.ProduceTextPictures(picData));
-                    productionTasks.Add(productionTask);
+                   bool NoBoxes = picData.BoxParameters.All(bp => bp.CurrentBox.Type == BoxType.None);
+                    
+                    if (!NoBoxes)
+                    {
+                        Task productionTask = Task.Run(() => Production.ProduceTextPictures(picData));
+                        productionTasks.Add(productionTask);
+                    }
                 }
 
                 await Task.WhenAll(productionTasks);
@@ -269,6 +229,50 @@ namespace Bulk_Thumbnail_Creator
             return Settings.PictureDatas;
         }
         #endregion
+        public static async Task<List<PictureData>> MockProcess(ProductionType prodtype, string url, List<string> texts, PictureData picdatatoMock = null)
+        {
+            Settings.ListOfText = texts;
+
+            if (prodtype == ProductionType.FrontPagePictureLineUp)
+            {
+                await Mocking.SetupFrontPagePictureLineUp();
+                Settings.LogService.LogInformation("Mocking of FrontPagePictureLineUp complete");
+            }
+
+            if (prodtype == ProductionType.VarietyList)
+            {
+                // fake variety list
+                // this will never let you actually pick one, it will automatically mock to whatever was clicked
+                // when the code ran last time
+                if (picdatatoMock == null)
+                {
+                    Settings.LogService.LogError("null has been passed to PicdataobjToVarietize");
+                }
+                else
+                {
+                    await Mocking.SetupVarietyDisplay();
+                    Settings.LogService.LogInformation("Mocking of Variety List complete");
+                }
+
+            }
+
+            if (prodtype == ProductionType.CustomPicture)
+            {
+
+                if (picdatatoMock == null)
+                {
+                    Settings.LogService.LogError("Null has been passed to CustomPicture");
+                }
+                else
+                {
+                    await Production.ProduceTextPictures(picdatatoMock);
+                    Settings.PictureDatas.Add(picdatatoMock);
+                }
+
+            }
+
+            return Settings.PictureDatas;
+        }
 
         static void Main()
         {
