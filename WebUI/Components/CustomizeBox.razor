@@ -39,7 +39,7 @@
     @if(PickedBox != BoxType.None)
         {
             // find the box that we are editing
-            var param = CurrentPagePictureData.BoxParameters.FirstOrDefault(p => p.CurrentBox.Type == PickedBox);
+            ParamForTextCreation param = BoxParameters.FirstOrDefault(p => p.CurrentBox.Type == PickedBox);
 
             <ParamDisplay param="param"></ParamDisplay>
         }
@@ -48,6 +48,7 @@
 
 </MudPaper>
 }
+
 @code
 {
     private void HandleBoxSelection(BoxType selectedBox)
@@ -114,7 +115,7 @@
     private ColorGroup PickedGroup;
     
     /// <summary>
-    /// wtf is this
+    /// this is the color value being returned from the color picker
     /// </summary>
     private MudColor colorvalue;
 
@@ -192,7 +193,7 @@
 
     public async void CreateCustomPicDataObject()
     {
-        // makes a copy of our current page picture data to avoid reference issues
+        // makes a copy of our current page picture data
         PictureData PicDataToCustomize = new(CurrentPagePictureData);
 
         /// these are our edited boxes that we will write to the picturedata object
@@ -221,16 +222,13 @@
     protected override void OnInitialized()
     {
         if (CurrentPagePictureData != null)
-        {
-            
         foreach (var boxparam in CurrentPagePictureData.BoxParameters)
         {
             BorderCLRItem = boxparam.BorderColor;
             fillCLRItem = boxparam.FillColor;
             StrokeCLRItem = boxparam.StrokeColor;
         }
-            BuildBoxParameters();
-        }
-
+        BuildBoxParameters();
     }
+
 }
