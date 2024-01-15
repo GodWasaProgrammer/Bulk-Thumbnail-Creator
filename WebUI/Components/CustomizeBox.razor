@@ -7,7 +7,7 @@
 
 @inject PicDataService PicDataService
 @inject ILogService logger;
- 
+
 <MudSelect AdornmentColor="Color.Primary" Label="Select an output box" @bind-Value="PickedBox">
 
     @if (CurrentPagePictureData.BoxParameters != null)
@@ -22,10 +22,14 @@
 
 </MudSelect>
 
+    <MudButton Color="Color.Success" @onclick="() => MemeSelected()">@MemeOrText</MudButton>
+
 @if(PickedBox != BoxType.None)
 {
 <MudPaper Class="mb-4">
 
+    @if(Meme == false)
+    {        
     <MudColorPicker PickerVariant="PickerVariant.Dialog" ColorPickerMode="ColorPickerMode.HSL" DisableAlpha DisableModeSwitch @bind-Value="colorvalue"></MudColorPicker>
 
     <MudSelect AdornmentColor="Color.Primary" Label="Select a Color to edit" @bind-Value="PickedGroup">
@@ -39,15 +43,26 @@
 
     <MudButton Color="Color.Primary" @onclick="() => SetColor(PickedGroup)">Set Color</MudButton>
 
-    <MudSelect AdornmentColor="Color.Primary" Label="Select a font" @bind-Value="PickedFont">
+        <MudSelect AdornmentColor="Color.Primary" Label="Select a font" @bind-Value="PickedFont">
 
         @foreach (var font in AvailableFonts)
         {
             <MudSelectItem Value="@font"><MudText Color="Color.Secondary">@font</MudText></MudSelectItem>
         }
+    </MudSelect>
+        }
+    else
+        {
+    <MudSelect AdornmentColor="Color.Primary" Label="Select a meme" @bind-Value="PickedMeme">
+
+        @foreach (var font in AvailableMemes)
+        {
+            <MudSelectItem Value="@font"><MudText Color="Color.Secondary">@PickedMeme</MudText></MudSelectItem>
+        }
 
     </MudSelect>
-
+        }
+        
     @if(PickedBox != BoxType.None)
         {
             // find the box that we are editing
@@ -95,6 +110,13 @@
     /// </summary>
     public List<string> AvailableFonts { get { return Directory.GetFiles("Fonts", "*.TTF*").ToList(); } }
 
+    /// <summary>
+    /// Our picked meme
+    /// </summary>
+    private string PickedMeme;
+
+
+    public List<string> AvailableMemes { get { return Directory.GetFiles("DankMemeStash").ToList(); } }
 
     private string _PickedFont;
     /// <summary>
@@ -152,7 +174,29 @@
         BorderColor,
         StrokeColor
     }
+    
+    private bool Meme = true;
 
+    private string MemeOrText = "Use Meme instead";
+
+    private void MemeSelected()
+    {
+        if (Meme)
+        {
+            Meme = false;
+            MemeOrText = "Use Meme instead";
+        }
+        else
+        {
+            Meme = true;
+            MemeOrText = "Use Text instead";
+        }
+    }
+
+    /// <summary>
+    /// Logic to set the correlating colors of the colorgroups based on which you have selected
+    /// </summary>
+    /// <param name="clrGRP"></param>
     private void SetColor(ColorGroup clrGRP)
     {
         DecideWhichBoxToEdit();
