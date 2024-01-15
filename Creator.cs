@@ -20,7 +20,6 @@ namespace Bulk_Thumbnail_Creator
         /// <param name="texts"></param>
         /// <param name="picdatatoMock"></param>
         /// <returns></returns>
-
         public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, PictureData PicdataObjToVarietize = null)
         {
             Settings.ListOfText = texts;
