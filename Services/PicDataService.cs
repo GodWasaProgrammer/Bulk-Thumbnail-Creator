@@ -94,7 +94,7 @@ namespace Bulk_Thumbnail_Creator.Services
 
         }
 
-        public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, OutputType JobType)
+        public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize)
         {
             CurrentJob.State = States.CustomPicture;
 

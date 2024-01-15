@@ -75,6 +75,7 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
             _Font = (string)param.Font.Clone(); // string
             _WidthOfBox = param.WidthOfBox; // int
             _HeightOfBox = param.HeightOfBox; // int
+            _Meme = (string)param.Meme?.Clone(); // string
             fillColor = new ColorItem(param.FillColor); // object
             strokeColor = new ColorItem(param.StrokeColor); // object
             borderColor = new ColorItem(param.BorderColor); // object

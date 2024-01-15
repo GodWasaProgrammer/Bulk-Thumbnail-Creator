@@ -8,6 +8,7 @@
 @inject PicDataService PicDataService
 @inject ILogService logger;
 
+@*First you will pick a box, this will default be the first box in the list *@
 <MudSelect AdornmentColor="Color.Primary" Label="Select an output box" @bind-Value="PickedBox">
 
     @if (CurrentPagePictureData.BoxParameters != null)
@@ -22,8 +23,10 @@
 
 </MudSelect>
 
+@*This allows you to swap to inserting a meme instead of text*@
     <MudButton Color="Color.Success" @onclick="() => MemeSelected()">@MemeOrText</MudButton>
 
+@*This is our Text Customization options with Fonts,Colors, etc*@
 @if(PickedBox != BoxType.None)
 {
 <MudPaper Class="mb-4">
@@ -55,9 +58,9 @@
         {
     <MudSelect AdornmentColor="Color.Primary" Label="Select a meme" @bind-Value="PickedMeme">
 
-        @foreach (var font in AvailableMemes)
+        @foreach (var meme in AvailableMemes)
         {
-            <MudSelectItem Value="@font"><MudText Color="Color.Secondary">@PickedMeme</MudText></MudSelectItem>
+            <MudSelectItem Value="@meme"><MudText Color="Color.Secondary">@PickedMeme</MudText></MudSelectItem>
         }
 
     </MudSelect>
@@ -67,7 +70,6 @@
         {
             // find the box that we are editing
             ParamForTextCreation param = BoxParameters.FirstOrDefault(p => p.CurrentBox.Type == PickedBox);
-
             <ParamDisplay param="param"></ParamDisplay>
         }
 
@@ -174,8 +176,8 @@
         BorderColor,
         StrokeColor
     }
-    
-    private bool Meme = true;
+
+    private bool Meme = false;
 
     private string MemeOrText = "Use Meme instead";
 
@@ -230,6 +232,7 @@
     {
         Box liftBoxData = new();
 
+        // this is garbage.
         liftBoxData = CurrentPagePictureData.BoxParameters[0].Boxes.Find( x => x.Type == PickedBox);
 
         // makes sure that your boxdata object is correctly set
@@ -250,13 +253,24 @@
         // makes a copy of our current page picture data
         PictureData PicDataToCustomize = new(CurrentPagePictureData);
 
+
+        if (Meme)
+        {
+            BoxParameters.Find(x => x.CurrentBox.Type == PickedBox).Meme = PickedMeme;
+
+            // this isnt great, it should be custom aswell...
+            PicDataToCustomize.OutPutType = OutputType.MemeVariety;
+        }
+        else
+        {
+            BoxParameters.Find(x => x.CurrentBox.Type == PickedBox).Meme = null;
+        }
+
         /// these are our edited boxes that we will write to the picturedata object
         PicDataToCustomize.BoxParameters = BoxParameters;
 
-        OutputType jobtype = OutputType.Custom;
-        PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(PicDataToCustomize, jobtype);
-        // ShowCustomPicture(PicDataToCustomize);
-
+        PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(PicDataToCustomize);
+        
         // get relative path of the outpath
         string currentDir = Directory.GetCurrentDirectory();
         string imgUrlRelative = Path.GetRelativePath(currentDir, PicDataToCustomize.OutPath);
