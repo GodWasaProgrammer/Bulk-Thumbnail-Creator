@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Components;
 @using MudBlazor.Utilities;
 @using Bulk_Thumbnail_Creator.Interfaces;
+@using System;
 
 @inject PicDataService PicDataService
 @inject ILogService logger;
@@ -24,51 +25,76 @@
 </MudSelect>
 
 @*This allows you to swap to inserting a meme instead of text*@
-    <MudButton Color="Color.Success" @onclick="() => MemeSelected()">@MemeOrText</MudButton>
+<MudButton Color="Color.Success" @onclick="() => MemeSelected()">@MemeOrText</MudButton>
 
-@*This is our Text Customization options with Fonts,Colors, etc*@
-@if(PickedBox != BoxType.None)
+    @*This is our Text Customization options with Fonts,Colors, etc*@
+    @if (PickedBox != BoxType.None)
 {
-<MudPaper Class="mb-4">
+    <MudPaper Class="mb-4">
 
-    @if(Meme == false)
-    {        
-    <MudColorPicker PickerVariant="PickerVariant.Dialog" ColorPickerMode="ColorPickerMode.HSL" DisableAlpha DisableModeSwitch @bind-Value="colorvalue"></MudColorPicker>
-
-    <MudSelect AdornmentColor="Color.Primary" Label="Select a Color to edit" @bind-Value="PickedGroup">
-
-        @foreach (var Colorz in colorBoxes)
+        @if (Meme == false)
         {
-            <MudSelectItem Value="@Colorz"><MudText Color="Color.Secondary">@Colorz</MudText></MudSelectItem>
+            <MudColorPicker PickerVariant="PickerVariant.Dialog" ColorPickerMode="ColorPickerMode.HSL" DisableAlpha DisableModeSwitch @bind-Value="colorvalue"></MudColorPicker>
+
+            <MudSelect AdornmentColor="Color.Primary" Label="Select a Color to edit" @bind-Value="PickedGroup">
+
+                @foreach (var Colorz in colorBoxes)
+                {
+                    <MudSelectItem Value="@Colorz"><MudText Color="Color.Secondary">@Colorz</MudText></MudSelectItem>
+                }
+
+            </MudSelect>
+
+            <MudButton Color="Color.Primary" @onclick="() => SetColor(PickedGroup)">Set Color</MudButton>
+
+            <MudSelect AdornmentColor="Color.Primary" Label="Select a font" @bind-Value="PickedFont">
+
+                @foreach (var fontPath in AvailableFonts)
+                {
+                    string fontFileName = Path.GetFileNameWithoutExtension(fontPath);
+                    <MudSelectItem Value="@fontPath"><MudText Color="Color.Secondary">@fontFileName</MudText></MudSelectItem>
+                }
+            </MudSelect>
+
+            <MudSelect AdornmentColor="Color.Primary" Label="Select text" @bind-Value="PickedText">
+
+                @foreach (var text in InputText)
+                {
+                    <MudSelectItem Value="@text"><MudText Color="Color.Secondary">@text</MudText></MudSelectItem>
+                }
+            </MudSelect>
+
+            @if (!AddText)
+            {
+                <MudButton OnClick="AddNewText" Color="Color.Primary">Add new text</MudButton>
+            }
+            @if (AddText)
+            {
+                <MudTextField Margin="Margin.Dense" Label="Add text here" Variant="Variant.Filled" @bind-Value="textToAdd" />
+                <MudButton Color="Color.Primary" OnClick="SaveText">Save</MudButton>
+
+                @if (nullOrWhiteSpace)
+                {
+                    <MudText Color="Color.Secondary">Bruh. You forgot to enter your text.</MudText>
+                }
+
+            }
+
         }
-
-    </MudSelect>
-
-    <MudButton Color="Color.Primary" @onclick="() => SetColor(PickedGroup)">Set Color</MudButton>
-
-        <MudSelect AdornmentColor="Color.Primary" Label="Select a font" @bind-Value="PickedFont">
-
-        @foreach (var fontPath in AvailableFonts)
+        else
         {
-            string fontFileName = Path.GetFileNameWithoutExtension(fontPath);
-            <MudSelectItem Value="@fontPath"><MudText Color="Color.Secondary">@fontFileName</MudText></MudSelectItem>
-        }
-    </MudSelect>
-        }
-    else
-        {
-    <MudSelect AdornmentColor="Color.Primary" Label="Select a meme" @bind-Value="PickedMeme">
+            <MudSelect AdornmentColor="Color.Primary" Label="Select a meme" @bind-Value="PickedMeme">
 
-        @foreach (var memePath in AvailableMemes)
-        {
-            string memeFileName = Path.GetFileNameWithoutExtension(memePath);
-            <MudSelectItem Value="@memePath"><MudText Color="Color.Secondary">@memeFileName</MudText></MudSelectItem>
+                @foreach (var memePath in AvailableMemes)
+                {
+                    string memeFileName = Path.GetFileNameWithoutExtension(memePath);
+                    <MudSelectItem Value="@memePath"><MudText Color="Color.Secondary">@memeFileName</MudText></MudSelectItem>
+                }
+
+            </MudSelect>
         }
 
-    </MudSelect>
-        }
-        
-    @if(PickedBox != BoxType.None)
+        @if (PickedBox != BoxType.None)
         {
             // find the box that we are editing
             ParamForTextCreation param = BoxParameters.FirstOrDefault(p => p.CurrentBox.Type == PickedBox);
@@ -77,16 +103,45 @@
 
         <MudButton Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">Produce</MudButton>
 
-</MudPaper>
+    </MudPaper>
 }
 
 @code
 {
+    private bool nullOrWhiteSpace;
+
+    private void SaveText()
+    {
+        // verifies that the user doesnt try to add a null or whitespace string
+        nullOrWhiteSpace = String.IsNullOrWhiteSpace(textToAdd);
+
+        // if the list doesnt contain the entry and the entry is not null or whitespace, then add it
+        if (!InputText.Contains(textToAdd) && !nullOrWhiteSpace)
+        {
+            InputText.Add(textToAdd);
+            // reset the add text bool
+            AddText = false;
+        }
+        StateHasChanged();
+    }
+
+    private bool AddText = false;
+
+    private string textToAdd;
+
+    private void AddNewText()
+    {
+        if (AddText)
+            AddText = false;
+        else
+            AddText = true;
+    }
+
     /// <summary>
     /// Delegate to let our parent components know we have produced a new picture
     /// </summary>
     [Parameter]
-    public Action<PictureData,string> OnCustomBoxHasProducedPicture { get; set; }
+    public Action<PictureData, string> OnCustomBoxHasProducedPicture { get; set; }
 
     // this is the image URL of the image being edited
     [Parameter]
@@ -105,9 +160,9 @@
     public BoxType PickedBox { get; set; }
 
     // the text that we are producing on the pictures
-    public List<string> InputText { get; set; }
+    private List<string> InputText = new();
 
-    public BoxType MemeBox { get; set; }
+    private string PickedText;
 
     /// <summary>
     /// List of the fonts available on drive
@@ -243,6 +298,7 @@
     private void ConstructParameter(ParamForTextCreation paramIn)
     {
         paramIn.Font = PickedFont;
+        paramIn.Text = PickedText;
         // construct color objects
         paramIn.BorderColor.SetByHSL(BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance);
         paramIn.FillColor.SetByHSL(fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance);
@@ -252,7 +308,7 @@
 
     /// <summary>
     /// This calls the service which in turns calls BTC and produces a new picture
-    /// This also 
+    /// This also
     /// </summary>
     public async void CreateCustomPicDataObject()
     {
@@ -262,8 +318,6 @@
         if (Meme)
         {
             BoxParameters.Find(x => x.CurrentBox.Type == PickedBox).Meme = PickedMeme;
-
-            // this isnt great, it should be custom aswell...
             PicDataToCustomize.OutPutType = OutputType.MemeVariety;
         }
         else
@@ -287,18 +341,22 @@
 
         ImageURL = replacefrontslash;
         StateHasChanged();
-        OnCustomBoxHasProducedPicture?.Invoke(PicDataToCustomize,ImageURL);
+        OnCustomBoxHasProducedPicture?.Invoke(PicDataToCustomize, ImageURL);
     }
 
     protected override void OnInitialized()
     {
         if (CurrentPagePictureData != null)
-        foreach (var boxparam in CurrentPagePictureData.BoxParameters)
-        {
-            BorderCLRItem = boxparam.BorderColor;
-            fillCLRItem = boxparam.FillColor;
-            StrokeCLRItem = boxparam.StrokeColor;
-        }
+            foreach (var boxparam in CurrentPagePictureData.BoxParameters)
+            {
+                BorderCLRItem = boxparam.BorderColor;
+                fillCLRItem = boxparam.FillColor;
+                StrokeCLRItem = boxparam.StrokeColor;
+
+                // add the text to our list of text
+                if (!InputText.Contains(boxparam.Text))
+                    InputText.Add(boxparam.Text);
+            }
         BuildBoxParameters();
     }
 
