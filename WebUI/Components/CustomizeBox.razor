@@ -324,6 +324,7 @@
         {
             BoxParameters.Find(x => x.CurrentBox.Type == PickedBox).Meme = null;
             BoxParameters.Find(x => x.CurrentBox.Type == PickedBox).Font = PickedFont;
+            BoxParameters.Find(x => x.CurrentBox.Type == PickedBox).Text = PickedText;
         }
 
         /// these are our edited boxes that we will write to the picturedata object
