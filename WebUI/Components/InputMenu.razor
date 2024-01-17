@@ -2,6 +2,7 @@
 @using Bulk_Thumbnail_Creator;
 @using Bulk_Thumbnail_Creator.Enums;
 @using Bulk_Thumbnail_Creator.Services;
+@using System.Text.RegularExpressions
 
 @inject Bulk_Thumbnail_Creator.Services.PicDataService ds;
 @inject ILogService logger;
@@ -10,16 +11,16 @@
 @if (DisableMenu == false)
 {
     <MudContainer MaxWidth="MaxWidth.Small">
-        <MudTextField Label="Youtube Link" Variant="Variant.Filled" @bind-Value="textInput" />
+        <MudTextField Label="Youtube Link" Variant="Variant.Filled" @bind-Value="youtubeLink" />
         <MudTextField Label="Text To Print 1" Variant="Variant.Filled" @bind-Value="TextToPrint1" />
         <MudTextField Label="Text To Print 2" Variant="Variant.Filled" @bind-Value="TextToPrint2" />
         <MudTextField Label="Text To Print 3" Variant="Variant.Filled" @bind-Value="TextToPrint3" />
         <MudButton OnClick="() => AwaitBTC()" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
     </MudContainer>
 
-    @if (passedNull)
+    @if (!validURL)
     {
-        <MudText>You need to give me an actual YoutubeLink</MudText>
+        <MudText Color="Color.Primary">You need to give me an actual YoutubeLink</MudText>
     }
 
 }
@@ -29,17 +30,53 @@
     private string TextToPrint1 = "Good Ole Rambler try!";
     private string TextToPrint2 = "I've Taken Dunkirk! Onwards Men!";
     private string TextToPrint3 = "Tallyhoo Laddiooo";
+    private bool validURL = false;
+    private bool DisableMenu;
+    private string youtubeLink;
 
-    private async Task CallBTC(string url)
+    static bool ValidateYTLink(string url)
     {
-        List<string> ListOfTextToPrint = new() { TextToPrint1, TextToPrint2, TextToPrint3 };
+        // YouTube video URL pattern
+        string pattern = @"^(https?://)?(www\.)?(youtube\.com/watch\?v=|youtu\.be/)([a-zA-Z0-9_-]{11})";
 
-        await ds.CreateInitialPictureArrayAsync(url, ListOfTextToPrint);
+        // Create a Regex object
+        Regex regex = new Regex(pattern);
+
+        // Match the input URL against the pattern
+        Match match = regex.Match(url);
+
+        // Check if the match is successful
+        return match.Success;
     }
 
-    private bool DisableMenu;
-    private string textInput = string.Empty;
-    private bool passedNull = false;
+    private async Task AwaitBTC()
+    {
+        // validate that our input is not something else than a youtube link
+        validURL = ValidateYTLink(youtubeLink);
+
+        /// disables our input options
+        DisableMenu = true;
+
+        // if it is not a valid youtube link, we return
+        if (validURL == false)
+        {
+            DisableMenu = false;
+            return;
+        }
+        /// if we have a valid YT link, we continue
+        else
+        {
+            // creates a job
+            job = await JobService.CreateJob(youtubeLink);
+
+            List<string> ListOfTextToPrint = new() { TextToPrint1, TextToPrint2, TextToPrint3 };
+
+            await ds.CreateInitialPictureArrayAsync(youtubeLink, ListOfTextToPrint);
+        
+            returnStateUpdate(DisableMenu);
+        }
+        await InvokeAsync(() => StateHasChanged());
+    }
 
     [Parameter]
     public Action<bool> returnStateUpdate { get; set; }
@@ -60,30 +97,6 @@
                 DisableMenu = true;
             }
 
-        }
-    }
-
-    private async Task AwaitBTC()
-    {
-        string url = textInput;
-
-        if (url == null || url == string.Empty)
-        {
-            passedNull = true;
-        }
-        else
-        {
-            passedNull = false;
-            DisableMenu = true;
-            job = await JobService.CreateJob(url);
-
-            // should perhaps be called from the job ?
-            // like await callbtc(job.url)
-            await CallBTC(url);
-
-            returnStateUpdate(DisableMenu);
-
-            await InvokeAsync(() => StateHasChanged());
         }
 
     }
