@@ -18,6 +18,17 @@
             <MudText Color="Color.Secondary">Duplicates will not be saved</MudText>
             <MudTextField Label="Enter Text here" Variant="Variant.Filled" @bind-Value="userText" />
             <MudButton OnClick="() => SaveText()" Variant="Variant.Filled" Color="Color.Primary">Save Text</MudButton>
+
+
+            @if(userInputText.Count != 0)
+            {
+                <MudText Color="Color.Secondary">Your current text:</MudText>
+            }
+            @foreach (var item in userInputText)
+            {
+                <MudText>@item</MudText>
+            }
+
             <div style="padding-top:20px;">
 
         <MudTextField Label="Youtube Link" Variant="Variant.Filled" @bind-Value="youtubeLink" />
@@ -60,6 +71,7 @@
             if (userInputText.Contains(userText) == false)
             {
                 userInputText.Add(userText);
+                userText = null;
             }
 
         }
