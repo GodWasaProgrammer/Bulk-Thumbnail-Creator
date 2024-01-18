@@ -11,31 +11,73 @@
 @if (DisableMenu == false)
 {
     <MudContainer MaxWidth="MaxWidth.Small">
+        <MudPaper>
+            <MudText Color="Color.Secondary">Enter your text here, you should add multiple unique phrases/sentences</MudText>
+            <MudText Color="Color.Secondary">However, you may change this later aswell.</MudText>
+            <MudText Color="Color.Secondary">If you dont enter anything, some sample text will be printed.</MudText>
+            <MudText Color="Color.Secondary">Duplicates will not be saved</MudText>
+
+            <MudTextField Label="Enter Text here" Variant="Variant.Filled" @bind-Value="userText" />
+            <MudButton OnClick="() => SaveText()" Variant="Variant.Filled" Color="Color.Primary">Save Text</MudButton>
+
+        </MudPaper>
         <MudTextField Label="Youtube Link" Variant="Variant.Filled" @bind-Value="youtubeLink" />
-        <MudTextField Label="Text To Print 1" Variant="Variant.Filled" @bind-Value="TextToPrint1" />
-        <MudTextField Label="Text To Print 2" Variant="Variant.Filled" @bind-Value="TextToPrint2" />
-        <MudTextField Label="Text To Print 3" Variant="Variant.Filled" @bind-Value="TextToPrint3" />
         <MudButton OnClick="() => AwaitBTC()" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
+        @if (!validURL && ButtonClicked)
+        {
+            <MudText Color="Color.Primary">Whoa buddy, you trying to trick me? You need to give me an actual YoutubeLink.</MudText>
+            <MudImage Width="500" Height="500" Src="/Images/MemeTrickery.jpeg"></MudImage>
+        }
     </MudContainer>
 
-    @if (!validURL)
-    {
-        <MudText Color="Color.Primary">You need to give me an actual YoutubeLink</MudText>
-    }
+
 
 }
 
 @code
 {
-    private string TextToPrint1 = "Good Ole Rambler try!";
-    private string TextToPrint2 = "I've Taken Dunkirk! Onwards Men!";
-    private string TextToPrint3 = "Tallyhoo Laddiooo";
-    private bool validURL = false;
-    private bool DisableMenu;
+    private string defaultText1 = "Good Ole Rambler try!";
+    private string defaultText2 = "I've Taken Dunkirk! Onwards Men!";
+    private string defaultText3 = "Tallyhoo Laddiooo";
+    private string userText;
     private string youtubeLink;
 
-    static bool ValidateYTLink(string url)
+    private bool DisableMenu;
+    private bool validURL = false;
+    bool ButtonClicked = false;
+
+    List<string> userInputText = new();
+
+    private void SaveText()
     {
+        if (userText == null)
+        {
+            return;
+        }
+        else
+        {
+            if (userInputText.Contains(userText) == false)
+            {
+                userInputText.Add(userText);
+            }
+
+        }
+
+    }
+    /// <summary>
+    /// Regex validation for youtube links
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
+    bool ValidateYTLink(string url)
+    {
+        ButtonClicked = true;
+
+        if (url == null)
+        {
+            return false;
+        }
+
         // YouTube video URL pattern
         string pattern = @"^(https?://)?(www\.)?(youtube\.com/watch\?v=|youtu\.be/)([a-zA-Z0-9_-]{11})";
 
@@ -49,6 +91,10 @@
         return match.Success;
     }
 
+    /// <summary>
+    /// This is where we actually call the backend Bulk Thumbnail Creator
+    /// </summary>
+    /// <returns></returns>
     private async Task AwaitBTC()
     {
         // validate that our input is not something else than a youtube link
@@ -69,10 +115,17 @@
             // creates a job
             job = await JobService.CreateJob(youtubeLink);
 
-            List<string> ListOfTextToPrint = new() { TextToPrint1, TextToPrint2, TextToPrint3 };
+            List<string> defaultText = new() { defaultText1, defaultText2, defaultText3 };
 
-            await ds.CreateInitialPictureArrayAsync(youtubeLink, ListOfTextToPrint);
-        
+            if (userInputText.Count != 0)
+            {
+                await ds.CreateInitialPictureArrayAsync(youtubeLink, userInputText);
+            }
+            else
+            {
+                await ds.CreateInitialPictureArrayAsync(youtubeLink, defaultText);
+            }
+
             returnStateUpdate(DisableMenu);
         }
         await InvokeAsync(() => StateHasChanged());

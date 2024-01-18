@@ -167,14 +167,14 @@
     /// <summary>
     /// List of the fonts available on drive
     /// </summary>
-    public List<string> AvailableFonts { get { return Directory.GetFiles("Fonts", "*.TTF*").ToList(); } }
+    private List<string> AvailableFonts { get { return Directory.GetFiles("Fonts", "*.TTF*").ToList(); } }
 
     /// <summary>
     /// Our picked meme
     /// </summary>
     private string PickedMeme;
 
-    public List<string> AvailableMemes { get { return Directory.GetFiles("DankMemeStash").ToList(); } }
+    private List<string> AvailableMemes { get { return Directory.GetFiles("DankMemeStash").ToList(); } }
 
     private string _PickedFont;
     /// <summary>
