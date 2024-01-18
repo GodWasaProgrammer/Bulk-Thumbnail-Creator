@@ -298,7 +298,11 @@
     private void ConstructParameter(ParamForTextCreation paramIn)
     {
         paramIn.Font = PickedFont;
-        paramIn.Text = PickedText;
+
+        if (PickedText != null)
+        {
+            paramIn.Text = PickedText;
+        }
         // construct color objects
         paramIn.BorderColor.SetByHSL(BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance);
         paramIn.FillColor.SetByHSL(fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance);
@@ -324,7 +328,11 @@
         {
             BoxParameters.Find(x => x.CurrentBox.Type == PickedBox).Meme = null;
             BoxParameters.Find(x => x.CurrentBox.Type == PickedBox).Font = PickedFont;
-            BoxParameters.Find(x => x.CurrentBox.Type == PickedBox).Text = PickedText;
+            if (PickedText != null)
+            {
+                BoxParameters.Find(x => x.CurrentBox.Type == PickedBox).Text = PickedText;
+            }
+
         }
 
         /// these are our edited boxes that we will write to the picturedata object

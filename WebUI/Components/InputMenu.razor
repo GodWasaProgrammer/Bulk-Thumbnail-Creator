@@ -16,13 +16,14 @@
             <MudText Color="Color.Secondary">However, you may change this later aswell.</MudText>
             <MudText Color="Color.Secondary">If you dont enter anything, some sample text will be printed.</MudText>
             <MudText Color="Color.Secondary">Duplicates will not be saved</MudText>
-
             <MudTextField Label="Enter Text here" Variant="Variant.Filled" @bind-Value="userText" />
             <MudButton OnClick="() => SaveText()" Variant="Variant.Filled" Color="Color.Primary">Save Text</MudButton>
+            <div style="padding-top:20px;">
 
-        </MudPaper>
         <MudTextField Label="Youtube Link" Variant="Variant.Filled" @bind-Value="youtubeLink" />
         <MudButton OnClick="() => AwaitBTC()" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
+            </div>
+        </MudPaper>
         @if (!validURL && ButtonClicked)
         {
             <MudText Color="Color.Primary">Whoa buddy, you trying to trick me? You need to give me an actual YoutubeLink.</MudText>
