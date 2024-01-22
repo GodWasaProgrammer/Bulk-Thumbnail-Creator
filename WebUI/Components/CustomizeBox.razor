@@ -10,22 +10,28 @@
 @inject ILogService logger;
 
 @*First you will pick a box, this will default be the first box in the list *@
-<MudSelect AdornmentColor="Color.Primary" Label="Select an output box" @bind-Value="PickedBox">
+@if (CurrentPagePictureData != null)
+{
+    <MudSelect AdornmentColor="Color.Primary" Label="Select an output box" @bind-Value="PickedBox">
 
-    @if (CurrentPagePictureData.BoxParameters != null)
-    {
-        @foreach (ParamForTextCreation boxParam in CurrentPagePictureData.BoxParameters)
+        @if (CurrentPagePictureData != null)
         {
-            BoxType boxType = boxParam.CurrentBox.Type;
+            @if (CurrentPagePictureData.BoxParameters != null)
+            {
+                @foreach (ParamForTextCreation boxParam in CurrentPagePictureData.BoxParameters)
+                {
+                    BoxType boxType = boxParam.CurrentBox.Type;
 
-            <MudSelectItem Value="@boxParam.CurrentBox.Type"><MudText Color="Color.Secondary">@boxParam.CurrentBox.Type</MudText></MudSelectItem>
+                    <MudSelectItem Value="@boxParam.CurrentBox.Type"><MudText Color="Color.Secondary">@boxParam.CurrentBox.Type</MudText></MudSelectItem>
+                }
+            }
         }
-    }
 
-</MudSelect>
+    </MudSelect>
 
 @*This allows you to swap to inserting a meme instead of text*@
 <MudButton Color="Color.Success" @onclick="() => MemeSelected()">@MemeOrText</MudButton>
+}
 
     @*This is our Text Customization options with Fonts,Colors, etc*@
     @if (PickedBox != BoxType.None)
@@ -94,20 +100,41 @@
             </MudSelect>
         }
 
-        @if (PickedBox != BoxType.None)
+        @if (CurrentPagePictureData != null)
         {
-            // find the box that we are editing
-            ParamForTextCreation param = BoxParameters.FirstOrDefault(p => p.CurrentBox.Type == PickedBox);
-            <ParamDisplay param="param"></ParamDisplay>
-        }
 
-        <MudButton Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">Produce</MudButton>
+
+            @if (PickedBox != BoxType.None)
+            {
+                // find the box that we are editing
+                ParamForTextCreation param = BoxParameters.FirstOrDefault(p => p.CurrentBox.Type == PickedBox);
+                <ParamDisplay param="param"></ParamDisplay>
+            }
+
+            <MudButton Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">Produce</MudButton>
+        }
 
     </MudPaper>
 }
 
 @code
 {
+    [Parameter]
+    public Delegate ResetState { get; set; }
+
+    public void reset()
+    {
+        CurrentPagePictureData = null;
+        ImageURL = null;
+        PickedBox = BoxType.None;
+        PickedFont = null;
+        PickedText = null;
+        PicDataToCustomize = null;
+        BoxParameters = null;
+        InputText = null;
+        StateHasChanged();
+    }
+
     private bool nullOrWhiteSpace;
 
     private void SaveText()

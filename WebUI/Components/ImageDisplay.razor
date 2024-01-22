@@ -18,11 +18,14 @@
 }
 else
 {
-    <VarietyDisplay CurrentJob="CurrentJob" ParentPictureProp="picdata" VarietyUrls="VarietyUrls"></VarietyDisplay>
+    <VarietyDisplay CurrentJob="CurrentJob" ParentPictureProp="picdata" VarietyUrls="VarietyUrls" ResetState="ResetState"></VarietyDisplay>
 }
 
 @code
 {
+    [Parameter]
+    public Delegate ResetState { get; set; }
+
     [Parameter]
     public Job CurrentJob { get; set; }
 

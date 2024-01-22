@@ -178,8 +178,6 @@ namespace Bulk_Thumbnail_Creator
 
         }
 
-
-
     }
 
 }

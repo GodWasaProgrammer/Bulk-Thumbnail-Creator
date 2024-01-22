@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Bulk_Thumbnail_Creator.Services
@@ -11,6 +11,8 @@ namespace Bulk_Thumbnail_Creator.Services
         /// </summary>
         private string _User;
         public string User { get { return _User; } set { _User = value; } }
+
+        public Delegate ResetGlobalState { get; set; }
 
         // store the current job that is active
         public Job CurrentJob { get; set; }
@@ -38,6 +40,16 @@ namespace Bulk_Thumbnail_Creator.Services
             return job != null ? Task.FromResult(job) : null;
         }
 
+        public Job Reset()
+        {
+            // reset the current job
+            CurrentJob = null;
+
+            // reset the job list
+            Jobs = new List<Job>();
+
+            return CurrentJob;
+        }
 
     }
 

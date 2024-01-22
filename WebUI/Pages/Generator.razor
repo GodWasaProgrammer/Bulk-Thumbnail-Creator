@@ -19,15 +19,21 @@
             </div>
 
             <div style="padding-top: 20px;">
-                <InputMenu job="CurrentJob" returnStateUpdate="BuildImageDisplay"></InputMenu>
+                <InputMenu @ref="inputMenuRef" job="CurrentJob" returnStateUpdate="BuildImageDisplay" ResetState="reset"></InputMenu>
             </div>
 
-            <ImageDisplay CurrentJob="CurrentJob" @ref="imageDisplayref"></ImageDisplay>
+            <ImageDisplay CurrentJob="CurrentJob" @ref="imageDisplayref" ResetState="reset"></ImageDisplay>
         </Authorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
 @code
 {
+    public void reset()
+    {
+        CurrentJob = null;
+        inputMenuRef.Reset();
+    }
+
     public Job CurrentJob;
 
     protected override async Task OnInitializedAsync()
@@ -40,6 +46,8 @@
     }
 
     ImageDisplay imageDisplayref;
+
+    InputMenu inputMenuRef;
 
     /// <summary>
     /// Passed to InputMenu as delegate to be able to set the state of child component ImageDisplay

@@ -17,13 +17,29 @@
             <PictureDataBox ImageURL="@ImageURL" PicData="@CurrentPagePictureData"></PictureDataBox>
         </MudItem>
         <MudItem xs="12" sm="6">
-            <CustomizeBox ImageURL="@ImageURL" CurrentPagePictureData="CurrentPagePictureData" OnCustomBoxHasProducedPicture="SetCustomPicture"></CustomizeBox>
+            <CustomizeBox ImageURL="@ImageURL" CurrentPagePictureData="CurrentPagePictureData" OnCustomBoxHasProducedPicture="SetCustomPicture" @ref="customizeBoxRef" ResetState="ResetState"></CustomizeBox>
         </MudItem>
     </MudGrid>
+    <MudButton OnClick="reset">Restart</MudButton>
 </MudPaper>
 
 @code
 {
+    private void reset()
+    {
+        customizeBoxRef.reset();
+        ResetState.DynamicInvoke();
+        CurrentJob = JobService.Reset();
+        CurrentPagePictureData = null;
+        ImageURL = null;
+        StateHasChanged();
+    }
+
+    CustomizeBox customizeBoxRef;
+
+    [Parameter]
+    public Delegate ResetState { get; set; }
+
     [Parameter]
     public Job CurrentJob { get; set; }
 
