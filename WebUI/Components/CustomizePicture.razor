@@ -20,12 +20,13 @@
             <CustomizeBox ImageURL="@ImageURL" CurrentPagePictureData="CurrentPagePictureData" OnCustomBoxHasProducedPicture="SetCustomPicture" @ref="customizeBoxRef" ResetState="ResetState"></CustomizeBox>
         </MudItem>
     </MudGrid>
-    <MudButton OnClick="reset">Restart</MudButton>
 </MudPaper>
+
+<MudButton ButtonType="ButtonType.Reset" OnClick="JobService.ResetState">Restart</MudButton>
 
 @code
 {
-    private void reset()
+    private void Reset()
     {
         customizeBoxRef.reset();
         ResetState.DynamicInvoke();
@@ -60,6 +61,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        JobService.RegisterResetMethod(Reset);
+
         if (CurrentJob == null)
         {
             CurrentJob = await JobService.RequestCurrentJob();

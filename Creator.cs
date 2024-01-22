@@ -55,13 +55,12 @@ namespace Bulk_Thumbnail_Creator
                 await FFmpegHandler.RunFFMPG(parameters, pictureOutput);
                 #endregion
 
-                // ffmpeg has finished, lets copy our mock data
-                Mocking.FrontPagePictureLineUp();
-
                 Settings.Memes = Directory.GetFiles(Settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
 
                 #region Face Detection
                 var faceDetector = new FaceDetector(0.3F, 0.4F, 0.5F);
+
+                Settings.Files = Directory.GetFiles(Settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
                 Settings.LogService.LogInformation($"Processing {Settings.Files.Length} images");
 
@@ -154,6 +153,13 @@ namespace Bulk_Thumbnail_Creator
 
                 await Task.WhenAll(productionTasks);
                 #endregion
+                #region Front Page Picture Line Up Mocking
+                if (Mocking.BTCRunCount != 1)
+                {
+                    // ffmpeg has finished, lets copy our mock data
+                    Mocking.FrontPagePictureLineUp();
+                }
+                #endregion
             }
 
             #endregion
@@ -179,7 +185,11 @@ namespace Bulk_Thumbnail_Creator
                     await Task.WhenAll(productionVarietyTaskList);
                 }
 
-                await Mocking.VarietiesList();
+                if (Mocking.BTCRunCount != 1)
+                {
+                    await Mocking.VarietiesList();
+                }
+
             }
             #endregion
 
@@ -211,11 +221,21 @@ namespace Bulk_Thumbnail_Creator
 
             #region Picdata serialization & Mock Setup
 
-            Mocking.SerializePicData();
+            if (Mocking.BTCRunCount != 1)
+            {
+                Mocking.SerializePicData();
+
+            }
 
             Settings.Files = Directory.GetFiles(Settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
             Settings.LogService.LogInformation("Processing Finished");
+
+            if(ProdType == ProductionType.CustomPicture)
+            {
+                Mocking.BTCRunCount++;
+            }
+
             return Settings.PictureDatas;
         }
         #endregion

@@ -8,6 +8,8 @@ namespace Bulk_Thumbnail_Creator
 {
     internal class Mocking
     {
+        public static int BTCRunCount = 0;
+
         internal static void SerializePicData()
         {
             XmlSerializer Serializer = new(typeof(List<PictureData>));
@@ -148,6 +150,7 @@ namespace Bulk_Thumbnail_Creator
                 }
 
             }
+
         }
 
         internal static async Task VarietiesList()

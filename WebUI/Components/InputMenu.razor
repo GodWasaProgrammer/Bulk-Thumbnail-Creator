@@ -164,6 +164,7 @@
 
     protected override void OnInitialized()
     {
+        JS.RegisterResetMethod(Reset);
 
         if (job != null)
         {

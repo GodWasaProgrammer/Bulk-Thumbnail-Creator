@@ -18,7 +18,7 @@
 }
 else
 {
-    <VarietyDisplay CurrentJob="CurrentJob" ParentPictureProp="picdata" VarietyUrls="VarietyUrls" ResetState="ResetState"></VarietyDisplay>
+    <VarietyDisplay CurrentJob="CurrentJob" ParentPictureProp="picdata" VarietyUrls="VarietyUrls" ResetState="ResetState" @ref="varietyDisplayRef"></VarietyDisplay>
 }
 
 @code
@@ -37,10 +37,25 @@ else
 
     private bool IMGDetailClicked = false;
 
+    VarietyDisplay varietyDisplayRef;
+
+    private void reset()
+    {
+        CurrentJob = JobService.Reset();
+        varietyDisplayRef.Reset();
+        picdata = null;
+        imageUrls = null;
+        VarietyUrls = null;
+        IMGDetailClicked = false;
+        StateHasChanged();
+    }
+
     // Load image URLs in the OnInitializedAsync lifecycle method
     // decide which state the current job is in and load the appropriate image urls
     protected override async Task OnInitializedAsync()
     {
+        JobService.RegisterResetMethod(reset);
+
         if (CurrentJob != null)
         {
             if (CurrentJob.State == States.FrontPagePictureLineUp)

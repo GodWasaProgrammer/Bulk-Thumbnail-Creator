@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Bulk_Thumbnail_Creator.Services
@@ -12,7 +11,23 @@ namespace Bulk_Thumbnail_Creator.Services
         private string _User;
         public string User { get { return _User; } set { _User = value; } }
 
-        public Delegate ResetGlobalState { get; set; }
+        // representing methods with no parameters and no return value
+        public delegate void ResetGlobalState();
+
+        // the private field that stores the delegate
+        private ResetGlobalState resetDelegate;
+
+        // here we will register methods to be called when the reset method is called
+        public void RegisterResetMethod(ResetGlobalState resetGlobalState)
+        {
+            resetDelegate += resetGlobalState;
+        }
+
+        // here is our actual global reset
+        public void ResetState()
+        {
+            resetDelegate?.Invoke();
+        }
 
         // store the current job that is active
         public Job CurrentJob { get; set; }

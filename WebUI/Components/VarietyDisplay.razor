@@ -39,7 +39,7 @@
     [Parameter]
     public Delegate ResetState { get; set; }
 
-    private void Reset()
+    public void Reset()
     {
         ResetState.DynamicInvoke();
         CurrentJob = JobService.Reset();
@@ -71,6 +71,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        JobService.RegisterResetMethod(Reset);
+
         if (CurrentJob == null)
         {
             CurrentJob = await JobService.RequestCurrentJob();

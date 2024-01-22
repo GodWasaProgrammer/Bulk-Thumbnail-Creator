@@ -38,6 +38,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        js.RegisterResetMethod(reset);
+
         if (CurrentJob == null)
         {
             CurrentJob = await js.RequestCurrentJob();
