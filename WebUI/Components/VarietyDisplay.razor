@@ -29,25 +29,20 @@
 
     @if (CustomPicture)
     {
-        <CustomizePicture CurrentJob="CurrentJob" CurrentPagePictureData="passData" ImageURL="@passURL" ResetState="ResetState"/>
+        <CustomizePicture CurrentJob="CurrentJob" CurrentPagePictureData="passData" ImageURL="@passURL"/>
     }
 
 </div>
 
 @code
 {
-    [Parameter]
-    public Delegate ResetState { get; set; }
-
     public void Reset()
     {
-        ResetState.DynamicInvoke();
         CurrentJob = JobService.Reset();
-        VarietyUrls.Clear();
         passURL = null;
         passData = null;
         CustomPicture = false;
-        StateHasChanged();
+        InvokeAsync(() => StateHasChanged());
     }
 
     [Parameter]

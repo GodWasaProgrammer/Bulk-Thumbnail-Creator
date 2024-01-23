@@ -2,6 +2,8 @@
 {
     public enum States
     {
+        Not_Initialized,
+        Loading,
         Initial,
         FrontPagePictureLineUp,
         varietyList,

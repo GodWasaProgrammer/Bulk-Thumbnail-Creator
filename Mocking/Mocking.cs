@@ -74,6 +74,7 @@ namespace Bulk_Thumbnail_Creator
                 }
 
             }
+
         }
 
         internal static async Task SetupFrontPagePictureLineUp()
@@ -81,7 +82,6 @@ namespace Bulk_Thumbnail_Creator
             // pretend to make line up
             string srcMockFolder = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "output");
             string[] outputDirList = Directory.GetFiles(srcMockFolder);
-
 
             // copy outputDir to mockOutPutDir ??
             foreach (string outputFile in outputDirList)
@@ -126,7 +126,7 @@ namespace Bulk_Thumbnail_Creator
             Settings.PictureDatas = deserializedList;
         }
 
-        internal static void FrontPagePictureLineUp()
+        internal static void OutPutDirMockCopy()
         {
             // first we will clear the directory of any files
             string mockOutPutDir = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "output");

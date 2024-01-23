@@ -18,14 +18,11 @@
 }
 else
 {
-    <VarietyDisplay CurrentJob="CurrentJob" ParentPictureProp="picdata" VarietyUrls="VarietyUrls" ResetState="ResetState" @ref="varietyDisplayRef"></VarietyDisplay>
+    <VarietyDisplay CurrentJob="CurrentJob" ParentPictureProp="picdata" VarietyUrls="VarietyUrls"></VarietyDisplay>
 }
 
 @code
 {
-    [Parameter]
-    public Delegate ResetState { get; set; }
-
     [Parameter]
     public Job CurrentJob { get; set; }
 
@@ -37,17 +34,14 @@ else
 
     private bool IMGDetailClicked = false;
 
-    VarietyDisplay varietyDisplayRef;
-
     private void reset()
     {
-        CurrentJob = JobService.Reset();
-        varietyDisplayRef.Reset();
+        CurrentJob = null;
         picdata = null;
         imageUrls = null;
         VarietyUrls = null;
         IMGDetailClicked = false;
-        StateHasChanged();
+        InvokeAsync (() => StateHasChanged());
     }
 
     // Load image URLs in the OnInitializedAsync lifecycle method

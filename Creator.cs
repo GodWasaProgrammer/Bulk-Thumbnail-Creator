@@ -157,7 +157,7 @@ namespace Bulk_Thumbnail_Creator
                 if (Mocking.BTCRunCount != 1)
                 {
                     // ffmpeg has finished, lets copy our mock data
-                    Mocking.FrontPagePictureLineUp();
+                    Mocking.OutPutDirMockCopy();
                 }
                 #endregion
             }
@@ -224,14 +224,13 @@ namespace Bulk_Thumbnail_Creator
             if (Mocking.BTCRunCount != 1)
             {
                 Mocking.SerializePicData();
-
             }
 
             Settings.Files = Directory.GetFiles(Settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
             Settings.LogService.LogInformation("Processing Finished");
 
-            if(ProdType == ProductionType.CustomPicture)
+            if (ProdType == ProductionType.VarietyList)
             {
                 Mocking.BTCRunCount++;
             }

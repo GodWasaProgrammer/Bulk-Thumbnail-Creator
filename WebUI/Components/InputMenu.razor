@@ -145,21 +145,18 @@
     public Action<bool> returnStateUpdate { get; set; }
 
     [Parameter]
-    public Delegate ResetState { get; set; }
-
-    [Parameter]
     public Job job { get; set; }
 
     public void Reset()
     {
-        job = JS.Reset();
+        job = null;
         DisableMenu = false;
         userInputText.Clear();
         youtubeLink = null;
         userText = null;
         validURL = false;
         ButtonClicked = false;
-        StateHasChanged();
+        InvokeAsync(() => StateHasChanged());
     }
 
     protected override void OnInitialized()
