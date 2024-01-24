@@ -1,0 +1,60 @@
+﻿@using System.Timers
+
+<div class="centered-content">
+    <MudText Typo="Typo.h4">We are loading your content...</MudText>
+</div>
+
+<div class="centered-content">
+    <MudText Typo="Typo.h4">@loadingMessage</MudText>
+    </div>
+
+    <div class="centered-content">
+        <MudImage Src="images/pepe-dence.gif"></MudImage>
+    </div>
+
+    <div>
+        <Loading processing="true"></Loading>
+    </div>
+
+    @code
+    {
+    private string loadingMessage = "We are loading your content";
+
+    private Timer timer;
+    private int dotCount = 1;
+
+    protected override void OnInitialized()
+    {
+        // Set up a timer to update the loading message every 500 milliseconds
+        timer = new Timer(500);
+        timer.Elapsed += TimerElapsed;
+        timer.Start();
+    }
+
+    private void TimerElapsed(object sender, ElapsedEventArgs e)
+    {
+        // Update the loading message with the appropriate number of dots
+        loadingMessage = "Please wait" + new string('.', dotCount);
+
+        // Increment the dot count, resetting to 1 after reaching 3
+        dotCount = dotCount % 3 + 1;
+
+        // Notify Blazor to re-render the component
+        InvokeAsync(StateHasChanged);
+    }
+
+    // Don't forget to stop the timer when the component is disposed
+    public void Dispose()
+    {
+        timer?.Stop();
+        timer?.Dispose();
+    }
+
+}
+<style>
+    .centered-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>

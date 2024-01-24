@@ -17,17 +17,32 @@
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                 <MudImage Src="/images/BTCLogo.png"></MudImage>
             </div>
-
             <div style="padding-top: 20px;">
                 <InputMenu job="CurrentJob" returnStateUpdate="BuildImageDisplay"></InputMenu>
             </div>
-
             <ImageDisplay CurrentJob="CurrentJob" @ref="imageDisplayref"></ImageDisplay>
+
+            <div>
+                @if (Loading)
+                {
+                    <IntermediateLoading />
+                }
+
+            </div>
+
         </Authorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
 @code
 {
+    private bool Loading { get; set; }
+
+    private void HandleLoadingStateChanged(object sender, bool isLoading)
+    {
+        Loading = isLoading;
+        InvokeAsync (() => StateHasChanged());
+    }
+
     public void reset()
     {
         CurrentJob = js.Reset();
@@ -35,9 +50,12 @@
 
     public Job CurrentJob;
 
+    ImageDisplay imageDisplayref;
+
     protected override async Task OnInitializedAsync()
     {
         js.RegisterResetMethod(reset);
+        ds.LoadingStateChanged += HandleLoadingStateChanged;
 
         if (CurrentJob == null)
         {
@@ -45,8 +63,6 @@
         }
 
     }
-
-    ImageDisplay imageDisplayref;
 
     /// <summary>
     /// Passed to InputMenu as delegate to be able to set the state of child component ImageDisplay

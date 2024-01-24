@@ -1,6 +1,7 @@
 ﻿using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.Interfaces;
 using Bulk_Thumbnail_Creator.PictureObjects;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -18,17 +19,35 @@ namespace Bulk_Thumbnail_Creator.Services
             Settings.JobService = JS;
         }
 
+        public event EventHandler<bool> LoadingStateChanged;
+
+        private bool isLoading = false;
+
+        public bool IsLoading
+        {
+            get => isLoading;
+            private set
+            {
+                if (isLoading != value)
+                {
+                    isLoading = value;
+                    LoadingStateChanged?.Invoke(this, isLoading);
+                }
+            }
+        }
+
         // should also perhaps be derived from a current job?
         public List<PictureData> PicDataServiceList { get; set; } = new List<PictureData>();
 
         // not implemented yet but should store all the produced files location of output
         public List<string> OutputFileServiceList { get; set; } = new();
 
-
         private Job CurrentJob;
 
         public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint)
         {
+            IsLoading = true;
+
             CurrentJob = await Settings.JobService.CreateJob(url);
 
             CurrentJob.TextToPrint = ListOfTextToPrint;
@@ -53,10 +72,14 @@ namespace Bulk_Thumbnail_Creator.Services
 
             CurrentJob.PictureDatas = PicDataServiceList;
             CurrentJob.State = States.FrontPagePictureLineUp;
+
+            IsLoading = false;
         }
 
         public async Task<List<string>> CreatePictureDataVariety(PictureData PicToVarietize)
         {
+            IsLoading = true;
+
             CurrentJob.State = States.varietyList;
 
             List<string> ImageUrls = new();
@@ -90,18 +113,25 @@ namespace Bulk_Thumbnail_Creator.Services
 
             CurrentJob.VideoUrls = ImageUrls;
 
+            IsLoading = false;
+
             return ImageUrls;
 
         }
 
         public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize)
         {
+            isLoading = true;
+
             CurrentJob.State = States.CustomPicture;
 
             PicToCustomize = new(PicToCustomize);
             string url = string.Empty;
             PicDataServiceList = await Creator.Process(ProductionType.CustomPicture, url, CurrentJob.TextToPrint, PicToCustomize);
             CurrentJob.PictureDatas = PicDataServiceList;
+
+            isLoading = false;
+
             return PicToCustomize;
         }
 
