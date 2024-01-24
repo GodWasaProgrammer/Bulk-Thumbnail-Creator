@@ -27,12 +27,27 @@ namespace Bulk_Thumbnail_Creator
             #region Front Page Picture Line Up Output
             if (ProdType == ProductionType.FrontPagePictureLineUp)
             {
+                Settings.PictureDatas = new();
+
                 // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
                 Production.CreateDirectories(Settings.OutputDir, Settings.TextAddedDir, Settings.YTDLOutPutDir);
 
                 await Production.VerifyDirectoryAndExeIntegrity();
 
                 Settings.PathToVideo = await Production.YouTubeDL(url);
+
+                Settings.OutputDir = "output";
+
+                Settings.OutputDir = Settings.OutputDir + "/" + Path.GetFileNameWithoutExtension(Settings.PathToVideo);
+
+                Directory.CreateDirectory(Settings.OutputDir);
+
+                Settings.TextAddedDir = "text added";
+
+                Settings.TextAddedDir = Settings.TextAddedDir + "/" + Path.GetFileNameWithoutExtension(Settings.PathToVideo);
+
+                Directory.CreateDirectory(Settings.TextAddedDir);
+
                 Settings.DownloadedVideosList.Add(Settings.PathToVideo);
 
                 // Adds To DownloadedVideosList if it is not already containing it,
@@ -153,6 +168,7 @@ namespace Bulk_Thumbnail_Creator
 
                 await Task.WhenAll(productionTasks);
                 #endregion
+
                 #region Front Page Picture Line Up Mocking
                 if (Mocking.BTCRunCount != 1)
                 {
@@ -234,6 +250,8 @@ namespace Bulk_Thumbnail_Creator
             {
                 Mocking.BTCRunCount++;
             }
+
+            Settings.JobService.CurrentJob.PictureDatas = Settings.PictureDatas;
 
             return Settings.PictureDatas;
         }

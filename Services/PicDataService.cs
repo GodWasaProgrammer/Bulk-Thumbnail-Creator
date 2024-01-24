@@ -9,7 +9,7 @@ namespace Bulk_Thumbnail_Creator.Services
 {
     public class PicDataService
     {
-        public PicDataService(ILogService _logger , JobService JS)
+        public PicDataService(ILogService _logger, JobService JS)
         {
             ClearBaseOutPutDirectories();
             PicDataServiceList = new List<PictureData>();
@@ -24,7 +24,7 @@ namespace Bulk_Thumbnail_Creator.Services
         // not implemented yet but should store all the produced files location of output
         public List<string> OutputFileServiceList { get; set; } = new();
 
-        // TODO : this should be part of the jobservice and not of the picdata service
+
         private Job CurrentJob;
 
         public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint)

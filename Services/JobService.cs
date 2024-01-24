@@ -5,12 +5,6 @@ namespace Bulk_Thumbnail_Creator.Services
 {
     public class JobService
     {
-        /// <summary>
-        /// not implemented yet
-        /// </summary>
-        private string _User;
-        public string User { get { return _User; } set { _User = value; } }
-
         // representing methods with no parameters and no return value
         public delegate void ResetGlobalState();
 

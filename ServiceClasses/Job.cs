@@ -7,8 +7,11 @@ namespace Bulk_Thumbnail_Creator
 {
     public class Job
     {
-        // current user to be added here
-
+        /// <summary>
+        /// not implemented yet
+        /// </summary>
+        private string _User;
+        public string User { get { return _User; } set { _User = value; } }
 
         /// <summary>
         /// The list of log entries for this job to be able to save state between refresh/closings etc
