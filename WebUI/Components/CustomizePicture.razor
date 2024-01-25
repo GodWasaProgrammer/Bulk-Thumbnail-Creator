@@ -10,6 +10,7 @@
 @inject PicDataService PicDataService
 @inject ILogService Logger;
 @inject JobService JobService;
+@inject AuthenticationStateProvider AuthProvider;
 
 <MudPaper>
     <MudGrid>
@@ -46,6 +47,8 @@
     [Parameter]
     public string ImageURL { get; set; }
 
+    private string CurrentUser;
+
     public void SetCustomPicture(PictureData pictureData, string ImageURLInput)
     {
         CurrentPagePictureData = pictureData;
@@ -59,9 +62,13 @@
     {
         JobService.RegisterResetMethod(Reset);
 
+        var authState = await AuthProvider.GetAuthenticationStateAsync();
+
+        CurrentUser = authState.User.Identity.Name;
+
         if (CurrentJob == null)
         {
-            CurrentJob = await JobService.RequestCurrentJob();
+            CurrentJob = await JobService.RequestCurrentJob(CurrentUser);
 
             // if we fetched a job lets set the values
 

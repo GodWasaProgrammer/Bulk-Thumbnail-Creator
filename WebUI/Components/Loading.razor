@@ -5,6 +5,7 @@
 @inject ILogService Logger
 @inject PicDataService PicDataService
 @inject JobService JobService
+@inject AuthenticationStateProvider AuthProvider    
 
 @if (processing)
 {
@@ -24,6 +25,8 @@
     [Parameter]
     public Job CurrentJob { get; set; }
 
+    private string CurrentUser;
+
     [Parameter]
     public int takeEntries { get; set; } = 1;
 
@@ -40,10 +43,14 @@
 
     private void OnLogEntryAdded(string logEntry)
     {
+        var AuthState = AuthProvider.GetAuthenticationStateAsync().Result;
+
+        CurrentUser = AuthState.User.Identity.Name;
+
         // so its supposed to request a job if its null, otherwise it shouldnt disrupt anything
         if (CurrentJob == null)
         {
-            CurrentJob = JobService.RequestCurrentJob().Result;
+            CurrentJob = JobService.RequestCurrentJob(CurrentUser).Result;
         }
         // if however the job has now been created, we will copy the logentries to the job
         // this way we dont have to worry about the job being null before it passes the download stage
@@ -70,9 +77,13 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var AuthState = AuthProvider.GetAuthenticationStateAsync().Result;
+
+        CurrentUser = AuthState.User.Identity.Name;
+
         if (CurrentJob == null)
         {
-            CurrentJob = await JobService.RequestCurrentJob();
+            CurrentJob = await JobService.RequestCurrentJob(CurrentUser);
         }
 
         if (CurrentJob != null)

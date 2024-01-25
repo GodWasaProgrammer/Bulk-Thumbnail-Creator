@@ -8,6 +8,7 @@
 @inject ILogService logger;
 @inject JobService JS;
 @inject Settings settings;
+@inject AuthenticationStateProvider AuthProvider;
 
 @if (DisableMenu == false)
 {
@@ -20,7 +21,7 @@
             <MudTextField Label="Enter Text here" Variant="Variant.Filled" @bind-Value="userText" />
             <MudButton OnClick="() => SaveText()" Variant="Variant.Filled" Color="Color.Primary">Save Text</MudButton>
 
-            @if(userInputText.Count != 0)
+            @if (userInputText.Count != 0)
             {
                 <MudText Color="Color.Secondary">Your current text:</MudText>
             }
@@ -31,8 +32,8 @@
 
             <div style="padding-top:20px;">
 
-        <MudTextField Label="Youtube Link" Variant="Variant.Filled" @bind-Value="youtubeLink" />
-        <MudButton OnClick="() => AwaitBTC()" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
+                <MudTextField Label="Youtube Link" Variant="Variant.Filled" @bind-Value="youtubeLink" />
+                <MudButton OnClick="() => AwaitBTC()" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
             </div>
         </MudPaper>
         @if (!validURL && ButtonClicked)
@@ -123,18 +124,26 @@
         /// if we have a valid YT link, we continue
         else
         {
+            var UserInfo = AuthProvider.GetAuthenticationStateAsync();
+
+            var userID = UserInfo.Result.User.Identity.Name;
+            
+
             // creates a job
-            job = await JS.CreateJob(youtubeLink);
+            job = await JS.CreateJob(youtubeLink, userID);
 
             List<string> defaultText = new() { defaultText1, defaultText2, defaultText3 };
 
+
+            /// if we have text, we pass it to the backend
             if (userInputText.Count != 0)
             {
-                await ds.CreateInitialPictureArrayAsync(youtubeLink, userInputText, settings);
+                await ds.CreateInitialPictureArrayAsync(youtubeLink, userInputText, settings, userID);
             }
+            /// otherwise we use our default text values
             else
-            {
-                await ds.CreateInitialPictureArrayAsync(youtubeLink, defaultText, settings);
+            { 
+                await ds.CreateInitialPictureArrayAsync(youtubeLink, defaultText, settings,userID);
             }
 
             returnStateUpdate(DisableMenu);

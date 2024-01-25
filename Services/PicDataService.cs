@@ -44,11 +44,11 @@ namespace Bulk_Thumbnail_Creator.Services
 
         private Job CurrentJob;
 
-        public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint, Settings settings)
+        public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint, Settings settings, string CurrentUser)
         {
             IsLoading = true;
 
-            CurrentJob = await settings.JobService.CreateJob(url);
+            CurrentJob = await settings.JobService.CreateJob(url, CurrentUser);
 
             CurrentJob.TextToPrint = ListOfTextToPrint;
 

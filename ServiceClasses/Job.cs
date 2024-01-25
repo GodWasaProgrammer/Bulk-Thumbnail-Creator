@@ -79,8 +79,9 @@ namespace Bulk_Thumbnail_Creator
         /// Constructor that takes a video url
         /// </summary>
         /// <param name="VideoUrl"></param>
-        public Job(string VideoUrl)
+        public Job(string VideoUrl, string CRNTUser)
         {
+            _User = CRNTUser;
             State = States.Initial;
             JobID = Guid.NewGuid();
             this.VideoUrl = VideoUrl;

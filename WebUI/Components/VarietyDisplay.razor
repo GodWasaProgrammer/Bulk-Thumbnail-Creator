@@ -8,6 +8,7 @@
 @inject PicDataService PicDataService;
 @inject ILogService logger;
 @inject JobService JobService;
+@inject AuthenticationStateProvider AuthProvider;
 
 <div class="image-container">
     @if (VarietyUrls != null && CustomPicture == false)
@@ -51,6 +52,8 @@
     [Parameter]
     public PictureData ParentPictureProp { get; set; }
 
+    private string CurrentUser;
+
     // pass to customize Picture
     private PictureData passData;
 
@@ -66,11 +69,15 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var AuthState = await AuthProvider.GetAuthenticationStateAsync();
+
+        CurrentUser = AuthState.User.Identity.Name;
+
         JobService.RegisterResetMethod(Reset);
 
         if (CurrentJob == null)
         {
-            CurrentJob = await JobService.RequestCurrentJob();
+            CurrentJob = await JobService.RequestCurrentJob(CurrentUser);
         }
         else
         {

@@ -29,14 +29,14 @@ namespace Bulk_Thumbnail_Creator.Services
         // store all the jobs that have been created
         public List<Job> Jobs { get; set; } = new List<Job>();
 
-        public Task<Job> RequestCurrentJob()
+        public Task<Job> RequestCurrentJob(string User)
         {
             return Task.FromResult(CurrentJob);
         }
 
-        public Task<Job> CreateJob(string videoUrl)
+        public Task<Job> CreateJob(string videoUrl, string CurrentUser)
         {
-            Job job = new(videoUrl);
+            Job job = new(videoUrl,CurrentUser);
 
             // set the current job to the job that was just created
             // so we are able to lift it on demand

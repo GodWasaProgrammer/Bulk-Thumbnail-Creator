@@ -10,6 +10,7 @@
 @inject PicDataService ds;
 @inject JobService js;
 @inject Settings settings;
+@inject AuthenticationStateProvider AuthProvider;
 
 <PageTitle>Bulk Thumbnail Creator</PageTitle>
 <CascadingAuthenticationState>
@@ -41,7 +42,7 @@
     private void HandleLoadingStateChanged(object sender, bool isLoading)
     {
         Loading = isLoading;
-        InvokeAsync (() => StateHasChanged());
+        InvokeAsync(() => StateHasChanged());
     }
 
     public void reset()
@@ -53,14 +54,20 @@
 
     ImageDisplay imageDisplayref;
 
+    private string CurrentUser;
+
     protected override async Task OnInitializedAsync()
     {
+        var AuthState = await AuthProvider.GetAuthenticationStateAsync();
+
+        CurrentUser = AuthState.User.Identity.Name;
+
         js.RegisterResetMethod(reset);
         ds.LoadingStateChanged += HandleLoadingStateChanged;
 
         if (CurrentJob == null)
         {
-            CurrentJob = await js.RequestCurrentJob();
+            CurrentJob = await js.RequestCurrentJob(CurrentUser);
         }
 
     }

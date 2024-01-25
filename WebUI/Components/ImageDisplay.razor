@@ -6,6 +6,7 @@
 @inject PicDataService PicDataService;
 @inject JobService JobService;
 @inject Settings settings;
+@inject AuthenticationStateProvider AuthProvider;
 
 @if (IMGDetailClicked == false && imageUrls != null)
 {
@@ -27,6 +28,8 @@ else
     [Parameter]
     public Job CurrentJob { get; set; }
 
+    private string CurrentUser;
+
     private List<string> imageUrls;
 
     private List<string> VarietyUrls;
@@ -42,7 +45,7 @@ else
         imageUrls = null;
         VarietyUrls = null;
         IMGDetailClicked = false;
-        InvokeAsync (() => StateHasChanged());
+        InvokeAsync(() => StateHasChanged());
     }
 
     // Load image URLs in the OnInitializedAsync lifecycle method
@@ -50,6 +53,10 @@ else
     protected override async Task OnInitializedAsync()
     {
         JobService.RegisterResetMethod(reset);
+
+        var AuthState = await AuthProvider.GetAuthenticationStateAsync();
+
+        CurrentUser = AuthState.User.Identity.Name;
 
         if (CurrentJob != null)
         {
@@ -71,7 +78,7 @@ else
         }
         else
         {
-            CurrentJob = await JobService.RequestCurrentJob();
+            CurrentJob = await JobService.RequestCurrentJob(CurrentUser);
 
             if (CurrentJob != null)
             {
@@ -98,7 +105,11 @@ else
     /// <returns></returns>
     public async Task UpdateImageUrls(Settings settings)
     {
-        CurrentJob = await JobService.RequestCurrentJob();
+        var AuthState = await AuthProvider.GetAuthenticationStateAsync();
+
+        CurrentUser = AuthState.User.Identity.Name;
+
+        CurrentJob = await JobService.RequestCurrentJob(CurrentUser);
 
         string imagePath = settings.TextAddedDir;
 
