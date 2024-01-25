@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.IO.Compression;
 
 namespace Bulk_Thumbnail_Creator.Services
 {
@@ -17,38 +16,40 @@ namespace Bulk_Thumbnail_Creator.Services
                 File.Delete(zippedFile);
             }
 
-            ZipFile.CreateFromDirectory(Settings.OutputDir, zippedFile);
+            // ZipFile.CreateFromDirectory(Settings.OutputDir, zippedFile);
             return Path.GetFileName(zippedFile);
         }
 
         public static string ZipVideo()
         {
-            string videoname = Path.GetFileName(Settings.PathToVideo);
-            string zippedvideo = $"{wwwrootloc}/{videoname}.zip";
+            // string videoname = Path.GetFileName(Settings.PathToVideo);
+            // string zippedvideo = $"{wwwrootloc}/{videoname}.zip";
 
-            if (File.Exists(zippedvideo))
-            {
-                File.Delete(zippedvideo);
-            }
+            //if (File.Exists(zippedvideo))
+            //{
+            //    File.Delete(zippedvideo);
+            //}
 
-            using var zip = ZipFile.Open(zippedvideo, ZipArchiveMode.Create);
-            if (Settings.Mocking != true)
-            {
-                zip.CreateEntryFromFile($"{Settings.PathToVideo}", $"{Path.GetFileNameWithoutExtension(Settings.PathToVideo)}");
-            }
-            return Path.GetFileName(zippedvideo);
+            //using var zip = ZipFile.Open(zippedvideo, ZipArchiveMode.Create);
+            //if (Settings.Mocking != true)
+            //{
+            //    zip.CreateEntryFromFile($"{Settings.PathToVideo}", $"{Path.GetFileNameWithoutExtension(Settings.PathToVideo)}");
+            //}
+            //return Path.GetFileName(zippedvideo);
+            return null;
         }
 
         public static string ZipTextAddedDir()
         {
-            string zippedtextAddedDir = $"{wwwrootloc}/{Settings.TextAddedDir}.zip";
+            //string zippedtextAddedDir = $"{wwwrootloc}/{Settings.TextAddedDir}.zip";
 
-            if (File.Exists(zippedtextAddedDir))
-            {
-                File.Delete(zippedtextAddedDir);
-            }
-            ZipFile.CreateFromDirectory(Settings.TextAddedDir, zippedtextAddedDir);
-            return Path.GetFileName(zippedtextAddedDir);
+            //if (File.Exists(zippedtextAddedDir))
+            //{
+            //    File.Delete(zippedtextAddedDir);
+            //}
+            //ZipFile.CreateFromDirectory(Settings.TextAddedDir, zippedtextAddedDir);
+            //return Path.GetFileName(zippedtextAddedDir);
+            return null;
         }
 
     }

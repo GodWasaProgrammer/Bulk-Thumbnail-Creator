@@ -10,17 +10,17 @@ namespace Bulk_Thumbnail_Creator
     {
         public static int BTCRunCount = 0;
 
-        internal static void SerializePicData()
+        internal static void SerializePicData(Settings settings)
         {
             XmlSerializer Serializer = new(typeof(List<PictureData>));
 
-            // Open the file for writing or create a new one if it doesn't exist
-            using (StreamWriter streamWriter = new("mockFP.xml"))
-            {
-                // Serialize the entire list at once
-                Serializer.Serialize(streamWriter, Settings.PictureDatas);
-            }
-            Settings.LogService.LogInformation("Settings.PictureDatas Serialized to mockFP.xml");
+            //// Open the file for writing or create a new one if it doesn't exist
+            //using (StreamWriter streamWriter = new("mockFP.xml"))
+            //{
+            //    // Serialize the entire list at once
+            //    Serializer.Serialize(streamWriter, settings.PictureDatas);
+            //}
+            settings.LogService.LogInformation("Settings.PictureDatas Serialized to mockFP.xml");
 
             string mockDir = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "mockFP.xml");
             File.Copy("mockFP.xml", mockDir, true);
@@ -38,7 +38,7 @@ namespace Bulk_Thumbnail_Creator
             // Copy the Text Added Directory to Mock Folder
             string mockdir2 = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "text added");
 
-            string[] Mockfiles = Directory.GetFiles(Settings.TextAddedDir);
+            string[] Mockfiles = Directory.GetFiles(settings.TextAddedDir);
 
             foreach (string file in Mockfiles)
             {
@@ -46,7 +46,7 @@ namespace Bulk_Thumbnail_Creator
             }
         }
 
-        internal static async Task SetupVarietyDisplay()
+        internal static async Task SetupVarietyDisplay(Settings settings)
         {
             // copy pictures to text added dir / var dir                    // copy pictures to text added dir / var dir
             string sourceDirectory = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "text added");
@@ -62,22 +62,22 @@ namespace Bulk_Thumbnail_Creator
 
                 string dirname = Path.GetFileName(dir);
 
-                Directory.CreateDirectory(Path.Combine(Settings.TextAddedDir, dirname));
+                Directory.CreateDirectory(Path.Combine(settings.TextAddedDir, dirname));
 
                 foreach (string file in files)
                 {
-                    string outPath = Path.Combine(Settings.TextAddedDir, dirname);
+                    string outPath = Path.Combine(settings.TextAddedDir, dirname);
                     outPath = Path.Combine(outPath, Path.GetFileName(file));
 
                     await Task.Run(() => File.Copy(file, outPath));
-                    Settings.LogService.LogInformation($"Copied {file} to {outPath}");
+                    settings.LogService.LogInformation($"Copied {file} to {outPath}");
                 }
 
             }
 
         }
 
-        internal static async Task SetupFrontPagePictureLineUp()
+        internal static async Task SetupFrontPagePictureLineUp(Settings settings)
         {
             // pretend to make line up
             string srcMockFolder = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "output");
@@ -86,7 +86,7 @@ namespace Bulk_Thumbnail_Creator
             // copy outputDir to mockOutPutDir ??
             foreach (string outputFile in outputDirList)
             {
-                string completePath = Path.Combine(Settings.OutputDir, Path.GetFileName(outputFile));
+                string completePath = Path.Combine(settings.OutputDir, Path.GetFileName(outputFile));
                 await Task.Run(() => File.Copy(outputFile, completePath));
             }
 
@@ -97,7 +97,7 @@ namespace Bulk_Thumbnail_Creator
 
             foreach (string file in files)
             {
-                await Task.Run(() => File.Copy(file, $"{Settings.TextAddedDir}/{Path.GetFileName(file)}"));
+                await Task.Run(() => File.Copy(file, $"{settings.TextAddedDir}/{Path.GetFileName(file)}"));
             }
 
             srcMockFolder = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp");
@@ -108,7 +108,7 @@ namespace Bulk_Thumbnail_Creator
             }
             catch (System.Exception)
             {
-                Settings.LogService.LogError("Could not find mockFP.xml");
+                settings.LogService.LogError("Could not find mockFP.xml");
                 throw;
             }
 
@@ -123,10 +123,10 @@ namespace Bulk_Thumbnail_Creator
             }
             // add the deserialized list to the PictureDatas list
             // this completes the mocking of the process
-            Settings.PictureDatas = deserializedList;
+            settings.PictureDatas = deserializedList;
         }
 
-        internal static void OutPutDirMockCopy()
+        internal static void OutPutDirMockCopy(Settings settings)
         {
             // first we will clear the directory of any files
             string mockOutPutDir = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "output");
@@ -138,11 +138,11 @@ namespace Bulk_Thumbnail_Creator
             }
 
             // Mock copying of outputDir to mockOutPutDir
-            Settings.Files = Directory.GetFiles(Settings.OutputDir, "*.*", SearchOption.AllDirectories);
+            settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
             if (Directory.Exists(mockOutPutDir))
             {
-                foreach (var file in Settings.Files)
+                foreach (var file in settings.Files)
                 {
                     string filename = Path.GetFileName(file);
                     string writePath = Path.Combine(mockOutPutDir, filename);
@@ -153,9 +153,9 @@ namespace Bulk_Thumbnail_Creator
 
         }
 
-        internal static async Task VarietiesList()
+        internal static async Task VarietiesList(Settings settings)
         {
-            DirectoryInfo di = new(Settings.TextAddedDir);
+            DirectoryInfo di = new(settings.TextAddedDir);
 
             DirectoryInfo[] di2 = di.GetDirectories();
 
@@ -174,7 +174,11 @@ namespace Bulk_Thumbnail_Creator
                 foreach (string file in files)
                 {
                     string filename = Path.GetFileName(file);
-                    await Task.Run(() => File.Copy(file, $"{TargetDirectory}/{filename}"));
+
+                    if (!File.Exists($"{TargetDirectory}/{filename}"))
+                    {
+                        await Task.Run(() => File.Copy(file, $"{TargetDirectory}/{filename}"));
+                    }
                 }
 
             }

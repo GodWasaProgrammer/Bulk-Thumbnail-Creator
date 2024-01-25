@@ -11,11 +11,10 @@ namespace Bulk_Thumbnail_Creator
 {
     public class Production
     {
-
         /// <summary>
         /// Checks if we have our directory/executables  in order
         /// </summary>
-        public static async Task VerifyDirectoryAndExeIntegrity()
+        public static async Task VerifyDirectoryAndExeIntegrity(Settings settings)
         {
             string CurrentLoc = Assembly.GetExecutingAssembly().Location;
             string parentDirectory = Directory.GetParent(CurrentLoc).FullName;
@@ -31,73 +30,73 @@ namespace Bulk_Thumbnail_Creator
             string YTDLPDir = Path.Combine(ExePath, "yt-dlp.exe");
             string FfMpegDir = Path.Combine(ExePath, "ffmpeg.exe");
 
-            Settings.LogService.LogInformation($"Current Location: {CurrentLoc}");
-            Settings.LogService.LogInformation($"Parent Directory: {parentDirectory}");
-            Settings.LogService.LogInformation($"New Path: {ExePath}");
+            settings.LogService.LogInformation($"Current Location: {CurrentLoc}");
+            settings.LogService.LogInformation($"Parent Directory: {parentDirectory}");
+            settings.LogService.LogInformation($"New Path: {ExePath}");
 
             if (File.Exists(YTDLPDir))
             {
-                Settings.LogService.LogInformation($"YTDLP Path: {YTDLPDir}");
+                settings.LogService.LogInformation($"YTDLP Path: {YTDLPDir}");
             }
             else
             {
-                Settings.LogService.LogError("yt-dlp.exe was not found");
-                Settings.LogService.LogInformation("Will Try To Download yt-dlp");
+                settings.LogService.LogError("yt-dlp.exe was not found");
+                settings.LogService.LogInformation("Will Try To Download yt-dlp");
                 await YoutubeDLSharp.Utils.DownloadYtDlp(ExePath);
 
                 if (File.Exists(YTDLPDir))
                 {
-                    Settings.LogService.LogInformation("Successfully downloaded yt-dlp");
+                    settings.LogService.LogInformation("Successfully downloaded yt-dlp");
                 }
                 else
                 {
-                    Settings.LogService.LogError("Failed to download yt-dlp");
+                    settings.LogService.LogError("Failed to download yt-dlp");
                 }
 
             }
-            Settings.YTDLPDir = YTDLPDir;
+            settings.YTDLPDir = YTDLPDir;
 
             if (File.Exists(FfMpegDir))
             {
-                Settings.LogService.LogInformation($"FFmpeg Path: {FfMpegDir}");
+                settings.LogService.LogInformation($"FFmpeg Path: {FfMpegDir}");
             }
             else
             {
                 // we didnt find ffmpeg
-                Settings.LogService.LogError("ffmpeg.exe was not found");
+                settings.LogService.LogError("ffmpeg.exe was not found");
 
                 // so will download it
-                Settings.LogService.LogInformation("Will Try To Download ffmpeg");
+                settings.LogService.LogInformation("Will Try To Download ffmpeg");
 
                 //attempts to download the file to local dir
                 await YoutubeDLSharp.Utils.DownloadFFmpeg(ExePath);
 
                 if (File.Exists(FfMpegDir))
                 {
-                    Settings.LogService.LogInformation("File has been successfully downloaded");
+                    settings.LogService.LogInformation("File has been successfully downloaded");
                 }
                 else
                 {
-                    Settings.LogService.LogInformation("Download of FFMPEG has failed.");
+                    settings.LogService.LogInformation("Download of FFMPEG has failed.");
                 }
 
             }
 
-            Settings.FfmpegDir = FfMpegDir;
+            settings.FfmpegDir = FfMpegDir;
 
             string ytdlDir = Path.Combine(parentDirectory, "YTDL");
 
             if (Directory.Exists(ytdlDir))
             {
-                Settings.LogService.LogInformation($"YTDL Dir found:{ytdlDir}");
+                settings.LogService.LogInformation($"YTDL Dir found:{ytdlDir}");
             }
             else
             {
-                Settings.LogService.LogError("YTDL Dir was not found");
+                settings.LogService.LogError("YTDL Dir was not found");
                 Directory.CreateDirectory(ytdlDir);
-                Settings.LogService.LogInformation($"Dir Created at:{ytdlDir}");
+                settings.LogService.LogInformation($"Dir Created at:{ytdlDir}");
             }
-            Settings.YTDLOutPutDir = ytdlDir;
+            settings.YTDLOutPutDir = ytdlDir;
         }
 
         /// <summary>
@@ -105,14 +104,14 @@ namespace Bulk_Thumbnail_Creator
         /// </summary>
         /// <param name="URL">the specified link URL to download</param>
         /// <returns>returns the path to the downloaded video</returns>
-        public static async Task<string> YouTubeDL(string URL)
+        public static async Task<string> YouTubeDL(string URL, Settings settings)
         {
             var ytdl = new YoutubeDL
             {
                 // set paths
-                YoutubeDLPath = Settings.YTDLPDir,
-                FFmpegPath = Settings.FfmpegDir,
-                OutputFolder = Settings.YTDLOutPutDir,
+                YoutubeDLPath = settings.YTDLPDir,
+                FFmpegPath = settings.FfmpegDir,
+                OutputFolder = settings.YTDLOutPutDir,
             };
 
             // downloads specified video from youtube if it does not already exist.
@@ -120,37 +119,37 @@ namespace Bulk_Thumbnail_Creator
 
             if (URL == null)
             {
-                Settings.LogService.LogError("URL has been passed as null to YTDL");
+                settings.LogService.LogError("URL has been passed as null to YTDL");
                 throw new ArgumentNullException(nameof(URL));
 
             }
             else
             {
-                Settings.LogService.LogInformation($"Attempting download of: {URL}");
+                settings.LogService.LogInformation($"Attempting download of: {URL}");
                 res = await ytdl.RunVideoDownload(url: URL);
             }
 
-            Settings.LogService.LogInformation("Download Success:" + res.Success.ToString());
+            settings.LogService.LogInformation("Download Success:" + res.Success.ToString());
 
             // sets BTC to run on the recently downloaded file res.data is the returned path.
             return res.Data;
         }
 
-        public static void CreateDirectories(string outputDir, string TextAdded, string YTDL)
+        public static void CreateDirectories(string outputDir, string TextAdded, string YTDL, Settings settings)
         {
             if (!Directory.Exists(outputDir))
             {
-                Settings.LogService.LogInformation($"{outputDir} Directory was missing, will be created");
+                settings.LogService.LogInformation($"{outputDir} Directory was missing, will be created");
                 Directory.CreateDirectory(outputDir);
             }
             if (!Directory.Exists(YTDL))
             {
-                Settings.LogService.LogInformation($"{TextAdded} Directory was missing, will be created");
+                settings.LogService.LogInformation($"{TextAdded} Directory was missing, will be created");
                 Directory.CreateDirectory(TextAdded);
             }
             if (!Directory.Exists(YTDL))
             {
-                Settings.LogService.LogInformation($"{YTDL} Directory was missing, will be created");
+                settings.LogService.LogInformation($"{YTDL} Directory was missing, will be created");
                 Directory.CreateDirectory(YTDL);
             }
 
@@ -162,27 +161,27 @@ namespace Bulk_Thumbnail_Creator
             if (!Directory.Exists(CreateMockDir))
             {
                 Directory.CreateDirectory(CreateMockDir);
-                Settings.LogService.LogInformation($"{CreateMockDir} Created");
+                settings.LogService.LogInformation($"{CreateMockDir} Created");
             }
 
             string FrontPageLineupMockDir = Path.Combine(CreateMockDir, "FrontpagePictureLineUp");
             if (!Directory.Exists(FrontPageLineupMockDir))
             {
                 Directory.CreateDirectory(FrontPageLineupMockDir);
-                Settings.LogService.LogInformation($"{FrontPageLineupMockDir} Created");
+                settings.LogService.LogInformation($"{FrontPageLineupMockDir} Created");
             }
 
-            string outputMockDir = Path.Combine(FrontPageLineupMockDir, Settings.OutputDir);
+            string outputMockDir = Path.Combine(FrontPageLineupMockDir, settings.OutputDir);
             if (!Directory.Exists(outputMockDir))
             {
                 Directory.CreateDirectory(outputMockDir);
             }
 
-            string textaddedMockDir = Path.Combine(FrontPageLineupMockDir, Settings.TextAddedDir);
+            string textaddedMockDir = Path.Combine(FrontPageLineupMockDir, settings.TextAddedDir);
             if (!Directory.Exists(textaddedMockDir))
             {
                 Directory.CreateDirectory(textaddedMockDir);
-                Settings.LogService.LogInformation($"{textaddedMockDir} Created");
+                settings.LogService.LogInformation($"{textaddedMockDir} Created");
             }
 
         }
@@ -191,10 +190,10 @@ namespace Bulk_Thumbnail_Creator
         /// Produces Picture using the ImageMagick Library
         /// </summary>
         /// <param name="PicData">PictureDataObject Containing everything needed to create an image</param>
-        public static async Task ProduceTextPictures(PictureData PicData)
+        public async Task ProduceTextPictures(PictureData PicData, Settings settings)
         {
             string imageName;
-            string OutputPath = Path.GetFullPath(Settings.TextAddedDir);
+            string OutputPath = Path.GetFullPath(settings.TextAddedDir);
 
             imageName = Path.GetFileName(PicData.FileName);
             DateTime dateTime = DateTime.Now;
@@ -210,7 +209,8 @@ namespace Bulk_Thumbnail_Creator
 
             if (PicData.OutPutType == OutputType.Main)
             {
-                OutputPath += "//" + trimDateTime + imageName;
+                Guid guid = Guid.NewGuid();
+                OutputPath += "//" + guid + imageName;
                 PicData.OutPath = OutputPath;
             }
             if (PicData.OutPutType == OutputType.BoxPositionVariety)
@@ -240,12 +240,13 @@ namespace Bulk_Thumbnail_Creator
             if (PicData.OutPutType == OutputType.MemeVariety)
             {
                 Guid guid = Guid.NewGuid();
-                OutputPath += $"{varietyof}{imageName}//{guid}{PicData.OutPutType}{trimDateTime}{imageName}.png";
+                OutputPath += $"{varietyof}{imageName}//{PicData.OutPutType}{guid}{imageName}.png";
                 PicData.OutPath = OutputPath;
             }
             if (PicData.OutPutType == OutputType.Custom)
             {
-                OutputPath += $"{varietyof}{imageName}//{trimDateTime}Custom of{imageName}";
+                Guid guid = Guid.NewGuid();
+                OutputPath += $"{varietyof}{imageName}//{guid}Custom of{imageName}";
                 PicData.OutPath = OutputPath;
             }
 
@@ -280,7 +281,7 @@ namespace Bulk_Thumbnail_Creator
                     outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
                 }
 
-                Settings.LogService.LogInformation($"Picture:{Path.GetFileName(PicData.FileName)}Box Type:{PicData.BoxParameters[Box].CurrentBox.Type} Box: {Box + 1} of {PicData.BoxParameters.Count} has been composited");
+                settings.LogService.LogInformation($"Picture:{Path.GetFileName(PicData.FileName)}Box Type:{PicData.BoxParameters[Box].CurrentBox.Type} Box: {Box + 1} of {PicData.BoxParameters.Count} has been composited");
             }
 
             outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
@@ -288,7 +289,7 @@ namespace Bulk_Thumbnail_Creator
 
             // outputs the file to the provided path and name
             await Task.Run(() => outputImage.Write(OutputPath));
-            Settings.LogService.LogInformation($"File Created: {OutputPath}");
+            settings.LogService.LogInformation($"File Created: {OutputPath}");
         }
 
     }

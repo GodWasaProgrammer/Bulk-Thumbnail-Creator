@@ -20,54 +20,57 @@ namespace Bulk_Thumbnail_Creator
         /// <param name="texts"></param>
         /// <param name="picdatatoMock"></param>
         /// <returns></returns>
-        public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, PictureData PicdataObjToVarietize = null)
+        public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, Settings settings, PictureData PicdataObjToVarietize = null)
         {
-            Settings.ListOfText = texts;
+            settings.ListOfText = texts;
 
             #region Front Page Picture Line Up Output
             if (ProdType == ProductionType.FrontPagePictureLineUp)
             {
-                Settings.PictureDatas = new();
+                settings.PictureDatas = new();
 
                 // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
-                Production.CreateDirectories(Settings.OutputDir, Settings.TextAddedDir, Settings.YTDLOutPutDir);
+                Production.CreateDirectories(settings.OutputDir, settings.TextAddedDir, settings.YTDLOutPutDir, settings);
 
-                await Production.VerifyDirectoryAndExeIntegrity();
+                await Production.VerifyDirectoryAndExeIntegrity(settings);
 
-                Settings.PathToVideo = await Production.YouTubeDL(url);
+                settings.PathToVideo = await Production.YouTubeDL(url, settings);
 
-                Settings.OutputDir = "output";
+                settings.OutputDir = "output";
 
-                Settings.OutputDir = Settings.OutputDir + "/" + Path.GetFileNameWithoutExtension(Settings.PathToVideo);
+                settings.OutputDir = settings.OutputDir + "/" + Path.GetFileNameWithoutExtension(settings.PathToVideo);
 
-                Directory.CreateDirectory(Settings.OutputDir);
+                Directory.CreateDirectory(settings.OutputDir);
 
-                Settings.TextAddedDir = "text added";
+                settings.TextAddedDir = "text added";
 
-                Settings.TextAddedDir = Settings.TextAddedDir + "/" + Path.GetFileNameWithoutExtension(Settings.PathToVideo);
+                settings.TextAddedDir = settings.TextAddedDir + "/" + Path.GetFileNameWithoutExtension(settings.PathToVideo);
 
-                Directory.CreateDirectory(Settings.TextAddedDir);
+                Directory.CreateDirectory(settings.TextAddedDir);
 
-                Settings.DownloadedVideosList.Add(Settings.PathToVideo);
+                Settings.DownloadedVideosList.Add(settings.PathToVideo);
 
                 // Adds To DownloadedVideosList if it is not already containing it,
-                if (!Settings.DownloadedVideosList.Contains(Settings.PathToVideo))
+                if (!Settings.DownloadedVideosList.Contains(settings.PathToVideo))
                 {
-                    Settings.DownloadedVideosList.Add(Settings.PathToVideo);
+                    Settings.DownloadedVideosList.Add(settings.PathToVideo);
                 }
 
                 #region Run FfMpeg
                 var parameters = new Dictionary<string, string>();
 
-                string extractedfilename = Path.GetFileName(Settings.PathToVideo);
+                string extractedfilename = Path.GetFileName(settings.PathToVideo);
 
                 parameters["i"] = $@"""{extractedfilename}""";
                 parameters["vf"] = "select='gt(scene,0.3)',select=key";
                 parameters["vsync"] = "vfr";
-                string truePath = Path.GetFullPath(Settings.OutputDir);
+                string truePath = Path.GetFullPath(settings.OutputDir);
                 string pictureOutput = $@"""{truePath}/%03d.png""";
 
-                await FFmpegHandler.RunFFMPG(parameters, pictureOutput);
+                FFmpegHandler fFmpegHandler = new();
+
+                await fFmpegHandler.RunFFMPG(parameters, pictureOutput, settings);
+
                 #endregion
 
                 Settings.Memes = Directory.GetFiles(Settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
@@ -75,14 +78,14 @@ namespace Bulk_Thumbnail_Creator
                 #region Face Detection
                 var faceDetector = new FaceDetector(0.3F, 0.4F, 0.5F);
 
-                Settings.Files = Directory.GetFiles(Settings.OutputDir, "*.*", SearchOption.AllDirectories);
+                settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
-                Settings.LogService.LogInformation($"Processing {Settings.Files.Length} images");
+                settings.LogService.LogInformation($"Processing {settings.Files.Length} images");
 
                 // main loop for detecting faces, placing text where face is not
-                for (int fileIndex = 0; fileIndex < Settings.Files.Length; fileIndex++)
+                for (int fileIndex = 0; fileIndex < settings.Files.Length; fileIndex++)
                 {
-                    string file = Settings.Files[fileIndex];
+                    string file = settings.Files[fileIndex];
 
                     Bitmap PicToDetectFacesOn = new(file);
 
@@ -125,29 +128,29 @@ namespace Bulk_Thumbnail_Creator
 
                         // picks a random string from the list
                         Random pickAString = new();
-                        int pickedString = pickAString.Next(Settings.ListOfText.Count);
-                        currentParameters.Text = Settings.ListOfText[pickedString];
+                        int pickedString = pickAString.Next(settings.ListOfText.Count);
+                        currentParameters.Text = settings.ListOfText[pickedString];
 
                         PassPictureData.BoxParameters.Add(currentParameters);
                     }
 
-                    Settings.PictureDatas.Add(PassPictureData);
+                    settings.PictureDatas.Add(PassPictureData);
                 }
                 #endregion
 
                 #region Variety Data Generation
                 //// Produce varietydata for the current object
-                for (int i = 0; i < Settings.PictureDatas.Count; i++)
+                for (int i = 0; i < settings.PictureDatas.Count; i++)
                 {
-                    DataGeneration.GenSaturationVariety(Settings.PictureDatas[i]);
+                    DataGeneration.GenSaturationVariety(settings.PictureDatas[i]);
 
-                    DataGeneration.GenFontVariety(Settings.PictureDatas[i]);
+                    DataGeneration.GenFontVariety(settings.PictureDatas[i]);
 
                     //DataGeneration.GenPlacementOfTextVariety(Settings.PictureDatas[i]);
 
-                    DataGeneration.GenRandomVariety(Settings.PictureDatas[i]);
+                    DataGeneration.GenRandomVariety(settings.PictureDatas[i]);
 
-                    DataGeneration.GenMemePosition(Settings.PictureDatas[i]);
+                    DataGeneration.GenMemePosition(settings.PictureDatas[i]);
                 }
                 #endregion
 
@@ -155,13 +158,14 @@ namespace Bulk_Thumbnail_Creator
                 //// File Production
                 List<Task> productionTasks = [];
 
-                foreach (PictureData picData in Settings.PictureDatas)
+                foreach (PictureData picData in settings.PictureDatas)
                 {
                     bool NoBoxes = picData.BoxParameters.All(bp => bp.CurrentBox.Type == BoxType.None);
 
                     if (!NoBoxes)
                     {
-                        Task productionTask = Task.Run(() => Production.ProduceTextPictures(picData));
+                        Production production = new();
+                        Task productionTask = Task.Run(() => production.ProduceTextPictures(picData, settings));
                         productionTasks.Add(productionTask);
                     }
                 }
@@ -173,7 +177,7 @@ namespace Bulk_Thumbnail_Creator
                 if (Mocking.BTCRunCount != 1)
                 {
                     // ffmpeg has finished, lets copy our mock data
-                    Mocking.OutPutDirMockCopy();
+                    Mocking.OutPutDirMockCopy(settings);
                 }
                 #endregion
             }
@@ -186,7 +190,7 @@ namespace Bulk_Thumbnail_Creator
             {
                 if (PicdataObjToVarietize == null)
                 {
-                    Settings.LogService.LogError("null has been passed to PicdataobjToVarietize");
+                    settings.LogService.LogError("null has been passed to PicdataobjToVarietize");
                 }
                 else
                 {
@@ -194,7 +198,8 @@ namespace Bulk_Thumbnail_Creator
 
                     foreach (PictureData picData in PicdataObjToVarietize.Varieties)
                     {
-                        Task productionTask = Task.Run(() => Production.ProduceTextPictures(picData));
+                        Production production = new();
+                        Task productionTask = Task.Run(() => production.ProduceTextPictures(picData, settings));
                         productionVarietyTaskList.Add(productionTask);
                     }
 
@@ -203,7 +208,7 @@ namespace Bulk_Thumbnail_Creator
 
                 if (Mocking.BTCRunCount != 1)
                 {
-                    await Mocking.VarietiesList();
+                    await Mocking.VarietiesList(settings);
                 }
 
             }
@@ -214,12 +219,13 @@ namespace Bulk_Thumbnail_Creator
             {
                 if (PicdataObjToVarietize == null)
                 {
-                    Settings.LogService.LogError("Null has been passed to CustomPicture");
+                    settings.LogService.LogError("Null has been passed to CustomPicture");
                 }
                 else
                 {
-                    await Production.ProduceTextPictures(PicdataObjToVarietize);
-                    Settings.PictureDatas.Add(PicdataObjToVarietize);
+                    Production production = new();
+                    await production.ProduceTextPictures(PicdataObjToVarietize, settings);
+                    settings.PictureDatas.Add(PicdataObjToVarietize);
                 }
 
             }
@@ -239,31 +245,31 @@ namespace Bulk_Thumbnail_Creator
 
             if (Mocking.BTCRunCount != 1)
             {
-                Mocking.SerializePicData();
+                Mocking.SerializePicData(settings);
             }
 
-            Settings.Files = Directory.GetFiles(Settings.OutputDir, "*.*", SearchOption.AllDirectories);
+            settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
-            Settings.LogService.LogInformation("Processing Finished");
+            settings.LogService.LogInformation("Processing Finished");
 
             if (ProdType == ProductionType.VarietyList)
             {
                 Mocking.BTCRunCount++;
             }
 
-            Settings.JobService.CurrentJob.PictureDatas = Settings.PictureDatas;
+            settings.JobService.CurrentJob.PictureDatas = settings.PictureDatas;
 
-            return Settings.PictureDatas;
+            return settings.PictureDatas;
         }
         #endregion
-        public static async Task<List<PictureData>> MockProcess(ProductionType prodtype, string url, List<string> texts, PictureData picdatatoMock = null)
+        public static async Task<List<PictureData>> MockProcess(ProductionType prodtype, string url, List<string> texts, Settings settings, PictureData picdatatoMock = null)
         {
-            Settings.ListOfText = texts;
+            // Settings.ListOfText = texts;
 
             if (prodtype == ProductionType.FrontPagePictureLineUp)
             {
-                await Mocking.SetupFrontPagePictureLineUp();
-                Settings.LogService.LogInformation("Mocking of FrontPagePictureLineUp complete");
+                await Mocking.SetupFrontPagePictureLineUp(settings);
+                //   Settings.LogService.LogInformation("Mocking of FrontPagePictureLineUp complete");
             }
 
             if (prodtype == ProductionType.VarietyList)
@@ -273,12 +279,12 @@ namespace Bulk_Thumbnail_Creator
                 // when the code ran last time
                 if (picdatatoMock == null)
                 {
-                    Settings.LogService.LogError("null has been passed to PicdataobjToVarietize");
+                    //   Settings.LogService.LogError("null has been passed to PicdataobjToVarietize");
                 }
                 else
                 {
-                    await Mocking.SetupVarietyDisplay();
-                    Settings.LogService.LogInformation("Mocking of Variety List complete");
+                    await Mocking.SetupVarietyDisplay(settings);
+                    //  Settings.LogService.LogInformation("Mocking of Variety List complete");
                 }
 
             }
@@ -288,17 +294,18 @@ namespace Bulk_Thumbnail_Creator
 
                 if (picdatatoMock == null)
                 {
-                    Settings.LogService.LogError("Null has been passed to CustomPicture");
+                    // Settings.LogService.LogError("Null has been passed to CustomPicture");
                 }
                 else
                 {
-                    await Production.ProduceTextPictures(picdatatoMock);
-                    Settings.PictureDatas.Add(picdatatoMock);
+                    Production Production = new();
+                    //await Production.ProduceTextPictures(picdatatoMock,settings);
+                    // Settings.PictureDatas.Add(picdatatoMock);
                 }
 
             }
 
-            return Settings.PictureDatas;
+            return null; // Settings.PictureDatas;
         }
 
         static void Main()

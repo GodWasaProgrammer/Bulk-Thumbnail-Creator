@@ -11,9 +11,9 @@ namespace WebUI
     {
         public static void Main(string[] args)
         {
-            Directory.CreateDirectory(Settings.OutputDir);
-            Directory.CreateDirectory(Settings.YTDLOutPutDir);
-            Directory.CreateDirectory(Settings.TextAddedDir);
+            Directory.CreateDirectory("output");
+            Directory.CreateDirectory("YTDL");
+            Directory.CreateDirectory("Text Added");
             Directory.CreateDirectory("logs");
             var builder = WebApplication.CreateBuilder(args);
             // Add configuration settings
@@ -27,15 +27,13 @@ namespace WebUI
             });
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
-            builder.Services.AddSingleton<PicDataService>();
-            builder.Services.AddSingleton<JobService>();
-            builder.Services.AddSingleton<ILogService, LogService>();
+            builder.Services.AddScoped<PicDataService>();
+            builder.Services.AddScoped<JobService>();
+            builder.Services.AddScoped<ILogService, LogService>();
+            builder.Services.AddScoped<Settings>();
             builder.Services.AddMudServices();
 
             var app = builder.Build();
-
-            var serviceProvider = app.Services;
-            var logService = serviceProvider.GetRequiredService<ILogService>();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -51,7 +49,7 @@ namespace WebUI
 
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), $"{Settings.TextAddedDir}")),
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Text Added")),
                 RequestPath = "/text added"
 
             });

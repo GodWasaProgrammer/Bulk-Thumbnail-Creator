@@ -7,6 +7,7 @@
 @inject Bulk_Thumbnail_Creator.Services.PicDataService ds;
 @inject ILogService logger;
 @inject JobService JS;
+@inject Settings settings;
 
 @if (DisableMenu == false)
 {
@@ -129,11 +130,11 @@
 
             if (userInputText.Count != 0)
             {
-                await ds.CreateInitialPictureArrayAsync(youtubeLink, userInputText);
+                await ds.CreateInitialPictureArrayAsync(youtubeLink, userInputText, settings);
             }
             else
             {
-                await ds.CreateInitialPictureArrayAsync(youtubeLink, defaultText);
+                await ds.CreateInitialPictureArrayAsync(youtubeLink, defaultText, settings);
             }
 
             returnStateUpdate(DisableMenu);

@@ -5,6 +5,7 @@
 
 @inject PicDataService PicDataService;
 @inject JobService JobService;
+@inject Settings settings;
 
 @if (IMGDetailClicked == false && imageUrls != null)
 {
@@ -95,11 +96,11 @@ else
     /// Builds Directory List of the produced images
     /// </summary>
     /// <returns></returns>
-    public async Task UpdateImageUrls()
+    public async Task UpdateImageUrls(Settings settings)
     {
         CurrentJob = await JobService.RequestCurrentJob();
 
-        string imagePath = Settings.TextAddedDir;
+        string imagePath = settings.TextAddedDir;
 
         // Get the list of image files in the folder asynchronously
         string[] imageFiles = await Task.Run(() => Directory.GetFiles(imagePath, "*.png"));
@@ -129,7 +130,7 @@ else
 
         picdata = await PicDataService.SetPictureDataImageDisplayCorrelation(imageToDisplayVarietyOf);
 
-        VarietyUrls = await PicDataService.CreatePictureDataVariety(picdata);
+        VarietyUrls = await PicDataService.CreatePictureDataVariety(picdata, settings);
         CurrentJob.VarietyUrls = VarietyUrls;
     }
 

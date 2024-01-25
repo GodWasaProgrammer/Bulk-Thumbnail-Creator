@@ -10,13 +10,13 @@ namespace Bulk_Thumbnail_Creator.Services
 {
     public class PicDataService
     {
-        public PicDataService(ILogService _logger, JobService JS)
+        public PicDataService(ILogService _logger, JobService JS, Settings settings)
         {
-            ClearBaseOutPutDirectories();
+            // ClearBaseOutPutDirectories();
             PicDataServiceList = new List<PictureData>();
             OutputFileServiceList = new List<string>();
-            Settings.LogService = _logger;
-            Settings.JobService = JS;
+            settings.LogService = _logger;
+            settings.JobService = JS;
         }
 
         public event EventHandler<bool> LoadingStateChanged;
@@ -44,11 +44,11 @@ namespace Bulk_Thumbnail_Creator.Services
 
         private Job CurrentJob;
 
-        public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint)
+        public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint, Settings settings)
         {
             IsLoading = true;
 
-            CurrentJob = await Settings.JobService.CreateJob(url);
+            CurrentJob = await settings.JobService.CreateJob(url);
 
             CurrentJob.TextToPrint = ListOfTextToPrint;
 
@@ -57,18 +57,18 @@ namespace Bulk_Thumbnail_Creator.Services
 
             if (Settings.Mocking == true)
             {
-                PicDataServiceList = await Creator.MockProcess(ProdType, url, ListOfTextToPrint);
+                PicDataServiceList = await Creator.MockProcess(ProdType, url, ListOfTextToPrint, settings);
             }
             else
             {
-                PicDataServiceList = await Creator.Process(ProdType, url, ListOfTextToPrint);
+                PicDataServiceList = await Creator.Process(ProdType, url, ListOfTextToPrint, settings);
             }
 
-            if (Settings.PathToVideo != null)
-                CurrentJob.VideoPath = Settings.PathToVideo;
+            if (settings.PathToVideo != null)
+                CurrentJob.VideoPath = settings.PathToVideo;
 
-            if (Settings.PathToVideo != null)
-                CurrentJob.VideoName = Path.GetFileNameWithoutExtension(Settings.PathToVideo);
+            if (settings.PathToVideo != null)
+                CurrentJob.VideoName = Path.GetFileNameWithoutExtension(settings.PathToVideo);
 
             CurrentJob.PictureDatas = PicDataServiceList;
             CurrentJob.State = States.FrontPagePictureLineUp;
@@ -76,7 +76,7 @@ namespace Bulk_Thumbnail_Creator.Services
             IsLoading = false;
         }
 
-        public async Task<List<string>> CreatePictureDataVariety(PictureData PicToVarietize)
+        public async Task<List<string>> CreatePictureDataVariety(PictureData PicToVarietize, Settings settings)
         {
             IsLoading = true;
 
@@ -88,11 +88,11 @@ namespace Bulk_Thumbnail_Creator.Services
             ProductionType ProdType = ProductionType.VarietyList;
             if (Settings.Mocking == true)
             {
-                PicDataServiceList = await Creator.MockProcess(ProdType, url, CurrentJob.TextToPrint, PicToVarietize);
+                PicDataServiceList = await Creator.MockProcess(ProdType, url, CurrentJob.TextToPrint, settings, PicToVarietize);
             }
             else
             {
-                PicDataServiceList = await Creator.Process(ProdType, url, CurrentJob.TextToPrint, PicToVarietize);
+                PicDataServiceList = await Creator.Process(ProdType, url, CurrentJob.TextToPrint, settings, PicToVarietize);
             }
 
             // sets the list on the job object
@@ -100,7 +100,7 @@ namespace Bulk_Thumbnail_Creator.Services
 
             string parentfilename = Path.GetFileName(PicToVarietize.FileName);
             string varietyof = "variety of";
-            string ConcatenatedString = $"{Settings.TextAddedDir}/{varietyof} {parentfilename}";
+            string ConcatenatedString = $"{settings.TextAddedDir}/{varietyof} {parentfilename}";
             string[] ArrayOfFilePaths = Directory.GetFiles(ConcatenatedString, "*.png");
 
             foreach (string filepath in ArrayOfFilePaths)
@@ -116,10 +116,9 @@ namespace Bulk_Thumbnail_Creator.Services
             IsLoading = false;
 
             return ImageUrls;
-
         }
 
-        public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize)
+        public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, Settings settings)
         {
             isLoading = true;
 
@@ -127,7 +126,7 @@ namespace Bulk_Thumbnail_Creator.Services
 
             PicToCustomize = new(PicToCustomize);
             string url = string.Empty;
-            PicDataServiceList = await Creator.Process(ProductionType.CustomPicture, url, CurrentJob.TextToPrint, PicToCustomize);
+            PicDataServiceList = await Creator.Process(ProductionType.CustomPicture, url, CurrentJob.TextToPrint, settings, PicToCustomize);
             CurrentJob.PictureDatas = PicDataServiceList;
 
             isLoading = false;
@@ -141,7 +140,7 @@ namespace Bulk_Thumbnail_Creator.Services
 
             if (Settings.Mocking == true)
             {
-                string DirToMockPicture = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", $"{Settings.TextAddedDir}");
+                string DirToMockPicture = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", $"Text Added");
 
                 DirectoryInfo di = new(DirToMockPicture);
 
@@ -176,6 +175,8 @@ namespace Bulk_Thumbnail_Creator.Services
             {
                 foreach (var item in PicDataServiceList)
                 {
+                    var url = Path.GetFileNameWithoutExtension(imageUrl);
+                    var outpath = Path.GetFileNameWithoutExtension(item.OutPath);
 
                     if (Path.GetFileNameWithoutExtension(item.OutPath) == Path.GetFileNameWithoutExtension(imageUrl))
                     {
@@ -230,9 +231,9 @@ namespace Bulk_Thumbnail_Creator.Services
             return PicData;
         }
 
-        public static void ClearBaseOutPutDirectories()
+        public static void ClearBaseOutPutDirectories(Settings settings)
         {
-            DirectoryInfo di = new(Settings.TextAddedDir);
+            DirectoryInfo di = new(settings.TextAddedDir);
 
             foreach (FileInfo file in di.GetFiles())
             {
@@ -244,7 +245,7 @@ namespace Bulk_Thumbnail_Creator.Services
             }
 
             // TODO : for whatever reason these resources are not free for deletion
-            DirectoryInfo di2 = new(Settings.OutputDir);
+            DirectoryInfo di2 = new(settings.OutputDir);
 
             foreach (FileInfo file in di2.GetFiles())
             {

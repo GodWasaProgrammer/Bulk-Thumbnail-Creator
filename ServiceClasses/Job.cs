@@ -7,6 +7,8 @@ namespace Bulk_Thumbnail_Creator
 {
     public class Job
     {
+        public Settings Settings { get; set; }
+
         /// <summary>
         /// not implemented yet
         /// </summary>
