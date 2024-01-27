@@ -44,11 +44,11 @@ namespace Bulk_Thumbnail_Creator.Services
 
         private Job CurrentJob;
 
-        public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint, Settings settings, string CurrentUser)
+        public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint, Settings settings, Job PassCrntJob)
         {
             IsLoading = true;
 
-            CurrentJob = await settings.JobService.CreateJob(url, CurrentUser);
+            CurrentJob = PassCrntJob;
 
             CurrentJob.TextToPrint = ListOfTextToPrint;
 
@@ -70,14 +70,20 @@ namespace Bulk_Thumbnail_Creator.Services
             if (settings.PathToVideo != null)
                 CurrentJob.VideoName = Path.GetFileNameWithoutExtension(settings.PathToVideo);
 
+            // sets the list on the job object
             CurrentJob.PictureDatas = PicDataServiceList;
+
             CurrentJob.State = States.FrontPagePictureLineUp;
+
+            UserStateService.UpdateJob(CurrentJob);
 
             IsLoading = false;
         }
 
-        public async Task<List<string>> CreatePictureDataVariety(PictureData PicToVarietize, Settings settings)
+        public async Task<List<string>> CreatePictureDataVariety(PictureData PicToVarietize, Settings settings, Job PassCrntJob)
         {
+            CurrentJob = PassCrntJob;
+
             IsLoading = true;
 
             CurrentJob.State = States.varietyList;
@@ -92,7 +98,7 @@ namespace Bulk_Thumbnail_Creator.Services
             }
             else
             {
-                PicDataServiceList = await Creator.Process(ProdType, url, CurrentJob.TextToPrint, settings, PicToVarietize);
+                PicDataServiceList = await Creator.Process(ProdType, url, CurrentJob.TextToPrint, CurrentJob.Settings, PicToVarietize);
             }
 
             // sets the list on the job object
@@ -100,7 +106,7 @@ namespace Bulk_Thumbnail_Creator.Services
 
             string parentfilename = Path.GetFileName(PicToVarietize.FileName);
             string varietyof = "variety of";
-            string ConcatenatedString = $"{settings.TextAddedDir}/{varietyof} {parentfilename}";
+            string ConcatenatedString = $"{PassCrntJob.Settings.TextAddedDir}/{varietyof} {parentfilename}";
             string[] ArrayOfFilePaths = Directory.GetFiles(ConcatenatedString, "*.png");
 
             foreach (string filepath in ArrayOfFilePaths)
@@ -111,23 +117,29 @@ namespace Bulk_Thumbnail_Creator.Services
 
             // the list of urls to be displayed in variety display
 
-            CurrentJob.VideoUrls = ImageUrls;
+            CurrentJob.VarietyUrls = ImageUrls;
+
+            UserStateService.UpdateJob(CurrentJob);
 
             IsLoading = false;
 
             return ImageUrls;
         }
 
-        public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, Settings settings)
+        public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, Settings settings, Job PassCrntJob)
         {
+            CurrentJob = PassCrntJob;
+
             isLoading = true;
 
             CurrentJob.State = States.CustomPicture;
 
             PicToCustomize = new(PicToCustomize);
             string url = string.Empty;
-            PicDataServiceList = await Creator.Process(ProductionType.CustomPicture, url, CurrentJob.TextToPrint, settings, PicToCustomize);
+            PicDataServiceList = await Creator.Process(ProductionType.CustomPicture, url, CurrentJob.TextToPrint, CurrentJob.Settings, PicToCustomize);
             CurrentJob.PictureDatas = PicDataServiceList;
+
+            UserStateService.UpdateJob(CurrentJob);
 
             isLoading = false;
 

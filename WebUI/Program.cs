@@ -11,6 +11,7 @@ namespace WebUI
     {
         public static void Main(string[] args)
         {
+
             Directory.CreateDirectory("output");
             Directory.CreateDirectory("YTDL");
             Directory.CreateDirectory("Text Added");
@@ -31,6 +32,7 @@ namespace WebUI
             builder.Services.AddScoped<JobService>();
             builder.Services.AddScoped<ILogService, LogService>();
             builder.Services.AddScoped<Settings>();
+            builder.Services.AddSingleton<UserStateService>();
             builder.Services.AddMudServices();
 
             var app = builder.Build();

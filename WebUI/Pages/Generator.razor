@@ -69,7 +69,7 @@
         {
             CurrentJob = await js.RequestCurrentJob(CurrentUser);
         }
-
+         await InvokeAsync (() => StateHasChanged());
     }
 
     /// <summary>

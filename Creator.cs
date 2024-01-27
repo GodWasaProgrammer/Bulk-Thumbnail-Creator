@@ -206,10 +206,10 @@ namespace Bulk_Thumbnail_Creator
                     await Task.WhenAll(productionVarietyTaskList);
                 }
 
-                if (Mocking.BTCRunCount != 1)
-                {
-                    await Mocking.VarietiesList(settings);
-                }
+                //if (Mocking.BTCRunCount != 1)
+                //{
+                //    await Mocking.VarietiesList(settings);
+                //}
 
             }
             #endregion
@@ -258,7 +258,7 @@ namespace Bulk_Thumbnail_Creator
             }
 
             settings.JobService.CurrentJob.PictureDatas = settings.PictureDatas;
-
+            settings.JobService.CurrentJob.Settings = settings;
             return settings.PictureDatas;
         }
         #endregion

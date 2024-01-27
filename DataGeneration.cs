@@ -609,49 +609,6 @@ namespace Bulk_Thumbnail_Creator
 
         }
 
-        ///// </summary>
-        ///// <param name="PicDataTarget"></param>
-        //public static void GenMemePosition(PictureData PicDataTarget)
-        //{
-        //    PictureData CopiedPicData = new(PicDataTarget);
-        //    CopiedPicData.Varieties.Clear();
-
-        //    for (int IndexofCurrentBoxes = 0; IndexofCurrentBoxes < PicDataTarget.NumberOfBoxes; IndexofCurrentBoxes++)
-        //    {
-        //        List<BoxType> availableBoxesList = PicDataTarget.BoxParameters[IndexofCurrentBoxes].BoxesWithNoFaceIntersect;
-
-        //        BoxType currentBox = CopiedPicData.BoxParameters[IndexofCurrentBoxes].CurrentBox.Type;
-
-        //        BoxType PickedBox = BoxType.None;
-
-        //        foreach (BoxType box in availableBoxesList)
-        //        {
-        //            if (box != currentBox)
-        //            {
-        //                PickedBox = box;
-        //                break;
-        //            }
-        //        }
-
-        //        if (PickedBox != BoxType.None)
-        //        {
-        //            // pick a meme
-        //            Random pickRandomMeme = new();
-        //            int PickedMeme = pickRandomMeme.Next(Settings.Memes.Length);
-
-        //            //// write our chosen meme to Meme property
-        //            CopiedPicData.BoxParameters[IndexofCurrentBoxes].Meme = Settings.Memes[PickedMeme];
-
-        //            // set the type of output
-        //            CopiedPicData.OutPutType = OutputType.MemeVariety;
-
-        //            PicDataTarget.Varieties.Add(CopiedPicData);
-        //        }
-
-        //    }
-
-        //}
-
     }
 
 }

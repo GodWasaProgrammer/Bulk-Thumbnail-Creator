@@ -30,7 +30,7 @@ namespace Bulk_Thumbnail_Creator
         private Guid _JobID;
         public Guid JobID { get { return _JobID; } set { _JobID = value; } }
 
-        public List<string> VideoUrls { get; set; } = new List<string>();
+        public List<string> FrontLineUpUrls { get; set; } = new List<string>();
 
         /// <summary>
         /// List of Varieties created on the VarietyDisplay page

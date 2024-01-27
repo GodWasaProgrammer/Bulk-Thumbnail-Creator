@@ -31,12 +31,12 @@
 
     </MudSelect>
 
-@*This allows you to swap to inserting a meme instead of text*@
-<MudButton Color="Color.Success" @onclick="() => MemeSelected()">@MemeOrText</MudButton>
+    @*This allows you to swap to inserting a meme instead of text*@
+    <MudButton Color="Color.Success" @onclick="() => MemeSelected()">@MemeOrText</MudButton>
 }
 
-    @*This is our Text Customization options with Fonts,Colors, etc*@
-    @if (PickedBox != BoxType.None)
+@*This is our Text Customization options with Fonts,Colors, etc*@
+@if (PickedBox != BoxType.None)
 {
     <MudPaper Class="mb-4">
 
@@ -172,6 +172,9 @@
     // this is the image URL of the image being edited
     [Parameter]
     public string ImageURL { get; set; }
+
+    [Parameter]
+    public Job CurrentJob { get; set; }
 
     // our passed in picturedata, this represents the current image being edited
     [Parameter]
@@ -366,7 +369,7 @@
         PicDataToCustomize.BoxParameters = BoxParameters;
 
         /// The actual Service call where the production happens
-        PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(PicDataToCustomize, settings);
+        PicDataToCustomize = await PicDataService.CreateCustomPicDataObject(PicDataToCustomize, settings, CurrentJob);
 
         // get relative path of the outpath
         string currentDir = Directory.GetCurrentDirectory();
@@ -391,8 +394,10 @@
                 // add the text to our list of text
                 if (!InputText.Contains(boxparam.Text))
                     InputText.Add(boxparam.Text);
+
+                BuildBoxParameters();
             }
-        BuildBoxParameters();
+
     }
 
     /// <summary>
