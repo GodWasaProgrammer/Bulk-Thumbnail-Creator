@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Bulk_Thumbnail_Creator
@@ -61,10 +62,20 @@ namespace Bulk_Thumbnail_Creator
 
                 string extractedfilename = Path.GetFileName(settings.PathToVideo);
 
+
                 parameters["i"] = $@"""{extractedfilename}""";
                 parameters["vf"] = "select='gt(scene,0.3)',select=key";
                 parameters["vsync"] = "vfr";
-                string truePath = Path.GetFullPath(settings.OutputDir);
+
+                // get our current location
+                string CurrentLoc = Assembly.GetExecutingAssembly().Location;
+
+                string parentDirectory = Directory.GetParent(CurrentLoc).FullName;
+
+                // if dir doesnt exist, make it
+                string ExePath = Path.Combine(parentDirectory, "Executables");
+
+                string truePath = Path.GetRelativePath(ExePath, settings.OutputDir);
                 string pictureOutput = $@"""{truePath}/%03d.png""";
 
                 FFmpegHandler fFmpegHandler = new();
