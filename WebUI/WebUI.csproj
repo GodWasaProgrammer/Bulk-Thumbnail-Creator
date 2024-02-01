@@ -79,7 +79,7 @@
 	</PropertyGroup>
 	
   <ItemGroup>
-    <ProjectReference Include="..\Bulk Thumbnail Creator.csproj" />
+    <ProjectReference Include="..\BulkThumbnailCreator.csproj" />
   </ItemGroup>
 
 </Project>

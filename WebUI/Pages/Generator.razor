@@ -12,13 +12,9 @@
 @inject Settings settings;
 @inject AuthenticationStateProvider AuthProvider;
 
-<PageTitle>Bulk Thumbnail Creator</PageTitle>
 <CascadingAuthenticationState>
     <AuthorizeView>
         <Authorized>
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                <MudImage Src="/images/BTCLogo.png"></MudImage>
-            </div>
             <div style="padding-top: 20px;">
                 <InputMenu job="CurrentJob" returnStateUpdate="BuildImageDisplay"></InputMenu>
             </div>

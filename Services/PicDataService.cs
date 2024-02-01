@@ -12,7 +12,7 @@ namespace Bulk_Thumbnail_Creator.Services
     {
         public PicDataService(ILogService _logger, JobService JS, Settings settings)
         {
-            // ClearBaseOutPutDirectories();
+            ClearBaseOutPutDirectories(settings);
             PicDataServiceList = new List<PictureData>();
             OutputFileServiceList = new List<string>();
             settings.LogService = _logger;
