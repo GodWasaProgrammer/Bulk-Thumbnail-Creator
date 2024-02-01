@@ -59,6 +59,16 @@
 
     List<string> userInputText = new();
 
+    async Task OnKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            // Enter key was pressed, trigger the button click
+            await AwaitBTC();
+        }
+
+    }
+
     private void SaveText()
     {
         if (userText == null)
