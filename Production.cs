@@ -1,11 +1,8 @@
 ﻿using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using ImageMagick;
-using System;
 using System.Diagnostics;
-using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
 using YoutubeDLSharp;
 
 namespace Bulk_Thumbnail_Creator
@@ -198,36 +195,36 @@ namespace Bulk_Thumbnail_Creator
                 Directory.CreateDirectory(YTDL);
             }
 
-            // Build Directory structure for Mocking process
-            string CreateMockDir = "..";
+            //// Build Directory structure for Mocking process
+            //string CreateMockDir = "..";
 
-            CreateMockDir = Path.Combine(CreateMockDir, "Mocking");
+            //CreateMockDir = Path.Combine(CreateMockDir, "Mocking");
 
-            if (!Directory.Exists(CreateMockDir))
-            {
-                Directory.CreateDirectory(CreateMockDir);
-                settings.LogService.LogInformation($"{CreateMockDir} Created");
-            }
+            //if (!Directory.Exists(CreateMockDir))
+            //{
+            //    Directory.CreateDirectory(CreateMockDir);
+            //    settings.LogService.LogInformation($"{CreateMockDir} Created");
+            //}
 
-            string FrontPageLineupMockDir = Path.Combine(CreateMockDir, "FrontpagePictureLineUp");
-            if (!Directory.Exists(FrontPageLineupMockDir))
-            {
-                Directory.CreateDirectory(FrontPageLineupMockDir);
-                settings.LogService.LogInformation($"{FrontPageLineupMockDir} Created");
-            }
+            //string FrontPageLineupMockDir = Path.Combine(CreateMockDir, "FrontpagePictureLineUp");
+            //if (!Directory.Exists(FrontPageLineupMockDir))
+            //{
+            //    Directory.CreateDirectory(FrontPageLineupMockDir);
+            //    settings.LogService.LogInformation($"{FrontPageLineupMockDir} Created");
+            //}
 
-            string outputMockDir = Path.Combine(FrontPageLineupMockDir, settings.OutputDir);
-            if (!Directory.Exists(outputMockDir))
-            {
-                Directory.CreateDirectory(outputMockDir);
-            }
+            //string outputMockDir = Path.Combine(FrontPageLineupMockDir, settings.OutputDir);
+            //if (!Directory.Exists(outputMockDir))
+            //{
+            //    Directory.CreateDirectory(outputMockDir);
+            //}
 
-            string textaddedMockDir = Path.Combine(FrontPageLineupMockDir, settings.TextAddedDir);
-            if (!Directory.Exists(textaddedMockDir))
-            {
-                Directory.CreateDirectory(textaddedMockDir);
-                settings.LogService.LogInformation($"{textaddedMockDir} Created");
-            }
+            //string textaddedMockDir = Path.Combine(FrontPageLineupMockDir, settings.TextAddedDir);
+            //if (!Directory.Exists(textaddedMockDir))
+            //{
+            //    Directory.CreateDirectory(textaddedMockDir);
+            //    settings.LogService.LogInformation($"{textaddedMockDir} Created");
+            //}
 
         }
 

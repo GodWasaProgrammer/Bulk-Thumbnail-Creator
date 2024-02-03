@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "BulkThumbnailCreator": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
