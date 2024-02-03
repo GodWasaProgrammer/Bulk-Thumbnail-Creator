@@ -1,13 +1,8 @@
 ﻿using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.PictureObjects;
 using DlibDotNet;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Bulk_Thumbnail_Creator
 {
@@ -255,10 +250,10 @@ namespace Bulk_Thumbnail_Creator
 
             #region Picdata serialization & Mock Setup
 
-            if (Mocking.BTCRunCount != 1)
-            {
-                Mocking.SerializePicData(settings);
-            }
+            //if (Mocking.BTCRunCount != 1)
+            //{
+            //    Mocking.SerializePicData(settings);
+            //}
 
             settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
