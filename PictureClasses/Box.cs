@@ -1,5 +1,5 @@
 ﻿using Bulk_Thumbnail_Creator.Enums;
-using System.Drawing;
+using DlibDotNet;
 
 namespace Bulk_Thumbnail_Creator.PictureObjects
 {

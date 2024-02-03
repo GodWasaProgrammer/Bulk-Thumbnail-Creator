@@ -1,6 +1,6 @@
 ﻿using Bulk_Thumbnail_Creator.Enums;
+using DlibDotNet;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace Bulk_Thumbnail_Creator.PictureObjects
 {

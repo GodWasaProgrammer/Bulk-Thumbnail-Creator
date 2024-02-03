@@ -8,9 +8,6 @@ COPY WebUI/WebUI.csproj ./WebUI/
 COPY WebUI/wwwroot/ ./WebUI/wwwroot/
 
 RUN dotnet restore
-RUN apt-get update && \
-    apt-get install -y python3
-RUN ln -s /usr/bin/python3 /usr/bin/python
 
 # Copy everything else and build
 COPY . .

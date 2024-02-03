@@ -152,7 +152,7 @@ namespace Bulk_Thumbnail_Creator.Services
 
             if (Settings.Mocking == true)
             {
-                string DirToMockPicture = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", $"Text Added");
+                string DirToMockPicture = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", $"TextAdded");
 
                 DirectoryInfo di = new(DirToMockPicture);
 

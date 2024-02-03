@@ -1,26 +1,18 @@
 ﻿using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.PictureObjects;
-using FaceONNX;
+using DlibDotNet;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Bulk_Thumbnail_Creator
 {
     public class Creator
     {
-        /// <summary>
-        /// Mocking version of Process for debugging and testing
-        /// </summary>
-        /// <param name="prodtype"></param>
-        /// <param name="url"></param>
-        /// <param name="texts"></param>
-        /// <param name="picdatatoMock"></param>
-        /// <returns></returns>
         public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, Settings settings, PictureData PicdataObjToVarietize = null)
         {
             settings.ListOfText = texts;
@@ -36,14 +28,13 @@ namespace Bulk_Thumbnail_Creator
                 await Production.VerifyDirectoryAndExeIntegrity(settings);
 
                 settings.PathToVideo = await Production.YouTubeDL(url, settings);
-
                 settings.OutputDir = "output";
 
-                settings.OutputDir = settings.OutputDir + "/" + Path.GetFileNameWithoutExtension(settings.PathToVideo);
+                settings.OutputDir = settings.OutputDir + "/" + Regex.Replace(Path.GetFileNameWithoutExtension(settings.PathToVideo), @"[^\w\d]", "");
 
                 Directory.CreateDirectory(settings.OutputDir);
 
-                settings.TextAddedDir = "text added";
+                settings.TextAddedDir = "TextAdded";
 
                 settings.TextAddedDir = settings.TextAddedDir + "/" + Path.GetFileNameWithoutExtension(settings.PathToVideo);
 
@@ -87,7 +78,7 @@ namespace Bulk_Thumbnail_Creator
                 Settings.Memes = Directory.GetFiles(Settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
 
                 #region Face Detection
-                var faceDetector = new FaceDetector(0.3F, 0.4F, 0.5F);
+                //var faceDetector = new FaceDetector(0.3F, 0.4F, 0.5F);
 
                 settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
@@ -98,25 +89,35 @@ namespace Bulk_Thumbnail_Creator
                 {
                     string file = settings.Files[fileIndex];
 
-                    Bitmap PicToDetectFacesOn = new(file);
+                    var image = Dlib.LoadImage<RgbPixel>(file);
 
-                    FaceDetectionResult[] faceDetectRes = faceDetector.Forward(PicToDetectFacesOn);
+                    DlibDotNet.Rectangle[] FaceRectangles;
 
-                    Rectangle[] facesRectArray = new Rectangle[faceDetectRes.Length];
-
-                    // convert from FaceDetectionResult to Rectangle
-                    for (int i = 0; i < faceDetectRes.Length; i++)
+                    using (var FACEDETECT = Dlib.GetFrontalFaceDetector())
                     {
-                        facesRectArray[i] = new Rectangle
-                        {
-                            X = faceDetectRes[i].Rectangle.X,
-                            Y = faceDetectRes[i].Rectangle.Y,
-
-                            Width = faceDetectRes[i].Rectangle.Width,
-                            Height = faceDetectRes[i].Rectangle.Height
-                        };
-
+                        // Detect faces in the image
+                        FaceRectangles = FACEDETECT.Operator(image);
                     }
+
+                    //Bitmap PicToDetectFacesOn = new(file);
+
+                    //FaceDetectionResult[] faceDetectRes = faceDetector.Forward(PicToDetectFacesOn);
+
+                    //System.Drawing.Rectangle[] facesRectArray = new System.Drawing.Rectangle[faceDetectRes.Length];
+
+                    //// convert from FaceDetectionResult to Rectangle
+                    //for (int i = 0; i < faceDetectRes.Length; i++)
+                    //{
+                    //    facesRectArray[i] = new System.Drawing.Rectangle
+                    //    {
+                    //        X = faceDetectRes[i].Rectangle.X,
+                    //        Y = faceDetectRes[i].Rectangle.Y,
+
+                    //        Width = faceDetectRes[i].Rectangle.Width,
+                    //        Height = faceDetectRes[i].Rectangle.Height
+                    //    };
+
+                    //}
                     #endregion
 
                     #region Data Generation
@@ -131,7 +132,7 @@ namespace Bulk_Thumbnail_Creator
                     {
                         ParamForTextCreation currentParameters = new();
 
-                        currentParameters = DataGeneration.GettextPos(currentParameters, PicToDetectFacesOn, facesRectArray, PassPictureData);
+                        currentParameters = DataGeneration.GettextPosLinux(currentParameters, image, FaceRectangles, PassPictureData);
 
                         currentParameters = DataGeneration.DecideColorGeneration(currentParameters);
 
@@ -273,6 +274,14 @@ namespace Bulk_Thumbnail_Creator
             return settings.PictureDatas;
         }
         #endregion
+        /// <summary>
+        /// Mocking version of Process for debugging and testing
+        /// </summary>
+        /// <param name="prodtype"></param>
+        /// <param name="url"></param>
+        /// <param name="texts"></param>
+        /// <param name="picdatatoMock"></param>
+        /// <returns></returns>
         public static async Task<List<PictureData>> MockProcess(ProductionType prodtype, string url, List<string> texts, Settings settings, PictureData picdatatoMock = null)
         {
             // Settings.ListOfText = texts;

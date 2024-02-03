@@ -15,20 +15,20 @@
   <ItemGroup>
     <Compile Remove="logs\**" />
     <Compile Remove="output\**" />
-    <Compile Remove="text added\**" />
+    <Compile Remove="textadded\**" />
     <Compile Remove="YTDL\**" />
     <Content Remove="logs\**" />
     <Content Remove="output\**" />
-    <Content Remove="text added\**" />
+    <Content Remove="textadded\**" />
     <Content Remove="YTDL\**" />
     <EmbeddedResource Remove="Fonts\**" />
     <EmbeddedResource Remove="logs\**" />
     <EmbeddedResource Remove="output\**" />
-    <EmbeddedResource Remove="text added\**" />
+    <EmbeddedResource Remove="textadded\**" />
     <EmbeddedResource Remove="YTDL\**" />
     <None Remove="logs\**" />
     <None Remove="output\**" />
-    <None Remove="text added\**" />
+    <None Remove="textadded\**" />
     <None Remove="YTDL\**" />
   </ItemGroup>
 
@@ -43,6 +43,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DlibDotNet" Version="19.21.0.20220724" />
+    <PackageReference Include="DlibDotNet.Extensions" Version="19.18.0.20200428" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
@@ -60,6 +62,7 @@
     <PackageReference Include="MudBlazor" Version="6.11.1" />
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
     <PackageReference Include="Serilog.Sinks.ListOfString" Version="4.1.4.3" />
+    <PackageReference Include="SkiaSharp" Version="2.88.7" />
   </ItemGroup>
 
 
@@ -80,6 +83,18 @@
 	
   <ItemGroup>
     <ProjectReference Include="..\BulkThumbnailCreator.csproj" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <None Update="DankMemeStash\4zrkooluyfj31.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="DankMemeStash\9f9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="UserBase.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

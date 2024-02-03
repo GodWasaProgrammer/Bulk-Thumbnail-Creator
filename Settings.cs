@@ -38,7 +38,7 @@ namespace Bulk_Thumbnail_Creator
         /// <summary>
         /// The Dir where images that have text added(compositioned) to it goes
         /// </summary>
-        private string _TextAddedDir = "text added";
+        private string _TextAddedDir = "TextAdded";
         public string TextAddedDir { get { return _TextAddedDir; } set { _TextAddedDir = value; } }
 
         // Location of YTDLP executable

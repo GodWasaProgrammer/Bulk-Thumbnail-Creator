@@ -1,9 +1,9 @@
 ﻿using Bulk_Thumbnail_Creator.Enums;
 using Bulk_Thumbnail_Creator.PictureObjects;
+using DlibDotNet;
 using ImageMagick;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -156,100 +156,100 @@ namespace Bulk_Thumbnail_Creator
 
         //}
 
-        private static Dictionary<BoxType, Rectangle> BuildDefaultBoxes(Dictionary<BoxType, Rectangle> Boxes, Bitmap sourcePicture)
-        {
-            // top box
-            int TopBoxValueX = 0;
-            int TopBoxValueY = 0;
-            BoxType topBox = BoxType.TopBox;
+        //private static Dictionary<BoxType, System.Drawing.Rectangle> BuildDefaultBoxesWindows(Dictionary<BoxType, System.Drawing.Rectangle> Boxes, Bitmap sourcePicture)
+        //{
+        //    // top box
+        //    int TopBoxValueX = 0;
+        //    int TopBoxValueY = 0;
+        //    BoxType topBox = BoxType.TopBox;
 
-            Rectangle TopBoxRectangle = new()
-            {
-                X = TopBoxValueX,
-                Y = TopBoxValueY,
-                Width = sourcePicture.Width,
-                Height = sourcePicture.Height / 2
-            };
+        //    System.Drawing.Rectangle TopBoxRectangle = new()
+        //    {
+        //        X = TopBoxValueX,
+        //        Y = TopBoxValueY,
+        //        Width = sourcePicture.Width,
+        //        Height = sourcePicture.Height / 2
+        //    };
 
-            Boxes.Add(topBox, TopBoxRectangle);
+        //    Boxes.Add(topBox, TopBoxRectangle);
 
-            // bottom box
-            int bottomBoxValueX = 0;
-            int bottomBoxValueY = sourcePicture.Height / 2;
-            BoxType bottomBox = BoxType.BottomBox;
+        //    // bottom box
+        //    int bottomBoxValueX = 0;
+        //    int bottomBoxValueY = sourcePicture.Height / 2;
+        //    BoxType bottomBox = BoxType.BottomBox;
 
-            Rectangle bottomBoxRectangle = new()
-            {
-                X = bottomBoxValueX,
-                Y = bottomBoxValueY,
-                Width = sourcePicture.Width,
-                Height = bottomBoxValueY
-            };
+        //    System.Drawing.Rectangle bottomBoxRectangle = new()
+        //    {
+        //        X = bottomBoxValueX,
+        //        Y = bottomBoxValueY,
+        //        Width = sourcePicture.Width,
+        //        Height = bottomBoxValueY
+        //    };
 
-            Boxes.Add(bottomBox, bottomBoxRectangle);
+        //    Boxes.Add(bottomBox, bottomBoxRectangle);
 
-            // top left box
-            int topLeftBoxValueX = 0;
-            int topLeftBoxValueY = 0;
-            BoxType topLeftBox = BoxType.TopLeft;
+        //    // top left box
+        //    int topLeftBoxValueX = 0;
+        //    int topLeftBoxValueY = 0;
+        //    BoxType topLeftBox = BoxType.TopLeft;
 
-            Rectangle topLeftBoxRectangle = new()
-            {
-                X = topLeftBoxValueX,
-                Y = topLeftBoxValueY,
-                Width = sourcePicture.Width / 2,
-                Height = sourcePicture.Height / 2
-            };
+        //    System.Drawing.Rectangle topLeftBoxRectangle = new()
+        //    {
+        //        X = topLeftBoxValueX,
+        //        Y = topLeftBoxValueY,
+        //        Width = sourcePicture.Width / 2,
+        //        Height = sourcePicture.Height / 2
+        //    };
 
-            Boxes.Add(topLeftBox, topLeftBoxRectangle);
+        //    Boxes.Add(topLeftBox, topLeftBoxRectangle);
 
-            // top right box
-            int topRightBoxValueX = sourcePicture.Width / 2;
-            int topRightBoxValueY = 0;
-            BoxType topRightBox = BoxType.TopRight;
+        //    // top right box
+        //    int topRightBoxValueX = sourcePicture.Width / 2;
+        //    int topRightBoxValueY = 0;
+        //    BoxType topRightBox = BoxType.TopRight;
 
-            Rectangle topRightBoxRectangle = new()
-            {
-                X = topRightBoxValueX,
-                Y = topRightBoxValueY,
-                Width = sourcePicture.Width / 2,
-                Height = sourcePicture.Height / 2
-            };
+        //    System.Drawing.Rectangle topRightBoxRectangle = new()
+        //    {
+        //        X = topRightBoxValueX,
+        //        Y = topRightBoxValueY,
+        //        Width = sourcePicture.Width / 2,
+        //        Height = sourcePicture.Height / 2
+        //    };
 
-            Boxes.Add(topRightBox, topRightBoxRectangle);
+        //    Boxes.Add(topRightBox, topRightBoxRectangle);
 
-            // bottom left box
-            int bottomLeftBoxValueX = 0;
-            int bottomLeftBoxValueY = sourcePicture.Height / 2;
-            BoxType bottomLeftBox = BoxType.BottomLeft;
+        //    // bottom left box
+        //    int bottomLeftBoxValueX = 0;
+        //    int bottomLeftBoxValueY = sourcePicture.Height / 2;
+        //    BoxType bottomLeftBox = BoxType.BottomLeft;
 
-            Rectangle bottomleftBoxRectangle = new()
-            {
-                X = bottomLeftBoxValueX,
-                Y = bottomLeftBoxValueY,
-                Width = sourcePicture.Width / 2,
-                Height = sourcePicture.Height / 2
-            };
+        //    System.Drawing.Rectangle bottomleftBoxRectangle = new()
+        //    {
+        //        X = bottomLeftBoxValueX,
+        //        Y = bottomLeftBoxValueY,
+        //        Width = sourcePicture.Width / 2,
+        //        Height = sourcePicture.Height / 2
+        //    };
 
-            Boxes.Add(bottomLeftBox, bottomleftBoxRectangle);
+        //    Boxes.Add(bottomLeftBox, bottomleftBoxRectangle);
 
-            // bottom right box
-            int bottomRightBoxValueX = sourcePicture.Width / 2;
-            int bottomRightBoxValueY = sourcePicture.Height / 2;
-            BoxType bottomRightBox = BoxType.BottomRight;
+        //    // bottom right box
+        //    int bottomRightBoxValueX = sourcePicture.Width / 2;
+        //    int bottomRightBoxValueY = sourcePicture.Height / 2;
+        //    BoxType bottomRightBox = BoxType.BottomRight;
 
-            Rectangle bottomRightBoxRectangle = new()
-            {
-                X = bottomRightBoxValueX,
-                Y = bottomRightBoxValueY,
-                Width = sourcePicture.Width / 2,
-                Height = sourcePicture.Height / 2
-            };
+        //    System.Drawing.Rectangle bottomRightBoxRectangle = new()
+        //    {
+        //        X = bottomRightBoxValueX,
+        //        Y = bottomRightBoxValueY,
+        //        Width = sourcePicture.Width / 2,
+        //        Height = sourcePicture.Height / 2
+        //    };
 
-            Boxes.Add(bottomRightBox, bottomRightBoxRectangle);
+        //    Boxes.Add(bottomRightBox, bottomRightBoxRectangle);
 
-            return Boxes;
-        }
+        //    return Boxes;
+        //}
 
         /// <summary>
         /// This Allows you to Get the Text Position, It will Calculate where faces are
@@ -259,20 +259,146 @@ namespace Bulk_Thumbnail_Creator
         /// <param name="sourcePicture"></param>
         /// <param name="faceRect"></param>
         /// <returns></returns>
-        public static ParamForTextCreation GettextPos(ParamForTextCreation parameters, Bitmap sourcePicture, Rectangle[] faceRect, PictureData pictureData = null)
-        {
-            Dictionary<BoxType, Rectangle> Boxes = new();
+        //public static ParamForTextCreation GettextPosWindows(ParamForTextCreation parameters, Bitmap sourcePicture, System.Drawing.Rectangle[] faceRect, PictureData pictureData = null)
+        //{
+        //    Dictionary<BoxType, System.Drawing.Rectangle> Boxes = new();
 
-            Boxes = BuildDefaultBoxes(Boxes, sourcePicture);
+        //    Boxes = BuildDefaultBoxesWindows(Boxes, sourcePicture);
+
+        //    foreach (var box in Boxes)
+        //    {
+        //        Box PassBox = new();
+        //        Boxes.TryGetValue(box.Key, out System.Drawing.Rectangle Box);
+        //        PassBox.Width = Box.Width;
+        //        PassBox.Height = Box.Height;
+        //        PassBox.X = Box.X;
+        //        PassBox.Y = Box.Y;
+        //        PassBox.Type = box.Key;
+        //        parameters.Boxes.Add(PassBox);
+        //    }
+
+        //    // boxes that we will pick from after calcs done
+        //    List<BoxType> FreeBoxes = Boxes.Keys.ToList();
+
+        //    if (faceRect.Length != 0)
+        //    {
+        //        foreach (var face in faceRect)
+        //        {
+        //            List<(BoxType, bool)> FaceInterSectResults = new();
+
+        //            foreach (BoxType boxType in Boxes.Keys)
+        //            {
+        //                Boxes.TryGetValue(boxType, out System.Drawing.Rectangle Box);
+        //                bool BoxIntersect = Box.IntersectsWith(face);
+        //                if (BoxIntersect)
+        //                {
+        //                    FreeBoxes.Remove(boxType);
+        //                }
+        //                FaceInterSectResults.Add((boxType, BoxIntersect));
+        //            }
+
+        //        }
+
+        //    }
+
+        //    // boxes to delete from the list of free boxes
+        //    List<BoxType> BoxesToDelete = new();
+
+        //    // needs to be delete because they are already occupied
+        //    // or because they are the current box
+        //    // or because they intersect
+        //    for (int boxtodelete = 0; boxtodelete < pictureData.BoxParameters.Count; boxtodelete++)
+        //    {
+        //        if (FreeBoxes.Count > 0)
+        //        {
+        //            BoxesToDelete.Add(pictureData.BoxParameters[boxtodelete].CurrentBox.Type);
+        //        }
+        //    }
+
+        //    // loops on our populated boxes and runs intersection checks and if they intersects deletes them
+        //    foreach (var boxtype in BoxesToDelete)
+        //    {
+        //        Boxes.TryGetValue(boxtype, out System.Drawing.Rectangle BoxToCheckIntersect);
+        //        List<(BoxType, bool)> IntersectResults = new();
+
+        //        foreach (BoxType boxType in Boxes.Keys)
+        //        {
+        //            Boxes.TryGetValue(boxType, out System.Drawing.Rectangle Box);
+
+        //            bool BoxIntersect = Box.IntersectsWith(BoxToCheckIntersect);
+        //            if (BoxIntersect)
+        //            {
+        //                FreeBoxes.Remove(boxType);
+        //            }
+        //            IntersectResults.Add((boxType, BoxIntersect));
+        //        }
+
+        //    }
+
+        //    // check what boxes are left
+        //    if (FreeBoxes.Count != 0)
+        //    {
+        //        // all calculations done, pick one box if there are any left
+        //        Random random = new();
+        //        BoxType pickedBoxName;
+        //        BoxType[] boxes = FreeBoxes.ToArray();
+
+        //        pickedBoxName = boxes[random.Next(boxes.Length)];
+
+        //        // tries to read from dictionary
+        //        Boxes.TryGetValue(pickedBoxName, out System.Drawing.Rectangle pickedBoxRectangle);
+
+        //        Box box = new();
+
+        //        box.X = pickedBoxRectangle.X;
+        //        box.Y = pickedBoxRectangle.Y;
+        //        box.Width = pickedBoxRectangle.Width;
+        //        box.Height = pickedBoxRectangle.Height;
+        //        box.Rectangle = pickedBoxRectangle;
+        //        box.Type = pickedBoxName;
+
+        //        parameters.CurrentBox = box;
+
+        //        parameters.WidthOfBox = pickedBoxRectangle.Width;
+        //        parameters.HeightOfBox = pickedBoxRectangle.Height;
+
+        //        FreeBoxes.Remove(pickedBoxName);
+
+        //        parameters.BoxesWithNoFaceIntersect = FreeBoxes;
+
+        //        // makes a point to feed to the parameters passed in
+        //        System.Drawing.Point pickedBoxPoint = new(pickedBoxRectangle.X, pickedBoxRectangle.Y);
+
+        //        // sets the position of the parameter objects point variable 
+        //        parameters.PositionOfText = pickedBoxPoint;
+
+        //    }
+
+        //    return parameters;
+        //}
+
+        /// <summary>
+        /// This Allows you to Get the Text Position, It will Calculate where faces are
+        /// and give you a position that is not colliding with a face
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="sourcePicture"></param>
+        /// <param name="faceRect"></param>
+        /// <returns></returns>
+        public static ParamForTextCreation GettextPosLinux(ParamForTextCreation parameters, Array2D<RgbPixel> sourcePicture, DlibDotNet.Rectangle[] faceRect, PictureData pictureData = null)
+        {
+            Dictionary<BoxType, DlibDotNet.Rectangle> Boxes = new();
+
+            Boxes = BuildDefaultBoxesLinux(Boxes, sourcePicture);
 
             foreach (var box in Boxes)
             {
                 Box PassBox = new();
-                Boxes.TryGetValue(box.Key, out Rectangle Box);
-                PassBox.Width = Box.Width;
-                PassBox.Height = Box.Height;
-                PassBox.X = Box.X;
-                PassBox.Y = Box.Y;
+                Boxes.TryGetValue(box.Key, out DlibDotNet.Rectangle Box);
+                PassBox.Width = (int)Box.Width;
+                PassBox.Height = (int)Box.Height;
+                PassBox.X = Box.Left;
+                PassBox.Y = Box.Right;
                 PassBox.Type = box.Key;
                 parameters.Boxes.Add(PassBox);
             }
@@ -288,8 +414,12 @@ namespace Bulk_Thumbnail_Creator
 
                     foreach (BoxType boxType in Boxes.Keys)
                     {
-                        Boxes.TryGetValue(boxType, out Rectangle Box);
-                        bool BoxIntersect = Box.IntersectsWith(face);
+                        Boxes.TryGetValue(boxType, out DlibDotNet.Rectangle Box);
+
+                        bool BoxIntersect;
+
+                        BoxIntersect = IntersectCheck(Box, face);
+
                         if (BoxIntersect)
                         {
                             FreeBoxes.Remove(boxType);
@@ -318,14 +448,15 @@ namespace Bulk_Thumbnail_Creator
             // loops on our populated boxes and runs intersection checks and if they intersects deletes them
             foreach (var boxtype in BoxesToDelete)
             {
-                Boxes.TryGetValue(boxtype, out Rectangle BoxToCheckIntersect);
+                Boxes.TryGetValue(boxtype, out DlibDotNet.Rectangle BoxToCheckIntersect);
                 List<(BoxType, bool)> IntersectResults = new();
 
                 foreach (BoxType boxType in Boxes.Keys)
                 {
-                    Boxes.TryGetValue(boxType, out Rectangle Box);
+                    Boxes.TryGetValue(boxType, out DlibDotNet.Rectangle Box);
 
-                    bool BoxIntersect = Box.IntersectsWith(BoxToCheckIntersect);
+                    bool BoxIntersect = IntersectCheck(Box, BoxToCheckIntersect);
+
                     if (BoxIntersect)
                     {
                         FreeBoxes.Remove(boxType);
@@ -346,28 +477,34 @@ namespace Bulk_Thumbnail_Creator
                 pickedBoxName = boxes[random.Next(boxes.Length)];
 
                 // tries to read from dictionary
-                Boxes.TryGetValue(pickedBoxName, out Rectangle pickedBoxRectangle);
+                Boxes.TryGetValue(pickedBoxName, out DlibDotNet.Rectangle pickedBoxRectangle);
 
                 Box box = new();
 
-                box.X = pickedBoxRectangle.X;
-                box.Y = pickedBoxRectangle.Y;
-                box.Width = pickedBoxRectangle.Width;
-                box.Height = pickedBoxRectangle.Height;
+                box.X = pickedBoxRectangle.Left;
+                box.Y = pickedBoxRectangle.Top;
+                box.Width = (int)pickedBoxRectangle.Width;
+                box.Height = (int)pickedBoxRectangle.Height;
+
+                //System.Drawing.Rectangle CheatRectangle = new(pickedBoxRectangle.Left, pickedBoxRectangle.Top, pickedBoxRectangle.Right, pickedBoxRectangle.Bottom);
+
+                //box.Rectangle = pickedBoxRectangle;
+
                 box.Rectangle = pickedBoxRectangle;
+
                 box.Type = pickedBoxName;
 
                 parameters.CurrentBox = box;
 
-                parameters.WidthOfBox = pickedBoxRectangle.Width;
-                parameters.HeightOfBox = pickedBoxRectangle.Height;
+                parameters.WidthOfBox = (int)pickedBoxRectangle.Width;
+                parameters.HeightOfBox = (int)pickedBoxRectangle.Height;
 
                 FreeBoxes.Remove(pickedBoxName);
 
                 parameters.BoxesWithNoFaceIntersect = FreeBoxes;
 
                 // makes a point to feed to the parameters passed in
-                Point pickedBoxPoint = new(pickedBoxRectangle.X, pickedBoxRectangle.Y);
+                Point pickedBoxPoint = new(pickedBoxRectangle.Left, pickedBoxRectangle.Top);
 
                 // sets the position of the parameter objects point variable 
                 parameters.PositionOfText = pickedBoxPoint;
@@ -375,6 +512,71 @@ namespace Bulk_Thumbnail_Creator
             }
 
             return parameters;
+        }
+
+        public static bool IntersectCheck(DlibDotNet.Rectangle rect1, DlibDotNet.Rectangle rect2)
+        {
+            return rect1.Left < rect2.Right &&
+                   rect1.Right > rect2.Left &&
+                   rect1.Top < rect2.Bottom &&
+                   rect1.Bottom > rect2.Top;
+        }
+
+        private static Dictionary<BoxType, DlibDotNet.Rectangle> BuildDefaultBoxesLinux(Dictionary<BoxType, DlibDotNet.Rectangle> Boxes, Array2D<RgbPixel> sourcePicture)
+        {
+            // top box
+            BoxType topBox = BoxType.TopBox;
+            int width = sourcePicture.Columns;
+            int height = sourcePicture.Rows / 2;
+
+            DlibDotNet.Rectangle TopBoxRectangle = new(0, 0, width, height);
+
+            Boxes.Add(topBox, TopBoxRectangle);
+            //////////////////////////////////////////////
+
+            //// bottom box
+            BoxType bottomBox = BoxType.BottomBox;
+
+            DlibDotNet.Rectangle bottomBoxRectangle = new(0, sourcePicture.Rows / 2, width, sourcePicture.Rows / 2);
+
+            Boxes.Add(bottomBox, bottomBoxRectangle);
+
+            // top left box
+            BoxType topLeftBox = BoxType.TopLeft;
+
+            width = sourcePicture.Columns / 2;
+            height = sourcePicture.Rows / 2;
+
+            DlibDotNet.Rectangle topLeftBoxRectangle = new(0, 0, width, height);
+
+            Boxes.Add(topLeftBox, topLeftBoxRectangle);
+            //////////////////////////////////////////////
+
+            // top right box
+            BoxType topRightBox = BoxType.TopRight;
+
+            DlibDotNet.Rectangle topRightBoxRectangle = new(sourcePicture.Columns / 2, 0, sourcePicture.Columns, height);
+
+            Boxes.Add(topRightBox, topRightBoxRectangle);
+            //////////////////////////////////////////////
+
+            // bottom left box
+            BoxType bottomLeftBox = BoxType.BottomLeft;
+
+            DlibDotNet.Rectangle bottomleftBoxRectangle = new(0, sourcePicture.Rows / 2, width, sourcePicture.Rows);
+
+            Boxes.Add(bottomLeftBox, bottomleftBoxRectangle);
+            //////////////////////////////////////////////
+
+            // bottom right box
+            BoxType bottomRightBox = BoxType.BottomRight;
+
+            DlibDotNet.Rectangle bottomRightBoxRectangle = new(width, height, sourcePicture.Columns, sourcePicture.Rows);
+
+            Boxes.Add(bottomRightBox, bottomRightBoxRectangle);
+            //////////////////////////////////////////////
+
+            return Boxes;
         }
 
         /// <summary>
@@ -499,7 +701,7 @@ namespace Bulk_Thumbnail_Creator
 
                         VarietyData.BoxParameters[currentBox].BorderColor.SetByHSL(borderColorHue, variety, borderColorLuminance);
 
-                        Bitmap src = new(VarietyData.FileName);
+                        //Bitmap src = new(VarietyData.FileName);
 
                         VarietyData.OutPutType = OutputType.SaturationVariety;
                         PictureInputData.Varieties.Add(VarietyData);
@@ -529,7 +731,7 @@ namespace Bulk_Thumbnail_Creator
 
                     // should perhaps have random boxes aswell
 
-                    Bitmap src = new(PictureInputData.FileName);
+                    //Bitmap src = new(PictureInputData.FileName);
 
                     VarietyData.BoxParameters[CurrentBoxes] = GenerateRandomColorSettings(VarietyData.BoxParameters[CurrentBoxes]);
 

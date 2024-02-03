@@ -2,6 +2,7 @@
 using Bulk_Thumbnail_Creator.PictureObjects;
 using ImageMagick;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -27,8 +28,8 @@ namespace Bulk_Thumbnail_Creator
                 Directory.CreateDirectory(ExePath);
             }
 
-            string YTDLPDir = Path.Combine(ExePath, "yt-dlp.exe");
-            string FfMpegDir = Path.Combine(ExePath, "ffmpeg.exe");
+            string YTDLPDir = Path.Combine(ExePath, "yt-dlp");
+            string FfMpegDir = Path.Combine(ExePath, "ffmpeg");
 
             settings.LogService.LogInformation($"Current Location: {CurrentLoc}");
             settings.LogService.LogInformation($"Parent Directory: {parentDirectory}");
@@ -40,7 +41,7 @@ namespace Bulk_Thumbnail_Creator
             }
             else
             {
-                settings.LogService.LogError("yt-dlp.exe was not found");
+                settings.LogService.LogError("yt-dlp was not found");
                 settings.LogService.LogInformation("Will Try To Download yt-dlp");
                 await YoutubeDLSharp.Utils.DownloadYtDlp(ExePath);
 
@@ -63,7 +64,7 @@ namespace Bulk_Thumbnail_Creator
             else
             {
                 // we didnt find ffmpeg
-                settings.LogService.LogError("ffmpeg.exe was not found");
+                settings.LogService.LogError("ffmpeg was not found");
 
                 // so will download it
                 settings.LogService.LogInformation("Will Try To Download ffmpeg");
@@ -97,6 +98,50 @@ namespace Bulk_Thumbnail_Creator
                 settings.LogService.LogInformation($"Dir Created at:{ytdlDir}");
             }
             settings.YTDLOutPutDir = ytdlDir;
+
+            SetExecutePermission(YTDLPDir, settings);
+            SetExecutePermission(FfMpegDir, settings);
+
+        }
+
+        public static void SetExecutePermission(string filePath, Settings settings)
+        {
+            try
+            {
+                Process chmodProcess = new Process
+                {
+                    StartInfo =
+            {
+                FileName = "chmod",
+                Arguments = $"+x {filePath}",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            }
+                };
+
+                chmodProcess.Start();
+                chmodProcess.WaitForExit();
+
+                string output = chmodProcess.StandardOutput.ReadToEnd();
+                string error = chmodProcess.StandardError.ReadToEnd();
+
+                if (!string.IsNullOrEmpty(output))
+                {
+                    settings.LogService.LogInformation($"chmod output: {output}");
+                }
+
+                if (!string.IsNullOrEmpty(error))
+                {
+                    settings.LogService.LogError($"chmod error: {error}");
+                }
+            }
+            catch (Exception ex)
+            {
+                settings.LogService.LogError($"Error setting execute permission: {ex.Message}");
+            }
+
         }
 
         /// <summary>

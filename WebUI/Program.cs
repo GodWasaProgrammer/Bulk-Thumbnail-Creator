@@ -14,7 +14,7 @@ namespace WebUI
 
             Directory.CreateDirectory("output");
             Directory.CreateDirectory("YTDL");
-            Directory.CreateDirectory("Text Added");
+            Directory.CreateDirectory("TextAdded");
             Directory.CreateDirectory("logs");
             var builder = WebApplication.CreateBuilder(args);
             // Add configuration settings
@@ -51,8 +51,8 @@ namespace WebUI
 
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Text Added")),
-                RequestPath = "/text added"
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "TextAdded")),
+                RequestPath = "/TextAdded"
 
             });
 
