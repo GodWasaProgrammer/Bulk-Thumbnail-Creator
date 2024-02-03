@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace Bulk_Thumbnail_Creator.Services
+﻿namespace BulkThumbnailCreator.Services
 {
     public class ZipService
     {

@@ -1,8 +1,7 @@
-﻿using Bulk_Thumbnail_Creator.Enums;
+﻿using BulkThumbnailCreator.Enums;
 using DlibDotNet;
-using System.Collections.Generic;
 
-namespace Bulk_Thumbnail_Creator.PictureObjects
+namespace BulkThumbnailCreator.PictureObjects
 {
     public class ParamForTextCreation
     {

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace Bulk_Thumbnail_Creator.Services
+﻿namespace BulkThumbnailCreator.Services
 {
     public class UserStateService
     {

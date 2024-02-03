@@ -1,6 +1,6 @@
 ﻿using BulkThumbnailCreator.PictureClasses;
 
-namespace Bulk_Thumbnail_Creator.PictureObjects
+namespace BulkThumbnailCreator.PictureObjects
 {
     public class ColorItem
     {

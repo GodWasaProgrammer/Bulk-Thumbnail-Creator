@@ -1,9 +1,8 @@
-﻿using Bulk_Thumbnail_Creator.Interfaces;
-using Bulk_Thumbnail_Creator.PictureObjects;
-using Bulk_Thumbnail_Creator.Services;
-using System.Collections.Generic;
+﻿using BulkThumbnailCreator.Interfaces;
+using BulkThumbnailCreator.PictureObjects;
+using BulkThumbnailCreator.Services;
 
-namespace Bulk_Thumbnail_Creator
+namespace BulkThumbnailCreator
 {
     public class Settings
     {

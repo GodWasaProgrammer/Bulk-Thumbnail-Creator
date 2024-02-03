@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 
-namespace Bulk_Thumbnail_Creator
+namespace BulkThumbnailCreator
 {
     internal class FFmpegHandler
     {

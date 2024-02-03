@@ -1,7 +1,7 @@
 ﻿@page "/mudtabledisplaylist"
 
-@using Bulk_Thumbnail_Creator.PictureObjects
-@using Bulk_Thumbnail_Creator.Services
+@using BulkThumbnailCreator.PictureObjects
+@using BulkThumbnailCreator.Services
 @using WebUI.Components
 
 @inject PicDataService PicDataService
@@ -26,7 +26,7 @@
         {
             @foreach (var CurrentBoxParam in context.BoxParameters)
             {
-                @if (CurrentBoxParam.CurrentBox.Type != Bulk_Thumbnail_Creator.Enums.BoxType.None)
+                @if (CurrentBoxParam.CurrentBox.Type != BulkThumbnailCreator.Enums.BoxType.None)
                 {
                     <Row>
                         <MudTh>

@@ -1,10 +1,10 @@
-﻿using Bulk_Thumbnail_Creator.Enums;
-using Bulk_Thumbnail_Creator.PictureObjects;
+﻿using BulkThumbnailCreator.Enums;
+using BulkThumbnailCreator.PictureObjects;
 using DlibDotNet;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace Bulk_Thumbnail_Creator
+namespace BulkThumbnailCreator
 {
     public class Creator
     {

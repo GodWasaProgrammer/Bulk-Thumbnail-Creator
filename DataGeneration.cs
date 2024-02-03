@@ -1,13 +1,9 @@
-﻿using Bulk_Thumbnail_Creator.Enums;
-using Bulk_Thumbnail_Creator.PictureObjects;
+﻿using BulkThumbnailCreator.Enums;
+using BulkThumbnailCreator.PictureObjects;
 using DlibDotNet;
 using ImageMagick;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
-namespace Bulk_Thumbnail_Creator
+namespace BulkThumbnailCreator
 {
     public class DataGeneration
     {

@@ -8,7 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Bulk_Thumbnail_Creator.Properties {
+namespace BulkThumbnailCreator
+    .Properties 
+{
     using System;
     
     
@@ -39,7 +41,7 @@ namespace Bulk_Thumbnail_Creator.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Bulk_Thumbnail_Creator.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BulkThumbnailCreator.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

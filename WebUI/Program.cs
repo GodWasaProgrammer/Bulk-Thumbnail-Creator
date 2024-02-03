@@ -1,6 +1,6 @@
-using Bulk_Thumbnail_Creator;
-using Bulk_Thumbnail_Creator.Interfaces;
-using Bulk_Thumbnail_Creator.Services;
+using BulkThumbnailCreator;
+using BulkThumbnailCreator.Interfaces;
+using BulkThumbnailCreator.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;

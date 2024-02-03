@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Bulk_Thumbnail_Creator.Interfaces
+﻿namespace BulkThumbnailCreator.Interfaces
 {
     public interface ILogService
     {

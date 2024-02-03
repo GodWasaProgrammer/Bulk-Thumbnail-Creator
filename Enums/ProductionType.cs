@@ -1,4 +1,4 @@
-﻿namespace Bulk_Thumbnail_Creator
+﻿namespace BulkThumbnailCreator
 {
     public enum ProductionType
     {

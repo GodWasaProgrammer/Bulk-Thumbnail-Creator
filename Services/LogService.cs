@@ -1,9 +1,8 @@
-﻿using Bulk_Thumbnail_Creator.Interfaces;
+﻿using BulkThumbnailCreator.Interfaces;
 using Serilog;
 using Serilog.Core;
-using System;
 
-namespace Bulk_Thumbnail_Creator.Services
+namespace BulkThumbnailCreator.Services
 {
     public class LogService : ILogService
     {
@@ -16,7 +15,7 @@ namespace Bulk_Thumbnail_Creator.Services
             _logger = new LoggerConfiguration()
             .MinimumLevel.Information()
             .WriteTo.Console()
-            .WriteTo.File("logs/Bulk_Thumbnail_Creator.txt", rollingInterval: RollingInterval.Day)
+            .WriteTo.File("logs/BulkThumbnailCreator.txt", rollingInterval: RollingInterval.Day)
             .CreateLogger();
         }
 

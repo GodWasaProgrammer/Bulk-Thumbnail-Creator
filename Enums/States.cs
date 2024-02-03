@@ -1,4 +1,4 @@
-﻿namespace Bulk_Thumbnail_Creator.Enums
+﻿namespace BulkThumbnailCreator.Enums
 {
     public enum States
     {

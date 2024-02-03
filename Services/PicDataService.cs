@@ -1,12 +1,8 @@
-﻿using Bulk_Thumbnail_Creator.Enums;
-using Bulk_Thumbnail_Creator.Interfaces;
-using Bulk_Thumbnail_Creator.PictureObjects;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
+﻿using BulkThumbnailCreator.Enums;
+using BulkThumbnailCreator.Interfaces;
+using BulkThumbnailCreator.PictureObjects;
 
-namespace Bulk_Thumbnail_Creator.Services
+namespace BulkThumbnailCreator.Services
 {
     public class PicDataService
     {
