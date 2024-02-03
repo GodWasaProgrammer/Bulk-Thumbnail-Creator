@@ -1,4 +1,4 @@
-﻿using UMapx.Colorspace;
+﻿using BulkThumbnailCreator.PictureClasses;
 
 namespace Bulk_Thumbnail_Creator.PictureObjects
 {
@@ -64,7 +64,7 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
         /// <param name="inputHSL">Your HSL object input</param>
         private void ColorToRGB(HSL inputHSL)
         {
-            RGB colorInRGB = inputHSL.ToRGB;
+            RGB colorInRGB = inputHSL.ToRGB();
 
             red = colorInRGB.Red;
             green = colorInRGB.Green;
@@ -114,7 +114,7 @@ namespace Bulk_Thumbnail_Creator.PictureObjects
         /// <returns></returns>
         private static HSL GetHSLValuesFromRGB(byte inputred, byte inputgreen, byte inputblue)
         {
-            RGB inputRGB = new()
+            RGB inputRGB = new(inputred, inputgreen, inputblue)
             {
                 Red = inputred,
                 Green = inputgreen,

@@ -34,7 +34,6 @@
     <PackageReference Include="Serilog.Sinks.ListOfString" Version="4.1.4.3" />
     <PackageReference Include="SkiaSharp" Version="2.88.7" />
     <PackageReference Include="System.IO.Abstractions" Version="20.0.15" />
-    <PackageReference Include="UMapx" Version="6.0.0.1" />
     <PackageReference Include="YoutubeDLSharp" Version="1.1.0" />
   </ItemGroup>
   <ItemGroup>
