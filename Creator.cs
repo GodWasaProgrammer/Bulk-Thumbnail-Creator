@@ -84,7 +84,24 @@ namespace BulkThumbnailCreator
                 {
                     string file = settings.Files[fileIndex];
 
-                    var image = Dlib.LoadImage<RgbPixel>(file);
+                    Array2D<RgbPixel> image = null;
+
+                    try
+                    {
+                        image = Dlib.LoadImage<RgbPixel>(file);
+                        // Load image
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error loading image: {ex.Message}");
+                        Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                        if (ex.InnerException != null)
+                        {
+                            Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                        }
+
+                    }
+
 
                     DlibDotNet.Rectangle[] FaceRectangles;
 

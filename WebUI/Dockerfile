@@ -18,10 +18,14 @@ RUN dotnet publish "./WebUI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:U
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS final
 ARG BUILD_CONFIGURATION=Release
 
-# Install Python 3
+# Install Dependencies
 RUN apt-get update \
     && apt-get install -y python3 \
+    && apt-get install -y libx11-6 \
+    && apt-get install -y libopenblas-dev \
+    && apt-get install -y libgdiplus/* \
     && rm -rf /var/lib/apt/lists/*
+
 
 WORKDIR /app
 COPY --from=publish /app/publish .
