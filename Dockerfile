@@ -3,8 +3,8 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["WebUI/WebUI.csproj", "WebUI/"]
-COPY ["../BulkThumbnailCreator.csproj", "."]
-RUN dotnet restore "WebUI/WebUI.csproj"
+COPY ["BulkThumbnailCreator.csproj", "."]
+RUN dotnet restore "./WebUI/./WebUI.csproj"
 COPY . .
 WORKDIR "/src/WebUI"
 RUN dotnet build "./WebUI.csproj" -c $BUILD_CONFIGURATION -o /app/build
@@ -20,11 +20,10 @@ ARG BUILD_CONFIGURATION=Release
 
 # Install Dependencies
 RUN apt-get update \
-    && apt-get install -y \
-        python3 \
-        libx11-6 \
-        libopenblas-dev \
-        libgdiplus/* \
+    && apt-get install -y python3 \
+    && apt-get install -y libx11-6 \
+    && apt-get install -y libopenblas-dev \
+    && apt-get install -y libgdiplus/* \
     && rm -rf /var/lib/apt/lists/*
 
 
