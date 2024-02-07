@@ -20,12 +20,12 @@ ARG BUILD_CONFIGURATION=Release
 
 # Install Dependencies
 RUN apt-get update \
-    && apt-get install -y python3 \
-    && apt-get install -y libx11-6 \
-    && apt-get install -y libopenblas-dev \
-    && apt-get install -y libgdiplus/* \
+    && apt-get install -y \
+        python3 \
+        libx11-6 \
+        libopenblas-dev \
+        libgdiplus/* \
     && rm -rf /var/lib/apt/lists/*
-
 
 WORKDIR /app
 COPY --from=publish /app/publish .
