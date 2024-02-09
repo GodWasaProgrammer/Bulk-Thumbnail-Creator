@@ -381,16 +381,16 @@ namespace BulkThumbnailCreator
         /// <param name="sourcePicture"></param>
         /// <param name="faceRect"></param>
         /// <returns></returns>
-        public static ParamForTextCreation GettextPosLinux(ParamForTextCreation parameters, Array2D<RgbPixel> sourcePicture, DlibDotNet.Rectangle[] faceRect, PictureData pictureData = null)
+        public static ParamForTextCreation GettextPosLinux(ParamForTextCreation parameters, Array2D<RgbPixel> sourcePicture, Rectangle[] faceRect, PictureData pictureData = null)
         {
-            Dictionary<BoxType, DlibDotNet.Rectangle> Boxes = new();
+            Dictionary<BoxType, Rectangle> Boxes = new();
 
             Boxes = BuildDefaultBoxesLinux(Boxes, sourcePicture);
 
             foreach (var box in Boxes)
             {
                 Box PassBox = new();
-                Boxes.TryGetValue(box.Key, out DlibDotNet.Rectangle Box);
+                Boxes.TryGetValue(box.Key, out Rectangle Box);
                 PassBox.Width = (int)Box.Width;
                 PassBox.Height = (int)Box.Height;
                 PassBox.X = Box.Left;
@@ -410,7 +410,7 @@ namespace BulkThumbnailCreator
 
                     foreach (BoxType boxType in Boxes.Keys)
                     {
-                        Boxes.TryGetValue(boxType, out DlibDotNet.Rectangle Box);
+                        Boxes.TryGetValue(boxType, out Rectangle Box);
 
                         bool BoxIntersect;
 
@@ -444,12 +444,12 @@ namespace BulkThumbnailCreator
             // loops on our populated boxes and runs intersection checks and if they intersects deletes them
             foreach (var boxtype in BoxesToDelete)
             {
-                Boxes.TryGetValue(boxtype, out DlibDotNet.Rectangle BoxToCheckIntersect);
+                Boxes.TryGetValue(boxtype, out Rectangle BoxToCheckIntersect);
                 List<(BoxType, bool)> IntersectResults = new();
 
                 foreach (BoxType boxType in Boxes.Keys)
                 {
-                    Boxes.TryGetValue(boxType, out DlibDotNet.Rectangle Box);
+                    Boxes.TryGetValue(boxType, out Rectangle Box);
 
                     bool BoxIntersect = IntersectCheck(Box, BoxToCheckIntersect);
 
@@ -473,7 +473,7 @@ namespace BulkThumbnailCreator
                 pickedBoxName = boxes[random.Next(boxes.Length)];
 
                 // tries to read from dictionary
-                Boxes.TryGetValue(pickedBoxName, out DlibDotNet.Rectangle pickedBoxRectangle);
+                Boxes.TryGetValue(pickedBoxName, out Rectangle pickedBoxRectangle);
 
                 Box box = new();
 
@@ -481,10 +481,6 @@ namespace BulkThumbnailCreator
                 box.Y = pickedBoxRectangle.Top;
                 box.Width = (int)pickedBoxRectangle.Width;
                 box.Height = (int)pickedBoxRectangle.Height;
-
-                //System.Drawing.Rectangle CheatRectangle = new(pickedBoxRectangle.Left, pickedBoxRectangle.Top, pickedBoxRectangle.Right, pickedBoxRectangle.Bottom);
-
-                //box.Rectangle = pickedBoxRectangle;
 
                 box.Rectangle = pickedBoxRectangle;
 
@@ -510,7 +506,7 @@ namespace BulkThumbnailCreator
             return parameters;
         }
 
-        public static bool IntersectCheck(DlibDotNet.Rectangle rect1, DlibDotNet.Rectangle rect2)
+        public static bool IntersectCheck(Rectangle rect1, Rectangle rect2)
         {
             return rect1.Left < rect2.Right &&
                    rect1.Right > rect2.Left &&
@@ -518,14 +514,14 @@ namespace BulkThumbnailCreator
                    rect1.Bottom > rect2.Top;
         }
 
-        private static Dictionary<BoxType, DlibDotNet.Rectangle> BuildDefaultBoxesLinux(Dictionary<BoxType, DlibDotNet.Rectangle> Boxes, Array2D<RgbPixel> sourcePicture)
+        private static Dictionary<BoxType, Rectangle> BuildDefaultBoxesLinux(Dictionary<BoxType, Rectangle> Boxes, Array2D<RgbPixel> sourcePicture)
         {
             // top box
             BoxType topBox = BoxType.TopBox;
             int width = sourcePicture.Columns;
             int height = sourcePicture.Rows / 2;
 
-            DlibDotNet.Rectangle TopBoxRectangle = new(0, 0, width, height);
+            Rectangle TopBoxRectangle = new(0, 0, width, height);
 
             Boxes.Add(topBox, TopBoxRectangle);
             //////////////////////////////////////////////
@@ -533,7 +529,7 @@ namespace BulkThumbnailCreator
             //// bottom box
             BoxType bottomBox = BoxType.BottomBox;
 
-            DlibDotNet.Rectangle bottomBoxRectangle = new(0, sourcePicture.Rows / 2, width, sourcePicture.Rows / 2);
+            Rectangle bottomBoxRectangle = new(0, sourcePicture.Rows / 2, width, sourcePicture.Rows / 2);
 
             Boxes.Add(bottomBox, bottomBoxRectangle);
 
@@ -543,7 +539,7 @@ namespace BulkThumbnailCreator
             width = sourcePicture.Columns / 2;
             height = sourcePicture.Rows / 2;
 
-            DlibDotNet.Rectangle topLeftBoxRectangle = new(0, 0, width, height);
+            Rectangle topLeftBoxRectangle = new(0, 0, width, height);
 
             Boxes.Add(topLeftBox, topLeftBoxRectangle);
             //////////////////////////////////////////////
@@ -551,7 +547,7 @@ namespace BulkThumbnailCreator
             // top right box
             BoxType topRightBox = BoxType.TopRight;
 
-            DlibDotNet.Rectangle topRightBoxRectangle = new(sourcePicture.Columns / 2, 0, sourcePicture.Columns, height);
+            Rectangle topRightBoxRectangle = new(sourcePicture.Columns / 2, 0, sourcePicture.Columns, height);
 
             Boxes.Add(topRightBox, topRightBoxRectangle);
             //////////////////////////////////////////////
@@ -559,7 +555,7 @@ namespace BulkThumbnailCreator
             // bottom left box
             BoxType bottomLeftBox = BoxType.BottomLeft;
 
-            DlibDotNet.Rectangle bottomleftBoxRectangle = new(0, sourcePicture.Rows / 2, width, sourcePicture.Rows);
+            Rectangle bottomleftBoxRectangle = new(0, sourcePicture.Rows / 2, width, sourcePicture.Rows);
 
             Boxes.Add(bottomLeftBox, bottomleftBoxRectangle);
             //////////////////////////////////////////////
@@ -567,7 +563,7 @@ namespace BulkThumbnailCreator
             // bottom right box
             BoxType bottomRightBox = BoxType.BottomRight;
 
-            DlibDotNet.Rectangle bottomRightBoxRectangle = new(width, height, sourcePicture.Columns, sourcePicture.Rows);
+            Rectangle bottomRightBoxRectangle = new(width, height, sourcePicture.Columns, sourcePicture.Rows);
 
             Boxes.Add(bottomRightBox, bottomRightBoxRectangle);
             //////////////////////////////////////////////
