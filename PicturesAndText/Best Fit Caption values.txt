@@ -1,8 +1,8 @@
 1920x1080P ( example size, needs to be general, math will be same)
 
 Box size Corner Boxes ---
-1920 / 2 = 480
-1080 / 2 = 270
+1920 / 2 = 960
+1080 / 2 = 540
 Box size Corner Boxes ---
 
 Top Left Corner Box

@@ -29,19 +29,17 @@ namespace BulkThumbnailCreator
 
             string YTDLPDir = Path.Combine(ExePath, "yt-dlp");
             string FfMpegDir = Path.Combine(ExePath, "ffmpeg");
-            
-            if(operatingSystem.Platform == PlatformID.Win32NT)
+
+            if (operatingSystem.Platform == PlatformID.Win32NT)
             {
                 settings.LogService.LogInformation("Windows OS Detected");
                 YTDLPDir += ".exe";
                 FfMpegDir += ".exe";
             }
-            else if(operatingSystem.Platform == PlatformID.Unix)
+            else if (operatingSystem.Platform == PlatformID.Unix)
             {
                 settings.LogService.LogInformation("Unix OS Detected");
             }
-           
-
 
             settings.LogService.LogInformation($"Current Location: {CurrentLoc}");
             settings.LogService.LogInformation($"Parent Directory: {parentDirectory}");
@@ -118,6 +116,20 @@ namespace BulkThumbnailCreator
 
         public static void SetExecutePermission(string filePath, Settings settings)
         {
+            OperatingSystem operatingSystem = Environment.OSVersion;
+
+
+
+            if (operatingSystem.Platform == PlatformID.Win32NT)
+            {
+                return;
+            }
+            else if (operatingSystem.Platform == PlatformID.Unix)
+            {
+                settings.LogService.LogInformation("Unix OS Detected");
+                settings.LogService.LogInformation($"Attempting to set execute permission on {filePath}");
+            }
+
             try
             {
                 Process chmodProcess = new Process
