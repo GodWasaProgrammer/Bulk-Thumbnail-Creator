@@ -73,7 +73,6 @@ namespace BulkThumbnailCreator
                 Settings.Memes = Directory.GetFiles(Settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
 
                 #region Face Detection
-                //var faceDetector = new FaceDetector(0.3F, 0.4F, 0.5F);
 
                 settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
@@ -102,7 +101,6 @@ namespace BulkThumbnailCreator
 
                     }
 
-
                     DlibDotNet.Rectangle[] FaceRectangles;
 
                     using (var FACEDETECT = Dlib.GetFrontalFaceDetector())
@@ -110,26 +108,6 @@ namespace BulkThumbnailCreator
                         // Detect faces in the image
                         FaceRectangles = FACEDETECT.Operator(image);
                     }
-
-                    //Bitmap PicToDetectFacesOn = new(file);
-
-                    //FaceDetectionResult[] faceDetectRes = faceDetector.Forward(PicToDetectFacesOn);
-
-                    //System.Drawing.Rectangle[] facesRectArray = new System.Drawing.Rectangle[faceDetectRes.Length];
-
-                    //// convert from FaceDetectionResult to Rectangle
-                    //for (int i = 0; i < faceDetectRes.Length; i++)
-                    //{
-                    //    facesRectArray[i] = new System.Drawing.Rectangle
-                    //    {
-                    //        X = faceDetectRes[i].Rectangle.X,
-                    //        Y = faceDetectRes[i].Rectangle.Y,
-
-                    //        Width = faceDetectRes[i].Rectangle.Width,
-                    //        Height = faceDetectRes[i].Rectangle.Height
-                    //    };
-
-                    //}
                     #endregion
 
                     #region Data Generation
@@ -144,7 +122,12 @@ namespace BulkThumbnailCreator
                     {
                         ParamForTextCreation currentParameters = new();
 
-                        currentParameters = DataGeneration.GettextPosLinux(currentParameters, image, FaceRectangles, PassPictureData);
+                        List<BoxType> PopulatedBoxes = new();
+
+                        if (PassPictureData.BoxParameters.Count > 0)
+                            PopulatedBoxes.Add(PassPictureData.BoxParameters[0].CurrentBox.Type);
+
+                        currentParameters = DataGeneration.GettextPosLinux(currentParameters, image, FaceRectangles, PopulatedBoxes, PassPictureData);
 
                         currentParameters = DataGeneration.DecideColorGeneration(currentParameters);
 

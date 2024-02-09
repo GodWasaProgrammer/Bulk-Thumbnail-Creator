@@ -381,7 +381,7 @@ namespace BulkThumbnailCreator
         /// <param name="sourcePicture"></param>
         /// <param name="faceRect"></param>
         /// <returns></returns>
-        public static ParamForTextCreation GettextPosLinux(ParamForTextCreation parameters, Array2D<RgbPixel> sourcePicture, Rectangle[] faceRect, PictureData pictureData = null)
+        public static ParamForTextCreation GettextPosLinux(ParamForTextCreation parameters, Array2D<RgbPixel> sourcePicture, Rectangle[] faceRect,List<BoxType> populatedBoxes, PictureData pictureData = null)
         {
             Dictionary<BoxType, Rectangle> Boxes = new();
 
@@ -401,6 +401,42 @@ namespace BulkThumbnailCreator
 
             // boxes that we will pick from after calcs done
             List<BoxType> FreeBoxes = Boxes.Keys.ToList();
+
+            for(int i = 0; i < populatedBoxes.Count; i++)
+            {
+                if (populatedBoxes[i] != BoxType.BottomLeft)
+                {
+                    FreeBoxes.Remove(BoxType.BottomBox);
+                }
+                if (populatedBoxes[i] != BoxType.BottomRight)
+                {
+                    FreeBoxes.Remove(BoxType.BottomBox);
+                }
+                if (populatedBoxes[i] == BoxType.BottomBox)
+                {
+                    FreeBoxes.Remove(BoxType.BottomLeft);
+                    FreeBoxes.Remove(BoxType.BottomRight);
+                }
+                if (populatedBoxes[i] == BoxType.TopLeft)
+                {
+                    FreeBoxes.Remove(BoxType.TopBox);
+                }
+                if (populatedBoxes[i] == BoxType.TopRight)
+                {
+                    FreeBoxes.Remove(BoxType.TopBox);
+                }
+                if (populatedBoxes[i] == BoxType.TopBox)
+                {
+                    FreeBoxes.Remove(BoxType.TopLeft);
+                    FreeBoxes.Remove(BoxType.TopRight);
+                }
+                if (populatedBoxes[i] ==BoxType.BottomBox)
+                {
+                    FreeBoxes.Remove(BoxType.BottomLeft);
+                    FreeBoxes.Remove(BoxType.BottomRight);
+                }
+
+            }
 
             if (faceRect.Length != 0)
             {
@@ -439,6 +475,7 @@ namespace BulkThumbnailCreator
                 {
                     BoxesToDelete.Add(pictureData.BoxParameters[boxtodelete].CurrentBox.Type);
                 }
+
             }
 
             // loops on our populated boxes and runs intersection checks and if they intersects deletes them
@@ -529,7 +566,7 @@ namespace BulkThumbnailCreator
             //// bottom box
             BoxType bottomBox = BoxType.BottomBox;
 
-            Rectangle bottomBoxRectangle = new(0, sourcePicture.Rows / 2, width, sourcePicture.Rows / 2);
+            Rectangle bottomBoxRectangle = new(0, sourcePicture.Rows / 2, width, sourcePicture.Rows);
 
             Boxes.Add(bottomBox, bottomBoxRectangle);
 
