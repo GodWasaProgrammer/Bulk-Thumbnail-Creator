@@ -25,8 +25,23 @@ namespace BulkThumbnailCreator
                 Directory.CreateDirectory(ExePath);
             }
 
+            OperatingSystem operatingSystem = Environment.OSVersion;
+
             string YTDLPDir = Path.Combine(ExePath, "yt-dlp");
             string FfMpegDir = Path.Combine(ExePath, "ffmpeg");
+            
+            if(operatingSystem.Platform == PlatformID.Win32NT)
+            {
+                settings.LogService.LogInformation("Windows OS Detected");
+                YTDLPDir += ".exe";
+                FfMpegDir += ".exe";
+            }
+            else if(operatingSystem.Platform == PlatformID.Unix)
+            {
+                settings.LogService.LogInformation("Unix OS Detected");
+            }
+           
+
 
             settings.LogService.LogInformation($"Current Location: {CurrentLoc}");
             settings.LogService.LogInformation($"Parent Directory: {parentDirectory}");

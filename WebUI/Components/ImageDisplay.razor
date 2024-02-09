@@ -8,20 +8,31 @@
 @inject Settings settings;
 @inject AuthenticationStateProvider AuthProvider;
 
+<div class="image-container">
+
 @if (IMGDetailClicked == false && imageUrls != null)
 {
-    @foreach (var imageUrl in imageUrls)
+    @for (int i = 0; i < imageUrls.Count; i++)
     {
-        <MudButton class="image-button" @onclick="@(e => ShowImageDetail(imageUrl))">
-            <MudImage src="@imageUrl" style="max-width: 300px; margin: 10px;" />
-        </MudButton>
+        var index = i;
+
+        <img class="image-button" src="@imageUrls[index]" @onclick="(() => ShowImageDetail(imageUrls[index]))" />
+        @if ((i + 1) % 3 == 0)
+        {
+            <div style="flex-basis: 100%; height: 0;"></div>
+        }
     }
+        <div class="justify-content-center"><MudText>Pick an image to receive more varieties</MudText>
     <MudButton ButtonType="ButtonType.Reset" OnClick="JobService.ResetState">Restart</MudButton>
+            </div>
 }
 else
 {
     <VarietyDisplay CurrentJob="CurrentJob" ParentPictureProp="picdata" VarietyUrls="VarietyUrls"></VarietyDisplay>
 }
+</div>
+
+
 
 @code
 {
