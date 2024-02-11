@@ -9,28 +9,35 @@
 @inject AuthenticationStateProvider AuthProvider;
 
 <div class="image-container">
-
-@if (IMGDetailClicked == false && imageUrls != null)
-{
-    @for (int i = 0; i < imageUrls.Count; i++)
+    @if (IMGDetailClicked == false && imageUrls != null)
     {
-        var index = i;
+        <div class="image-grid">
+            @for (int i = 0; i < imageUrls.Count; i++)
+            {
+                var index = i;
 
-        <img class="image-button" src="@imageUrls[index]" @onclick="(() => ShowImageDetail(imageUrls[index]))" />
-        @if ((i + 1) % 3 == 0)
-        {
-            <div style="flex-basis: 100%; height: 0;"></div>
-        }
+                <img class="image-button" src="@imageUrls[index]" @onclick="(() => ShowImageDetail(imageUrls[index]))" />
+                @if ((i + 1) % 3 == 0)
+                {
+                    <div style="flex-basis: 100%; height: 0;"></div>
+                }
+            }
+        </div>
+
+        <div class="centered-text">
+            <MudText>Pick an image to receive more varieties</MudText>
+        <div class="button-container">
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" ButtonType="ButtonType.Reset" OnClick="JobService.ResetState">Restart</MudButton>
+        </div>
+        </div>
     }
-        <div class="justify-content-center"><MudText>Pick an image to receive more varieties</MudText>
-    <MudButton ButtonType="ButtonType.Reset" OnClick="JobService.ResetState">Restart</MudButton>
-            </div>
-}
-else
-{
-    <VarietyDisplay CurrentJob="CurrentJob" ParentPictureProp="picdata" VarietyUrls="VarietyUrls"></VarietyDisplay>
-}
+    else
+    {
+        <VarietyDisplay CurrentJob="CurrentJob" ParentPictureProp="picdata" VarietyUrls="VarietyUrls"></VarietyDisplay>
+    }
 </div>
+
+
 
 
 
@@ -181,4 +188,26 @@ else
             max-width: calc(30% - 50px); /* Set the width for each image in the row */
             margin: 10px;
         }
+
+    .image-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; /* Center-align the images horizontally */
+    }
+
+    .image-button {
+        /* Add any additional styling for the images as needed */
+        margin: 5px; /* Add some margin between images */
+    }
+
+    .centered-text {
+        text-align: center; /* Center-align text horizontally */
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: center; /* Center-align button horizontally */
+        margin-top: 10px; /* Add margin space between text and button */
+    }
+
 </style>

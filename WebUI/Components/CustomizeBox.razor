@@ -32,7 +32,7 @@
     </MudSelect>
 
     @*This allows you to swap to inserting a meme instead of text*@
-    <MudButton Color="Color.Success" @onclick="() => MemeSelected()">@MemeOrText</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Success" @onclick="() => MemeSelected()">@MemeOrText</MudButton>
 }
 
 @*This is our Text Customization options with Fonts,Colors, etc*@
@@ -53,14 +53,14 @@
 
             </MudSelect>
 
-            <MudButton Color="Color.Primary" @onclick="() => SetColor(PickedGroup)">Set Color</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="() => SetColor(PickedGroup)">Set Color</MudButton>
 
-            <MudSelect AdornmentColor="Color.Primary" Label="Select a font" @bind-Value="PickedFont">
+            <MudSelect Variant="Variant.Text" AdornmentColor="Color.Primary" Label="Select a font" @bind-Value="PickedFont">
 
                 @foreach (var fontPath in AvailableFonts)
                 {
                     string fontFileName = Path.GetFileNameWithoutExtension(fontPath);
-                    <MudSelectItem Value="@fontPath"><MudText Color="Color.Secondary">@fontFileName</MudText></MudSelectItem>
+                    <MudSelectItem Value="@fontPath" Style="@(($"font-family: '{fontFileName}';"))"><MudText Color="Color.Secondary">@fontFileName</MudText></MudSelectItem>
                 }
             </MudSelect>
 
@@ -74,12 +74,12 @@
 
             @if (!AddText)
             {
-                <MudButton OnClick="AddNewText" Color="Color.Primary">Add new text</MudButton>
+                <MudButton Variant="Variant.Filled" OnClick="AddNewText" Color="Color.Primary">Add new text</MudButton>
             }
             @if (AddText)
             {
                 <MudTextField Margin="Margin.Dense" Label="Add text here" Variant="Variant.Filled" @bind-Value="textToAdd" />
-                <MudButton Color="Color.Primary" OnClick="SaveText">Save</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SaveText">Save</MudButton>
 
                 @if (nullOrWhiteSpace)
                 {
@@ -104,8 +104,6 @@
 
         @if (CurrentPagePictureData != null)
         {
-
-
             @if (PickedBox != BoxType.None)
             {
                 // find the box that we are editing
@@ -113,7 +111,7 @@
                 <ParamDisplay param="param"></ParamDisplay>
             }
 
-            <MudButton Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">Produce</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">Produce</MudButton>
         }
 
     </MudPaper>

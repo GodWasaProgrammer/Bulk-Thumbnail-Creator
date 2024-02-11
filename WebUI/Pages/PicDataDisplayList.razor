@@ -39,7 +39,7 @@
     DataGridFilterMode _filterMode = DataGridFilterMode.Simple;
     DataGridFilterCaseSensitivity _caseSensitivity = DataGridFilterCaseSensitivity.Default;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         PicDataList = PicDataService.PicDataServiceList;
     }
