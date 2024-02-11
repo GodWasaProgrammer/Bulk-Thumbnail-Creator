@@ -6,7 +6,7 @@
         /// we will store all our jobs here
         /// So we can fetch them on page refreshes
         /// </summary>
-        static List<Job> UserJobs { get; set; } = new List<Job>();
+        public static List<Job> UserJobs { get; set; } = new List<Job>();
 
         /// <summary>
         /// Saves or updates a job in the list
@@ -24,8 +24,8 @@
             JobToUpdate.VideoName = job.VideoName;
             JobToUpdate.VideoPath = job.VideoPath;
             JobToUpdate.VideoUrl = job.VideoUrl;
-            JobToUpdate.VarietyUrls = job.VarietyUrls;
             JobToUpdate.FrontLineUpUrls = job.FrontLineUpUrls;
+            JobToUpdate.VarietyUrls = job.VarietyUrls;
             JobToUpdate.State = job.State;
             JobToUpdate.LogEntries = job.LogEntries;
             JobToUpdate.TextToPrint = job.TextToPrint;

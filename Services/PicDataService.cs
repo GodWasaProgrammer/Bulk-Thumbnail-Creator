@@ -8,7 +8,13 @@ namespace BulkThumbnailCreator.Services
     {
         public PicDataService(ILogService _logger, JobService JS, Settings settings)
         {
-            ClearBaseOutPutDirectories(settings);
+            // if we are not in a state where we have a job, we should clear the output directories
+            // this should only be called when the app is started
+            // or if the joblist has been cleared
+            if (UserStateService.UserJobs == null)
+            {
+                ClearBaseOutPutDirectories(settings);
+            }
             PicDataServiceList = new List<PictureData>();
             OutputFileServiceList = new List<string>();
             settings.LogService = _logger;
