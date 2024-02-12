@@ -319,7 +319,16 @@ namespace BulkThumbnailCreator
                 PicData.OutPath = OutputPath;
             }
 
-            MagickImage outputImage = new(Path.GetFullPath(PicData.FileName));
+            MagickImage outputImage = new();
+
+            try
+            {
+                outputImage = new(Path.GetFullPath(PicData.FileName));
+            }
+            catch (Exception ex)
+            {
+                settings.LogService.LogError($"Error in reading image into ImageMagick: {ex.Message}");
+            }
 
             for (int Box = 0; Box < PicData.BoxParameters.Count; Box++)
             {
@@ -353,7 +362,15 @@ namespace BulkThumbnailCreator
                 settings.LogService.LogInformation($"Picture:{Path.GetFileName(PicData.FileName)}Box Type:{PicData.BoxParameters[Box].CurrentBox.Type} Box: {Box + 1} of {PicData.BoxParameters.Count} has been composited");
             }
 
-            outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
+            try
+            {
+                outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
+            }
+            catch (Exception ex)
+            {
+                settings.LogService.LogError($"Error in annotation: {ex.Message}");
+            }
+
             outputImage.Quality = 100;
 
             // outputs the file to the provided path and name

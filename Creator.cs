@@ -181,11 +181,11 @@ namespace BulkThumbnailCreator
                 #endregion
 
                 #region Front Page Picture Line Up Mocking
-                if (Mocking.BTCRunCount != 1)
-                {
-                    // ffmpeg has finished, lets copy our mock data
-                    Mocking.OutPutDirMockCopy(settings);
-                }
+                //if (Mocking.BTCRunCount != 1)
+                //{
+                //    // ffmpeg has finished, lets copy our mock data
+                //    Mocking.OutPutDirMockCopy(settings);
+                //}
                 #endregion
             }
 
