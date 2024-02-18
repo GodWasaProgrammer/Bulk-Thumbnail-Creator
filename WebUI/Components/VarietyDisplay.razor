@@ -13,7 +13,6 @@
 <div class="image-container">
     @if (VarietyUrls != null && CustomPicture == false)
     {
-
         @for (int ClickedImage = 0; ClickedImage < VarietyUrls.Count; ClickedImage++)
         {
             var index = ClickedImage;
@@ -23,20 +22,24 @@
             {
                 <div style="flex-basis: 100%; height: 0;"></div>
             }
-
         }
-        <div style="justify-content:center"> 
-
-        <MudButton Variant="Variant.Filled" Color="Color.Secondary" ButtonType="ButtonType.Reset" OnClick="JobService.ResetState">Restart</MudButton>
-        </div>
     }
 
     @if (CustomPicture)
     {
-        <CustomizePicture CurrentJob="CurrentJob" CurrentPagePictureData="passData" ImageURL="@passURL"/>
+        <CustomizePicture CurrentJob="CurrentJob" CurrentPagePictureData="passData" ImageURL="@passURL" />
     }
 
+    
 </div>
+
+@if (VarietyUrls != null && CustomPicture == false)
+{
+    <div style="justify-content:center">
+
+        <MudButton Variant="Variant.Filled" Color="Color.Secondary" ButtonType="ButtonType.Reset" OnClick="JobService.ResetState">Restart</MudButton>
+    </div>
+}
 
 @code
 {

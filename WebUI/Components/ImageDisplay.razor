@@ -26,9 +26,9 @@
 
         <div class="centered-text">
             <MudText>Pick an image to receive more varieties</MudText>
-        <div class="button-container">
-            <MudButton Variant="Variant.Filled" Color="Color.Secondary" ButtonType="ButtonType.Reset" OnClick="JobService.ResetState">Restart</MudButton>
-        </div>
+            <div class="button-container">
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary" ButtonType="ButtonType.Reset" OnClick="JobService.ResetState">Restart</MudButton>
+            </div>
         </div>
     }
     else
@@ -36,10 +36,6 @@
         <VarietyDisplay CurrentJob="CurrentJob" ParentPictureProp="picdata" VarietyUrls="VarietyUrls"></VarietyDisplay>
     }
 </div>
-
-
-
-
 
 @code
 {
@@ -114,13 +110,9 @@
                     VarietyUrls = CurrentJob.VarietyUrls;
                     StateHasChanged();
                 }
-
             }
-
         }
-
         await InvokeAsync(() => StateHasChanged());
-
     }
 
     /// <summary>
@@ -168,15 +160,15 @@
         picdata = await PicDataService.SetPictureDataImageDisplayCorrelation(imageToDisplayVarietyOf);
 
 
-        // crashes on refresh 
+        // crashes on refresh
 
         VarietyUrls = await PicDataService.CreatePictureDataVariety(picdata, settings, CurrentJob);
         CurrentJob.VarietyUrls = VarietyUrls;
         CurrentJob.ClickedImage = imageToDisplayVarietyOf;
         UserStateService.UpdateJob(CurrentJob);
     }
-
 }
+
 <style>
     .image-container {
         display: flex;
@@ -209,5 +201,4 @@
         justify-content: center; /* Center-align button horizontally */
         margin-top: 10px; /* Add margin space between text and button */
     }
-
 </style>

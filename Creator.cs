@@ -92,7 +92,6 @@ public partial class Creator
                     {
                         Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
                     }
-
                 }
 
                 DlibDotNet.Rectangle[] FaceRectangles;
@@ -123,7 +122,7 @@ public partial class Creator
 
                     currentParameters = DataGeneration.GetTextPosition(currentParameters, image, FaceRectangles, PopulatedBoxes, PassPictureData);
 
-                    currentParameters = DataGeneration.DecideColorGeneration(currentParameters);
+                    currentParameters = ColorData.DecideColorGeneration(currentParameters);
 
                     currentParameters.Font = DataGeneration.PickRandomFont();
 
@@ -143,15 +142,15 @@ public partial class Creator
             //// Produce varietydata for the current object
             for (int i = 0; i < settings.PictureDatas.Count; i++)
             {
-                DataGeneration.GenSaturationVariety(settings.PictureDatas[i]);
+                Variety.Saturation(settings.PictureDatas[i]);
 
-                DataGeneration.GenFontVariety(settings.PictureDatas[i]);
+                Variety.Font(settings.PictureDatas[i]);
 
-                //DataGeneration.GenPlacementOfTextVariety(Settings.PictureDatas[i]);
+                Variety.PlacementOfText(settings.PictureDatas[i]);
 
-                DataGeneration.GenRandomVariety(settings.PictureDatas[i]);
+                Variety.Random(settings.PictureDatas[i]);
 
-                DataGeneration.GenMemePosition(settings.PictureDatas[i]);
+                Variety.Meme(settings.PictureDatas[i]);
             }
             #endregion
 
@@ -211,7 +210,6 @@ public partial class Creator
             //{
             //    await Mocking.VarietiesList(settings);
             //}
-
         }
         #endregion
 

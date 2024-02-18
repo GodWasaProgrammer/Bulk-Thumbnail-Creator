@@ -11,7 +11,6 @@
 @inject ILogService Logger;
 @inject JobService JobService;
 @inject AuthenticationStateProvider AuthProvider;
-<div>
     <MudPaper>
         <MudGrid>
             <MudItem xs="12" sm="6">
@@ -28,8 +27,6 @@
             <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Reset" Color="Color.Secondary" OnClick="JobService.ResetState">Restart</MudButton>
         </div>
     </div>
-</div>
-
 @code
 {
     private void Reset()

@@ -75,10 +75,6 @@
         {
             ViewBoxParam = false;
         }
-
     }
-
-
-    protected override async Task OnInitializedAsync() => PicDataDisplayList = PicDataService.PicDataServiceList;
-
+    protected override void OnInitialized() => PicDataDisplayList = PicDataService.PicDataServiceList;
 }
