@@ -80,6 +80,7 @@
 
         public async Task<List<string>> CreatePictureDataVariety(PictureData PicToVarietize, Settings settings, Job PassCrntJob)
         {
+            PassCrntJob.Settings = settings;
             CurrentJob = PassCrntJob;
 
             IsLoading = true;

@@ -311,6 +311,10 @@ public class Production
 
         try
         {
+            if (PicData.FileName is null)
+            {
+                throw new Exception($"PicData.FileName was passed null to ProduceTextPictures");
+            }
             outputImage = new(Path.GetFullPath(PicData.FileName));
         }
         catch (Exception ex)

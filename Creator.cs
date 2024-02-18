@@ -174,11 +174,11 @@ public partial class Creator
             #endregion
 
             #region Front Page Picture Line Up Mocking
-            //if (Mocking.BTCRunCount != 1)
-            //{
-            //    // ffmpeg has finished, lets copy our mock data
-            //    Mocking.OutPutDirMockCopy(settings);
-            //}
+            if (Mocking.BTCRunCount != 1)
+            {
+                // ffmpeg has finished, lets copy our mock data
+                Mocking.OutPutDirMockCopy(settings);
+            }
             #endregion
         }
 
@@ -206,10 +206,10 @@ public partial class Creator
                 await Task.WhenAll(productionVarietyTaskList);
             }
 
-            //if (Mocking.BTCRunCount != 1)
-            //{
-            //    await Mocking.VarietiesList(settings);
-            //}
+            if (Mocking.BTCRunCount != 1)
+            {
+                await Mocking.VarietiesList(settings);
+            }
         }
         #endregion
 
@@ -241,10 +241,10 @@ public partial class Creator
 
         #region Picdata serialization & Mock Setup
 
-        //if (Mocking.BTCRunCount != 1)
-        //{
-        //    Mocking.SerializePicData(settings);
-        //}
+        if (Mocking.BTCRunCount != 1)
+        {
+            Mocking.SerializePicData(settings);
+        }
 
         settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
@@ -270,16 +270,15 @@ public partial class Creator
     /// <returns></returns>
     public static async Task<List<PictureData>> MockProcess(ProductionType prodtype, string url, List<string> texts, Settings settings, PictureData picdatatoMock = null)
     {
-        // Settings.ListOfText = texts;
+        settings.ListOfText = texts;
 
         if (prodtype == ProductionType.FrontPagePictureLineUp)
         {
             await Mocking.SetupFrontPagePictureLineUp(settings);
-            //   Settings.LogService.LogInformation("Mocking of FrontPagePictureLineUp complete");
+            settings.LogService.LogInformation("Mocking of FrontPagePictureLineUp complete");
         }
 
         ArgumentNullException.ThrowIfNull(texts);
-
         ArgumentNullException.ThrowIfNull(url);
 
         if (prodtype == ProductionType.VarietyList)
@@ -287,14 +286,14 @@ public partial class Creator
             // fake variety list
             // this will never let you actually pick one, it will automatically mock to whatever was clicked
             // when the code ran last time
-            if (picdatatoMock == null)
+            if (picdatatoMock is null)
             {
-                //   Settings.LogService.LogError("null has been passed to PicdataobjToVarietize");
+                settings.LogService.LogError("null has been passed to PicdataobjToVarietize");
             }
             else
             {
                 await Mocking.SetupVarietyDisplay(settings);
-                //  Settings.LogService.LogInformation("Mocking of Variety List complete");
+                settings.LogService.LogInformation("Mocking of Variety List complete");
             }
         }
 
@@ -303,17 +302,16 @@ public partial class Creator
 
             if (picdatatoMock == null)
             {
-                // Settings.LogService.LogError("Null has been passed to CustomPicture");
+                settings.LogService.LogError("Null has been passed to CustomPicture");
             }
             else
             {
-                // Production Production = new();
-                //await Production.ProduceTextPictures(picdatatoMock,settings);
-                // Settings.PictureDatas.Add(picdatatoMock);
+                await Production.ProduceTextPictures(picdatatoMock, settings);
+                settings.PictureDatas.Add(picdatatoMock);
             }
         }
 
-        return null; // Settings.PictureDatas;
+        return settings.PictureDatas;
     }
 
     static void Main()

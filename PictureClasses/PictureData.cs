@@ -15,7 +15,7 @@ public class PictureData
     private List<Box> _boxes = [];
     public List<Box> Boxes { get { return _boxes; } set { _boxes = value; } }
 
-    private List<ParamForTextCreation> _BoxParameters = new();
+    private List<ParamForTextCreation> _BoxParameters = [];
     public List<ParamForTextCreation> BoxParameters { get { return _BoxParameters; } set { _BoxParameters = value; } }
 
     public int NumberOfBoxes = 2;
@@ -66,7 +66,6 @@ public class PictureData
 
     private OutputType _OutputType;
     public OutputType OutPutType { get { return _OutputType; } set { _OutputType = value; } }
-
 
     /// <summary>
     /// Generates MagickReadSettings to be used in a PicturedataObject to decide how text will look

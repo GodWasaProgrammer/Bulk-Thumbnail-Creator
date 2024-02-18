@@ -7,6 +7,7 @@ global using DlibDotNet;
 global using ImageMagick;
 global using Serilog;
 global using System.Diagnostics;
+global using System.IO;
 global using System.Reflection;
 global using System.Text.RegularExpressions;
 global using System.Xml.Serialization;

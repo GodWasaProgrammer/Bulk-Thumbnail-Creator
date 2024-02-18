@@ -6,21 +6,21 @@ internal class Mocking
 
     internal static void SerializePicData(Settings settings)
     {
-        // XmlSerializer Serializer = new(typeof(List<PictureData>));
+        XmlSerializer Serializer = new(typeof(List<PictureData>));
 
-        //// Open the file for writing or create a new one if it doesn't exist
-        //using (StreamWriter streamWriter = new("mockFP.xml"))
-        //{
-        //    // Serialize the entire list at once
-        //    Serializer.Serialize(streamWriter, settings.PictureDatas);
-        //}
+        // Open the file for writing or create a new one if it doesn't exist
+        using (StreamWriter streamWriter = new("mockFP.xml"))
+        {
+            // Serialize the entire list at once
+            Serializer.Serialize(streamWriter, settings.PictureDatas);
+        }
         settings.LogService.LogInformation("Settings.PictureDatas Serialized to mockFP.xml");
 
         string mockDir = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "mockFP.xml");
         File.Copy("mockFP.xml", mockDir, true);
 
         // clean up the text added dir of mockfolder
-        string mockdir3 = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "text added");
+        string mockdir3 = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "TextAdded");
 
         DirectoryInfo di3 = new(mockdir3);
 
@@ -30,7 +30,7 @@ internal class Mocking
         }
 
         // Copy the Text Added Directory to Mock Folder
-        string mockdir2 = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "text added");
+        string mockdir2 = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "TextAdded");
 
         string[] Mockfiles = Directory.GetFiles(settings.TextAddedDir);
 
@@ -43,7 +43,7 @@ internal class Mocking
     internal static async Task SetupVarietyDisplay(Settings settings)
     {
         // copy pictures to text added dir / var dir                    // copy pictures to text added dir / var dir
-        string sourceDirectory = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "text added");
+        string sourceDirectory = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "TextAdded");
 
         string[] Directories = Directory.GetDirectories(sourceDirectory);
 
@@ -73,17 +73,25 @@ internal class Mocking
     {
         // pretend to make line up
         string srcMockFolder = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "output");
-        string[] outputDirList = Directory.GetFiles(srcMockFolder);
+        string[] dirToCopy = Directory.GetDirectories(srcMockFolder);
 
-        // copy outputDir to mockOutPutDir ??
-        foreach (string outputFile in outputDirList)
+        foreach (string dir in dirToCopy)
         {
-            string completePath = Path.Combine(settings.OutputDir, Path.GetFileName(outputFile));
-            await Task.Run(() => File.Copy(outputFile, completePath));
+            string targetDir = Path.Combine($"output/{Path.GetFileName(dir)}");
+            Directory.CreateDirectory(targetDir);
+
+            string[] filesToCopy = Directory.GetFiles(dir);
+
+            // copy MockOutputDirs folders to outputdir
+            foreach (string outputFile in filesToCopy)
+            {
+                string completePath = Path.Combine(targetDir, Path.GetFileName(outputFile));
+                await Task.Run(() => File.Copy(outputFile, completePath));
+            }
         }
 
         // copy pictures to text added dir
-        string sourceDirectory = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "text added");
+        string sourceDirectory = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "TextAdded");
 
         string[] files = Directory.GetFiles(sourceDirectory);
 
@@ -122,22 +130,29 @@ internal class Mocking
     {
         // first we will clear the directory of any files
         string mockOutPutDir = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "output");
-        string[] mockOutPutDirFiles = Directory.GetFiles(mockOutPutDir);
 
-        foreach (var MockOutPutFile in mockOutPutDirFiles)
+        string[] mockDirectories = Directory.GetDirectories(mockOutPutDir);
+
+        foreach (string dir in mockDirectories)
         {
-            File.Delete(MockOutPutFile);
+            Directory.Delete(dir, true);
         }
 
         // Mock copying of outputDir to mockOutPutDir
         settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
-        if (Directory.Exists(mockOutPutDir))
+        string dirName = Path.GetFileName(settings.OutputDir);
+
+        string makeDir = Path.Combine(mockOutPutDir, dirName);
+
+        Directory.CreateDirectory(makeDir);
+
+        if (Directory.Exists(makeDir))
         {
             foreach (var file in settings.Files)
             {
                 string filename = Path.GetFileName(file);
-                string writePath = Path.Combine(mockOutPutDir, filename);
+                string writePath = Path.Combine(makeDir, filename);
                 File.Copy(file, writePath);
             }
         }
@@ -153,7 +168,7 @@ internal class Mocking
         {
             string[] files = Directory.GetFiles(dir.FullName);
 
-            string TargetDirectory = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "text added");
+            string TargetDirectory = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "TextAdded");
 
             // add the variety directory to the target directory
 
