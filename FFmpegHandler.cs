@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace BulkThumbnailCreator;
+﻿namespace BulkThumbnailCreator;
 
 internal class FFmpegHandler
 {

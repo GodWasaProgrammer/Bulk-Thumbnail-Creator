@@ -1,7 +1,4 @@
-﻿using BulkThumbnailCreator.Enums;
-using DlibDotNet;
-
-namespace BulkThumbnailCreator.PictureObjects
+﻿namespace BulkThumbnailCreator.PictureObjects
 {
     public class Box
     {

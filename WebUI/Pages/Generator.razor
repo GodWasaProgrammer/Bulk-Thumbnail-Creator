@@ -1,12 +1,10 @@
 ﻿@page "/Generator"
-
 @using WebUI.Components
 @using Microsoft.AspNetCore.Components
 @using Microsoft.JSInterop
 @using BulkThumbnailCreator;
 @using Microsoft.Identity;
 @using BulkThumbnailCreator.Services;
-
 @inject PicDataService ds;
 @inject JobService js;
 @inject Settings settings;
@@ -36,6 +34,7 @@
     </AuthorizeView>
 
 </CascadingAuthenticationState>
+
 @code
 {
     private bool Loading { get; set; }

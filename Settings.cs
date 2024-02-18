@@ -1,8 +1,4 @@
-﻿using BulkThumbnailCreator.Interfaces;
-using BulkThumbnailCreator.PictureObjects;
-using BulkThumbnailCreator.Services;
-
-namespace BulkThumbnailCreator;
+﻿namespace BulkThumbnailCreator;
 
 public class Settings
 {

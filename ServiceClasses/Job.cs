@@ -1,7 +1,4 @@
-﻿using BulkThumbnailCreator.Enums;
-using BulkThumbnailCreator.PictureObjects;
-
-namespace BulkThumbnailCreator
+﻿namespace BulkThumbnailCreator
 {
     public class Job
     {

@@ -1,7 +1,4 @@
-﻿using BulkThumbnailCreator.PictureObjects;
-using System.Xml.Serialization;
-
-namespace BulkThumbnailCreator;
+﻿namespace BulkThumbnailCreator;
 
 internal class Mocking
 {

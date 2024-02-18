@@ -1,9 +1,4 @@
-﻿using BulkThumbnailCreator.Enums;
-using BulkThumbnailCreator.PictureObjects;
-using DlibDotNet;
-using ImageMagick;
-
-namespace BulkThumbnailCreator;
+﻿namespace BulkThumbnailCreator;
 
 public class DataGeneration
 {

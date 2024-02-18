@@ -1,12 +1,8 @@
-﻿using BulkThumbnailCreator.Interfaces;
-using Serilog;
-using Serilog.Core;
-
-namespace BulkThumbnailCreator.Services
+﻿namespace BulkThumbnailCreator.Services
 {
     public class LogService : ILogService
     {
-        private readonly Logger _logger;
+        private readonly Serilog.Core.Logger _logger;
 
         public event Action<string> LogEntryAdded = delegate { };
 

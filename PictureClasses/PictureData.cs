@@ -1,8 +1,4 @@
-﻿using BulkThumbnailCreator.Enums;
-using ImageMagick;
-using System.Xml.Serialization;
-
-namespace BulkThumbnailCreator.PictureObjects;
+﻿namespace BulkThumbnailCreator.PictureObjects;
 
 [Serializable]
 public class PictureData

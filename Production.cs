@@ -1,11 +1,4 @@
-﻿using BulkThumbnailCreator.Enums;
-using BulkThumbnailCreator.PictureObjects;
-using ImageMagick;
-using System.Diagnostics;
-using System.Reflection;
-using YoutubeDLSharp;
-
-namespace BulkThumbnailCreator;
+﻿namespace BulkThumbnailCreator;
 
 public class Production
 {

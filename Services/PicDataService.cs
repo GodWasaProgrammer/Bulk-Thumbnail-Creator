@@ -1,8 +1,4 @@
-﻿using BulkThumbnailCreator.Enums;
-using BulkThumbnailCreator.Interfaces;
-using BulkThumbnailCreator.PictureObjects;
-
-namespace BulkThumbnailCreator.Services
+﻿namespace BulkThumbnailCreator.Services
 {
     public class PicDataService
     {
@@ -11,7 +7,7 @@ namespace BulkThumbnailCreator.Services
             // if we are not in a state where we have a job, we should clear the output directories
             // this should only be called when the app is started
             // or if the joblist has been cleared
-            if (UserStateService.UserJobs == null)
+            if (UserStateService.UserJobs.Count == 0)
             {
                 ClearBaseOutPutDirectories(settings);
             }
