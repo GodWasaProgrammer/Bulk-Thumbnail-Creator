@@ -53,7 +53,5 @@
 
             return CurrentJob;
         }
-
     }
-
 }

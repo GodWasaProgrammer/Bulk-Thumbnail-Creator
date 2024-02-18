@@ -1,16 +1,14 @@
-﻿namespace BulkThumbnailCreator.Interfaces
+﻿namespace BulkThumbnailCreator.Interfaces;
+
+public interface ILogService
 {
-    public interface ILogService
-    {
-        void LogError(string message);
+    void LogError(string message);
 
-        void LogWarning(string message);
+    void LogWarning(string message);
 
-        void LogInformation(string message);
+    void LogInformation(string message);
 
-        void LogException(string message);
+    void LogException(string message);
 
-        event Action<string> LogEntryAdded;
-    }
-
+    event Action<string> LogEntryAdded;
 }

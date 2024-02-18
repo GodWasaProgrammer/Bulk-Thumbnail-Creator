@@ -127,7 +127,7 @@ public partial class Creator
                     if (PassPictureData.BoxParameters.Count > 0)
                         PopulatedBoxes.Add(PassPictureData.BoxParameters[0].CurrentBox.Type);
 
-                    currentParameters = DataGeneration.GettextPosLinux(currentParameters, image, FaceRectangles, PopulatedBoxes, PassPictureData);
+                    currentParameters = DataGeneration.GetTextPosition(currentParameters, image, FaceRectangles, PopulatedBoxes, PassPictureData);
 
                     currentParameters = DataGeneration.DecideColorGeneration(currentParameters);
 
@@ -234,7 +234,6 @@ public partial class Creator
                 await Production.ProduceTextPictures(PicdataObjToVarietize, settings);
                 settings.PictureDatas.Add(PicdataObjToVarietize);
             }
-
         }
         #endregion
 
@@ -305,7 +304,6 @@ public partial class Creator
                 await Mocking.SetupVarietyDisplay(settings);
                 //  Settings.LogService.LogInformation("Mocking of Variety List complete");
             }
-
         }
 
         if (prodtype == ProductionType.CustomPicture)
@@ -321,7 +319,6 @@ public partial class Creator
                 //await Production.ProduceTextPictures(picdatatoMock,settings);
                 // Settings.PictureDatas.Add(picdatatoMock);
             }
-
         }
 
         return null; // Settings.PictureDatas;

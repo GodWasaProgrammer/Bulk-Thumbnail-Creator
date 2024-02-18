@@ -152,236 +152,7 @@ public class DataGeneration
 
     //}
 
-    //private static Dictionary<BoxType, System.Drawing.Rectangle> BuildDefaultBoxesWindows(Dictionary<BoxType, System.Drawing.Rectangle> Boxes, Bitmap sourcePicture)
-    //{
-    //    // top box
-    //    int TopBoxValueX = 0;
-    //    int TopBoxValueY = 0;
-    //    BoxType topBox = BoxType.TopBox;
-
-    //    System.Drawing.Rectangle TopBoxRectangle = new()
-    //    {
-    //        X = TopBoxValueX,
-    //        Y = TopBoxValueY,
-    //        Width = sourcePicture.Width,
-    //        Height = sourcePicture.Height / 2
-    //    };
-
-    //    Boxes.Add(topBox, TopBoxRectangle);
-
-    //    // bottom box
-    //    int bottomBoxValueX = 0;
-    //    int bottomBoxValueY = sourcePicture.Height / 2;
-    //    BoxType bottomBox = BoxType.BottomBox;
-
-    //    System.Drawing.Rectangle bottomBoxRectangle = new()
-    //    {
-    //        X = bottomBoxValueX,
-    //        Y = bottomBoxValueY,
-    //        Width = sourcePicture.Width,
-    //        Height = bottomBoxValueY
-    //    };
-
-    //    Boxes.Add(bottomBox, bottomBoxRectangle);
-
-    //    // top left box
-    //    int topLeftBoxValueX = 0;
-    //    int topLeftBoxValueY = 0;
-    //    BoxType topLeftBox = BoxType.TopLeft;
-
-    //    System.Drawing.Rectangle topLeftBoxRectangle = new()
-    //    {
-    //        X = topLeftBoxValueX,
-    //        Y = topLeftBoxValueY,
-    //        Width = sourcePicture.Width / 2,
-    //        Height = sourcePicture.Height / 2
-    //    };
-
-    //    Boxes.Add(topLeftBox, topLeftBoxRectangle);
-
-    //    // top right box
-    //    int topRightBoxValueX = sourcePicture.Width / 2;
-    //    int topRightBoxValueY = 0;
-    //    BoxType topRightBox = BoxType.TopRight;
-
-    //    System.Drawing.Rectangle topRightBoxRectangle = new()
-    //    {
-    //        X = topRightBoxValueX,
-    //        Y = topRightBoxValueY,
-    //        Width = sourcePicture.Width / 2,
-    //        Height = sourcePicture.Height / 2
-    //    };
-
-    //    Boxes.Add(topRightBox, topRightBoxRectangle);
-
-    //    // bottom left box
-    //    int bottomLeftBoxValueX = 0;
-    //    int bottomLeftBoxValueY = sourcePicture.Height / 2;
-    //    BoxType bottomLeftBox = BoxType.BottomLeft;
-
-    //    System.Drawing.Rectangle bottomleftBoxRectangle = new()
-    //    {
-    //        X = bottomLeftBoxValueX,
-    //        Y = bottomLeftBoxValueY,
-    //        Width = sourcePicture.Width / 2,
-    //        Height = sourcePicture.Height / 2
-    //    };
-
-    //    Boxes.Add(bottomLeftBox, bottomleftBoxRectangle);
-
-    //    // bottom right box
-    //    int bottomRightBoxValueX = sourcePicture.Width / 2;
-    //    int bottomRightBoxValueY = sourcePicture.Height / 2;
-    //    BoxType bottomRightBox = BoxType.BottomRight;
-
-    //    System.Drawing.Rectangle bottomRightBoxRectangle = new()
-    //    {
-    //        X = bottomRightBoxValueX,
-    //        Y = bottomRightBoxValueY,
-    //        Width = sourcePicture.Width / 2,
-    //        Height = sourcePicture.Height / 2
-    //    };
-
-    //    Boxes.Add(bottomRightBox, bottomRightBoxRectangle);
-
-    //    return Boxes;
-    //}
-
-    /// <summary>
-    /// This Allows you to Get the Text Position, It will Calculate where faces are
-    /// and give you a position that is not colliding with a face
-    /// </summary>
-    /// <param name="parameters"></param>
-    /// <param name="sourcePicture"></param>
-    /// <param name="faceRect"></param>
-    /// <returns></returns>
-    //public static ParamForTextCreation GettextPosWindows(ParamForTextCreation parameters, Bitmap sourcePicture, System.Drawing.Rectangle[] faceRect, PictureData pictureData = null)
-    //{
-    //    Dictionary<BoxType, System.Drawing.Rectangle> Boxes = new();
-
-    //    Boxes = BuildDefaultBoxesWindows(Boxes, sourcePicture);
-
-    //    foreach (var box in Boxes)
-    //    {
-    //        Box PassBox = new();
-    //        Boxes.TryGetValue(box.Key, out System.Drawing.Rectangle Box);
-    //        PassBox.Width = Box.Width;
-    //        PassBox.Height = Box.Height;
-    //        PassBox.X = Box.X;
-    //        PassBox.Y = Box.Y;
-    //        PassBox.Type = box.Key;
-    //        parameters.Boxes.Add(PassBox);
-    //    }
-
-    //    // boxes that we will pick from after calcs done
-    //    List<BoxType> FreeBoxes = Boxes.Keys.ToList();
-
-    //    if (faceRect.Length != 0)
-    //    {
-    //        foreach (var face in faceRect)
-    //        {
-    //            List<(BoxType, bool)> FaceInterSectResults = new();
-
-    //            foreach (BoxType boxType in Boxes.Keys)
-    //            {
-    //                Boxes.TryGetValue(boxType, out System.Drawing.Rectangle Box);
-    //                bool BoxIntersect = Box.IntersectsWith(face);
-    //                if (BoxIntersect)
-    //                {
-    //                    FreeBoxes.Remove(boxType);
-    //                }
-    //                FaceInterSectResults.Add((boxType, BoxIntersect));
-    //            }
-
-    //        }
-
-    //    }
-
-    //    // boxes to delete from the list of free boxes
-    //    List<BoxType> BoxesToDelete = new();
-
-    //    // needs to be delete because they are already occupied
-    //    // or because they are the current box
-    //    // or because they intersect
-    //    for (int boxtodelete = 0; boxtodelete < pictureData.BoxParameters.Count; boxtodelete++)
-    //    {
-    //        if (FreeBoxes.Count > 0)
-    //        {
-    //            BoxesToDelete.Add(pictureData.BoxParameters[boxtodelete].CurrentBox.Type);
-    //        }
-    //    }
-
-    //    // loops on our populated boxes and runs intersection checks and if they intersects deletes them
-    //    foreach (var boxtype in BoxesToDelete)
-    //    {
-    //        Boxes.TryGetValue(boxtype, out System.Drawing.Rectangle BoxToCheckIntersect);
-    //        List<(BoxType, bool)> IntersectResults = new();
-
-    //        foreach (BoxType boxType in Boxes.Keys)
-    //        {
-    //            Boxes.TryGetValue(boxType, out System.Drawing.Rectangle Box);
-
-    //            bool BoxIntersect = Box.IntersectsWith(BoxToCheckIntersect);
-    //            if (BoxIntersect)
-    //            {
-    //                FreeBoxes.Remove(boxType);
-    //            }
-    //            IntersectResults.Add((boxType, BoxIntersect));
-    //        }
-
-    //    }
-
-    //    // check what boxes are left
-    //    if (FreeBoxes.Count != 0)
-    //    {
-    //        // all calculations done, pick one box if there are any left
-    //        Random random = new();
-    //        BoxType pickedBoxName;
-    //        BoxType[] boxes = FreeBoxes.ToArray();
-
-    //        pickedBoxName = boxes[random.Next(boxes.Length)];
-
-    //        // tries to read from dictionary
-    //        Boxes.TryGetValue(pickedBoxName, out System.Drawing.Rectangle pickedBoxRectangle);
-
-    //        Box box = new();
-
-    //        box.X = pickedBoxRectangle.X;
-    //        box.Y = pickedBoxRectangle.Y;
-    //        box.Width = pickedBoxRectangle.Width;
-    //        box.Height = pickedBoxRectangle.Height;
-    //        box.Rectangle = pickedBoxRectangle;
-    //        box.Type = pickedBoxName;
-
-    //        parameters.CurrentBox = box;
-
-    //        parameters.WidthOfBox = pickedBoxRectangle.Width;
-    //        parameters.HeightOfBox = pickedBoxRectangle.Height;
-
-    //        FreeBoxes.Remove(pickedBoxName);
-
-    //        parameters.BoxesWithNoFaceIntersect = FreeBoxes;
-
-    //        // makes a point to feed to the parameters passed in
-    //        System.Drawing.Point pickedBoxPoint = new(pickedBoxRectangle.X, pickedBoxRectangle.Y);
-
-    //        // sets the position of the parameter objects point variable 
-    //        parameters.PositionOfText = pickedBoxPoint;
-
-    //    }
-
-    //    return parameters;
-    //}
-
-    /// <summary>
-    /// This Allows you to Get the Text Position, It will Calculate where faces are
-    /// and give you a position that is not colliding with a face
-    /// </summary>
-    /// <param name="parameters"></param>
-    /// <param name="sourcePicture"></param>
-    /// <param name="faceRect"></param>
-    /// <returns></returns>
-    public static ParamForTextCreation GettextPosLinux(ParamForTextCreation parameters, Array2D<RgbPixel> sourcePicture, Rectangle[] faceRect, List<BoxType> populatedBoxes, PictureData pictureData = null)
+    public static ParamForTextCreation GetTextPosition(ParamForTextCreation parameters, Array2D<RgbPixel> sourcePicture, Rectangle[] faceRect, List<BoxType> populatedBoxes, PictureData pictureData = null)
     {
         Dictionary<BoxType, Rectangle> Boxes = [];
 
@@ -458,9 +229,7 @@ public class DataGeneration
                     }
                     FaceInterSectResults.Add((boxType, BoxIntersect));
                 }
-
             }
-
         }
 
         // boxes to delete from the list of free boxes
@@ -475,7 +244,6 @@ public class DataGeneration
             {
                 BoxesToDelete.Add(pictureData.BoxParameters[boxtodelete].CurrentBox.Type);
             }
-
         }
 
         // loops on our populated boxes and runs intersection checks and if they intersects deletes them
@@ -496,7 +264,6 @@ public class DataGeneration
                 }
                 IntersectResults.Add((boxType, BoxIntersect));
             }
-
         }
 
         // check what boxes are left
@@ -660,7 +427,6 @@ public class DataGeneration
                     {
                         i--;
                     }
-
                 }
                 // variety selection finished, proceed to creating
 
@@ -673,7 +439,6 @@ public class DataGeneration
                     createFontVariety.OutPutType = OutputType.FontVariety;
                     PicToVarietize.Varieties.Add(createFontVariety);
                 }
-
             }
         }
     }
@@ -736,11 +501,8 @@ public class DataGeneration
                     VarietyData.OutPutType = OutputType.SaturationVariety;
                     PictureInputData.Varieties.Add(VarietyData);
                 }
-
             }
-
         }
-
     }
 
     /// <summary>
@@ -772,9 +534,7 @@ public class DataGeneration
 
                 PictureInputData.Varieties.Add(VarietyData);
             }
-
         }
-
     }
 
     public static void GenMemePosition(PictureData picDataToVar)
@@ -825,9 +585,7 @@ public class DataGeneration
                     CopiedData.BoxParameters[i].Meme = Settings.Memes[PickedMeme];
                     CopiedData.OutPutType = OutputType.MemeVariety;
                 }
-
             }
-
         }
         else
         {
@@ -838,7 +596,5 @@ public class DataGeneration
 
         // add the copied data to the list of varieties if all is successful
         picDataToVar.Varieties.Add(CopiedData);
-
     }
-
 }

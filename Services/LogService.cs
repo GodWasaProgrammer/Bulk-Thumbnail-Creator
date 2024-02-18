@@ -41,7 +41,5 @@ namespace BulkThumbnailCreator.Services
             _logger.Fatal(message);
             LogEntryAdded?.Invoke(message);
         }
-
     }
-
 }

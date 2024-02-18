@@ -185,7 +185,6 @@ namespace BulkThumbnailCreator.Services
                         break;
                     }
                 }
-
             }
             else
             {
@@ -223,9 +222,7 @@ namespace BulkThumbnailCreator.Services
                     {
                         break;
                     }
-
                 }
-
             }
             else
             {
@@ -238,11 +235,8 @@ namespace BulkThumbnailCreator.Services
                             PicData = new PictureData(variety);
                             break;
                         }
-
                     }
-
                 }
-
             }
             return PicData;
         }
@@ -271,9 +265,6 @@ namespace BulkThumbnailCreator.Services
             {
                 dir.Delete(true);
             }
-
         }
-
     }
-
 }

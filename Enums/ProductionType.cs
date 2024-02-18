@@ -1,10 +1,8 @@
-﻿namespace BulkThumbnailCreator
-{
-    public enum ProductionType
-    {
-        FrontPagePictureLineUp,
-        VarietyList,
-        CustomPicture,
-    }
+﻿namespace BulkThumbnailCreator;
 
+public enum ProductionType
+{
+    FrontPagePictureLineUp,
+    VarietyList,
+    CustomPicture,
 }

@@ -1,13 +1,11 @@
-﻿namespace BulkThumbnailCreator.Enums
-{
-    public enum States
-    {
-        Not_Initialized,
-        Loading,
-        Initial,
-        FrontPagePictureLineUp,
-        varietyList,
-        CustomPicture,
-    }
+﻿namespace BulkThumbnailCreator.Enums;
 
+public enum States
+{
+    Not_Initialized,
+    Loading,
+    Initial,
+    FrontPagePictureLineUp,
+    varietyList,
+    CustomPicture,
 }

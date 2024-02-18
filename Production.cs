@@ -111,14 +111,11 @@ public class Production
 
         SetExecutePermission(YTDLPDir, settings);
         SetExecutePermission(FfMpegDir, settings);
-
     }
 
     public static void SetExecutePermission(string filePath, Settings settings)
     {
         OperatingSystem operatingSystem = Environment.OSVersion;
-
-
 
         if (operatingSystem.Platform == PlatformID.Win32NT)
         {
@@ -165,7 +162,6 @@ public class Production
         {
             settings.LogService.LogError($"Error setting execute permission: {ex.Message}");
         }
-
     }
 
     /// <summary>
@@ -252,7 +248,6 @@ public class Production
         //    Directory.CreateDirectory(textaddedMockDir);
         //    settings.LogService.LogInformation($"{textaddedMockDir} Created");
         //}
-
     }
 
     /// <summary>
@@ -377,5 +372,4 @@ public class Production
         await Task.Run(() => outputImage.Write(OutputPath));
         settings.LogService.LogInformation($"File Created: {OutputPath}");
     }
-
 }

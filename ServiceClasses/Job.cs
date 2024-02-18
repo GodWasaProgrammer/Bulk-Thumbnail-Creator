@@ -86,7 +86,5 @@ namespace BulkThumbnailCreator
             PictureDatas = [];
             TextToPrint = [];
         }
-
     }
-
 }

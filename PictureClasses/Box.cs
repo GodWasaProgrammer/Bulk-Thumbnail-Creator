@@ -19,6 +19,7 @@ namespace BulkThumbnailCreator.PictureObjects
             Type = currentBox.Type; // BoxType
             Rectangle = currentBox.Rectangle; // Rectangle
         }
+
         private int _X;
         public int X { get { return _X; } set { _X = value; } }
 
@@ -42,7 +43,5 @@ namespace BulkThumbnailCreator.PictureObjects
         private Rectangle _rectangle;
 
         public Rectangle Rectangle { get { return _rectangle; } set { _rectangle = value; } }
-
     }
-
 }

@@ -56,7 +56,5 @@
 
             return UserJobs.Where(x => x.User == User).FirstOrDefault();
         }
-
     }
-
 }
