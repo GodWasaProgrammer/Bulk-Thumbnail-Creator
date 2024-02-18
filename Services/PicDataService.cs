@@ -15,8 +15,8 @@ namespace BulkThumbnailCreator.Services
             {
                 ClearBaseOutPutDirectories(settings);
             }
-            PicDataServiceList = new List<PictureData>();
-            OutputFileServiceList = new List<string>();
+            PicDataServiceList = [];
+            OutputFileServiceList = [];
             settings.LogService = _logger;
             settings.JobService = JS;
         }
@@ -39,10 +39,10 @@ namespace BulkThumbnailCreator.Services
         }
 
         // should also perhaps be derived from a current job?
-        public List<PictureData> PicDataServiceList { get; set; } = new List<PictureData>();
+        public List<PictureData> PicDataServiceList { get; set; } = [];
 
         // not implemented yet but should store all the produced files location of output
-        public List<string> OutputFileServiceList { get; set; } = new();
+        public List<string> OutputFileServiceList { get; set; } = [];
 
         private Job CurrentJob;
 
@@ -90,7 +90,7 @@ namespace BulkThumbnailCreator.Services
 
             CurrentJob.State = States.varietyList;
 
-            List<string> ImageUrls = new();
+            List<string> ImageUrls = [];
             string url = string.Empty;
 
             ProductionType ProdType = ProductionType.VarietyList;
@@ -130,6 +130,8 @@ namespace BulkThumbnailCreator.Services
 
         public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, Settings settings, Job PassCrntJob)
         {
+            ArgumentNullException.ThrowIfNull(settings);
+
             CurrentJob = PassCrntJob;
 
             isLoading = true;

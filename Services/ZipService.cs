@@ -3,7 +3,7 @@
     public class ZipService
     {
 
-        static string wwwrootloc = "wwwroot";
+        static readonly string wwwrootloc = "wwwroot";
 
         public static string ZipOutputDir()
         {

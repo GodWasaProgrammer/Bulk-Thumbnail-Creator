@@ -16,7 +16,7 @@ namespace BulkThumbnailCreator
         /// <summary>
         /// The list of log entries for this job to be able to save state between refresh/closings etc
         /// </summary>
-        private List<string> _LogEntries = new List<string>();
+        private List<string> _LogEntries = [];
         public List<string> LogEntries { get { return _LogEntries; } set { _LogEntries = value; } }
 
         private States _State;
@@ -28,7 +28,7 @@ namespace BulkThumbnailCreator
         private Guid _JobID;
         public Guid JobID { get { return _JobID; } set { _JobID = value; } }
 
-        public List<string> FrontLineUpUrls { get; set; } = new List<string>();
+        public List<string> FrontLineUpUrls { get; set; } = [];
 
         /// <summary>
         /// List of Varieties created on the VarietyDisplay page
@@ -83,8 +83,8 @@ namespace BulkThumbnailCreator
             State = States.Initial;
             JobID = Guid.NewGuid();
             this.VideoUrl = VideoUrl;
-            PictureDatas = new List<PictureData>();
-            TextToPrint = new List<string>();
+            PictureDatas = [];
+            TextToPrint = [];
         }
 
     }
