@@ -15,8 +15,7 @@
         <PropertyColumn Property=@( x => Path.GetFileNameWithoutExtension(x.FileName)) />
         <PropertyColumn Property="x => x.Varieties.Count" Title="Varieties">
             <CellTemplate>
-
-                <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary">View</MudButton>
+                <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary" OnClick="() => ViewVarieties(context.Item)">View</MudButton>
             </CellTemplate>
         </PropertyColumn>
 
@@ -25,7 +24,7 @@
 
 @code
 {
-    public void ViewVarieties()
+    public void ViewVarieties(PictureData p)
     {
 
     }
