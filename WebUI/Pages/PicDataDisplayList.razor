@@ -3,44 +3,57 @@
 @using BulkThumbnailCreator.Services
 @using System.Net.Http.Json
 @using System.Net.Http
+@using BulkThumbnailCreator
 @inject PicDataService PicDataService
+@inject JobService js;
+@inject Settings settings;
+@inject AuthenticationStateProvider AuthProvider;
 
-<MudDataGrid Items="@PicDataList" Filterable="true" FilterMode="@_filterMode" FilterCaseSensitivity="@_caseSensitivity">
+<MudDataGrid Items="@PicDataList">
     <Columns>
-        <PropertyColumn Property="x => x.OutPutType" Title="Nr" Filterable="false" />
-       
-        <PropertyColumn Property="x => x.FileName" Filterable="false" />
-        <PropertyColumn Property="x => x.Varieties.Count" Title="Molar mass" />
+        <PropertyColumn Property="x => x.OutPutType" Title="Type" />
+        <PropertyColumn Property=@( x => Path.GetFileNameWithoutExtension(x.FileName)) />
+        <PropertyColumn Property="x => x.Varieties.Count" Title="Varieties">
+            <CellTemplate>
+
+                <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary">View</MudButton>
+            </CellTemplate>
+        </PropertyColumn>
+
     </Columns>
-    @* <PagerContent>
-        <MudDataGridPager T="@Elements" />
-    </PagerContent> *@
 </MudDataGrid>
 
-<div class="d-flex flex-wrap mt-4">
-    <MudRadioGroup T="DataGridFilterMode" @bind-SelectedOption="@_filterMode">
-        <MudRadio Dense="true" Option="@DataGridFilterMode.Simple" Color="Color.Primary">Simple</MudRadio>
-        <MudRadio Dense="true" Option="@DataGridFilterMode.ColumnFilterMenu" Color="Color.Tertiary">Column Menu</MudRadio>
-        <MudRadio Dense="true" Option="@DataGridFilterMode.ColumnFilterRow">Column Row</MudRadio>
-    </MudRadioGroup>
-</div>
+@code
+{
+    public void ViewVarieties()
+    {
 
-<div class="d-flex flex-wrap mt-4">
-    <MudRadioGroup T="DataGridFilterCaseSensitivity" @bind-SelectedOption="@_caseSensitivity">
-        <MudRadio Dense="true" Option="@DataGridFilterCaseSensitivity.Default" Color="Color.Primary">Default Case Sensitivity</MudRadio>
-        <MudRadio Dense="true" Option="@DataGridFilterCaseSensitivity.CaseInsensitive" Color="Color.Tertiary">Case Insensitive</MudRadio>
-    </MudRadioGroup>
-</div>
+    }
+
+    public Job currentJob;
+    public string currentUser;
 
 
-@code {
     IEnumerable<PictureData> PicDataList = new List<PictureData>();
 
     DataGridFilterMode _filterMode = DataGridFilterMode.Simple;
     DataGridFilterCaseSensitivity _caseSensitivity = DataGridFilterCaseSensitivity.Default;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        PicDataList = PicDataService.PicDataServiceList;
+        var AuthState = await AuthProvider.GetAuthenticationStateAsync();
+
+        currentUser = AuthState.User.Identity.Name;
+
+        if (currentJob == null)
+        {
+            currentJob = await js.RequestCurrentJob(currentUser);
+        }
+        await InvokeAsync(() => StateHasChanged());
+
+        if (currentJob is not null)
+        {
+            PicDataList = currentJob.PictureDatas;
+        }
     }
 }
