@@ -177,7 +177,7 @@ public partial class Creator
             if (Mocking.BTCRunCount != 1)
             {
                 // ffmpeg has finished, lets copy our mock data
-                Mocking.OutPutDirMockCopy(settings);
+                Mocking.CopyOutPutDir(settings);
             }
             #endregion
         }
@@ -208,7 +208,7 @@ public partial class Creator
 
             if (Mocking.BTCRunCount != 1)
             {
-                await Mocking.VarietiesList(settings);
+                await Mocking.CopyVarietyDir(settings);
             }
         }
         #endregion
@@ -244,6 +244,7 @@ public partial class Creator
         if (Mocking.BTCRunCount != 1)
         {
             Mocking.SerializePicData(settings);
+            Mocking.CopyTextAddedDir(settings);
         }
 
         settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);

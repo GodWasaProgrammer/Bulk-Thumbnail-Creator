@@ -16,6 +16,12 @@
         <PropertyColumn Property="x => x.Varieties.Count" Title="Varieties">
             <CellTemplate>
                 <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary" OnClick="() => ViewVarieties(context.Item)">View</MudButton>
+                @if(view)
+                {
+                    <MudDataGrid Items="context.Item.Varieties"></MudDataGrid>
+                    <PropertyColumn Property="x => x.OutPutType" Title="Type" />
+                    <PropertyColumn Property=@( x => Path.GetFileNameWithoutExtension(x.FileName)) />
+                }
             </CellTemplate>
         </PropertyColumn>
 
@@ -24,13 +30,22 @@
 
 @code
 {
+    private bool view;
     public void ViewVarieties(PictureData p)
     {
-
+        if(view)
+        {
+            view = false;
+        }
+        else
+        {
+            view = true;
+        }
     }
 
     public Job currentJob;
     public string currentUser;
+
 
 
     IEnumerable<PictureData> PicDataList = new List<PictureData>();
