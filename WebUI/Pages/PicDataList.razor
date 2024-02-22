@@ -15,7 +15,11 @@
         <Columns>
             <PropertyColumn Property="x => x.OutPutType" Title="Type" />
             <PropertyColumn Property=@( x => Path.GetFileNameWithoutExtension(x.FileName)) />
+            <PropertyColumn Property="x => x.BoxParameters.Count" Title="Parameters" />
+            @* <MudImage>here i wanna display the image of the actual file in mini</MudImage> *@
+            <PropertyColumn Property="x => x.NumberOfBoxes" Title="No. Of Boxes" />
             <PropertyColumn Property="x => x.Varieties">
+
                 <CellTemplate>
                     <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary" OnClick="() => ViewVarieties(context.Item)">View</MudButton>
                 </CellTemplate>
@@ -23,8 +27,10 @@
         </Columns>
     </MudDataGrid>
 }
-
-<VarietyList indexOfPicData="passIndex" />
+else
+{
+    <VarietyList indexOfPicData="passIndex" GoBack="View" />
+}
 
 @code
 {
@@ -40,13 +46,16 @@
         StateHasChanged();
     }
 
+    public void View()
+    {
+        view = false;
+        StateHasChanged();
+    }
+
     public Job currentJob;
     public string currentUser;
 
     IEnumerable<PictureData> ListOfPicData = new List<PictureData>();
-
-    DataGridFilterMode _filterMode = DataGridFilterMode.Simple;
-    DataGridFilterCaseSensitivity _caseSensitivity = DataGridFilterCaseSensitivity.Default;
 
     protected override async Task OnInitializedAsync()
     {

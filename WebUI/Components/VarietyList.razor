@@ -6,17 +6,22 @@
 @inject Settings settings;
 @inject AuthenticationStateProvider AuthProvider;
 
+<MudButton Variant="Variant.Filled" OnClick="GoBack" Color="Color.Secondary">Back</MudButton>
 <MudDataGrid Items="@ListOfPicData">
     <Columns>
         <PropertyColumn Property="x => x.OutPutType" Title="Type" />
-        <PropertyColumn Property=@( x => Path.GetFileNameWithoutExtension(x.FileName)) />
+        <PropertyColumn Property=@( x => Path.GetFileNameWithoutExtension(x.FileName))/>
+        <PropertyColumn Property="x => x.BoxParameters.Count" Title="Parameters"/>
     </Columns>
 </MudDataGrid>
-
+<MudButton Variant="Variant.Filled" ButtonType="ButtonType.Reset"   OnClick="GoBack" Color="Color.Secondary">Back</MudButton>
 @code
 {
     [Parameter]
     public int indexOfPicData { get; set; }
+    [Parameter]
+    public Action GoBack { get; set; }
+
     public Job currentJob;
     public string currentUser;
     List<PictureData> VarietyPictureDatas;
