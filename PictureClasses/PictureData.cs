@@ -1,4 +1,4 @@
-﻿namespace BulkThumbnailCreator.PictureObjects;
+﻿namespace BulkThumbnailCreator.PictureClasses;
 
 [Serializable]
 public class PictureData

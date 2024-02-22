@@ -1,7 +1,6 @@
 ﻿global using BulkThumbnailCreator.Enums;
 global using BulkThumbnailCreator.Interfaces;
 global using BulkThumbnailCreator.PictureClasses;
-global using BulkThumbnailCreator.PictureObjects;
 global using BulkThumbnailCreator.Services;
 global using DlibDotNet;
 global using ImageMagick;

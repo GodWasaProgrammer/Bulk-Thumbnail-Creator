@@ -1,0 +1,49 @@
+﻿@using BulkThumbnailCreator
+@using BulkThumbnailCreator.Services
+@using BulkThumbnailCreator.PictureClasses
+@inject PicDataService PicDataService
+@inject JobService js;
+@inject Settings settings;
+@inject AuthenticationStateProvider AuthProvider;
+
+<MudDataGrid Items="@ListOfPicData">
+    <Columns>
+        <PropertyColumn Property="x => x.OutPutType" Title="Type" />
+        <PropertyColumn Property=@( x => Path.GetFileNameWithoutExtension(x.FileName)) />
+    </Columns>
+</MudDataGrid>
+
+@code
+{
+    [Parameter]
+    public int indexOfPicData { get; set; }
+    public Job currentJob;
+    public string currentUser;
+    List<PictureData> VarietyPictureDatas;
+    IEnumerable<PictureData> ListOfPicData = new List<PictureData>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var AuthState = await AuthProvider.GetAuthenticationStateAsync();
+
+        currentUser = AuthState.User.Identity.Name;
+
+        if (currentJob == null)
+        {
+            currentJob = await js.RequestCurrentJob(currentUser);
+        }
+        await InvokeAsync(() => StateHasChanged());
+
+        if (currentJob is not null)
+        {
+            VarietyPictureDatas = currentJob.PictureDatas[indexOfPicData].Varieties;
+        }
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+        ListOfPicData = VarietyPictureDatas;
+        StateHasChanged();
+        return base.OnParametersSetAsync();
+    }
+}

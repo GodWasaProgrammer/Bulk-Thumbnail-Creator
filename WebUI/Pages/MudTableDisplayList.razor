@@ -1,6 +1,6 @@
 ﻿@page "/mudtabledisplaylist"
 
-@using BulkThumbnailCreator.PictureObjects
+@using BulkThumbnailCreator.PictureClasses
 @using BulkThumbnailCreator.Services
 @using WebUI.Components
 
@@ -56,8 +56,8 @@
     </RowTemplate>
 </MudTable>
 
-<MudSwitch @bind-Checked="_hidePosition">Hide <b>position</b> when Breakpoint=Xs</MudSwitch>
-<MudSwitch @bind-Checked="_loading">Show Loading</MudSwitch>
+<MudSwitch @bind-Value="_hidePosition">Hide <b>position</b> when Breakpoint=Xs</MudSwitch>
+<MudSwitch @bind-Value="_loading">Show Loading</MudSwitch>
 
 @code {
     private bool _hidePosition;
