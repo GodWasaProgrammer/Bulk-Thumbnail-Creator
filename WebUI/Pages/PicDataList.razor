@@ -6,9 +6,10 @@
 @using BulkThumbnailCreator
 @using WebUI.Components
 @inject PicDataService PicDataService
-@inject JobService js;
-@inject Settings settings;
-@inject AuthenticationStateProvider AuthProvider;
+@inject JobService js
+@inject Settings settings
+@inject AuthenticationStateProvider AuthProvider
+
 @if (view is false)
 {
     <MudDataGrid Items="@ListOfPicData">
@@ -16,7 +17,14 @@
             <PropertyColumn Property="x => x.OutPutType" Title="Type" />
             <PropertyColumn Property=@( x => Path.GetFileNameWithoutExtension(x.FileName)) />
             <PropertyColumn Property="x => x.BoxParameters.Count" Title="Parameters" />
-            @* <MudImage>here i wanna display the image of the actual file in mini</MudImage> *@
+            <PropertyColumn Property="x => x.FileName">
+                <CellTemplate>
+
+                    <MudImage Width="50" Height="50" Fit="Contain" Src="@MatchUrl(context.Item.FileName)">here i wanna display the image of the actual file in mini</MudImage>
+
+                </CellTemplate>
+
+            </PropertyColumn>
             <PropertyColumn Property="x => x.NumberOfBoxes" Title="No. Of Boxes" />
             <PropertyColumn Property="x => x.Varieties">
 
@@ -56,9 +64,45 @@ else
     public string currentUser;
 
     IEnumerable<PictureData> ListOfPicData = new List<PictureData>();
+    List<string> imageUrls = new List<string>();
+
+    public string MatchUrl(string picture)
+    {
+        foreach (string url in imageUrls)
+        {
+            string PicDataFileName = Path.GetFileNameWithoutExtension(picture);
+            string IterationUrl = Path.GetFileNameWithoutExtension(url);
+
+            if (IterationUrl.EndsWith(PicDataFileName))
+            {
+                return url;
+            }
+        }
+        return null;
+    }
+
+    public async void SetUrls()
+    {
+        string imagePath = settings.TextAddedDir;
+
+        // Get the list of image files in the folder asynchronously
+        string[] imageFiles = await Task.Run(() => Directory.GetFiles(imagePath, "*.png"));
+
+        // Initialize the image URLs list
+        imageUrls = new List<string>();
+
+        // Create the URLs for the images and add them to the list
+        foreach (string imageFile in imageFiles)
+        {
+            string imageUrl = $"/{imageFile}";
+            imageUrls.Add(imageUrl);
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {
+        SetUrls();
+
         var AuthState = await AuthProvider.GetAuthenticationStateAsync();
 
         currentUser = AuthState.User.Identity.Name;

@@ -26,6 +26,25 @@
     public string currentUser;
     List<PictureData> VarietyPictureDatas;
     IEnumerable<PictureData> ListOfPicData = new List<PictureData>();
+    List<string> imageUrls = new List<string>();
+
+    public async void SetUrls()
+    {
+        string imagePath = settings.TextAddedDir;
+
+        // Get the list of image files in the folder asynchronously
+        string[] imageFiles = await Task.Run(() => Directory.GetFiles(imagePath, "*.png"));
+
+        // Initialize the image URLs list
+        imageUrls = new List<string>();
+
+        // Create the URLs for the images and add them to the list
+        foreach (string imageFile in imageFiles)
+        {
+            string imageUrl = $"/{imageFile}";
+            imageUrls.Add(imageUrl);
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {
