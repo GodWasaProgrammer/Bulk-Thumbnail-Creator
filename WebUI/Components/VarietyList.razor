@@ -9,12 +9,23 @@
 <MudButton Variant="Variant.Filled" OnClick="GoBack" Color="Color.Secondary">Back</MudButton>
 <MudDataGrid Items="@ListOfPicData">
     <Columns>
+        <PropertyColumn Property="x => x.FileName" Title="">
+            <CellTemplate>
+                <MudImage Width="100" Fit="Contain" Src="@MatchUrl(context.Item.FileName)"></MudImage>
+            </CellTemplate>
+        </PropertyColumn>
         <PropertyColumn Property="x => x.OutPutType" Title="Type" />
         <PropertyColumn Property=@( x => Path.GetFileNameWithoutExtension(x.FileName))/>
-        <PropertyColumn Property="x => x.BoxParameters.Count" Title="Parameters"/>
+        <PropertyColumn Property="x => x.BoxParameters.Count" Title="Parameters"> 
+            <CellTemplate>
+                <MudButton Variant="Variant.Filled" Color="Color.Tertiary">View</MudButton>
+            </CellTemplate>
+        </PropertyColumn>
+
     </Columns>
 </MudDataGrid>
 <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Reset"   OnClick="GoBack" Color="Color.Secondary">Back</MudButton>
+
 @code
 {
     [Parameter]
@@ -27,6 +38,21 @@
     List<PictureData> VarietyPictureDatas;
     IEnumerable<PictureData> ListOfPicData = new List<PictureData>();
     List<string> imageUrls = new List<string>();
+
+    public string MatchUrl(string picture)
+    {
+        foreach (string url in imageUrls)
+        {
+            string PicDataFileName = Path.GetFileNameWithoutExtension(picture);
+            string IterationUrl = Path.GetFileNameWithoutExtension(url);
+
+            if (IterationUrl.EndsWith(PicDataFileName))
+            {
+                return url;
+            }
+        }
+        return null;
+    }
 
     public async void SetUrls()
     {
@@ -66,6 +92,7 @@
 
     protected override Task OnParametersSetAsync()
     {
+        SetUrls();
         ListOfPicData = VarietyPictureDatas;
         StateHasChanged();
         return base.OnParametersSetAsync();

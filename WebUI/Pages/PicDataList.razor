@@ -14,20 +14,22 @@
 {
     <MudDataGrid Items="@ListOfPicData">
         <Columns>
-            <PropertyColumn Property="x => x.OutPutType" Title="Type" />
-            <PropertyColumn Property=@( x => Path.GetFileNameWithoutExtension(x.FileName)) />
-            <PropertyColumn Property="x => x.BoxParameters.Count" Title="Parameters" />
-            <PropertyColumn Property="x => x.FileName">
+            <PropertyColumn Property="x => x.FileName" Title="Picture">
                 <CellTemplate>
 
-                    <MudImage Width="50" Height="50" Fit="Contain" Src="@MatchUrl(context.Item.FileName)">here i wanna display the image of the actual file in mini</MudImage>
+                    <MudImage Width="100" Fit="Contain" Src="@MatchUrl(context.Item.FileName)">here i wanna display the image of the actual file in mini</MudImage>
 
                 </CellTemplate>
-
             </PropertyColumn>
+            <PropertyColumn Property="x => x.OutPutType" Title="Type" />
+            <PropertyColumn Property=@( x => Path.GetFileNameWithoutExtension(x.FileName)) />
             <PropertyColumn Property="x => x.NumberOfBoxes" Title="No. Of Boxes" />
+            <PropertyColumn Property="x => x.BoxParameters.Count" Title="Parameters">
+                <CellTemplate>
+                <MudButton OnClick="() => ViewParameters(context.Item, context.Item.FileName)" Variant="Variant.Filled" Color="Color.Tertiary">View</MudButton>
+            </CellTemplate>
+            </PropertyColumn> 
             <PropertyColumn Property="x => x.Varieties">
-
                 <CellTemplate>
                     <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary" OnClick="() => ViewVarieties(context.Item)">View</MudButton>
                 </CellTemplate>
@@ -35,9 +37,13 @@
         </Columns>
     </MudDataGrid>
 }
-else
+else if(view && viewParameter is false)
 {
     <VarietyList indexOfPicData="passIndex" GoBack="View" />
+}
+@if(viewParameter)
+{
+    <PictureDataBox ImageURL="" GoBack="View"></PictureDataBox>
 }
 
 @code
@@ -97,6 +103,21 @@ else
             string imageUrl = $"/{imageFile}";
             imageUrls.Add(imageUrl);
         }
+    }
+
+    PictureData picDataBoxInput;
+    string urlPicDataBoxInput;
+    bool viewParameter;
+    public void ViewParameters(PictureData p, string url)
+    {
+        view = true;
+        urlPicDataBoxInput = MatchUrl(url);
+        picDataBoxInput = p;
+        if(!viewParameter)
+        { viewParameter = true; }
+        else
+        { viewParameter = false; }
+        StateHasChanged();
     }
 
     protected override async Task OnInitializedAsync()
