@@ -4,7 +4,7 @@
 @using BulkThumbnailCreator.Services
 @using WebUI.Components
 
-@inject PicDataService PicDataService
+@inject CreatorService PicDataService
 
 <MudTable Items="@PicDataDisplayList.Take(int.MaxValue)" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@_loading" LoadingProgressColor="Color.Info">
     <HeaderContent>

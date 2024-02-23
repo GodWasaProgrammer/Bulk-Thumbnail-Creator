@@ -28,7 +28,7 @@ public class Program
         });
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor();
-        builder.Services.AddScoped<PicDataService>();
+        builder.Services.AddScoped<CreatorService>();
         builder.Services.AddScoped<JobService>();
         builder.Services.AddScoped<ILogService, LogService>();
         builder.Services.AddScoped<Settings>();

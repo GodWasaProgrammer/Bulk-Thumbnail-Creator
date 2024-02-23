@@ -1,8 +1,8 @@
 ﻿namespace BulkThumbnailCreator.Services
 {
-    public class PicDataService
+    public class CreatorService
     {
-        public PicDataService(ILogService _logger, JobService JS, Settings settings)
+        public CreatorService(ILogService _logger, JobService JS, Settings settings)
         {
             // if we are not in a state where we have a job, we should clear the output directories
             // this should only be called when the app is started
