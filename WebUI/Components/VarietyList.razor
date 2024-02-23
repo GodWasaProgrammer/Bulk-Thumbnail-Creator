@@ -2,11 +2,13 @@
 @using BulkThumbnailCreator.Services
 @using BulkThumbnailCreator.PictureClasses
 @inject PicDataService PicDataService
-@inject JobService js;
-@inject Settings settings;
-@inject AuthenticationStateProvider AuthProvider;
+@inject JobService js
+@inject Settings settings
+@inject AuthenticationStateProvider AuthProvider
 
+<div style="display: flex; justify-content: center;">
 <MudButton Variant="Variant.Filled" OnClick="GoBack" Color="Color.Secondary">Back</MudButton>
+</div>
 <MudDataGrid Items="@ListOfPicData">
     <Columns>
         <PropertyColumn Property="x => x.FileName" Title="">
@@ -24,8 +26,9 @@
 
     </Columns>
 </MudDataGrid>
+<div style="display: flex; justify-content: center;">
 <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Reset"   OnClick="GoBack" Color="Color.Secondary">Back</MudButton>
-
+</div>
 @code
 {
     [Parameter]

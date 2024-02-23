@@ -43,7 +43,7 @@ else if(view && viewParameter is false)
 }
 @if(viewParameter)
 {
-    <PictureDataBox ImageURL="" GoBack="View"></PictureDataBox>
+    <PictureDataBox ImageURL="@urlPass" PicData="picDataPass" GoBack="CloseParameters"></PictureDataBox>
 }
 
 @code
@@ -105,18 +105,22 @@ else if(view && viewParameter is false)
         }
     }
 
-    PictureData picDataBoxInput;
-    string urlPicDataBoxInput;
+    public void CloseParameters()
+    {
+        view = false;
+        viewParameter = false;
+    }
+
+    PictureData picDataPass;
+    string urlPass;
     bool viewParameter;
     public void ViewParameters(PictureData p, string url)
     {
         view = true;
-        urlPicDataBoxInput = MatchUrl(url);
-        picDataBoxInput = p;
+        this.urlPass = MatchUrl(url);
+        picDataPass = p;
         if(!viewParameter)
         { viewParameter = true; }
-        else
-        { viewParameter = false; }
         StateHasChanged();
     }
 

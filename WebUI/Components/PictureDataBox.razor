@@ -3,6 +3,12 @@
 @inject PicDataService ds;
 @inherits ComponentBase
 
+@if (GoBack != null)
+{
+    <div style="display: flex; justify-content: center;">
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="GoBack">Back</MudButton>
+    </div>
+}
 <MudPaper Elevation="6">
 
     <MudContainer>
@@ -38,6 +44,13 @@
     </MudContainer>
 
 </MudPaper>
+
+@if (GoBack != null)
+{
+    <div style="display: flex; justify-content: center;">
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="GoBack">Back</MudButton>
+    </div>
+}
 
 @code
 {
