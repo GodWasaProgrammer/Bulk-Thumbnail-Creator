@@ -284,7 +284,8 @@ public class Production
             {
                 throw new Exception($"PicData.FileName was passed null to ProduceTextPictures");
             }
-            outputImage = new(Path.GetFullPath(PicData.FileName));
+            byte[] fileBytes = await File.ReadAllBytesAsync(Path.GetFullPath(PicData.FileName));
+            outputImage = new MagickImage(fileBytes);
         }
         catch (Exception ex)
         {
@@ -301,36 +302,42 @@ public class Production
             ParamForTextCreation BoxParam = PicData.BoxParameters[Box];
             PicData.MakeTextSettings(PicData.BoxParameters[Box]);
 
-
-            if (PicData.OutPutType == OutputType.MemeVariety && PicData.BoxParameters[Box].Meme != null)
+            await Task.Run(() =>
             {
-                MagickImage meme = new(BoxParam.Meme);
-                meme.Resize(BoxParam.CurrentBox.Width, BoxParam.CurrentBox.Height);
-                outputImage.Composite(meme, BoxParam.CurrentBox.X, BoxParam.CurrentBox.Y, CompositeOperator.Over);
-            }
-            if (PicData.BoxParameters[Box].Meme == null)
+                if (PicData.OutPutType == OutputType.MemeVariety && PicData.BoxParameters[Box].Meme != null)
+                {
+                    MagickImage meme = new(BoxParam.Meme);
+                    meme.Resize(BoxParam.CurrentBox.Width, BoxParam.CurrentBox.Height);
+                    outputImage.Composite(meme, BoxParam.CurrentBox.X, BoxParam.CurrentBox.Y, CompositeOperator.Over);
+                }
+                else if (PicData.BoxParameters[Box].Meme == null)
+                {
+                    // Add the caption layer on top of the background image
+                    var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);
+
+                    int takeX = BoxParam.CurrentBox.X;
+                    int takeY = BoxParam.CurrentBox.Y;
+
+                    outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
+                }
+
+                settings.LogService.LogInformation($"Picture:{Path.GetFileName(PicData.FileName)}Box Type:{PicData.BoxParameters[Box].CurrentBox.Type} Box: {Box + 1} of {PicData.BoxParameters.Count} has been composited");
+            });
+        }
+
+        // Annotate the image and handle annotation errors asynchronously
+        await Task.Run(async () =>
+        {
+            try
             {
-                // Add the caption layer on top of the background image
-                var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);
-
-                int takeX = BoxParam.CurrentBox.X;
-
-                int takeY = BoxParam.CurrentBox.Y;
-
-                outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
+                outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
             }
-
-            await settings.LogService.LogInformation($"Picture:{Path.GetFileName(PicData.FileName)}Box Type:{PicData.BoxParameters[Box].CurrentBox.Type} Box: {Box + 1} of {PicData.BoxParameters.Count} has been composited");
-        }
-
-        try
-        {
-            outputImage.Annotate("Bulk Thumbnail Creator", gravity: Gravity.North);
-        }
-        catch (Exception ex)
-        {
-            await settings.LogService.LogError($"Error in annotation: {ex.Message}");
-        }
+            catch (Exception ex)
+            {
+                // Handle annotation error asynchronously
+                await settings.LogService.LogError($"Error in annotation: {ex.Message}");
+            }
+        });
 
         outputImage.Quality = 100;
 
