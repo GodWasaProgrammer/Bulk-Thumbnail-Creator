@@ -20,15 +20,11 @@ public partial class Creator
             settings.OutputDir = "output";
 
             settings.OutputDir = settings.OutputDir + "/" + CleanPathRegEx().Replace(Path.GetFileNameWithoutExtension(settings.PathToVideo), "");
-
             Directory.CreateDirectory(settings.OutputDir);
 
             settings.TextAddedDir = "TextAdded";
-
             settings.TextAddedDir = settings.TextAddedDir + "/" + Path.GetFileNameWithoutExtension(settings.PathToVideo);
-
             Directory.CreateDirectory(settings.TextAddedDir);
-
             Settings.DownloadedVideosList.Add(settings.PathToVideo);
 
             // Adds To DownloadedVideosList if it is not already containing it,
@@ -41,25 +37,20 @@ public partial class Creator
             var parameters = new Dictionary<string, string>();
 
             string extractedfilename = Path.GetFileName(settings.PathToVideo);
-
-
             parameters["i"] = $@"""{extractedfilename}""";
             parameters["vf"] = "select='gt(scene,0.3)',select=key";
             parameters["vsync"] = "vfr";
 
             // get our current location
             string CurrentLoc = Assembly.GetExecutingAssembly().Location;
-
             string parentDirectory = Directory.GetParent(CurrentLoc).FullName;
 
             // if dir doesnt exist, make it
             string ExePath = Path.Combine(parentDirectory, "Executables");
-
             string truePath = Path.GetRelativePath(ExePath, settings.OutputDir);
             string pictureOutput = $@"""{truePath}/%03d.png""";
 
             FFmpegHandler fFmpegHandler = new();
-
             await FFmpegHandler.RunFFMPG(parameters, pictureOutput, settings);
 
             #endregion
@@ -248,7 +239,6 @@ public partial class Creator
         }
 
         settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
-
         settings.LogService.LogInformation("Processing Finished");
 
         if (ProdType == ProductionType.VarietyList)
