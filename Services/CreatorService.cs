@@ -53,7 +53,7 @@
             ProductionType ProdType = ProductionType.FrontPagePictureLineUp;
             CurrentJob.TextToPrint = ListOfTextToPrint;
 
-            if (Settings.Mocking == true)
+            if (Settings.Mocking == true && Settings.MakeMocking)
             {
                 PicDataServiceList = await Creator.MockProcess(ProdType, url, ListOfTextToPrint, settings);
             }
@@ -91,7 +91,7 @@
             string url = string.Empty;
 
             ProductionType ProdType = ProductionType.VarietyList;
-            if (Settings.Mocking == true)
+            if (Settings.Mocking == true && Settings.MakeMocking)
             {
                 PicDataServiceList = await Creator.MockProcess(ProdType, url, CurrentJob.TextToPrint, settings, PicToVarietize);
             }
@@ -151,7 +151,7 @@
         {
             PictureData PicData = new();
 
-            if (Settings.Mocking == true)
+            if (Settings.Mocking == true && Settings.MakeMocking)
             {
                 string DirToMockPicture = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", $"TextAdded");
 
@@ -205,7 +205,7 @@
         {
             PictureData PicData = new();
 
-            if (Settings.Mocking == true)
+            if (Settings.Mocking == true && Settings.MakeMocking)
             {
                 // nonsense to just pick the first one
                 foreach (var item in PicDataServiceList)

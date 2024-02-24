@@ -13,8 +13,12 @@ public class Settings
     /// Enables Mocking of the Process calls to the Creator class
     /// true = Mocking
     /// false = Production
-    private static bool _Mocking = true;
+    private static bool _Mocking = false;
     public static bool Mocking { get { return _Mocking; } set { _Mocking = value; } }
+
+    private static bool _MakeMocking = false;
+    public static bool MakeMocking { get { return _MakeMocking; } set { _MakeMocking = value; } }
+
 
     // log service access
     private ILogService logService;

@@ -174,7 +174,7 @@ public partial class Creator
             #endregion
 
             #region Front Page Picture Line Up Mocking
-            if (Mocking.BTCRunCount != 1)
+            if (Mocking.BTCRunCount != 1 && Settings.MakeMocking)
             {
                 // ffmpeg has finished, lets copy our mock data
                 Mocking.CopyOutPutDir(settings);
@@ -206,7 +206,7 @@ public partial class Creator
                 await Task.WhenAll(productionVarietyTaskList);
             }
 
-            if (Mocking.BTCRunCount != 1)
+            if (Mocking.BTCRunCount != 1 && Settings.MakeMocking)
             {
                 await Mocking.CopyVarietyDir(settings);
             }
@@ -241,7 +241,7 @@ public partial class Creator
 
         #region Picdata serialization & Mock Setup
 
-        if (Mocking.BTCRunCount != 1)
+        if (Mocking.BTCRunCount != 1 && Settings.MakeMocking)
         {
             Mocking.SerializePicData(settings);
             Mocking.CopyTextAddedDir(settings);

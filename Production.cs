@@ -210,37 +210,6 @@ public class Production
             settings.LogService.LogInformation($"{YTDL} Directory was missing, will be created");
             Directory.CreateDirectory(YTDL);
         }
-
-        //// Build Directory structure for Mocking process
-        //string CreateMockDir = "..";
-
-        //CreateMockDir = Path.Combine(CreateMockDir, "Mocking");
-
-        //if (!Directory.Exists(CreateMockDir))
-        //{
-        //    Directory.CreateDirectory(CreateMockDir);
-        //    settings.LogService.LogInformation($"{CreateMockDir} Created");
-        //}
-
-        //string FrontPageLineupMockDir = Path.Combine(CreateMockDir, "FrontpagePictureLineUp");
-        //if (!Directory.Exists(FrontPageLineupMockDir))
-        //{
-        //    Directory.CreateDirectory(FrontPageLineupMockDir);
-        //    settings.LogService.LogInformation($"{FrontPageLineupMockDir} Created");
-        //}
-
-        //string outputMockDir = Path.Combine(FrontPageLineupMockDir, settings.OutputDir);
-        //if (!Directory.Exists(outputMockDir))
-        //{
-        //    Directory.CreateDirectory(outputMockDir);
-        //}
-
-        //string textaddedMockDir = Path.Combine(FrontPageLineupMockDir, settings.TextAddedDir);
-        //if (!Directory.Exists(textaddedMockDir))
-        //{
-        //    Directory.CreateDirectory(textaddedMockDir);
-        //    settings.LogService.LogInformation($"{textaddedMockDir} Created");
-        //}
     }
 
     /// <summary>
