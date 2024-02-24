@@ -106,7 +106,7 @@ internal class Mocking
             }
         }
     }
-    
+
     internal static async Task SetupFrontPagePictureLineUp(Settings settings)
     {
         // pretend to make line up
@@ -143,7 +143,7 @@ internal class Mocking
         }
         catch (Exception)
         {
-            settings.LogService.LogError("Could not find mockFP.xml");
+            await settings.LogService.LogError("Could not find mockFP.xml");
             throw;
         }
 
@@ -177,7 +177,7 @@ internal class Mocking
                 outPath = Path.Combine(outPath, Path.GetFileName(file));
 
                 await Task.Run(() => File.Copy(file, outPath));
-                settings.LogService.LogInformation($"Copied {file} to {outPath}");
+                await settings.LogService.LogInformation($"Copied {file} to {outPath}");
             }
         }
     }

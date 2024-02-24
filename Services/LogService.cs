@@ -15,27 +15,40 @@
             .CreateLogger();
         }
 
-        public void LogInformation(string message)
+        public async Task LogInformation(string message)
         {
-            _logger.Information(message);
-            LogEntryAdded?.Invoke(message);
+            await Task.Run(() =>
+            {
+                _logger.Information(message);
+                LogEntryAdded?.Invoke(message);
+            });
         }
 
-        public void LogError(string message)
+        public async Task LogError(string message)
         {
-            _logger.Error(message);
-            LogEntryAdded?.Invoke(message);
-        }
-        public void LogWarning(string message)
-        {
-            _logger.Warning(message);
-            LogEntryAdded?.Invoke(message);
+            await Task.Run(() =>
+            {
+                _logger.Error(message);
+                LogEntryAdded?.Invoke(message);
+            });
         }
 
-        public void LogException(string message)
+        public async Task LogWarning(string message)
         {
-            _logger.Fatal(message);
-            LogEntryAdded?.Invoke(message);
+            await Task.Run(() =>
+            {
+                _logger.Warning(message);
+                LogEntryAdded?.Invoke(message);
+            });
+        }
+
+        public async Task LogException(string message)
+        {
+            await Task.Run(() =>
+            {
+                _logger.Fatal(message);
+                LogEntryAdded?.Invoke(message);
+            });
         }
     }
 }

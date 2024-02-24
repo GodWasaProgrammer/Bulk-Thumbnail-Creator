@@ -61,7 +61,7 @@ public partial class Creator
 
             settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
-            settings.LogService.LogInformation($"Processing {settings.Files.Length} images");
+            await settings.LogService.LogInformation($"Processing {settings.Files.Length} images");
 
             // main loop for detecting faces, placing text where face is not
             for (int fileIndex = 0; fileIndex < settings.Files.Length; fileIndex++)
@@ -181,7 +181,7 @@ public partial class Creator
         {
             if (PicdataObjToVarietize == null)
             {
-                settings.LogService.LogError("null has been passed to PicdataobjToVarietize");
+                await settings.LogService.LogError("null has been passed to PicdataobjToVarietize");
             }
             else
             {
@@ -209,7 +209,7 @@ public partial class Creator
         {
             if (PicdataObjToVarietize == null)
             {
-                settings.LogService.LogError("Null has been passed to CustomPicture");
+                await settings.LogService.LogError("Null has been passed to CustomPicture");
             }
             else
             {
@@ -239,7 +239,7 @@ public partial class Creator
         }
 
         settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
-        settings.LogService.LogInformation("Processing Finished");
+        await settings.LogService.LogInformation("Processing Finished");
 
         if (ProdType == ProductionType.VarietyList)
         {
@@ -266,7 +266,7 @@ public partial class Creator
         if (prodtype == ProductionType.FrontPagePictureLineUp)
         {
             await Mocking.SetupFrontPagePictureLineUp(settings);
-            settings.LogService.LogInformation("Mocking of FrontPagePictureLineUp complete");
+            await settings.LogService.LogInformation("Mocking of FrontPagePictureLineUp complete");
         }
 
         ArgumentNullException.ThrowIfNull(texts);
@@ -279,12 +279,12 @@ public partial class Creator
             // when the code ran last time
             if (picdatatoMock is null)
             {
-                settings.LogService.LogError("null has been passed to PicdataobjToVarietize");
+                await settings.LogService.LogError("null has been passed to PicdataobjToVarietize");
             }
             else
             {
                 await Mocking.SetupVarietyDisplay(settings);
-                settings.LogService.LogInformation("Mocking of Variety List complete");
+                await settings.LogService.LogInformation("Mocking of Variety List complete");
             }
         }
 
@@ -293,7 +293,7 @@ public partial class Creator
 
             if (picdatatoMock == null)
             {
-                settings.LogService.LogError("Null has been passed to CustomPicture");
+                await settings.LogService.LogError("Null has been passed to CustomPicture");
             }
             else
             {

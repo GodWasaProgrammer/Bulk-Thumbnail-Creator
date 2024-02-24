@@ -25,36 +25,36 @@ public class Production
 
         if (operatingSystem.Platform == PlatformID.Win32NT)
         {
-            settings.LogService.LogInformation("Windows OS Detected");
+            await settings.LogService.LogInformation("Windows OS Detected");
             YTDLPDir += ".exe";
             FfMpegDir += ".exe";
         }
         else if (operatingSystem.Platform == PlatformID.Unix)
         {
-            settings.LogService.LogInformation("Unix OS Detected");
+            await settings.LogService.LogInformation("Unix OS Detected");
         }
 
-        settings.LogService.LogInformation($"Current Location: {CurrentLoc}");
-        settings.LogService.LogInformation($"Parent Directory: {parentDirectory}");
-        settings.LogService.LogInformation($"New Path: {ExePath}");
+        await settings.LogService.LogInformation($"Current Location: {CurrentLoc}");
+        await settings.LogService.LogInformation($"Parent Directory: {parentDirectory}");
+        await settings.LogService.LogInformation($"New Path: {ExePath}");
 
         if (File.Exists(YTDLPDir))
         {
-            settings.LogService.LogInformation($"YTDLP Path: {YTDLPDir}");
+            await settings.LogService.LogInformation($"YTDLP Path: {YTDLPDir}");
         }
         else
         {
-            settings.LogService.LogError("yt-dlp was not found");
-            settings.LogService.LogInformation("Will Try To Download yt-dlp");
+            await settings.LogService.LogError("yt-dlp was not found");
+            await settings.LogService.LogInformation("Will Try To Download yt-dlp");
             await YoutubeDLSharp.Utils.DownloadYtDlp(ExePath);
 
             if (File.Exists(YTDLPDir))
             {
-                settings.LogService.LogInformation("Successfully downloaded yt-dlp");
+                await settings.LogService.LogInformation("Successfully downloaded yt-dlp");
             }
             else
             {
-                settings.LogService.LogError("Failed to download yt-dlp");
+                await settings.LogService.LogError("Failed to download yt-dlp");
             }
 
         }
@@ -62,26 +62,26 @@ public class Production
 
         if (File.Exists(FfMpegDir))
         {
-            settings.LogService.LogInformation($"FFmpeg Path: {FfMpegDir}");
+            await settings.LogService.LogInformation($"FFmpeg Path: {FfMpegDir}");
         }
         else
         {
             // we didnt find ffmpeg
-            settings.LogService.LogError("ffmpeg was not found");
+            await settings.LogService.LogError("ffmpeg was not found");
 
             // so will download it
-            settings.LogService.LogInformation("Will Try To Download ffmpeg");
+            await settings.LogService.LogInformation("Will Try To Download ffmpeg");
 
             //attempts to download the file to local dir
             await YoutubeDLSharp.Utils.DownloadFFmpeg(ExePath);
 
             if (File.Exists(FfMpegDir))
             {
-                settings.LogService.LogInformation("File has been successfully downloaded");
+                await settings.LogService.LogInformation("File has been successfully downloaded");
             }
             else
             {
-                settings.LogService.LogInformation("Download of FFMPEG has failed.");
+                await settings.LogService.LogInformation("Download of FFMPEG has failed.");
             }
 
         }
@@ -92,13 +92,13 @@ public class Production
 
         if (Directory.Exists(ytdlDir))
         {
-            settings.LogService.LogInformation($"YTDL Dir found:{ytdlDir}");
+            await settings.LogService.LogInformation($"YTDL Dir found:{ytdlDir}");
         }
         else
         {
-            settings.LogService.LogError("YTDL Dir was not found");
+            await settings.LogService.LogError("YTDL Dir was not found");
             Directory.CreateDirectory(ytdlDir);
-            settings.LogService.LogInformation($"Dir Created at:{ytdlDir}");
+            await settings.LogService.LogInformation($"Dir Created at:{ytdlDir}");
         }
         settings.YTDLOutPutDir = ytdlDir;
 
@@ -177,17 +177,17 @@ public class Production
 
         if (URL == null)
         {
-            settings.LogService.LogError("URL has been passed as null to YTDL");
+            await settings.LogService.LogError("URL has been passed as null to YTDL");
             throw new ArgumentNullException(nameof(URL));
 
         }
         else
         {
-            settings.LogService.LogInformation($"Attempting download of: {URL}");
+            await settings.LogService.LogInformation($"Attempting download of: {URL}");
             res = await ytdl.RunVideoDownload(url: URL);
         }
 
-        settings.LogService.LogInformation("Download Success:" + res.Success.ToString());
+        await settings.LogService.LogInformation("Download Success:" + res.Success.ToString());
 
         // sets BTC to run on the recently downloaded file res.data is the returned path.
         return res.Data;
@@ -288,7 +288,7 @@ public class Production
         }
         catch (Exception ex)
         {
-            settings.LogService.LogError($"Error in reading image into ImageMagick: {ex.Message}");
+            await settings.LogService.LogError($"Error in reading image into ImageMagick: {ex.Message}");
         }
 
         for (int Box = 0; Box < PicData.BoxParameters.Count; Box++)
@@ -320,7 +320,7 @@ public class Production
                 outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
             }
 
-            settings.LogService.LogInformation($"Picture:{Path.GetFileName(PicData.FileName)}Box Type:{PicData.BoxParameters[Box].CurrentBox.Type} Box: {Box + 1} of {PicData.BoxParameters.Count} has been composited");
+            await settings.LogService.LogInformation($"Picture:{Path.GetFileName(PicData.FileName)}Box Type:{PicData.BoxParameters[Box].CurrentBox.Type} Box: {Box + 1} of {PicData.BoxParameters.Count} has been composited");
         }
 
         try
@@ -329,13 +329,13 @@ public class Production
         }
         catch (Exception ex)
         {
-            settings.LogService.LogError($"Error in annotation: {ex.Message}");
+            await settings.LogService.LogError($"Error in annotation: {ex.Message}");
         }
 
         outputImage.Quality = 100;
 
         // outputs the file to the provided path and name
         await Task.Run(() => outputImage.Write(OutputPath));
-        settings.LogService.LogInformation($"File Created: {OutputPath}");
+        await settings.LogService.LogInformation($"File Created: {OutputPath}");
     }
 }

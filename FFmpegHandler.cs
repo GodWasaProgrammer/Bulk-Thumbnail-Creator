@@ -21,17 +21,17 @@ internal class FFmpegHandler
 
         if (!ProcessStarted)
         {
-            settings.LogService.LogError("FFMpeg failed to start");
+            await settings.LogService.LogError("FFMpeg failed to start");
             return;
         }
         else
         {
-            settings.LogService.LogInformation("FFMpeg started");
+            await settings.LogService.LogInformation("FFMpeg started");
         }
 
         await Task.Run(() => processFFMpeg.WaitForExit());
 
-        settings.LogService.LogInformation("Ffmpeg finished producing pictures");
+        await settings.LogService.LogInformation("Ffmpeg finished producing pictures");
     }
 
     /// <summary>
