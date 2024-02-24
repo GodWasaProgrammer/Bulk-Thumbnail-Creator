@@ -62,36 +62,38 @@ public partial class Creator
             settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
             await settings.LogService.LogInformation($"Processing {settings.Files.Length} images");
+            Array2D<RgbPixel> image = null;
+            Rectangle[] faceRectangles = null;
 
-            // main loop for detecting faces, placing text where face is not
             for (int fileIndex = 0; fileIndex < settings.Files.Length; fileIndex++)
             {
                 string file = settings.Files[fileIndex];
 
-                Array2D<RgbPixel> image = null;
-
-                try
+                // Asynchronously load image and perform face detection in a non-blocking background thread
+                await Task.Run(async () =>
                 {
-                    image = Dlib.LoadImage<RgbPixel>(file);
-                    // Load image
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error loading image: {ex.Message}");
-                    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-                    if (ex.InnerException != null)
+                    try
                     {
-                        Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                        // Load image
+                        image = await Task.Run(() => Dlib.LoadImage<RgbPixel>(file));
+
+                        using var FACEDETECT = Dlib.GetFrontalFaceDetector();
+                        // Detect faces in the image
+                        faceRectangles = FACEDETECT.Operator(image);
+
+                        // Continue processing with image and faceRectangles...
                     }
-                }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error processing image: {ex.Message}");
+                        Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                        if (ex.InnerException != null)
+                        {
+                            Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                        }
+                    }
+                });
 
-                DlibDotNet.Rectangle[] FaceRectangles;
-
-                using (var FACEDETECT = Dlib.GetFrontalFaceDetector())
-                {
-                    // Detect faces in the image
-                    FaceRectangles = FACEDETECT.Operator(image);
-                }
                 #endregion
 
                 #region Data Generation
@@ -111,7 +113,7 @@ public partial class Creator
                     if (PassPictureData.BoxParameters.Count > 0)
                         PopulatedBoxes.Add(PassPictureData.BoxParameters[0].CurrentBox.Type);
 
-                    currentParameters = DataGeneration.GetTextPosition(currentParameters, image, FaceRectangles, PopulatedBoxes, PassPictureData);
+                    currentParameters = DataGeneration.GetTextPosition(currentParameters, image, faceRectangles, PopulatedBoxes, PassPictureData);
 
                     currentParameters = ColorData.DecideColorGeneration(currentParameters);
 
@@ -146,7 +148,8 @@ public partial class Creator
             #endregion
 
             #region File Production
-            //// File Production
+
+            SemaphoreSlim semaphore = new(6);
             List<Task> productionTasks = [];
 
             foreach (PictureData picData in settings.PictureDatas)
@@ -155,13 +158,32 @@ public partial class Creator
 
                 if (!NoBoxes)
                 {
-                    Production production = new();
-                    Task productionTask = Task.Run(() => Production.ProduceTextPictures(picData, settings));
+                    // Start the task asynchronously
+                    Task productionTask = Task.Run(async () =>
+                    {
+                        try
+                        {
+                            // Acquire a slot from the semaphore
+                            await semaphore.WaitAsync();
+
+                            // Execute the image processing task
+                            await Production.ProduceTextPictures(picData, settings);
+                        }
+                        finally
+                        {
+                            // Release the slot when the task completes or throws an exception
+                            semaphore.Release();
+                        }
+                    });
+
+                    // Add the task to the list
                     productionTasks.Add(productionTask);
                 }
             }
 
+            // Wait for all tasks to complete
             await Task.WhenAll(productionTasks);
+
             #endregion
 
             #region Front Page Picture Line Up Mocking
@@ -186,11 +208,25 @@ public partial class Creator
             else
             {
                 List<Task> productionVarietyTaskList = [];
+                SemaphoreSlim semaphore = new(6);
 
                 foreach (PictureData picData in PicdataObjToVarietize.Varieties)
                 {
+                    await semaphore.WaitAsync(); // Acquire a semaphore slot
+
                     Production production = new();
-                    Task productionTask = Task.Run(() => Production.ProduceTextPictures(picData, settings));
+                    Task productionTask = Task.Run(async () =>
+                    {
+                        try
+                        {
+                            await Production.ProduceTextPictures(picData, settings);
+                        }
+                        finally
+                        {
+                            semaphore.Release(); // Release the semaphore slot when done
+                        }
+                    });
+
                     productionVarietyTaskList.Add(productionTask);
                 }
 
@@ -202,6 +238,7 @@ public partial class Creator
                 await Mocking.CopyVarietyDir(settings);
             }
         }
+
         #endregion
 
         #region Custom Picture OutPut
