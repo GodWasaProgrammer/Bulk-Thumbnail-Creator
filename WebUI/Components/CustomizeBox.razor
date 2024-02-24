@@ -2,6 +2,7 @@
 @using BulkThumbnailCreator.Enums;
 @using BulkThumbnailCreator.PictureClasses
 @using BulkThumbnailCreator.Services
+@using DlibDotNet
 @using Microsoft.AspNetCore.Components;
 @using MudBlazor.Utilities;
 @using BulkThumbnailCreator.Interfaces;
@@ -15,21 +16,34 @@
 @if (CurrentPagePictureData != null)
 {
     <MudSelect AdornmentColor="Color.Primary" Label="Select an output box" @bind-Value="PickedBox">
-
         @if (CurrentPagePictureData != null)
         {
-            @if (CurrentPagePictureData.BoxParameters != null)
+            @foreach (ParamForTextCreation boxParam in BoxParameters)
             {
-                @foreach (ParamForTextCreation boxParam in CurrentPagePictureData.BoxParameters)
-                {
-                    BoxType boxType = boxParam.CurrentBox.Type;
+                BoxType boxType = boxParam.CurrentBox.Type;
 
-                    <MudSelectItem Value="@boxParam.CurrentBox.Type"><MudText Color="Color.Secondary">@boxParam.CurrentBox.Type</MudText></MudSelectItem>
-                }
+                <MudSelectItem Value="@boxParam.CurrentBox.Type"><MudText Color="Color.Secondary">@boxParam.CurrentBox.Type</MudText></MudSelectItem>
             }
         }
-
     </MudSelect>
+
+    @if (OverrideBoxes is not true)
+    {
+        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="BuildOverrideBoxes">Override Boxes</MudButton>
+    }
+
+    @if (OverrideBoxes)
+    {
+        <MudSelect AdornmentColor="Color.Primary" Label="Select a box to override to" @bind-Value="pickedOverrideBox">
+            @foreach (ParamForTextCreation param in OverrideBoxList)
+            {
+                BoxType boxType = param.CurrentBox.Type;
+
+                <MudSelectItem Value="@param.CurrentBox.Type"><MudText Color="Color.Secondary">@param.CurrentBox.Type</MudText>select box to override with</MudSelectItem>
+            }
+        </MudSelect>
+        <MudButton OnClick="OverWrite">Overwrite</MudButton>
+    }
 
     @*This allows you to swap to inserting a meme instead of text*@
     <MudButton Variant="Variant.Filled" Color="Color.Success" @onclick="() => MemeSelected()">@MemeOrText</MudButton>
@@ -395,7 +409,45 @@
 
                 BuildBoxParameters();
             }
+    }
 
+    BoxType pickedOverrideBox;
+    public void OverWrite()
+    {
+        int index = BoxParameters.FindIndex(p => p.CurrentBox.Type == PickedBox); // Assuming ParamForTextCreation is the condition you're searching for
+        if (index != -1) // Check if the element was found
+        {
+            int index2 = OverrideBoxList.FindIndex(p => p.CurrentBox.Type == pickedOverrideBox);
+            BoxParameters[index] = OverrideBoxList[index2]; // Replace the element at the found index with pickedOverrideBox
+        }
+        StateHasChanged();
+    }
+
+    private bool OverrideBoxes;
+    List<ParamForTextCreation> OverrideBoxList = new();
+    public void BuildOverrideBoxes()
+    {
+        // build the list based of the first boxparameter and then
+        // feed it with a selection of the boxes info and boxparameter info
+        // to frankenstein together a overridden box selection
+        foreach (var box in CurrentPagePictureData.BoxParameters[0].Boxes)
+        {
+            ParamForTextCreation param = new ParamForTextCreation();
+            param.Text = CurrentPagePictureData.BoxParameters[0].Text;
+            param.CurrentBox = box;
+            param.WidthOfBox = box.Width;
+            param.HeightOfBox = box.Height;
+            param.PositionOfText = new(box.X, box.Y);
+            param.FillColor = CurrentPagePictureData.BoxParameters[0].FillColor;
+            param.StrokeColor = CurrentPagePictureData.BoxParameters[0].StrokeColor;
+            param.BorderColor = CurrentPagePictureData.BoxParameters[0].BorderColor;
+            param.Boxes = CurrentPagePictureData.BoxParameters[0].Boxes;
+            param.CurrentBox = box;
+            param.BoxesWithNoFaceIntersect = CurrentPagePictureData.BoxParameters[0].BoxesWithNoFaceIntersect;
+            OverrideBoxList.Add(param);
+        }
+        OverrideBoxes = true;
+        StateHasChanged();
     }
 
     /// <summary>
@@ -406,5 +458,4 @@
         BoxParameters = new List<ParamForTextCreation>(CurrentPagePictureData.BoxParameters);
         PickedBox = BoxParameters[0].CurrentBox.Type;
     }
-
 }

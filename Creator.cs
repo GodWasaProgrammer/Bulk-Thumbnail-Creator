@@ -149,7 +149,7 @@ public partial class Creator
 
             #region File Production
 
-            SemaphoreSlim semaphore = new(6);
+            SemaphoreSlim semaphore = new(4);
             List<Task> productionTasks = [];
 
             foreach (PictureData picData in settings.PictureDatas)
@@ -208,7 +208,7 @@ public partial class Creator
             else
             {
                 List<Task> productionVarietyTaskList = [];
-                SemaphoreSlim semaphore = new(6);
+                SemaphoreSlim semaphore = new(4);
 
                 foreach (PictureData picData in PicdataObjToVarietize.Varieties)
                 {

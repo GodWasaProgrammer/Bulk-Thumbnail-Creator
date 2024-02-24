@@ -12,9 +12,6 @@ public class PictureData
     private string _outPath;
     public string OutPath { get { return _outPath; } set { _outPath = value; } }
 
-    private List<Box> _boxes = [];
-    public List<Box> Boxes { get { return _boxes; } set { _boxes = value; } }
-
     private List<ParamForTextCreation> _BoxParameters = [];
     public List<ParamForTextCreation> BoxParameters { get { return _BoxParameters; } set { _BoxParameters = value; } }
 

@@ -1,5 +1,7 @@
 ﻿@using BulkThumbnailCreator.PictureClasses
 
+@if(param is not null)
+{
 @if (param.CurrentBox.Type != BulkThumbnailCreator.Enums.BoxType.None)
 {
     <Row>
@@ -23,6 +25,7 @@
             <MudTd DataLabel="Font">@Path.GetFileNameWithoutExtension(param.Font)</MudTd>
         </MudTh>
     </Row>
+}
 }
 
 @code
