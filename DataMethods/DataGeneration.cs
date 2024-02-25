@@ -31,7 +31,7 @@ public class DataGeneration
             PassBox.Width = (int)Box.Width;
             PassBox.Height = (int)Box.Height;
             PassBox.X = Box.Left;
-            PassBox.Y = Box.Right;
+            PassBox.Y = Box.Top;
             PassBox.Type = box.Key;
             parameters.Boxes.Add(PassBox);
         }
@@ -141,35 +141,13 @@ public class DataGeneration
 
             pickedBoxName = boxes[random.Next(boxes.Length)];
 
-            // tries to read from dictionary
-            Boxes.TryGetValue(pickedBoxName, out Rectangle pickedBoxRectangle);
-
-            Box box = new()
-            {
-                X = pickedBoxRectangle.Left,
-                Y = pickedBoxRectangle.Top,
-                Width = (int)pickedBoxRectangle.Width,
-                Height = (int)pickedBoxRectangle.Height,
-
-                Rectangle = pickedBoxRectangle,
-
-                Type = pickedBoxName
-            };
-
-            parameters.CurrentBox = box;
-
-            parameters.WidthOfBox = (int)pickedBoxRectangle.Width;
-            parameters.HeightOfBox = (int)pickedBoxRectangle.Height;
+            parameters.CurrentBox = parameters.Boxes.Find(x => x.Type == pickedBoxName);
+            parameters.WidthOfBox = parameters.CurrentBox.Width;
+            parameters.HeightOfBox = parameters.CurrentBox.Height;
 
             FreeBoxes.Remove(pickedBoxName);
 
             parameters.BoxesWithNoFaceIntersect = FreeBoxes;
-
-            // makes a point to feed to the parameters passed in
-            Point pickedBoxPoint = new(pickedBoxRectangle.Left, pickedBoxRectangle.Top);
-
-            // sets the position of the parameter objects point variable 
-            parameters.PositionOfText = pickedBoxPoint;
         }
         return parameters;
     }

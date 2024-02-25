@@ -12,12 +12,6 @@ public class ParamForTextCreation
     public string Text { get { return _Text; } set { _Text = value; } }
 
     /// <summary>
-    /// The Location of the text that will be printed, this a x,y coordinate pointer
-    /// </summary>
-    private Point positionOfText;
-    public Point PositionOfText { get { return positionOfText; } set { positionOfText = value; } }
-
-    /// <summary>
     /// The selected font of this object
     /// </summary>
     private string _Font;
@@ -65,7 +59,6 @@ public class ParamForTextCreation
     public ParamForTextCreation(ParamForTextCreation param)
     {
         _Text = (string)param.Text.Clone(); // string
-        positionOfText = param.PositionOfText; // struct
         _Font = (string)param.Font.Clone(); // string
         _WidthOfBox = param.WidthOfBox; // int
         _HeightOfBox = param.HeightOfBox; // int

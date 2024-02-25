@@ -134,8 +134,6 @@
             isLoading = true;
 
             CurrentJob.State = States.CustomPicture;
-
-            PicToCustomize = new(PicToCustomize);
             string url = string.Empty;
             PicDataServiceList = await Creator.Process(ProductionType.CustomPicture, url, CurrentJob.TextToPrint, CurrentJob.Settings, PicToCustomize);
             CurrentJob.PictureDatas = PicDataServiceList;

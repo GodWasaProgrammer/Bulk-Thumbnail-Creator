@@ -3,50 +3,6 @@
 internal class Variety
 {
     /// <summary>
-    /// Produces the remaining boxes of a picturedata object to create variety of choice
-    /// </summary>
-    /// <param name="PicToVarietize">The Target picture to varietize</param>
-    /// <param name="TargetFolder">The target folder to varietize</param>
-    public static void PlacementOfText(PictureData PicToVarietize)
-    {
-        for (int boxParam = 0; boxParam < PicToVarietize.NumberOfBoxes; boxParam++)
-        {
-            BoxType CurrentBox = PicToVarietize.BoxParameters[boxParam].CurrentBox.Type;
-
-            if (PicToVarietize.BoxParameters[boxParam].Boxes.Count > 2)
-            {
-                foreach (var CurrentIterationBox in PicToVarietize.BoxParameters[boxParam].Boxes)
-                {
-                    PictureData CopiedPictureData = new(PicToVarietize);
-                    CopiedPictureData.Varieties.Clear();
-
-                    if (CurrentIterationBox.Type != CurrentBox)
-                    {
-                        // lift Rectangle
-                        Rectangle currentRectangle = CurrentIterationBox.Rectangle;
-
-                        // write it to a Point
-                        Point CurrentPoint = new(currentRectangle.Left, currentRectangle.Top);
-
-                        // feed it back into object
-                        CopiedPictureData.BoxParameters[boxParam].PositionOfText = CurrentPoint;
-
-                        // set the currentbox to the currentbox key
-                        if (CurrentIterationBox.Type != CurrentBox)
-                        {
-                            CopiedPictureData.BoxParameters[boxParam].CurrentBox = CurrentIterationBox;
-                        }
-
-                        // add it to list of created varieties
-                        CopiedPictureData.OutPutType = OutputType.BoxPositionVariety;
-
-                        PicToVarietize.Varieties.Add(CopiedPictureData);
-                    }
-                }
-            }
-        }
-    }
-    /// <summary>
     /// Produces 5 varieties of the first randomized font that hasnt already been chosen
     /// </summary>
     /// <param name="PicToVarietize">Your input PictureData object to produce varieties of</param>

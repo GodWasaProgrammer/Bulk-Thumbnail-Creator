@@ -147,7 +147,6 @@
     }
 
     private bool nullOrWhiteSpace;
-
     private void SaveText()
     {
         // verifies that the user doesnt try to add a null or whitespace string
@@ -166,7 +165,6 @@
     private bool AddText = false;
 
     private string textToAdd;
-
     private void AddNewText()
     {
         if (AddText)
@@ -338,17 +336,20 @@
     /// <param name="paramIn"></param>
     private void ConstructParameter(ParamForTextCreation paramIn)
     {
-        paramIn.Font = PickedFont;
-
-        if (PickedText != null)
+        if (paramIn != null)
         {
-            paramIn.Text = PickedText;
+            paramIn.Font = PickedFont;
+
+            if (PickedText != null)
+            {
+                paramIn.Text = PickedText;
+            }
+            // construct color objects
+            paramIn.BorderColor.SetByHSL(BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance);
+            paramIn.FillColor.SetByHSL(fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance);
+            paramIn.StrokeColor.SetByHSL(StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance);
+            // colors are set
         }
-        // construct color objects
-        paramIn.BorderColor.SetByHSL(BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance);
-        paramIn.FillColor.SetByHSL(fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance);
-        paramIn.StrokeColor.SetByHSL(StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance);
-        // colors are set
     }
 
     /// <summary>
@@ -373,7 +374,7 @@
             {
                 BoxParameters.Find(x => x.CurrentBox.Type == PickedBox).Text = PickedText;
             }
-
+            PicDataToCustomize.OutPutType = OutputType.Custom;
         }
 
         /// these are our edited boxes that we will write to the picturedata object
@@ -434,15 +435,13 @@
         {
             ParamForTextCreation param = new ParamForTextCreation();
             param.Text = CurrentPagePictureData.BoxParameters[0].Text;
-            param.CurrentBox = box;
             param.WidthOfBox = box.Width;
             param.HeightOfBox = box.Height;
-            param.PositionOfText = new(box.X, box.Y);
             param.FillColor = CurrentPagePictureData.BoxParameters[0].FillColor;
             param.StrokeColor = CurrentPagePictureData.BoxParameters[0].StrokeColor;
             param.BorderColor = CurrentPagePictureData.BoxParameters[0].BorderColor;
             param.Boxes = CurrentPagePictureData.BoxParameters[0].Boxes;
-            param.CurrentBox = box;
+            param.CurrentBox = new(box);
             param.BoxesWithNoFaceIntersect = CurrentPagePictureData.BoxParameters[0].BoxesWithNoFaceIntersect;
             OverrideBoxList.Add(param);
         }
