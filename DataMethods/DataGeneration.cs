@@ -20,24 +20,16 @@ public class DataGeneration
     }
     public static ParamForTextCreation GetTextPosition(ParamForTextCreation parameters, Array2D<RgbPixel> sourcePicture, Rectangle[] faceRect, List<BoxType> populatedBoxes, PictureData pictureData = null)
     {
-        Dictionary<BoxType, Rectangle> Boxes = [];
-
+        List<Box> Boxes = [];
         Boxes = BuildDefaultBoxes(Boxes, sourcePicture);
-
-        foreach (var box in Boxes)
-        {
-            Box PassBox = new();
-            Boxes.TryGetValue(box.Key, out Rectangle Box);
-            PassBox.Width = (int)Box.Width;
-            PassBox.Height = (int)Box.Height;
-            PassBox.X = Box.Left;
-            PassBox.Y = Box.Top;
-            PassBox.Type = box.Key;
-            parameters.Boxes.Add(PassBox);
-        }
-
+        parameters.Boxes = Boxes;
         // boxes that we will pick from after calcs done
-        List<BoxType> FreeBoxes = [.. Boxes.Keys];
+
+        List<BoxType> FreeBoxes = new();
+        foreach (Box box in Boxes)
+        {
+            FreeBoxes.Add(box.Type);
+        }
 
         for (int i = 0; i < populatedBoxes.Count; i++)
         {
@@ -74,25 +66,29 @@ public class DataGeneration
             }
         }
 
+        List<(BoxType, Rectangle)> BoxRectangles = new();
+        foreach (Box box in Boxes)
+        {
+            Rectangle boxRectangle = new Rectangle(box.X, box.Y, box.X + box.Width, box.Y + box.Height);
+            BoxRectangles.Add((box.Type, boxRectangle));
+        }
+
         if (faceRect.Length != 0)
         {
             foreach (var face in faceRect)
             {
                 List<(BoxType, bool)> FaceInterSectResults = [];
 
-                foreach (BoxType boxType in Boxes.Keys)
+                for (int i = 0; i < BoxRectangles.Count; i++)
                 {
-                    Boxes.TryGetValue(boxType, out Rectangle Box);
-
                     bool BoxIntersect;
-
-                    BoxIntersect = IntersectCheck(Box, face);
+                    BoxIntersect = IntersectCheck(BoxRectangles[i].Item2, face);
 
                     if (BoxIntersect)
                     {
-                        FreeBoxes.Remove(boxType);
+                        FreeBoxes.Remove(BoxRectangles[i].Item1);
                     }
-                    FaceInterSectResults.Add((boxType, BoxIntersect));
+                    FaceInterSectResults.Add((BoxRectangles[i].Item1, BoxIntersect));
                 }
             }
         }
@@ -114,20 +110,25 @@ public class DataGeneration
         // loops on our populated boxes and runs intersection checks and if they intersects deletes them
         foreach (var boxtype in BoxesToDelete)
         {
-            Boxes.TryGetValue(boxtype, out Rectangle BoxToCheckIntersect);
+            //Boxes.TryGetValue(boxtype, out Rectangle BoxToCheckIntersect);
+            // Use LINQ to find the tuple with matching box type and return its associated rectangle
+            var tuple = BoxRectangles.FirstOrDefault(item => item.Item1 == boxtype);
+
+            Rectangle rectangle = tuple.Item2;
+
             List<(BoxType, bool)> IntersectResults = [];
 
-            foreach (BoxType boxType in Boxes.Keys)
+            for (int rectangles = 0; rectangles < BoxRectangles.Count; rectangles++)
             {
-                Boxes.TryGetValue(boxType, out Rectangle Box);
+                //Boxes.TryGetValue(boxType, out Rectangle Box);
 
-                bool BoxIntersect = IntersectCheck(Box, BoxToCheckIntersect);
+                bool BoxIntersect = IntersectCheck(rectangle, BoxRectangles[rectangles].Item2);
 
                 if (BoxIntersect)
                 {
-                    FreeBoxes.Remove(boxType);
+                    FreeBoxes.Remove(BoxRectangles[rectangles].Item1);
                 }
-                IntersectResults.Add((boxType, BoxIntersect));
+                IntersectResults.Add((BoxRectangles[rectangles].Item1, BoxIntersect));
             }
         }
 
@@ -158,58 +159,80 @@ public class DataGeneration
                rect1.Top < rect2.Bottom &&
                rect1.Bottom > rect2.Top;
     }
-    private static Dictionary<BoxType, Rectangle> BuildDefaultBoxes(Dictionary<BoxType, Rectangle> Boxes, Array2D<RgbPixel> sourcePicture)
+    private static List<Box> BuildDefaultBoxes(List<Box> Boxes, Array2D<RgbPixel> sourcePicture)
     {
         // top box
-        BoxType topBox = BoxType.TopBox;
-        int width = sourcePicture.Columns;
-        int height = sourcePicture.Rows / 2;
-
-        Rectangle TopBoxRectangle = new(0, 0, width, height);
-
-        Boxes.Add(topBox, TopBoxRectangle);
+        Box topBox = new()
+        {
+            Type = BoxType.TopBox,
+            Width = sourcePicture.Columns,
+            Height = sourcePicture.Rows / 2,
+            X = 0,
+            Y = 0
+        };
+        Boxes.Add(topBox);
         //////////////////////////////////////////////
 
         //// bottom box
-        BoxType bottomBox = BoxType.BottomBox;
+        Box bottomBox = new();
+        bottomBox.Type = BoxType.BottomBox;
+        bottomBox.Width = sourcePicture.Columns;
+        bottomBox.Height = sourcePicture.Rows / 2;
+        bottomBox.X = 0;
+        bottomBox.Y = sourcePicture.Rows / 2;
+        Boxes.Add(bottomBox);
 
-        Rectangle bottomBoxRectangle = new(0, sourcePicture.Rows / 2, width, sourcePicture.Rows);
+        //Rectangle bottomBoxRectangle = new(0, sourcePicture.Rows / 2, width, sourcePicture.Rows);
 
-        Boxes.Add(bottomBox, bottomBoxRectangle);
 
         // top left box
-        BoxType topLeftBox = BoxType.TopLeft;
+        //BoxType topLeftBox = BoxType.TopLeft;
+        Box topLeftBox = new();
+        topLeftBox.Type = BoxType.TopLeft;
+        topLeftBox.Width = sourcePicture.Columns / 2;
+        topLeftBox.Height = sourcePicture.Rows / 2;
+        topLeftBox.X = 0;
+        topLeftBox.Y = 0;
+        Boxes.Add(topLeftBox);
+        //Rectangle topLeftBoxRectangle = new(0, 0, width, height);
 
-        width = sourcePicture.Columns / 2;
-        height = sourcePicture.Rows / 2;
-
-        Rectangle topLeftBoxRectangle = new(0, 0, width, height);
-
-        Boxes.Add(topLeftBox, topLeftBoxRectangle);
         //////////////////////////////////////////////
 
         // top right box
-        BoxType topRightBox = BoxType.TopRight;
+        Box topRightBox = new();
+        topRightBox.Type = BoxType.TopRight;
+        topRightBox.Width = sourcePicture.Columns / 2;
+        topRightBox.Height = sourcePicture.Rows / 2;
+        topRightBox.X = sourcePicture.Columns / 2;
+        topRightBox.Y = 0;
+        Boxes.Add(topRightBox);
 
-        Rectangle topRightBoxRectangle = new(sourcePicture.Columns / 2, 0, sourcePicture.Columns, height);
+        //BoxType topRightBox = BoxType.TopRight;
 
-        Boxes.Add(topRightBox, topRightBoxRectangle);
+        //Rectangle topRightBoxRectangle = new(sourcePicture.Columns / 2, 0, sourcePicture.Columns, height);
+
         //////////////////////////////////////////////
 
         // bottom left box
-        BoxType bottomLeftBox = BoxType.BottomLeft;
+        Box bottomLeftBox = new();
+        bottomLeftBox.Type = BoxType.BottomLeft;
+        bottomLeftBox.Width = sourcePicture.Columns / 2;
+        bottomLeftBox.Height = sourcePicture.Rows / 2;
+        bottomLeftBox.X = 0;
+        bottomLeftBox.Y = sourcePicture.Rows / 2;
+        Boxes.Add(bottomLeftBox);
 
-        Rectangle bottomleftBoxRectangle = new(0, sourcePicture.Rows / 2, width, sourcePicture.Rows);
-
-        Boxes.Add(bottomLeftBox, bottomleftBoxRectangle);
+        //Boxes.Add(bottomLeftBox, bottomleftBoxRectangle);
         //////////////////////////////////////////////
 
         // bottom right box
-        BoxType bottomRightBox = BoxType.BottomRight;
-
-        Rectangle bottomRightBoxRectangle = new(width, height, sourcePicture.Columns, sourcePicture.Rows);
-
-        Boxes.Add(bottomRightBox, bottomRightBoxRectangle);
+        Box bottomRightBox = new();
+        bottomRightBox.Type = BoxType.BottomRight;
+        bottomRightBox.Width = sourcePicture.Columns / 2;
+        bottomRightBox.Height = sourcePicture.Rows / 2;
+        bottomRightBox.X = sourcePicture.Columns / 2;
+        bottomRightBox.Y = sourcePicture.Rows / 2;
+        Boxes.Add(bottomRightBox);
         //////////////////////////////////////////////
 
         return Boxes;
