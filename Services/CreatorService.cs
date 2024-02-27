@@ -104,8 +104,8 @@
             CurrentJob.PictureDatas = PicDataServiceList;
 
             string parentfilename = Path.GetFileName(PicToVarietize.FileName);
-            string varietyof = "variety of";
-            string ConcatenatedString = $"{PassCrntJob.Settings.TextAddedDir}/{varietyof} {parentfilename}";
+            string varietyof = "varietyof";
+            string ConcatenatedString = $"{PassCrntJob.Settings.TextAddedDir}/{varietyof}{parentfilename}";
             string[] ArrayOfFilePaths = Directory.GetFiles(ConcatenatedString, "*.png");
 
             foreach (string filepath in ArrayOfFilePaths)
@@ -170,7 +170,7 @@
 
                     string NumberOfPicture2 = Path.GetFileNameWithoutExtension(MockCorrelation);
 
-                    string varof = "variety of ";
+                    string varof = "varietyof ";
 
                     NumberOfPicture2 = NumberOfPicture2.Remove(0, varof.Length);
 

@@ -23,7 +23,7 @@ public partial class Creator
             Directory.CreateDirectory(settings.OutputDir);
 
             settings.TextAddedDir = "TextAdded";
-            settings.TextAddedDir = settings.TextAddedDir + "/" + Path.GetFileNameWithoutExtension(settings.PathToVideo);
+            settings.TextAddedDir = settings.TextAddedDir + "/" + CleanPathRegEx().Replace(Path.GetFileNameWithoutExtension(settings.PathToVideo), "");
             Directory.CreateDirectory(settings.TextAddedDir);
             Settings.DownloadedVideosList.Add(settings.PathToVideo);
 
@@ -339,6 +339,6 @@ public partial class Creator
 
     }
 
-    [GeneratedRegex(@"[^\w\d]")]
+    [GeneratedRegex(@"[^\w\d?]+")]
     private static partial Regex CleanPathRegEx();
 }

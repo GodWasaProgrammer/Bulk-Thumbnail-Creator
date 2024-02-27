@@ -225,7 +225,7 @@ public class Production
         DateTime dateTime = DateTime.Now;
         string trimDateTime = dateTime.ToString();
         trimDateTime = trimDateTime.Replace(":", "");
-        string varietyof = "//variety of ";
+        string varietyof = "//varietyof";
 
         // if not main type, we will make a directory for files to be written in
         if (PicData.OutPutType != OutputType.Main)
