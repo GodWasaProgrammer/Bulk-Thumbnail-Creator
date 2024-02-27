@@ -54,7 +54,7 @@
         {
             Job DebugJob = UserJobs.Where(x => x.User == User).FirstOrDefault();
 
-            return UserJobs.Where(x => x.User == User).FirstOrDefault();
+            return UserJobs.Where(x => x.User == User).LastOrDefault();
         }
     }
 }
