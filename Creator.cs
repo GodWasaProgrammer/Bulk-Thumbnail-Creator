@@ -113,17 +113,14 @@ public partial class Creator
                     if (PassPictureData.BoxParameters.Count > 0)
                         PopulatedBoxes.Add(PassPictureData.BoxParameters[0].CurrentBox.Type);
 
-                    currentParameters = DataGeneration.GetTextPosition(currentParameters, image, faceRectangles, PopulatedBoxes, PassPictureData);
-
+                    currentParameters = DataGeneration.GetTextPosition(currentParameters, image, faceRectangles, PopulatedBoxes);
                     currentParameters = ColorData.DecideColorGeneration(currentParameters);
-
                     currentParameters.Font = DataGeneration.PickRandomFont();
 
                     // picks a random string from the list
                     Random pickAString = new();
                     int pickedString = pickAString.Next(settings.ListOfText.Count);
                     currentParameters.Text = settings.ListOfText[pickedString];
-
                     PassPictureData.BoxParameters.Add(currentParameters);
                 }
 

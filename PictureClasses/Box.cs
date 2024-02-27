@@ -34,5 +34,8 @@ public class Box
 
     private BoxType _type;
     public BoxType Type { get { return _type; } set { _type = value; } }
+
+    private Rectangle _rectangle;
+    public Rectangle Rectangle { get { return _rectangle; } set { _rectangle = value; } }
 }
 
