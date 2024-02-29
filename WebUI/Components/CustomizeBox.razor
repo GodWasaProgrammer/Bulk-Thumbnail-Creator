@@ -438,16 +438,16 @@
             param.Text = CurrentPagePictureData.BoxParameters[0].Text;
             param.WidthOfBox = box.Width;
             param.HeightOfBox = box.Height;
-            param.FillColor = CurrentPagePictureData.BoxParameters[0].FillColor;
-            param.StrokeColor = CurrentPagePictureData.BoxParameters[0].StrokeColor;
-            param.BorderColor = CurrentPagePictureData.BoxParameters[0].BorderColor;
+            param.BorderColor.SetByHSL(BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance);
+            param.FillColor.SetByHSL(fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance);
+            param.StrokeColor.SetByHSL(StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance);
             param.Boxes = CurrentPagePictureData.BoxParameters[0].Boxes;
             param.CurrentBox = new(box);
             param.BoxesWithNoFaceIntersect = CurrentPagePictureData.BoxParameters[0].BoxesWithNoFaceIntersect;
             OverrideBoxList.Add(param);
         }
         OverrideBoxes = true;
-        StateHasChanged();
+        InvokeAsync(StateHasChanged);
     }
 
     /// <summary>
