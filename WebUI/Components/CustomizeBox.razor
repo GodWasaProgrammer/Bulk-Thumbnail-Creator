@@ -430,6 +430,7 @@
         {
             int index2 = OverrideBoxList.FindIndex(p => p.CurrentBox.Type == pickedOverrideBox);
             BoxParameters[index] = OverrideBoxList[index2]; // Replace the element at the found index with pickedOverrideBox
+            PickedBox = pickedOverrideBox;
         }
         StateHasChanged();
     }
