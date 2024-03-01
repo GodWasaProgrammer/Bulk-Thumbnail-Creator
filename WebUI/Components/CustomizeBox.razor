@@ -42,7 +42,7 @@
                 <MudSelectItem Value="@param.CurrentBox.Type"><MudText Color="Color.Secondary">@param.CurrentBox.Type</MudText>select box to override with</MudSelectItem>
             }
         </MudSelect>
-        <MudButton OnClick="OverWrite">Overwrite</MudButton>
+        <MudButton OnClick="OverWriteBox">Overwrite</MudButton>
     }
 
     @*This allows you to swap to inserting a meme instead of text*@
@@ -57,7 +57,10 @@
         @if (Meme == false)
         {
             <MudColorPicker PickerVariant="PickerVariant.Dialog" ColorPickerMode="ColorPickerMode.HSL" DisableAlpha DisableModeSwitch @bind-Value="colorvalue"></MudColorPicker>
-
+            @if(NoPickedColor)
+            {
+                <MudText>@PickColor</MudText>
+            }
             <MudSelect AdornmentColor="Color.Primary" Label="Select a Color to edit" @bind-Value="PickedGroup">
 
                 @foreach (var Colorz in colorBoxes)
@@ -164,7 +167,6 @@
     }
 
     private bool AddText = false;
-
     private string textToAdd;
     private void AddNewText()
     {
@@ -191,30 +193,21 @@
     [Parameter]
     public PictureData CurrentPagePictureData { get; set; }
 
+    private string PickedText;
     // this is the separate PicData object being passed back in as you create a custom Picture, every production will be considered a new picture
     public PictureData PicDataToCustomize = new();
-
     List<ParamForTextCreation> BoxParameters = new();
 
     // The PickedBox that we have chosen to edit
     public BoxType PickedBox { get; set; }
 
-    // the text that we are producing on the pictures
+    // the text that is input by the user
     private List<string> InputText = new();
-
-    private string PickedText;
 
     /// <summary>
     /// List of the fonts available on drive
     /// </summary>
     private List<string> AvailableFonts { get { return Directory.GetFiles("Fonts", "*.TTF*").ToList(); } }
-
-    /// <summary>
-    /// Our picked meme
-    /// </summary>
-    private string PickedMeme;
-
-    private List<string> AvailableMemes { get { return Directory.GetFiles("DankMemeStash").ToList(); } }
 
     private string _PickedFont;
     /// <summary>
@@ -237,7 +230,13 @@
     private bool _processing = false;
 
     /// <summary>
+    /// Our picked meme
+    private string PickedMeme;
+    private List<string> AvailableMemes { get { return Directory.GetFiles("DankMemeStash").ToList(); } }
+    /// <summary>
     /// Bool to swap between meme and text and related fields
+    private bool Meme = false;
+    private string MemeOrText = "Use Meme instead";
     /// </summary>
     private void MemeSelected()
     {
@@ -253,11 +252,10 @@
         }
     }
 
-    private bool Meme = false;
-
-    private string MemeOrText = "Use Meme instead";
-
     #region ColorLogic
+
+    private bool NoPickedColor = false;
+    private string PickColor;
     /// <summary>
     /// Logic to set the correlating colors of the colorgroups based on which you have selected
     /// This however only sets the local color items, not the parameters
@@ -267,20 +265,31 @@
     {
         DecideWhichBoxToEdit();
 
-        if (clrGRP == ColorGroup.BorderColor)
+        if (colorvalue == null)
         {
-            BorderColor = colorvalue;
-            BorderCLRItem.SetByHSL((float)BorderColor.H, (float)BorderColor.S, (float)BorderColor.L);
+            NoPickedColor = true;
+            PickColor = "Use the Color picker to choose a color";
+            return;
         }
-        if (clrGRP == ColorGroup.FillColor)
+        else
         {
-            FillColor = colorvalue;
-            fillCLRItem.SetByHSL((float)FillColor.H, (float)FillColor.S, (float)FillColor.L);
-        }
-        if (clrGRP == ColorGroup.StrokeColor)
-        {
-            StrokeColor = colorvalue;
-            StrokeCLRItem.SetByHSL((float)StrokeColor.H, (float)StrokeColor.S, (float)StrokeColor.L);
+            PickColor = string.Empty;
+            NoPickedColor = false;
+            if (clrGRP == ColorGroup.BorderColor)
+            {
+                BorderColor = colorvalue;
+                BorderCLRItem.SetByHSL((float)BorderColor.H, (float)BorderColor.S, (float)BorderColor.L);
+            }
+            if (clrGRP == ColorGroup.FillColor)
+            {
+                FillColor = colorvalue;
+                fillCLRItem.SetByHSL((float)FillColor.H, (float)FillColor.S, (float)FillColor.L);
+            }
+            if (clrGRP == ColorGroup.StrokeColor)
+            {
+                StrokeColor = colorvalue;
+                StrokeCLRItem.SetByHSL((float)StrokeColor.H, (float)StrokeColor.S, (float)StrokeColor.L);
+            }
         }
         StateHasChanged();
     }
@@ -409,14 +418,14 @@
                 if (!InputText.Contains(boxparam.Text))
                     InputText.Add(boxparam.Text);
 
-                BuildBoxParameters();
+                InitBoxParam();
             }
     }
 
     BoxType pickedOverrideBox;
-    public void OverWrite()
+    public void OverWriteBox()
     {
-        int index = BoxParameters.FindIndex(p => p.CurrentBox.Type == PickedBox); // Assuming ParamForTextCreation is the condition you're searching for
+        int index = BoxParameters.FindIndex(p => p.CurrentBox.Type == PickedBox);
         if (index != -1) // Check if the element was found
         {
             int index2 = OverrideBoxList.FindIndex(p => p.CurrentBox.Type == pickedOverrideBox);
@@ -436,6 +445,7 @@
         {
             ParamForTextCreation param = new ParamForTextCreation();
             param.Text = CurrentPagePictureData.BoxParameters[0].Text;
+            param.Font = CurrentPagePictureData.BoxParameters[0].Font;
             param.WidthOfBox = box.Width;
             param.HeightOfBox = box.Height;
             param.BorderColor.SetByHSL(BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance);
@@ -453,7 +463,7 @@
     /// <summary>
     /// Builds our boxes on initialization
     /// </summary>
-    private void BuildBoxParameters()
+    private void InitBoxParam()
     {
         BoxParameters = new List<ParamForTextCreation>(CurrentPagePictureData.BoxParameters);
         PickedBox = BoxParameters[0].CurrentBox.Type;
