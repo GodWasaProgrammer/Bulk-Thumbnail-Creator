@@ -1,4 +1,6 @@
-﻿namespace BulkThumbnailCreator;
+﻿using BulkThumbnailCreator.DataMethods;
+
+namespace BulkThumbnailCreator;
 
 public class Production
 {
@@ -87,7 +89,6 @@ public class Production
         }
 
         settings.FfmpegDir = FfMpegDir;
-
         string ytdlDir = Path.Combine(parentDirectory, "YTDL");
 
         if (Directory.Exists(ytdlDir))
@@ -291,7 +292,7 @@ public class Production
         {
             await settings.LogService.LogError($"Error in reading image into ImageMagick: {ex.Message}");
         }
-
+       
         for (int Box = 0; Box < PicData.BoxParameters.Count; Box++)
         {
             if (PicData.BoxParameters[Box].CurrentBox.Type == BoxType.None)
@@ -312,8 +313,12 @@ public class Production
                 }
                 else if (PicData.BoxParameters[Box].Meme == null)
                 {
-                    // Add the caption layer on top of the background image
+                    //// Add the caption layer on top of the background image
                     var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);
+
+                    //Guid guid = Guid.NewGuid();
+                    //string createdTextOutPut = SkiaMethods.CreateTextImage(PicData.BoxParameters[Box].Text, PicData.BoxParameters[Box].Font, PicData.BoxParameters[Box].CurrentBox.Height, PicData.BoxParameters[Box].CurrentBox.Width, guid);
+                    //var caption = new MagickImage(createdTextOutPut);
 
                     int takeX = BoxParam.CurrentBox.X;
                     int takeY = BoxParam.CurrentBox.Y;

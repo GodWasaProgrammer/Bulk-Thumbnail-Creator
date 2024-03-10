@@ -319,7 +319,6 @@ public partial class Creator
 
         if (prodtype == ProductionType.CustomPicture)
         {
-
             if (picdatatoMock == null)
             {
                 await settings.LogService.LogError("Null has been passed to CustomPicture");
