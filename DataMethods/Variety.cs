@@ -128,7 +128,7 @@ internal class Variety
                 PictureData VarietyData = new(PictureInputData);
                 VarietyData.Varieties.Clear();
 
-                VarietyData.BoxParameters[CurrentBoxes] = ColorData.GenerateRandomColorSettings(VarietyData.BoxParameters[CurrentBoxes]);
+                VarietyData.BoxParameters[CurrentBoxes] = ColorData.DecideColorGenerationAlt(VarietyData.BoxParameters[CurrentBoxes]);
 
                 string Font = DataGeneration.PickRandomFont();
                 VarietyData.BoxParameters[CurrentBoxes].Font = Font;

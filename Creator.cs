@@ -114,7 +114,7 @@ public partial class Creator
                         PopulatedBoxes.Add(PassPictureData.BoxParameters[0].CurrentBox.Type);
 
                     currentParameters = DataGeneration.GetTextPosition(currentParameters, image, faceRectangles, PopulatedBoxes);
-                    currentParameters = ColorData.DecideColorGeneration(currentParameters);
+                    currentParameters = ColorData.DecideColorGenerationAlt(currentParameters);
                     currentParameters.Font = DataGeneration.PickRandomFont();
 
                     // picks a random string from the list

@@ -77,11 +77,12 @@ public class PictureData
             FillColor = MagickColor.FromRgb(Parameters.FillColor.Red, Parameters.FillColor.Green, Parameters.FillColor.Blue),
             StrokeColor = MagickColor.FromRgb(Parameters.StrokeColor.Red, Parameters.StrokeColor.Green, Parameters.StrokeColor.Blue),
             BorderColor = MagickColor.FromRgb(Parameters.BorderColor.Red, Parameters.BorderColor.Green, Parameters.BorderColor.Blue),
-            StrokeWidth = 6,
+            StrokeWidth = 12,
+            FillRule = FillRule.EvenOdd,
             BackgroundColor = MagickColors.Transparent,
             Height = Parameters.HeightOfBox, // height of text box
             Width = Parameters.WidthOfBox, // width of text box
-            FontStyle = FontStyleType.Any,
+            FontStyle = FontStyleType.Bold
         };
 
         return SettingsTextLinear;
