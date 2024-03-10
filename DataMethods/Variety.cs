@@ -128,10 +128,6 @@ internal class Variety
                 PictureData VarietyData = new(PictureInputData);
                 VarietyData.Varieties.Clear();
 
-                // should perhaps have random boxes aswell
-
-                //Bitmap src = new(PictureInputData.FileName);
-
                 VarietyData.BoxParameters[CurrentBoxes] = ColorData.GenerateRandomColorSettings(VarietyData.BoxParameters[CurrentBoxes]);
 
                 string Font = DataGeneration.PickRandomFont();

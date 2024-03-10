@@ -103,7 +103,7 @@ public class DataGeneration
     }
     private static List<Box> BuildDefaultBoxes(Array2D<RgbPixel> sourcePicture)
     {
-        List<Box> Boxes = new List<Box>();
+        List<Box> Boxes = [];
         // top box
         Box topBox = new()
         {
