@@ -1,4 +1,6 @@
-﻿namespace BulkThumbnailCreator.PictureClasses;
+﻿using System.Xml;
+
+namespace BulkThumbnailCreator.PictureClasses;
 
 [Serializable]
 public class PictureData
@@ -24,9 +26,10 @@ public class PictureData
     [XmlIgnore]
     public MagickReadSettings ReadSettings { get; private set; }
 
-    public void MakeTextSettings(ParamForTextCreation Parameters)
+    public MagickReadSettings MakeTextSettings(ParamForTextCreation Parameters)
     {
         ReadSettings = TextSettingsGeneration(Parameters);
+        return ReadSettings;
     }
 
     /// <summary>
@@ -76,8 +79,7 @@ public class PictureData
             Font = Parameters.Font,
             FillColor = MagickColor.FromRgb(Parameters.FillColor.Red, Parameters.FillColor.Green, Parameters.FillColor.Blue),
             StrokeColor = MagickColor.FromRgb(Parameters.StrokeColor.Red, Parameters.StrokeColor.Green, Parameters.StrokeColor.Blue),
-            BorderColor = MagickColor.FromRgb(Parameters.BorderColor.Red, Parameters.BorderColor.Green, Parameters.BorderColor.Blue),
-            StrokeWidth = 12,
+            StrokeWidth = 5,
             FillRule = FillRule.EvenOdd,
             BackgroundColor = MagickColors.Transparent,
             Height = Parameters.HeightOfBox, // height of text box

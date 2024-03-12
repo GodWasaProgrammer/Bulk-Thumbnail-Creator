@@ -71,9 +71,6 @@ internal class Variety
                 float strokeColorHue = PictureInputData.BoxParameters[currentBox].StrokeColor.Hue;
                 float strokeColorLuminance = baseLuminanceValue;
 
-                float borderColorHue = PictureInputData.BoxParameters[currentBox].BorderColor.Hue;
-                float borderColorLuminance = baseLuminanceValue;
-
                 // create variety based on the current value
                 List<float> VarietyList = [];
 
@@ -101,10 +98,6 @@ internal class Variety
 
                     VarietyData.BoxParameters[currentBox].StrokeColor.SetByHSL(strokeColorHue, variety, strokeColorLuminance);
 
-                    VarietyData.BoxParameters[currentBox].BorderColor.SetByHSL(borderColorHue, variety, borderColorLuminance);
-
-                    //Bitmap src = new(VarietyData.FileName);
-
                     VarietyData.OutPutType = OutputType.SaturationVariety;
                     PictureInputData.Varieties.Add(VarietyData);
                 }
@@ -118,7 +111,7 @@ internal class Variety
     /// <param name="PictureInputData"></param>
     public static void Random(PictureData PictureInputData)
     {
-        const int NumberOfRandomsToProduce = 2;
+        const int NumberOfRandomsToProduce = 10;
 
         for (int CurrentIndex = 0; CurrentIndex < NumberOfRandomsToProduce; CurrentIndex++)
         {
@@ -128,7 +121,7 @@ internal class Variety
                 PictureData VarietyData = new(PictureInputData);
                 VarietyData.Varieties.Clear();
 
-                VarietyData.BoxParameters[CurrentBoxes] = ColorData.DecideColorGenerationAlt(VarietyData.BoxParameters[CurrentBoxes]);
+                VarietyData.BoxParameters[CurrentBoxes] = ColorData.SelectTwoRandomColors(VarietyData.BoxParameters[CurrentBoxes]);
 
                 string Font = DataGeneration.PickRandomFont();
                 VarietyData.BoxParameters[CurrentBoxes].Font = Font;

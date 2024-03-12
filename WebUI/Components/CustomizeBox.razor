@@ -275,11 +275,6 @@
         {
             PickColor = string.Empty;
             NoPickedColor = false;
-            if (clrGRP == ColorGroup.BorderColor)
-            {
-                BorderColor = colorvalue;
-                BorderCLRItem.SetByHSL((float)BorderColor.H, (float)BorderColor.S, (float)BorderColor.L);
-            }
             if (clrGRP == ColorGroup.FillColor)
             {
                 FillColor = colorvalue;
@@ -307,11 +302,6 @@
     private MudColor colorvalue;
 
     // get value from picker
-    private MudColor BorderColor;
-    // set value and display it
-    private ColorItem BorderCLRItem;
-
-    // get value from picker
     private MudColor FillColor;
     // set value and display it
     private ColorItem fillCLRItem;
@@ -327,7 +317,6 @@
     private enum ColorGroup
     {
         FillColor,
-        BorderColor,
         StrokeColor
     }
     #endregion
@@ -354,8 +343,6 @@
             {
                 paramIn.Text = PickedText;
             }
-            // construct color objects
-            paramIn.BorderColor.SetByHSL(BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance);
             paramIn.FillColor.SetByHSL(fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance);
             paramIn.StrokeColor.SetByHSL(StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance);
             // colors are set
@@ -410,7 +397,6 @@
         if (CurrentPagePictureData != null)
             foreach (var boxparam in CurrentPagePictureData.BoxParameters)
             {
-                BorderCLRItem = boxparam.BorderColor;
                 fillCLRItem = boxparam.FillColor;
                 StrokeCLRItem = boxparam.StrokeColor;
 
@@ -449,7 +435,6 @@
             param.Font = CurrentPagePictureData.BoxParameters[0].Font;
             param.WidthOfBox = box.Width;
             param.HeightOfBox = box.Height;
-            param.BorderColor.SetByHSL(BorderCLRItem.Hue, BorderCLRItem.Saturation, BorderCLRItem.Luminance);
             param.FillColor.SetByHSL(fillCLRItem.Hue, fillCLRItem.Saturation, fillCLRItem.Luminance);
             param.StrokeColor.SetByHSL(StrokeCLRItem.Hue, StrokeCLRItem.Saturation, StrokeCLRItem.Luminance);
             param.Boxes = CurrentPagePictureData.BoxParameters[0].Boxes;

@@ -38,15 +38,6 @@ public class ParamForTextCreation
     private ColorItem strokeColor = new();
     public ColorItem StrokeColor { get { return strokeColor; } set { strokeColor = StrokeColor; } }
 
-    /// <summary>
-    /// bordercolor for textoutput
-    /// </summary>
-    private ColorItem borderColor = new();
-    public ColorItem BorderColor { get { return borderColor; } set { borderColor = BorderColor; } }
-
-    //[XmlIgnore]
-    //private Dictionary<BoxType, Rectangle> _Boxes = new();
-
     private List<BoxType> _boxesWithNoFaceIntersect = [];
     public List<BoxType> BoxesWithNoFaceIntersect { get { return _boxesWithNoFaceIntersect; } set { _boxesWithNoFaceIntersect = value; } }
 
@@ -65,7 +56,6 @@ public class ParamForTextCreation
         _Meme = (string)param.Meme?.Clone(); // string
         fillColor = new ColorItem(param.FillColor); // object
         strokeColor = new ColorItem(param.StrokeColor); // object
-        borderColor = new ColorItem(param.BorderColor); // object
         Boxes = new List<Box>(param.Boxes); // dictionary
         _CurrentBox = new(param._CurrentBox); // object
     }

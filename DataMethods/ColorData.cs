@@ -56,8 +56,6 @@ public class ColorData
         float lightnessFillColor = 0.50F;
         float saturationStrokeColor = 1F;
         float lightnessStrokeColor = 0.50F;
-        float saturationBorderColor = 1F;
-        float lightnessBorderColor = 0.50F;
 
         const float maxHueValue = 360F;
         const float incrementalColor = 12.5F;
@@ -66,7 +64,6 @@ public class ColorData
         hueFillColor += incrementalColor;
 
         float hueStrokeColor = ColorData.ColorWheelSpinner(hueFillColor);
-        float hueBorderColor = ColorData.ColorWheelSpinner(hueFillColor);
 
         if (hueFillColor > maxHueValue)
         {
@@ -76,8 +73,6 @@ public class ColorData
         InputParameter.FillColor.SetByHSL(hueFillColor, saturationFillColor, lightnessFillColor);
 
         InputParameter.StrokeColor.SetByHSL(hueStrokeColor, saturationStrokeColor, lightnessStrokeColor);
-
-        InputParameter.BorderColor.SetByHSL(hueBorderColor, saturationBorderColor, lightnessBorderColor);
 
         return InputParameter;
     }
@@ -89,14 +84,11 @@ public class ColorData
     /// <returns></returns>
     public static ParamForTextCreation GenerateRandomColorSettings(ParamForTextCreation param)
     {
-        MagickColor magickColor = ColorData.RandomizeColor();
+        MagickColor magickColor = RandomizeColor();
         param.FillColor.SetByRGB((byte)magickColor.R, (byte)magickColor.G, (byte)magickColor.B);
 
         magickColor = ColorData.RandomizeColor();
         param.StrokeColor.SetByRGB((byte)magickColor.R, (byte)magickColor.G, (byte)magickColor.B);
-
-        magickColor = ColorData.RandomizeColor();
-        param.BorderColor.SetByRGB((byte)magickColor.R, (byte)magickColor.G, (byte)magickColor.B);
 
         return param;
     }
@@ -114,51 +106,43 @@ public class ColorData
     {
         float hueFill;
         float hueStroke;
-        float hueBorder;
 
         bool fillOkay = false;
         bool strokeOkay = false;
-        bool borderOkay = false;
         int MaxHue = 360;
         do
         {
             hueFill = hueRandom.Next(MaxHue);
             hueStroke = hueRandom.Next(MaxHue);
-            hueBorder = hueRandom.Next(MaxHue);
 
             // Check if the difference between the new value and any existing value is within the range
 
-            if (Math.Abs(hueFill - hueStroke) >= 35 && Math.Abs(hueFill - hueBorder) >= 35 && Math.Abs(hueBorder - hueStroke) >= 35)
+            if (Math.Abs(hueFill - hueStroke) >= 35)
             {
                 fillOkay = true;
                 strokeOkay = true;
-                borderOkay = true;
             }
 
-        } while (!fillOkay || !strokeOkay || !borderOkay);
+        } while (!fillOkay || !strokeOkay);
 
         float satFill;
         float satStroke;
-        float satBorder;
 
         bool satFillColorOkay = false;
         bool satStrokeColorOkay = false;
-        bool satBorderColorOkay = false;
 
         do
         {
             satFill = (float)satRandom.NextDouble() + 0.35F;
             satStroke = (float)satRandom.NextDouble() + 0.35F;
-            satBorder = (float)satRandom.NextDouble() + 0.35F;
 
-            if (Math.Abs(satFill - satStroke) >= 0.25 && Math.Abs(satFill - satBorder) >= 0.25 && Math.Abs(satBorder - satStroke) >= 0.25)
+            if (Math.Abs(satFill - satStroke) >= 0.25)
             {
                 satFillColorOkay = true;
                 satStrokeColorOkay = true;
-                satBorderColorOkay = true;
             }
 
-        } while (!satFillColorOkay || !satStrokeColorOkay || !satBorderColorOkay);
+        } while (!satFillColorOkay || !satStrokeColorOkay);
 
         float lightness;
         do
@@ -170,13 +154,12 @@ public class ColorData
 
         InputParameter.StrokeColor.SetByHSL(hueStroke, satStroke, lightness);
 
-        InputParameter.BorderColor.SetByHSL(hueBorder, satBorder, lightness);
-
         return InputParameter;
     }
 
-    static List<string> selectedColors = new List<string>();
-    public static List<MagickColor> SelectTwoDifferentColors()
+    static Random Random = new Random();
+    public static List<string> selectedColors = new List<string>();
+    public static ParamForTextCreation SelectTwoRandomColors(ParamForTextCreation paramIn)
     {
         MagickColor firstcolor;
         MagickColor secondColor;
@@ -185,30 +168,60 @@ public class ColorData
 
         colorList.Remove("None");
         colorList.Remove("Transparent");
+        colorList.Remove("RebeccaPurple");
 
         foreach (var alreadyselectedcolor in selectedColors)
         {
             colorList.Remove(alreadyselectedcolor);
         }
 
-        List<MagickColor> colors = new List<MagickColor>();
+        int randomIndexofFirstColor = Random.Next(colorList.Count);
+        firstcolor = new(colorList[randomIndexofFirstColor]);
+        selectedColors.Add(colorList[randomIndexofFirstColor]);
+        paramIn.FillColor.SetByRGB((byte)firstcolor.R, (byte)firstcolor.G, (byte)firstcolor.B);
+
+        int randomIndexofSecondColor = Random.Next(colorList.Count);
+        secondColor = new(colorList[randomIndexofSecondColor]);
+        selectedColors.Add(colorList[randomIndexofSecondColor]);
+        paramIn.StrokeColor.SetByRGB((byte)secondColor.R, (byte)secondColor.G, (byte)secondColor.B);
+
+        return paramIn;
+    }
+
+    public static ParamForTextCreation SelectTwoDifferentColors(ParamForTextCreation paramIn)
+    {
+        MagickColor firstcolor;
+        MagickColor secondColor;
+
+        List<string> colorList = GetAllMagickColors();
+
+        colorList.Remove("None");
+        colorList.Remove("Transparent");
+        colorList.Remove("RebeccaPurple");
+
+        foreach (var alreadyselectedcolor in selectedColors)
+        {
+            colorList.Remove(alreadyselectedcolor);
+        }
+
         for (int i = 0; i < colorList.Count; i++)
         {
             if (i == 0)
             {
                 firstcolor = new(colorList[i]);
                 selectedColors.Add(colorList[i]);
-                colors.Add(firstcolor);
+                paramIn.FillColor.SetByRGB((byte)firstcolor.R, (byte)firstcolor.G, (byte)firstcolor.B);
             }
 
-            if (i == colorList.Count / 2)
+            if (i == colorList.Count - 1)
             {
-                secondColor = new(colorList[i]);
+                string PassColor = colorList[i - 1];
+                secondColor = new(PassColor);
                 selectedColors.Add(colorList[i]);
-                colors.Add(secondColor);
+                paramIn.StrokeColor.SetByRGB((byte)secondColor.R, (byte)secondColor.G, (byte)secondColor.B);
             }
         }
-        return colors;
+        return paramIn;
     }
 
     private static List<string> GetAllMagickColors()

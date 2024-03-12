@@ -21,7 +21,7 @@ internal class SkiaMethods
 
                 // Set other text paint properties
                 textPaint.Typeface = SKTypeface.FromFamilyName(font);
-                textPaint.Style = SKPaintStyle.StrokeAndFill;
+                textPaint.Style = SKPaintStyle.Stroke; // Default
                 textPaint.StrokeWidth = 8;
 
                 // Create a random number generator

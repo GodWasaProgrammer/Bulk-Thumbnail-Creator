@@ -114,7 +114,7 @@ public partial class Creator
                         PopulatedBoxes.Add(PassPictureData.BoxParameters[0].CurrentBox.Type);
 
                     currentParameters = DataGeneration.GetTextPosition(currentParameters, image, faceRectangles, PopulatedBoxes);
-                    currentParameters = ColorData.DecideColorGenerationAlt(currentParameters);
+                    currentParameters = ColorData.SelectTwoRandomColors(currentParameters);
                     currentParameters.Font = DataGeneration.PickRandomFont();
 
                     // picks a random string from the list
@@ -132,10 +132,11 @@ public partial class Creator
             //// Produce varietydata for the current object
             for (int i = 0; i < settings.PictureDatas.Count; i++)
             {
-                Variety.Saturation(settings.PictureDatas[i]);
+                //Variety.Saturation(settings.PictureDatas[i]);
                 Variety.Font(settings.PictureDatas[i]);
                 Variety.Random(settings.PictureDatas[i]);
                 Variety.Meme(settings.PictureDatas[i]);
+                ColorData.selectedColors.Clear();
             }
             #endregion
 
