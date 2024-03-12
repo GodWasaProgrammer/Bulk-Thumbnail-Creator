@@ -1,6 +1,4 @@
-﻿using BulkThumbnailCreator.DataMethods;
-
-namespace BulkThumbnailCreator;
+﻿namespace BulkThumbnailCreator;
 
 public class Production
 {
@@ -292,7 +290,7 @@ public class Production
         {
             await settings.LogService.LogError($"Error in reading image into ImageMagick: {ex.Message}");
         }
-       
+
         for (int Box = 0; Box < PicData.BoxParameters.Count; Box++)
         {
             if (PicData.BoxParameters[Box].CurrentBox.Type == BoxType.None)
@@ -317,7 +315,8 @@ public class Production
                     var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);
 
                     //Guid guid = Guid.NewGuid();
-                    //string createdTextOutPut = SkiaMethods.CreateTextImage(PicData.BoxParameters[Box].Text, PicData.BoxParameters[Box].Font, PicData.BoxParameters[Box].CurrentBox.Height, PicData.BoxParameters[Box].CurrentBox.Width, guid);
+                    //string createdTextOutPut = SkiaMethods.
+                    //(PicData.BoxParameters[Box].Text, PicData.BoxParameters[Box].Font, PicData.BoxParameters[Box].CurrentBox.Height, PicData.BoxParameters[Box].CurrentBox.Width, guid);
                     //var caption = new MagickImage(createdTextOutPut);
 
                     int takeX = BoxParam.CurrentBox.X;

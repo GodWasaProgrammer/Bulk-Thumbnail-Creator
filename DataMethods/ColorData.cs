@@ -1,7 +1,4 @@
-﻿using SixLabors.ImageSharp.Processing;
-using System.Numerics;
-
-namespace BulkThumbnailCreator;
+﻿namespace BulkThumbnailCreator;
 
 public class ColorData
 {
@@ -39,7 +36,6 @@ public class ColorData
         {
             inputHue -= fullSpin;
         }
-
         return inputHue;
     }
 

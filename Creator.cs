@@ -133,7 +133,7 @@ public partial class Creator
             for (int i = 0; i < settings.PictureDatas.Count; i++)
             {
                 //Variety.Saturation(settings.PictureDatas[i]);
-                Variety.Font(settings.PictureDatas[i]);
+                // Variety.Font(settings.PictureDatas[i]);
                 Variety.Random(settings.PictureDatas[i]);
                 Variety.Meme(settings.PictureDatas[i]);
                 ColorData.selectedColors.Clear();

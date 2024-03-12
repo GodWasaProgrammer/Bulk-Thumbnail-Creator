@@ -90,7 +90,6 @@ internal class Mocking
             string TargetDirectory = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "TextAdded");
 
             // add the variety directory to the target directory
-
             Directory.CreateDirectory($"{TargetDirectory}/{dir.Name}");
 
             TargetDirectory = Path.Combine(TargetDirectory, dir.Name);

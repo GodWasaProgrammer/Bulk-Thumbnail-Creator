@@ -1,30 +1,49 @@
 ﻿@using BulkThumbnailCreator.PictureClasses
 
-@if(param is not null)
+@if (param is not null)
 {
-@if (param.CurrentBox.Type != BulkThumbnailCreator.Enums.BoxType.None)
-{
-    <Row>
-        <MudTh>
-            BoxParameters
+    @if (param.CurrentBox.Type != BulkThumbnailCreator.Enums.BoxType.None)
+    {
+        <Row>
+            <MudTh>
+                <Row>
+                    <MudTh>Height and Width</MudTh>
+                    <MudTh>CurrentBox</MudTh>
+                    <MudTh>Meme</MudTh>
+                    <MudTh>Text</MudTh>
+                    <MudTh>Font</MudTh>
+                </Row>
+                <MudTd DataLabel="Height">@param.CurrentBox.Height @param.CurrentBox.Width</MudTd>
+                <MudTd DataLabel="CurrentBox">@param.CurrentBox.Type</MudTd>
+                <MudTd DataLabel="Meme">@Path.GetFileNameWithoutExtension(param.Meme)</MudTd>
+                <MudTd DataLabel="Text">@param.Text</MudTd>
+                <MudTd DataLabel="Font">@Path.GetFileNameWithoutExtension(param.Font)</MudTd>
+            </MudTh>
+        </Row>
 
+        <Row>
             <Row>
-                <MudTh>HSL values</MudTh>
-                <MudTh>Height and Width</MudTh>
-                <MudTh>CurrentBox</MudTh>
-                <MudTh>Meme</MudTh>
-                <MudTh>Text</MudTh>
-                <MudTh>Font</MudTh>
+                <MudTh>FillColor</MudTh>
             </Row>
-
-            <MudTd DataLabel="Height">@param.CurrentBox.Height @param.CurrentBox.Width</MudTd>
-            <MudTd DataLabel="CurrentBox">@param.CurrentBox.Type</MudTd>
-            <MudTd DataLabel="Meme">@Path.GetFileNameWithoutExtension(param.Meme)</MudTd>
-            <MudTd DataLabel="Text">@param.Text</MudTd>
-            <MudTd DataLabel="Font">@Path.GetFileNameWithoutExtension(param.Font)</MudTd>
-        </MudTh>
-    </Row>
-}
+            <MudTh>
+                    <MudTd DataLabel="FillColor">Hue:@param.FillColor.Hue</MudTd>
+                    <MudTd DataLabel="FillColor">Saturation:@param.FillColor.Saturation</MudTd>
+                    <MudTd DataLabel="FillColor">Luminance:@param.FillColor.Luminance</MudTd>
+            </MudTh>
+            <Row>
+                <MudTh>StrokeColor</MudTh>
+            </Row>
+            <MudTh>
+                <Row>
+                    <MudTd DataLabel="StrokeColor">Hue:@param.StrokeColor.Hue</MudTd>
+                    <MudTd DataLabel="StrokeColor">Saturation:@param.StrokeColor.Saturation</MudTd>
+                    <MudTd DataLabel="StrokeColor">Luminance:@param.StrokeColor.Luminance</MudTd>
+                </Row>
+            </MudTh>
+            <Row>
+            </Row>
+        </Row>
+    }
 }
 
 @code

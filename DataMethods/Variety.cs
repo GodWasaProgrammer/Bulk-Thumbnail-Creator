@@ -51,83 +51,23 @@ internal class Variety
     }
 
     /// <summary>
-    /// Creates Variety from an existing image, this will be on user interaction
-    /// </summary>
-    /// <param name="PictureInputData">The Image to create variety of</param>
-    public static void Saturation(PictureData PictureInputData)
-    {
-        for (int currentBox = 0; currentBox < PictureInputData.BoxParameters.Count; currentBox++)
-        {
-            if (PictureInputData.BoxParameters[currentBox].CurrentBox.Type == BoxType.None)
-            {
-                break;
-            }
-            else
-            {
-                const float baseLuminanceValue = 0.50F;
-                float fillColorHue = PictureInputData.BoxParameters[currentBox].FillColor.Hue;
-                float fillColorLuminance = baseLuminanceValue;
-
-                float strokeColorHue = PictureInputData.BoxParameters[currentBox].StrokeColor.Hue;
-                float strokeColorLuminance = baseLuminanceValue;
-
-                // create variety based on the current value
-                List<float> VarietyList = [];
-
-                float Variety1 = 0.10F;
-                VarietyList.Add(Variety1);
-
-                float Variety2 = 0.25F;
-                VarietyList.Add(Variety2);
-
-                float Variety3 = 0.35F;
-                VarietyList.Add(Variety3);
-
-                float Variety4 = 0.65F;
-                VarietyList.Add(Variety4);
-
-                float Variety5 = 1F;
-                VarietyList.Add(Variety5);
-
-                foreach (float variety in VarietyList)
-                {
-                    PictureData VarietyData = new(PictureInputData);
-                    VarietyData.Varieties.Clear();
-
-                    VarietyData.BoxParameters[currentBox].FillColor.SetByHSL(fillColorHue, variety, fillColorLuminance);
-
-                    VarietyData.BoxParameters[currentBox].StrokeColor.SetByHSL(strokeColorHue, variety, strokeColorLuminance);
-
-                    VarietyData.OutPutType = OutputType.SaturationVariety;
-                    PictureInputData.Varieties.Add(VarietyData);
-                }
-            }
-        }
-    }
-
-    /// <summary>
     /// 
     /// </summary>
     /// <param name="PictureInputData"></param>
     public static void Random(PictureData PictureInputData)
     {
-        const int NumberOfRandomsToProduce = 10;
+        const int NumberOfRandomsToProduce = 15;
 
         for (int CurrentIndex = 0; CurrentIndex < NumberOfRandomsToProduce; CurrentIndex++)
         {
             for (int CurrentBoxes = 0; CurrentBoxes < PictureInputData.NumberOfBoxes; CurrentBoxes++)
             {
-                _ = new Random();
                 PictureData VarietyData = new(PictureInputData);
                 VarietyData.Varieties.Clear();
-
-                VarietyData.BoxParameters[CurrentBoxes] = ColorData.SelectTwoRandomColors(VarietyData.BoxParameters[CurrentBoxes]);
-
+                VarietyData.BoxParameters[CurrentBoxes] = ColorData.SelectTwoDifferentColors(VarietyData.BoxParameters[CurrentBoxes]);
                 string Font = DataGeneration.PickRandomFont();
                 VarietyData.BoxParameters[CurrentBoxes].Font = Font;
-
                 VarietyData.OutPutType = OutputType.RandomVariety;
-
                 PictureInputData.Varieties.Add(VarietyData);
             }
         }

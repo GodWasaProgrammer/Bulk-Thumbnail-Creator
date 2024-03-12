@@ -79,6 +79,7 @@
                     string fontFileName = Path.GetFileNameWithoutExtension(fontPath);
                     <MudSelectItem Value="@fontPath" Style="@(($"font-family: '{fontFileName}';"))"><MudText Color="Color.Secondary">@fontFileName</MudText></MudSelectItem>
                 }
+
             </MudSelect>
 
             <MudSelect AdornmentColor="Color.Primary" Label="Select text" @bind-Value="PickedText">
@@ -87,6 +88,7 @@
                 {
                     <MudSelectItem Value="@text"><MudText Color="Color.Secondary">@text</MudText></MudSelectItem>
                 }
+
             </MudSelect>
 
             @if (!AddText)
@@ -102,9 +104,7 @@
                 {
                     <MudText Color="Color.Secondary">Bruh. You forgot to enter your text.</MudText>
                 }
-
             }
-
         }
         else
         {
@@ -128,10 +128,9 @@
                 <ParamDisplay param="param"></ParamDisplay>
             }
 
-            <MudButton Variant="Variant.Filled" Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">Produce</MudButton>
         }
-
     </MudPaper>
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">Produce</MudButton>
 }
 
 @code

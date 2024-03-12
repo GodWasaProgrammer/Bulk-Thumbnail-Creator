@@ -6,7 +6,6 @@ public class Settings
     {
         LogService = _logger;
         JobService = JS;
-
     }
 
     /// <summary>
@@ -16,7 +15,7 @@ public class Settings
     private static bool _Mocking = false;
     public static bool Mocking { get { return _Mocking; } set { _Mocking = value; } }
 
-    private static bool _MakeMocking = false;
+    private static bool _MakeMocking = true;
     public static bool MakeMocking { get { return _MakeMocking; } set { _MakeMocking = value; } }
 
 
