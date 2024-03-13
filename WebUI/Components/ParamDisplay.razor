@@ -1,53 +1,74 @@
 ﻿@using BulkThumbnailCreator.PictureClasses
 
-@if (param is not null)
+@if (param != null && param.CurrentBox.Type != BulkThumbnailCreator.Enums.BoxType.None)
 {
-    @if (param.CurrentBox.Type != BulkThumbnailCreator.Enums.BoxType.None)
-    {
+    <div style="overflow-x: auto; overflow-y: auto; max-height: 200px;">
         <Row>
             <MudTh>
                 <Row>
-                    <MudTh>Height and Width</MudTh>
-                    <MudTh>CurrentBox</MudTh>
-                    <MudTh>Meme</MudTh>
+                    <MudTh>Box</MudTh>
+                    @if (param.Meme != null)
+                    {
+                        <MudTh>Meme</MudTh>
+                    }
                     <MudTh>Text</MudTh>
                     <MudTh>Font</MudTh>
+                    <MudTh>FillColor</MudTh>
+                    <MudTh>StrokeColor</MudTh>
                 </Row>
-                <MudTd DataLabel="Height">@param.CurrentBox.Height @param.CurrentBox.Width</MudTd>
-                <MudTd DataLabel="CurrentBox">@param.CurrentBox.Type</MudTd>
-                <MudTd DataLabel="Meme">@Path.GetFileNameWithoutExtension(param.Meme)</MudTd>
+                <MudTd DataLabel="Box">@param.CurrentBox.Type</MudTd>
+                @if (param.Meme != null)
+                {
+                    <MudTd DataLabel="Meme">@Path.GetFileNameWithoutExtension(param.Meme)</MudTd>
+                }
                 <MudTd DataLabel="Text">@param.Text</MudTd>
                 <MudTd DataLabel="Font">@Path.GetFileNameWithoutExtension(param.Font)</MudTd>
+                <MudTd DataLabel="FillColor">
+                    <div style="width: 20px; height: 20px; background-color: @HslToRgb(param.FillColor.Hue, param.FillColor.Saturation, param.FillColor.Luminance);"></div>
+                </MudTd>
+                <MudTd DataLabel="StrokeColor">
+                    <div style="width: 20px; height: 20px; background-color: @HslToRgb(param.StrokeColor.Hue, param.StrokeColor.Saturation, param.StrokeColor.Luminance);"></div>
+                </MudTd>
             </MudTh>
         </Row>
-
-        <Row>
-            <Row>
-                <MudTh>FillColor</MudTh>
-            </Row>
-            <MudTh>
-                    <MudTd DataLabel="FillColor">Hue:@param.FillColor.Hue</MudTd>
-                    <MudTd DataLabel="FillColor">Saturation:@param.FillColor.Saturation</MudTd>
-                    <MudTd DataLabel="FillColor">Luminance:@param.FillColor.Luminance</MudTd>
-            </MudTh>
-            <Row>
-                <MudTh>StrokeColor</MudTh>
-            </Row>
-            <MudTh>
-                <Row>
-                    <MudTd DataLabel="StrokeColor">Hue:@param.StrokeColor.Hue</MudTd>
-                    <MudTd DataLabel="StrokeColor">Saturation:@param.StrokeColor.Saturation</MudTd>
-                    <MudTd DataLabel="StrokeColor">Luminance:@param.StrokeColor.Luminance</MudTd>
-                </Row>
-            </MudTh>
-            <Row>
-            </Row>
-        </Row>
-    }
+    </div>
 }
+
+
 
 @code
 {
     [Parameter]
     public ParamForTextCreation param { get; set; }
+
+    string HslToRgb(double h, double s, double l)
+    {
+        double r, g, b;
+
+        if (s == 0)
+        {
+            r = g = b = l; // achromatic
+        }
+        else
+        {
+            double hue = h / 360.0;
+            double q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            double p = 2 * l - q;
+            r = HueToRgb(p, q, hue + 1.0 / 3);
+            g = HueToRgb(p, q, hue);
+            b = HueToRgb(p, q, hue - 1.0 / 3);
+        }
+
+        return $"rgb({(int)(r * 255)}, {(int)(g * 255)}, {(int)(b * 255)})";
+    }
+
+    double HueToRgb(double p, double q, double t)
+    {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1.0 / 6) return p + (q - p) * 6 * t;
+        if (t < 1.0 / 2) return q;
+        if (t < 2.0 / 3) return p + (q - p) * (2.0 / 3 - t) * 6;
+        return p;
+    }
 }
