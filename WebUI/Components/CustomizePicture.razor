@@ -16,7 +16,7 @@
                 <PictureDataBox ImageURL="@ImageURL" PicData="@CurrentPagePictureData"></PictureDataBox>
             </MudItem>
             <MudItem xs="12" sm="6">
-                <CustomizeBox ImageURL="@ImageURL" CurrentPagePictureData="CurrentPagePictureData" OnCustomBoxHasProducedPicture="SetCustomPicture" @ref="customizeBoxRef" CurrentJob="CurrentJob"></CustomizeBox>
+                <CustomizeBox ImageUrl="@ImageURL" CurrentPagePictureData="CurrentPagePictureData" OnCustomBoxHasProducedPicture="SetCustomPicture" @ref="customizeBoxRef" CurrentJob="CurrentJob"></CustomizeBox>
             </MudItem>
         </MudGrid>
     </MudPaper>
@@ -30,7 +30,7 @@
 {
     private void Reset()
     {
-        customizeBoxRef.reset();
+        customizeBoxRef.Reset();
         CurrentJob = null;
         CurrentPagePictureData = null;
         ImageURL = null;
