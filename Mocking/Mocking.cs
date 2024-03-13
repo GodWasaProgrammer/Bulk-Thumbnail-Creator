@@ -51,8 +51,9 @@ internal class Mocking
 
     internal static void CopyTextAddedDir(Settings settings)
     {
-        // clean up the text added dir of mockfolder
-        string mockdir3 = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "TextAdded");
+        string lastFolderName = Path.GetFileName(settings.TextAddedDir.TrimEnd(Path.DirectorySeparatorChar));
+
+        string mockdir3 = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "TextAdded", lastFolderName);
 
         // if the directory is missing we make it
         if (!Directory.Exists(mockdir3))
@@ -69,7 +70,7 @@ internal class Mocking
         }
 
         // Copy the Text Added Directory to Mock Folder
-        string mockdir2 = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "TextAdded");
+        string mockdir2 = Path.Combine($"..", "Mocking", "FrontpagePictureLineUp", settings.TextAddedDir);
         string[] Mockfiles = Directory.GetFiles(settings.TextAddedDir);
         foreach (string file in Mockfiles)
         {
@@ -86,8 +87,10 @@ internal class Mocking
         foreach (DirectoryInfo dir in di2)
         {
             string[] files = Directory.GetFiles(dir.FullName);
-
-            string TargetDirectory = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "TextAdded");
+            
+            string varFolderName = Path.GetFileName(dir.FullName.TrimEnd(Path.DirectorySeparatorChar));
+            string textAddedSubDirVideoName = Path.GetFileName(settings.TextAddedDir.TrimEnd(Path.DirectorySeparatorChar));
+            string TargetDirectory = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "TextAdded", textAddedSubDirVideoName);
 
             // add the variety directory to the target directory
             Directory.CreateDirectory($"{TargetDirectory}/{dir.Name}");
@@ -112,6 +115,8 @@ internal class Mocking
         string srcMockFolder = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "output");
         string[] dirToCopy = Directory.GetDirectories(srcMockFolder);
 
+        
+
         foreach (string dir in dirToCopy)
         {
             string targetDir = Path.Combine($"output/{Path.GetFileName(dir)}");
@@ -129,7 +134,24 @@ internal class Mocking
 
         // copy pictures to text added dir
         string sourceDirectory = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "TextAdded");
-        string[] files = Directory.GetFiles(sourceDirectory);
+
+        string[] directoryInfos = Directory.GetDirectories(sourceDirectory);
+
+        string lastFolderName = "";
+        foreach (string directoryInfo in directoryInfos)
+        {
+            lastFolderName = Path.GetFileName(directoryInfo.TrimEnd(Path.DirectorySeparatorChar));
+        }
+
+        string[] files = Directory.GetFiles(Path.Combine(sourceDirectory, lastFolderName));
+
+        settings.TextAddedDir = Path.Combine(settings.TextAddedDir, lastFolderName);
+
+        if(!Path.Exists(settings.TextAddedDir))
+        {
+            Directory.CreateDirectory(settings.TextAddedDir);
+        }
+
         foreach (string file in files)
         {
             await Task.Run(() => File.Copy(file, $"{settings.TextAddedDir}/{Path.GetFileName(file)}"));
@@ -163,13 +185,16 @@ internal class Mocking
         // copy pictures to text added dir / var dir
         string sourceDirectory = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "TextAdded");
         string[] Directories = Directory.GetDirectories(sourceDirectory);
-        foreach (string dir in Directories)
+        string[] subDirs = Directory.GetDirectories(Directories[0]);
+
+        foreach (string dir in subDirs)
         {
             // this should only have one directory to copy
             // since we are mocking the variety list
             string[] files = Directory.GetFiles(dir);
             string dirname = Path.GetFileName(dir);
             Directory.CreateDirectory(Path.Combine(settings.TextAddedDir, dirname));
+            
             foreach (string file in files)
             {
                 string outPath = Path.Combine(settings.TextAddedDir, dirname);

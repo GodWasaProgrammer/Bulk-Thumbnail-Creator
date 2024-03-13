@@ -103,6 +103,28 @@
             // sets the list on the job object
             CurrentJob.PictureDatas = PicDataServiceList;
 
+            string liftMockFolder = "";
+            if(Settings.Mocking == true)
+            {
+                string[] subdirs = Directory.GetDirectories(settings.TextAddedDir);
+                foreach(var subdir in subdirs)
+                {
+                    string lastFolderName = Path.GetFileName(subdir.TrimEnd(Path.DirectorySeparatorChar));
+                    liftMockFolder = lastFolderName;
+                }
+                liftMockFolder = liftMockFolder.Replace("varietyof", "");
+
+                string liftFileName;
+                liftFileName = CurrentJob.PictureDatas[0].FileName;
+                string path = Path.GetDirectoryName(liftFileName);
+
+                liftMockFolder = Path.Combine(path,liftMockFolder);
+                int index = liftMockFolder.IndexOf("\\");
+                liftMockFolder = liftMockFolder.Remove(index, 1).Insert(index, "/");
+               
+                PicToVarietize = CurrentJob.PictureDatas.Find(x => x.FileName == liftMockFolder);
+            }
+
             string parentfilename = Path.GetFileName(PicToVarietize.FileName);
             string varietyof = "varietyof";
             string ConcatenatedString = $"{PassCrntJob.Settings.TextAddedDir}/{varietyof}{parentfilename}";

@@ -127,7 +127,6 @@
                 ParamForTextCreation param = BoxParameters.FirstOrDefault(p => p.CurrentBox.Type == PickedBox);
                 <ParamDisplay param="param"></ParamDisplay>
             }
-
         }
     </MudPaper>
             <MudButton Variant="Variant.Filled" Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">Produce</MudButton>

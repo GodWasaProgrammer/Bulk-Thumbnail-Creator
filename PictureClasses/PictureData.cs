@@ -1,6 +1,4 @@
-﻿using System.Xml;
-
-namespace BulkThumbnailCreator.PictureClasses;
+﻿namespace BulkThumbnailCreator.PictureClasses;
 
 [Serializable]
 public class PictureData
