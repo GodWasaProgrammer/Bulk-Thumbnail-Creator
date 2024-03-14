@@ -13,7 +13,7 @@
             <UserDisplay />
         </CascadingAuthenticationState>
         <div style="display: flex; align-items: center; justify-content: center; height: 100%; width: 75%;">
-            <img src="/images/BTCLogo.png?@(DateTime.UtcNow.Ticks)" style="max-width: 100%; max-height: 100%; object-fit: contain; margin: auto; display: block;" />
+            <img src="/images/BTCLogo.png?@(DateTime.UtcNow.Ticks)" style="max-width: 100%; max-height: 100%; object-fit: contain; margin: auto; display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" />
         </div>
         <MudSpacer />
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" href="https://github.com/GodWasAProgrammer" Target="_blank" />
@@ -38,9 +38,21 @@
             PaletteDark = new()
             {
                 Primary = Colors.DeepPurple.Default,
-                Secondary = Colors.Teal.Default,
-                AppbarBackground = Colors.Yellow.Default,
-                Background = Colors.Shades.Black
+                Secondary = Colors.Blue.Accent1,
+                AppbarBackground = Colors.DeepOrange.Accent4,
+                Background = Colors.Grey.Darken3,
+                DrawerBackground = Colors.Amber.Accent4,
+                Surface = Colors.Shades.Black,
+                TextPrimary = Colors.DeepPurple.Accent4,
+                InfoContrastText = Colors.DeepOrange.Accent4,
+                TextSecondary = Colors.DeepOrange.Accent4
+            },
+
+            LayoutProperties = new LayoutProperties()
+            {
+                DrawerWidthLeft = "200px",
+                DrawerWidthRight = "0px",
+                AppbarHeight = "30px",
             }
     };
 
