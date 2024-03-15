@@ -15,10 +15,16 @@ public class ColorData
         colorList.Remove("Transparent");
         colorList.Remove("RebeccaPurple");
 
+        if (selectedColors.Count == 140 || selectedColors.Count > 140)
+        {
+            selectedColors.Clear();
+        }
         foreach (var alreadyselectedcolor in selectedColors)
         {
             colorList.Remove(alreadyselectedcolor);
         }
+
+        
 
         int randomIndexofFirstColor = Random.Next(colorList.Count);
         firstcolor = new(colorList[randomIndexofFirstColor]);
@@ -43,6 +49,11 @@ public class ColorData
         colorList.Remove("None");
         colorList.Remove("Transparent");
         colorList.Remove("RebeccaPurple");
+
+        if (selectedColors.Count == 140 || selectedColors.Count > 140)
+        {
+            selectedColors.Clear();
+        }
 
         foreach (var alreadyselectedcolor in selectedColors)
         {

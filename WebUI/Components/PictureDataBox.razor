@@ -20,15 +20,6 @@
             }
 
         </MudItem>
-        @if (ImageURL != null)
-        {
-            <MudTextField Disabled=true Label="Image URL" @bind-Value="@ImageURL" />
-        }
-        @if (PicData != null)
-        {
-            <MudTextField Disabled=true Label="FileName" @bind-Value="@PicData.FileName" />
-            <MudTextField Disabled=true Label="OutPath" @bind-Value="@PicData.OutPath" />
-        }
 
         <MudGrid>
             @if (PicData != null)
@@ -63,39 +54,3 @@
     [Parameter]
     public Action GoBack { get; set; }
 }
-
-<style>
-    /* Studded Header Style */
-    .studded-header {
-        background-color: #000; /* Background color */
-        color: #FFD700; /* Text color (gold) */
-        padding: 20px; /* Add padding to create space inside the header */
-        text-align: center; /* Center-align text */
-        border-bottom: 2px solid #FFD700; /* Gold border on the bottom */
-    }
-
-        /* Add "studs" using pseudo-elements */
-        .studded-header::before,
-        .studded-header::after {
-            content: '\2022'; /* Bullet character (•) for the "studs" */
-            font-size: 24px; /* Adjust the size of the studs */
-            color: #FFD700; /* Gold color for studs */
-            margin: 0 10px; /* Spacing between studs */
-        }
-
-        /* Center the studs */
-        .studded-header::before {
-            vertical-align: middle;
-        }
-
-        .studded-header::after {
-            vertical-align: middle;
-        }
-
-        /* Adjust spacing and font styles for the text */
-        .studded-header h1 {
-            margin: 0; /* Remove default margin for h1 element */
-            font-size: 36px; /* Adjust the font size for the header text */
-            font-weight: bold; /* Bold font for emphasis */
-        }
-</style>

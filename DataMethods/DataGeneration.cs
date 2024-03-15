@@ -1,6 +1,6 @@
 ﻿namespace BulkThumbnailCreator;
 
-public class DataGeneration
+public static class DataGeneration
 {
     /// <summary>
     /// Picks a random font from the provided font folder
@@ -10,11 +10,11 @@ public class DataGeneration
     {
         var fontNames = Directory.GetFiles("Fonts", "*.TTF*");
 
-        Random randompicker = new();
+        Random random = new();
 
-        int randommax = fontNames.Length;
+        var randommax = fontNames.Length;
 
-        int fontChosen = randompicker.Next(randommax);
+        int fontChosen = random.Next(randommax);
 
         return fontNames[fontChosen].ToString();
     }
@@ -24,10 +24,10 @@ public class DataGeneration
         parameters.Boxes = Boxes;
         // boxes that we will pick from after calcs done
 
-        List<BoxType> FreeBoxes = [];
+        List<BoxType> freeBoxes = [];
         foreach (Box box in Boxes)
         {
-            FreeBoxes.Add(box.Type);
+            freeBoxes.Add(box.Type);
         }
 
         if (faceRect.Length != 0)
@@ -37,19 +37,18 @@ public class DataGeneration
                 List<(BoxType, bool)> FaceInterSectResults = [];
                 for (int i = 0; i < Boxes.Count; i++)
                 {
-                    bool BoxIntersect;
-                    BoxIntersect = IntersectCheck(Boxes[i].Rectangle, face);
-                    if (BoxIntersect)
+                    var boxIntersect = IntersectCheck(Boxes[i].Rectangle, face);
+                    if (boxIntersect)
                     {
-                        FreeBoxes.Remove(Boxes[i].Type);
+                        freeBoxes.Remove(Boxes[i].Type);
                     }
-                    FaceInterSectResults.Add((Boxes[i].Type, BoxIntersect));
+                    FaceInterSectResults.Add((Boxes[i].Type, boxIntersect));
                 }
             }
         }
 
         // early exit if there are no free boxes left after intersecting with faces
-        if (FreeBoxes.Count == 0)
+        if (freeBoxes.Count == 0)
         {
             return parameters;
         }
@@ -67,7 +66,7 @@ public class DataGeneration
                     bool BoxIntersect = IntersectCheck(PopulatedRect, BoxRectangle);
                     if (BoxIntersect)
                     {
-                        FreeBoxes.Remove(Boxes[rectangleIndex].Type);
+                        freeBoxes.Remove(Boxes[rectangleIndex].Type);
                     }
                     IntersectResults.Add((Boxes[rectangleIndex].Type, BoxIntersect));
                 }
@@ -75,12 +74,12 @@ public class DataGeneration
         }
 
         // check what boxes are left
-        if (FreeBoxes.Count != 0)
+        if (freeBoxes.Count != 0)
         {
             // all calculations done, pick one box
             Random random = new();
             BoxType pickedBoxName;
-            BoxType[] boxes = [.. FreeBoxes];
+            BoxType[] boxes = [.. freeBoxes];
 
             pickedBoxName = boxes[random.Next(boxes.Length)];
 
@@ -88,9 +87,9 @@ public class DataGeneration
             parameters.WidthOfBox = parameters.CurrentBox.Width;
             parameters.HeightOfBox = parameters.CurrentBox.Height;
 
-            FreeBoxes.Remove(pickedBoxName);
+            freeBoxes.Remove(pickedBoxName);
 
-            parameters.BoxesWithNoFaceIntersect = FreeBoxes;
+            parameters.BoxesWithNoFaceIntersect = freeBoxes;
         }
         return parameters;
     }
