@@ -2,8 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-// Ignore Spelling: Meme
-
 namespace BulkThumbnailCreator;
 
 internal static class Variety
@@ -67,6 +65,7 @@ internal static class Variety
                 varietyData.Varieties.Clear();
                 varietyData.BoxParameters[currentBoxes] = ColorData.SelectTwoDifferentColors(varietyData.BoxParameters[currentBoxes]);
                 var font = DataGeneration.PickRandomFont();
+                varietyData.BoxParameters[currentBoxes].Gradient = DataGeneration.RandomGradient();
                 varietyData.BoxParameters[currentBoxes].Font = font;
                 varietyData.OutPutType = OutputType.RandomVariety;
                 pictureInputData.Varieties.Add(varietyData);

@@ -310,12 +310,23 @@ public class Production
                     //// Add the caption layer on top of the background image
                     var caption = new MagickImage($"caption:{boxParam.Text}", pictureData.ReadSettings);
 
-                    var takeX = boxParam.CurrentBox.X;
-                    var takeY = boxParam.CurrentBox.Y;
+                    // gradient section
+                    if (boxParam.Gradient)
+                    {
+                        using var sparseColorImage = caption.Clone(); // +clone
+                        var fillColor = ColorData.MakeQuantumColor(boxParam.FillColor);
+                        var StrokeColor = ColorData.MakeQuantumColor(boxParam.StrokeColor);
+                        var sparseColorArgs = new SparseColorArg[2];
+                        sparseColorArgs[0] = new SparseColorArg(0, caption.Height, fillColor);
+                        sparseColorArgs[1] = new SparseColorArg(caption.Width, 0, StrokeColor);
+                        sparseColorImage.SparseColor(SparseColorMethod.Bilinear, sparseColorArgs); // -sparse - color Barycentric
 
+                        caption.Composite(sparseColorImage, CompositeOperator.In); // -compose In -composite
+                    }
+                    var takeY = boxParam.CurrentBox.Y;
+                    var takeX = boxParam.CurrentBox.X;
                     outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
                 }
-
                 settings.LogService.LogInformation($"Picture:{Path.GetFileName(pictureData.FileName)}Box Type:{pictureData.BoxParameters[box].CurrentBox.Type} Box: {box + 1} of {pictureData.BoxParameters.Count} has been composited");
             });
         }

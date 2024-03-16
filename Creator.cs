@@ -112,6 +112,7 @@ public static partial class Creator
 
                     currentParameters = DataGeneration.GetTextPosition(currentParameters, image, faceRectangles, populatedBoxes);
                     currentParameters = ColorData.SelectTwoRandomColors(currentParameters);
+                    currentParameters.Gradient = DataGeneration.RandomGradient();
                     currentParameters.Font = DataGeneration.PickRandomFont();
 
                     // picks a random string from the list

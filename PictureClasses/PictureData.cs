@@ -10,44 +10,18 @@ public class PictureData
     public string FileName { get; set; }
     public string OutPath { get; set; }
     public List<ParamForTextCreation> BoxParameters { get; set; } = [];
-
     public int _numberOfBoxes = 2;
     public OutputType OutPutType { get; set; }
-
     [XmlIgnore]
     public MagickReadSettings ReadSettings { get; private set; }
-
     public MagickReadSettings MakeTextSettings(ParamForTextCreation parameters)
     {
         ReadSettings = TextSettingsGeneration(parameters);
         return ReadSettings;
     }
     public List<PictureData> Varieties { get; set; } = [];
-
-    // Copy Constructor 
-    public PictureData(PictureData pictureDataToCopy)
-    {
-        FileName = (string)pictureDataToCopy.FileName.Clone();
-        BoxParameters = [];
-        foreach (var item in pictureDataToCopy.BoxParameters)
-        {
-            BoxParameters.Add(new ParamForTextCreation(item));
-        }
-        Varieties = new List<PictureData>(pictureDataToCopy.Varieties);
-        OutPutType = pictureDataToCopy.OutPutType;
-        if (pictureDataToCopy.OutPath != null)
-        {
-            OutPath = (string)pictureDataToCopy.OutPath.Clone();
-        }
-    }
-
-    public PictureData()
-    {
-    }
-
     /// <summary>
     /// Generates MagickReadSettings to be used in a PicturedataObject to decide how text will look
-    /// </summary>
     /// <param name="parameters">The passed Parameters for text creation</param>
     /// <returns></returns>
     private static MagickReadSettings TextSettingsGeneration(ParamForTextCreation parameters)
@@ -64,5 +38,24 @@ public class PictureData
             Width = parameters.WidthOfBox, // width of text box
             FontStyle = FontStyleType.Bold
         };
+    }
+    // Copy Constructor 
+    public PictureData(PictureData pictureDataToCopy)
+    {
+        FileName = (string)pictureDataToCopy.FileName.Clone();
+        BoxParameters = [];
+        foreach (var item in pictureDataToCopy.BoxParameters)
+        {
+            BoxParameters.Add(new ParamForTextCreation(item));
+        }
+        Varieties = new List<PictureData>(pictureDataToCopy.Varieties);
+        OutPutType = pictureDataToCopy.OutPutType;
+        if (pictureDataToCopy.OutPath != null)
+        {
+            OutPath = (string)pictureDataToCopy.OutPath.Clone();
+        }
+    }
+    public PictureData()
+    {
     }
 }

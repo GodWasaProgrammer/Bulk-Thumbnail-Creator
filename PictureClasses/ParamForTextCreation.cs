@@ -2,8 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-// Ignore Spelling: Meme
-
 namespace BulkThumbnailCreator.PictureClasses;
 
 public class ParamForTextCreation
@@ -11,6 +9,7 @@ public class ParamForTextCreation
     public string Meme { get; set; }
     public string Text { get; set; }
     public string Font { get; set; }
+    public bool Gradient { get; set; }
     public int WidthOfBox { get; set; }
     public int HeightOfBox { get; set; }
     public ColorItem FillColor { get; set; } = new();

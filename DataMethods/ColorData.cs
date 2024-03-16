@@ -99,4 +99,15 @@ public static class ColorData
         }
         return colorsList;
     }
+
+    public static MagickColor MakeQuantumColor(ColorItem colorItem)
+    {
+        var redFill = (ushort)(colorItem.Red * 65535 / 255);
+        var greenFill = (ushort)(colorItem.Green * 65535 / 255);
+        var blueFill = (ushort)(colorItem.Blue * 65535 / 255);
+
+        var MagickColor = new MagickColor(redFill, greenFill, blueFill);
+
+        return MagickColor;
+    }
 }

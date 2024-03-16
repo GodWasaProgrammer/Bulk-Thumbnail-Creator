@@ -184,4 +184,10 @@ public static class DataGeneration
 
         return boxes;
     }
+    public static bool RandomGradient()
+    {
+        var random = new Random();
+        var randomBool = random.Next(2) == 0;
+        return randomBool;
+    }
 }
