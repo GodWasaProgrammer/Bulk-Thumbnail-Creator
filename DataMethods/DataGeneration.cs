@@ -1,4 +1,8 @@
-﻿namespace BulkThumbnailCreator;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+namespace BulkThumbnailCreator;
 
 public static class DataGeneration
 {
@@ -10,22 +14,20 @@ public static class DataGeneration
     {
         var fontNames = Directory.GetFiles("Fonts", "*.TTF*");
 
-        Random random = new();
-
         var randommax = fontNames.Length;
 
-        int fontChosen = random.Next(randommax);
+        var fontChosen = new Random().Next(randommax);
 
-        return fontNames[fontChosen].ToString();
+        return fontNames[fontChosen];
     }
     public static ParamForTextCreation GetTextPosition(ParamForTextCreation parameters, Array2D<RgbPixel> sourcePicture, Rectangle[] faceRect, List<BoxType> populatedBoxes)
     {
-        List<Box> Boxes = BuildDefaultBoxes(sourcePicture);
-        parameters.Boxes = Boxes;
+        var defaultBoxes = BuildDefaultBoxes(sourcePicture);
+        parameters.Boxes = defaultBoxes;
         // boxes that we will pick from after calcs done
 
         List<BoxType> freeBoxes = [];
-        foreach (Box box in Boxes)
+        foreach (var box in defaultBoxes)
         {
             freeBoxes.Add(box.Type);
         }
@@ -34,15 +36,15 @@ public static class DataGeneration
         {
             foreach (var face in faceRect)
             {
-                List<(BoxType, bool)> FaceInterSectResults = [];
-                for (int i = 0; i < Boxes.Count; i++)
+                List<(BoxType, bool)> faceInterSectResults = [];
+                for (var i = 0; i < defaultBoxes.Count; i++)
                 {
-                    var boxIntersect = IntersectCheck(Boxes[i].Rectangle, face);
+                    var boxIntersect = IntersectCheck(defaultBoxes[i].Rectangle, face);
                     if (boxIntersect)
                     {
-                        freeBoxes.Remove(Boxes[i].Type);
+                        freeBoxes.Remove(defaultBoxes[i].Type);
                     }
-                    FaceInterSectResults.Add((Boxes[i].Type, boxIntersect));
+                    faceInterSectResults.Add((defaultBoxes[i].Type, boxIntersect));
                 }
             }
         }
@@ -55,20 +57,20 @@ public static class DataGeneration
 
         if (populatedBoxes.Count != 0)
         {
-            for (int BoxIndex = 0; BoxIndex < populatedBoxes.Count; BoxIndex++)
+            for (var boxIndex = 0; boxIndex < populatedBoxes.Count; boxIndex++)
             {
-                BoxType boxtype = populatedBoxes[BoxIndex];
-                Rectangle PopulatedRect = Boxes.Find(x => x.Type == boxtype).Rectangle;
-                List<(BoxType, bool)> IntersectResults = [];
-                for (int rectangleIndex = 0; rectangleIndex < Boxes.Count; rectangleIndex++)
+                var boxtype = populatedBoxes[boxIndex];
+                var populatedRect = defaultBoxes.Find(x => x.Type == boxtype).Rectangle;
+                List<(BoxType, bool)> intersectResults = [];
+                for (var rectangleIndex = 0; rectangleIndex < defaultBoxes.Count; rectangleIndex++)
                 {
-                    Rectangle BoxRectangle = Boxes[rectangleIndex].Rectangle;
-                    bool BoxIntersect = IntersectCheck(PopulatedRect, BoxRectangle);
-                    if (BoxIntersect)
+                    var boxRectangle = defaultBoxes[rectangleIndex].Rectangle;
+                    var boxIntersect = IntersectCheck(populatedRect, boxRectangle);
+                    if (boxIntersect)
                     {
-                        freeBoxes.Remove(Boxes[rectangleIndex].Type);
+                        freeBoxes.Remove(defaultBoxes[rectangleIndex].Type);
                     }
-                    IntersectResults.Add((Boxes[rectangleIndex].Type, BoxIntersect));
+                    intersectResults.Add((defaultBoxes[rectangleIndex].Type, boxIntersect));
                 }
             }
         }
@@ -102,7 +104,7 @@ public static class DataGeneration
     }
     private static List<Box> BuildDefaultBoxes(Array2D<RgbPixel> sourcePicture)
     {
-        List<Box> Boxes = [];
+        List<Box> boxes = [];
         // top box
         Box topBox = new()
         {
@@ -113,7 +115,7 @@ public static class DataGeneration
             Y = 0,
         };
         topBox.Rectangle = new(topBox.X, topBox.Y, topBox.X + topBox.Width, topBox.Y + topBox.Height);
-        Boxes.Add(topBox);
+        boxes.Add(topBox);
         //////////////////////////////////////////////
 
         //// bottom box
@@ -126,7 +128,7 @@ public static class DataGeneration
             Y = sourcePicture.Rows / 2
         };
         bottomBox.Rectangle = new(bottomBox.X, bottomBox.Y, bottomBox.X + bottomBox.Width, bottomBox.Y + bottomBox.Height);
-        Boxes.Add(bottomBox);
+        boxes.Add(bottomBox);
 
         // top left box
         Box topLeftBox = new()
@@ -138,7 +140,7 @@ public static class DataGeneration
             Y = 0
         };
         topLeftBox.Rectangle = new(topLeftBox.X, topLeftBox.Y, topLeftBox.X + topLeftBox.Width, topLeftBox.Y + topLeftBox.Height);
-        Boxes.Add(topLeftBox);
+        boxes.Add(topLeftBox);
         //////////////////////////////////////////////
 
         // top right box
@@ -151,7 +153,7 @@ public static class DataGeneration
             Y = 0
         };
         topRightBox.Rectangle = new(topRightBox.X, topRightBox.Y, topRightBox.X + topRightBox.Width, topRightBox.Y + topRightBox.Height);
-        Boxes.Add(topRightBox);
+        boxes.Add(topRightBox);
         //////////////////////////////////////////////
 
         // bottom left box
@@ -164,7 +166,7 @@ public static class DataGeneration
             Y = sourcePicture.Rows / 2
         };
         bottomLeftBox.Rectangle = new(bottomLeftBox.X, bottomLeftBox.Y, bottomLeftBox.X + bottomLeftBox.Width, bottomLeftBox.Y + bottomLeftBox.Height);
-        Boxes.Add(bottomLeftBox);
+        boxes.Add(bottomLeftBox);
         //////////////////////////////////////////////
 
         // bottom right box
@@ -177,9 +179,9 @@ public static class DataGeneration
             Y = sourcePicture.Rows / 2
         };
         bottomRightBox.Rectangle = new(bottomRightBox.X, bottomRightBox.Y, bottomRightBox.X + bottomRightBox.Width, bottomRightBox.Y + bottomRightBox.Height);
-        Boxes.Add(bottomRightBox);
+        boxes.Add(bottomRightBox);
         //////////////////////////////////////////////
 
-        return Boxes;
+        return boxes;
     }
 }

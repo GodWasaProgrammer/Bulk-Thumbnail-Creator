@@ -1,6 +1,10 @@
-﻿namespace BulkThumbnailCreator;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
-internal class FFmpegHandler
+namespace BulkThumbnailCreator;
+
+internal static class FFmpegHandler
 {
     /// <summary>
     /// This runs the process of ffmpeg and feeds it with parameters for file extraction
@@ -17,9 +21,9 @@ internal class FFmpegHandler
         processFFMpeg.StartInfo.CreateNoWindow = false;
         processFFMpeg.StartInfo.RedirectStandardOutput = true;
 
-        bool ProcessStarted = processFFMpeg.Start();
+        var processStarted = processFFMpeg.Start();
 
-        if (!ProcessStarted)
+        if (!processStarted)
         {
             await settings.LogService.LogError("FFMpeg failed to start");
             return;
@@ -49,8 +53,6 @@ internal class FFmpegHandler
         }
 
         exePars += outPath;
-        _ = new
-        FFmpegHandler();
 
         await ExecuteFFMPG(exePars, settings);
     }

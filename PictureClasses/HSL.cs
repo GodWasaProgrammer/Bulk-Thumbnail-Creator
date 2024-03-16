@@ -1,21 +1,27 @@
-﻿namespace BulkThumbnailCreator.PictureClasses;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
-public class HSL(float hue, float saturation, float lightness)
+// Ignore Spelling: HSL rgb
+
+namespace BulkThumbnailCreator.PictureClasses;
+
+public class Hsl(float hue, float saturation, float lightness)
 {
     public float Hue { get; set; } = hue;
     public float Saturation { get; set; } = saturation;
     public float Lightness { get; set; } = lightness;
 
-    public static HSL FromRGB(RGB rgb)
+    public static Hsl FromRGB(Rgb rgb)
     {
-        float red = rgb.Red / 255.0f;
-        float green = rgb.Green / 255.0f;
-        float blue = rgb.Blue / 255.0f;
+        var red = rgb.Red / 255.0f;
+        var green = rgb.Green / 255.0f;
+        var blue = rgb.Blue / 255.0f;
 
-        float max = Math.Max(red, Math.Max(green, blue));
-        float min = Math.Min(red, Math.Min(green, blue));
+        var max = Math.Max(red, Math.Max(green, blue));
+        var min = Math.Min(red, Math.Min(green, blue));
 
-        float delta = max - min; // Added this line to declare 'delta'
+        var delta = max - min; // Added this line to declare 'delta'
 
         float hue = 0, saturation, lightness;
 
@@ -28,15 +34,15 @@ public class HSL(float hue, float saturation, float lightness)
         {
             if (max == red)
             {
-                hue = (green - blue) / delta + (green < blue ? 6 : 0);
+                hue = ((green - blue) / delta) + (green < blue ? 6 : 0);
             }
             else if (max == green)
             {
-                hue = (blue - red) / delta + 2;
+                hue = ((blue - red) / delta) + 2;
             }
             else if (max == blue)
             {
-                hue = (red - green) / delta + 4;
+                hue = ((red - green) / delta) + 4;
             }
             hue *= 60; // convert to degrees
         }
@@ -53,14 +59,14 @@ public class HSL(float hue, float saturation, float lightness)
             saturation = lightness <= 0.5f ? delta / (max + min) : delta / (2 - max - min);
         }
 
-        return new HSL(hue, saturation, lightness);
+        return new Hsl(hue, saturation, lightness);
     }
 
-    public RGB ToRGB()
+    public Rgb ToRGB()
     {
-        float c = (1 - Math.Abs(2 * Lightness - 1)) * Saturation;
-        float x = c * (1 - Math.Abs((Hue / 60) % 2 - 1));
-        float m = Lightness - c / 2;
+        var c = (1 - Math.Abs((2 * Lightness) - 1)) * Saturation;
+        var x = c * (1 - Math.Abs((Hue / 60 % 2) - 1));
+        var m = Lightness - (c / 2);
 
         float r, g, b;
 
@@ -101,6 +107,6 @@ public class HSL(float hue, float saturation, float lightness)
             b = x;
         }
 
-        return new RGB((byte)((r + m) * 255), (byte)((g + m) * 255), (byte)((b + m) * 255));
+        return new Rgb((byte)((r + m) * 255), (byte)((g + m) * 255), (byte)((b + m) * 255));
     }
 }

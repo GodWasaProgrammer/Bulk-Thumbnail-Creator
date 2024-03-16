@@ -1,8 +1,14 @@
-﻿namespace BulkThumbnailCreator.Services
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+// Ignore Spelling: Pic
+
+namespace BulkThumbnailCreator.Services
 {
     public class CreatorService
     {
-        public CreatorService(ILogService _logger, JobService JS, Settings settings)
+        public CreatorService(ILogService logger, JobService jobService, Settings settings)
         {
             // if we are not in a state where we have a job, we should clear the output directories
             // this should only be called when the app is started
@@ -13,192 +19,192 @@
             }
             PicDataServiceList = [];
             OutputFileServiceList = [];
-            settings.LogService = _logger;
-            settings.JobService = JS;
+            settings.LogService = logger;
+            settings.JobService = jobService;
         }
 
         public event EventHandler<bool> LoadingStateChanged;
 
-        private bool isLoading = false;
+        private bool _isLoading = false;
 
         public bool IsLoading
         {
-            get => isLoading;
+            get => _isLoading;
             private set
             {
-                if (isLoading != value)
+                if (_isLoading != value)
                 {
-                    isLoading = value;
-                    LoadingStateChanged?.Invoke(this, isLoading);
+                    _isLoading = value;
+                    LoadingStateChanged?.Invoke(this, _isLoading);
                 }
             }
         }
 
         // should also perhaps be derived from a current job?
-        public List<PictureData> PicDataServiceList { get; set; } = [];
+        public List<PictureData> PicDataServiceList { get; set; }
 
         // not implemented yet but should store all the produced files location of output
-        public List<string> OutputFileServiceList { get; set; } = [];
+        public List<string> OutputFileServiceList { get; set; }
 
-        private Job CurrentJob;
+        private Job _currentJob;
 
-        public async Task CreateInitialPictureArrayAsync(string url, List<string> ListOfTextToPrint, Settings settings, Job PassCrntJob)
+        public async Task CreateInitialPictureArrayAsync(string url, List<string> listOfTextToPrint, Settings settings, Job job)
         {
             IsLoading = true;
 
-            CurrentJob = PassCrntJob;
+            _currentJob = job;
 
-            CurrentJob.TextToPrint = ListOfTextToPrint;
+            _currentJob.TextToPrint = listOfTextToPrint;
 
-            ProductionType ProdType = ProductionType.FrontPagePictureLineUp;
-            CurrentJob.TextToPrint = ListOfTextToPrint;
+            var prodType = ProductionType.FrontPagePictureLineUp;
+            _currentJob.TextToPrint = listOfTextToPrint;
 
-            if (Settings.Mocking == true && Settings.MakeMocking)
+            if (Settings.Mocking && Settings.MakeMocking)
             {
-                PicDataServiceList = await Creator.MockProcess(ProdType, url, ListOfTextToPrint, settings);
+                PicDataServiceList = await Creator.MockProcess(prodType, url, listOfTextToPrint, settings);
             }
             else
             {
-                PicDataServiceList = await Creator.Process(ProdType, url, ListOfTextToPrint, settings);
+                PicDataServiceList = await Creator.Process(prodType, url, listOfTextToPrint, settings);
             }
 
             if (settings.PathToVideo != null)
-                CurrentJob.VideoPath = settings.PathToVideo;
+                _currentJob.VideoPath = settings.PathToVideo;
 
             if (settings.PathToVideo != null)
-                CurrentJob.VideoName = Path.GetFileNameWithoutExtension(settings.PathToVideo);
+                _currentJob.VideoName = Path.GetFileNameWithoutExtension(settings.PathToVideo);
 
             // sets the list on the job object
-            CurrentJob.PictureDatas = PicDataServiceList;
+            _currentJob.PictureData = PicDataServiceList;
 
-            CurrentJob.State = States.FrontPagePictureLineUp;
+            _currentJob.State = States.FrontPagePictureLineUp;
 
-            UserStateService.UpdateJob(CurrentJob);
+            UserStateService.UpdateJob(_currentJob);
 
             IsLoading = false;
         }
 
-        public async Task<List<string>> CreatePictureDataVariety(PictureData PicToVarietize, Settings settings, Job PassCrntJob)
+        public async Task<List<string>> CreatePictureDataVariety(PictureData pictureData, Settings settings, Job job)
         {
-            PassCrntJob.Settings = settings;
-            CurrentJob = PassCrntJob;
+            job.Settings = settings;
+            _currentJob = job;
 
             IsLoading = true;
 
-            CurrentJob.State = States.varietyList;
+            _currentJob.State = States.varietyList;
 
-            List<string> ImageUrls = [];
-            string url = string.Empty;
+            List<string> imageUrls = [];
+            var url = string.Empty;
 
-            ProductionType ProdType = ProductionType.VarietyList;
-            if (Settings.Mocking == true && Settings.MakeMocking)
+            var prodType = ProductionType.VarietyList;
+            if (Settings.Mocking && Settings.MakeMocking)
             {
-                PicDataServiceList = await Creator.MockProcess(ProdType, url, CurrentJob.TextToPrint, settings, PicToVarietize);
+                PicDataServiceList = await Creator.MockProcess(prodType, url, _currentJob.TextToPrint, settings, pictureData);
             }
             else
             {
-                PicDataServiceList = await Creator.Process(ProdType, url, CurrentJob.TextToPrint, CurrentJob.Settings, PicToVarietize);
+                PicDataServiceList = await Creator.Process(prodType, url, _currentJob.TextToPrint, _currentJob.Settings, pictureData);
             }
 
             // sets the list on the job object
-            CurrentJob.PictureDatas = PicDataServiceList;
+            _currentJob.PictureData = PicDataServiceList;
 
-            string liftMockFolder = "";
-            if(Settings.Mocking == true)
+            var liftMockFolder = "";
+            if (Settings.Mocking)
             {
-                string[] subdirs = Directory.GetDirectories(settings.TextAddedDir);
-                foreach(var subdir in subdirs)
+                var subdirs = Directory.GetDirectories(settings.TextAddedDir);
+                foreach (var subdir in subdirs)
                 {
-                    string lastFolderName = Path.GetFileName(subdir.TrimEnd(Path.DirectorySeparatorChar));
+                    var lastFolderName = Path.GetFileName(subdir.TrimEnd(Path.DirectorySeparatorChar));
                     liftMockFolder = lastFolderName;
                 }
                 liftMockFolder = liftMockFolder.Replace("varietyof", "");
 
                 string liftFileName;
-                liftFileName = CurrentJob.PictureDatas[0].FileName;
-                string path = Path.GetDirectoryName(liftFileName);
+                liftFileName = _currentJob.PictureData[0].FileName;
+                var path = Path.GetDirectoryName(liftFileName);
 
-                liftMockFolder = Path.Combine(path,liftMockFolder);
-                int index = liftMockFolder.IndexOf("\\");
+                liftMockFolder = Path.Combine(path, liftMockFolder);
+                var index = liftMockFolder.IndexOf("\\");
                 liftMockFolder = liftMockFolder.Remove(index, 1).Insert(index, "/");
-               
-                PicToVarietize = CurrentJob.PictureDatas.Find(x => x.FileName == liftMockFolder);
+
+                pictureData = _currentJob.PictureData.Find(x => x.FileName == liftMockFolder);
             }
 
-            string parentfilename = Path.GetFileName(PicToVarietize.FileName);
-            string varietyof = "varietyof";
-            string ConcatenatedString = $"{PassCrntJob.Settings.TextAddedDir}/{varietyof}{parentfilename}";
-            string[] ArrayOfFilePaths = Directory.GetFiles(ConcatenatedString, "*.png");
+            var parentfilename = Path.GetFileName(pictureData.FileName);
+            var varietyof = "varietyof";
+            var concatenatedString = $"{job.Settings.TextAddedDir}/{varietyof}{parentfilename}";
+            var arrayOfFilePaths = Directory.GetFiles(concatenatedString, "*.png");
 
-            foreach (string filepath in ArrayOfFilePaths)
+            foreach (var filepath in arrayOfFilePaths)
             {
-                string imageurl = $"/{filepath}"; // convert to URL
-                ImageUrls.Add(imageurl);
+                var imageurl = $"/{filepath}"; // convert to URL
+                imageUrls.Add(imageurl);
             }
 
             // the list of urls to be displayed in variety display
 
-            CurrentJob.VarietyUrls = ImageUrls;
+            _currentJob.VarietyUrls = imageUrls;
 
-            UserStateService.UpdateJob(CurrentJob);
+            UserStateService.UpdateJob(_currentJob);
 
             IsLoading = false;
 
-            return ImageUrls;
+            return imageUrls;
         }
 
-        public async Task<PictureData> CreateCustomPicDataObject(PictureData PicToCustomize, Settings settings, Job PassCrntJob)
+        public async Task<PictureData> CreateCustomPicDataObject(PictureData pictureData, Settings settings, Job job)
         {
             ArgumentNullException.ThrowIfNull(settings);
 
-            CurrentJob = PassCrntJob;
+            _currentJob = job;
 
-            isLoading = true;
+            _isLoading = true;
 
-            CurrentJob.State = States.CustomPicture;
-            string url = string.Empty;
-            PicDataServiceList = await Creator.Process(ProductionType.CustomPicture, url, CurrentJob.TextToPrint, CurrentJob.Settings, PicToCustomize);
-            CurrentJob.PictureDatas = PicDataServiceList;
+            _currentJob.State = States.CustomPicture;
+            var url = string.Empty;
+            PicDataServiceList = await Creator.Process(ProductionType.CustomPicture, url, _currentJob.TextToPrint, _currentJob.Settings, pictureData);
+            _currentJob.PictureData = PicDataServiceList;
 
-            UserStateService.UpdateJob(CurrentJob);
+            UserStateService.UpdateJob(_currentJob);
 
-            isLoading = false;
+            _isLoading = false;
 
-            return PicToCustomize;
+            return pictureData;
         }
 
         public Task<PictureData> SetPictureDataImageDisplayCorrelation(string imageUrl)
         {
-            PictureData PicData = new();
+            PictureData picData = new();
 
-            if (Settings.Mocking == true && Settings.MakeMocking)
+            if (Settings.Mocking && Settings.MakeMocking)
             {
-                string DirToMockPicture = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", $"TextAdded");
+                var dirToMockPicture = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", $"TextAdded");
 
-                DirectoryInfo di = new(DirToMockPicture);
+                DirectoryInfo di = new(dirToMockPicture);
 
-                DirectoryInfo[] di2 = di.GetDirectories();
+                var di2 = di.GetDirectories();
 
-                string MockCorrelation = "";
+                var mockCorrelation = "";
 
-                foreach (DirectoryInfo directory in di2)
+                foreach (var directory in di2)
                 {
-                    MockCorrelation = Path.GetFileName(directory.FullName);
+                    mockCorrelation = Path.GetFileName(directory.FullName);
                 }
 
                 foreach (var item in PicDataServiceList)
                 {
-                    string NumberOfPicture = Path.GetFileNameWithoutExtension(item.FileName);
+                    var numberOfPicture = Path.GetFileNameWithoutExtension(item.FileName);
 
-                    string NumberOfPicture2 = Path.GetFileNameWithoutExtension(MockCorrelation);
+                    var numberOfPicture2 = Path.GetFileNameWithoutExtension(mockCorrelation);
 
-                    string varof = "varietyof ";
+                    var varof = "varietyof ";
 
-                    NumberOfPicture2 = NumberOfPicture2.Remove(0, varof.Length);
+                    numberOfPicture2 = numberOfPicture2.Remove(0, varof.Length);
 
-                    if (NumberOfPicture == NumberOfPicture2)
+                    if (numberOfPicture == numberOfPicture2)
                     {
-                        PicData = new PictureData(item);
+                        picData = new PictureData(item);
                         break;
                     }
                 }
@@ -207,35 +213,32 @@
             {
                 foreach (var item in PicDataServiceList)
                 {
-                    var url = Path.GetFileNameWithoutExtension(imageUrl);
-                    var outpath = Path.GetFileNameWithoutExtension(item.OutPath);
-
                     if (Path.GetFileNameWithoutExtension(item.OutPath) == Path.GetFileNameWithoutExtension(imageUrl))
                     {
-                        PicData = new PictureData(item);
+                        picData = new PictureData(item);
                         break;
                     }
                 }
             }
 
-            return Task.FromResult(PicData);
+            return Task.FromResult(picData);
         }
 
         public PictureData SetPictureDataImageDisplayCorrelationForVarietyList(string imageUrl)
         {
-            PictureData PicData = new();
+            PictureData picData = new();
 
             if (Settings.Mocking == true && Settings.MakeMocking)
             {
                 // nonsense to just pick the first one
                 foreach (var item in PicDataServiceList)
                 {
-                    foreach (PictureData variety in item.Varieties)
+                    foreach (var variety in item.Varieties)
                     {
-                        PicData = new PictureData(variety);
+                        picData = new PictureData(variety);
                         break;
                     }
-                    if (PicData != null)
+                    if (picData != null)
                     {
                         break;
                     }
@@ -245,40 +248,39 @@
             {
                 foreach (var item in PicDataServiceList)
                 {
-                    foreach (PictureData variety in item.Varieties)
+                    foreach (var variety in item.Varieties)
                     {
                         if (Path.GetFileNameWithoutExtension(variety.OutPath) == Path.GetFileNameWithoutExtension(imageUrl))
                         {
-                            PicData = new PictureData(variety);
+                            picData = new PictureData(variety);
                             break;
                         }
                     }
                 }
             }
-            return PicData;
+            return picData;
         }
 
         public static void ClearBaseOutPutDirectories(Settings settings)
         {
             DirectoryInfo di = new(settings.TextAddedDir);
 
-            foreach (FileInfo file in di.GetFiles())
+            foreach (var file in di.GetFiles())
             {
                 file.Delete();
             }
-            foreach (DirectoryInfo dir in di.GetDirectories())
+            foreach (var dir in di.GetDirectories())
             {
                 dir.Delete(true);
             }
 
-            // TODO : for whatever reason these resources are not free for deletion
             DirectoryInfo di2 = new(settings.OutputDir);
 
-            foreach (FileInfo file in di2.GetFiles())
+            foreach (var file in di2.GetFiles())
             {
                 file.Delete();
             }
-            foreach (DirectoryInfo dir in di2.GetDirectories())
+            foreach (var dir in di2.GetDirectories())
             {
                 dir.Delete(true);
             }

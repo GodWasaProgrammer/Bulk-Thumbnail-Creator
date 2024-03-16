@@ -1,10 +1,13 @@
-﻿namespace BulkThumbnailCreator.PictureClasses;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+namespace BulkThumbnailCreator.PictureClasses;
 
 public class Box
 {
     public Box()
     {
-
     }
 
     public Box(Box currentBox)
@@ -15,27 +18,10 @@ public class Box
         Height = currentBox.Height; // int
         Type = currentBox.Type; // BoxType
     }
-
-    private int _X;
-    public int X { get { return _X; } set { _X = value; } }
-
-
-    private int _Y;
-    public int Y { get { return _Y; } set { _Y = value; } }
-
-
-    private int _Width;
-    public int Width { get { return _Width; } set { _Width = value; } }
-
-
-    private int _Height;
-    public int Height { get { return _Height; } set { _Height = value; } }
-
-
-    private BoxType _type;
-    public BoxType Type { get { return _type; } set { _type = value; } }
-
-    private Rectangle _rectangle;
-    public Rectangle Rectangle { get { return _rectangle; } set { _rectangle = value; } }
+    public int X { get; set; }
+    public int Y { get; set; }
+    public int Width { get; set; }
+    public int Height { get; set; }
+    public BoxType Type { get; set; }
+    public Rectangle Rectangle { get; set; }
 }
-

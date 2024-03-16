@@ -1,18 +1,14 @@
-﻿namespace BulkThumbnailCreator.PictureClasses;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+namespace BulkThumbnailCreator.PictureClasses;
 
 public class ColorItem
 {
-    private byte red;
-    public byte Red { get { return red; } }
-
-
-    private byte green;
-    public byte Green { get { return green; } }
-
-
-    private byte blue;
-    public byte Blue { get { return blue; } }
-
+    public byte Red { get; set; }
+    public byte Green { get; set; }
+    public byte Blue { get; set; }
 
     /// <summary>
     /// Returns you the Saturation of the ColorItem by calling GetHSLValuesFrom RGB and giving you the hue value of coloritem
@@ -21,35 +17,34 @@ public class ColorItem
     {
         get
         {
-            HSL CurrentHSL = GetHSLValuesFromRGB(red, green, blue);
+            var currentHSL = GetHSLValuesFromRGB(Red, Green, Blue);
 
-            return CurrentHSL.Hue;
+            return currentHSL.Hue;
         }
     }
 
     /// <summary>
-    /// Returns you the Saturation of the ColorItem by calling GetHSLValuesFrom RGB and giving you the Saturation value of coloritem
+    /// Returns you the Saturation of the ColorItem by calling GetHSLValuesFrom RGB and giving you the Saturation value of color item
     /// </summary>
     public float Saturation
     {
         get
         {
-            HSL CurrentHSL = GetHSLValuesFromRGB(red, green, blue);
+            var currentHSL = GetHSLValuesFromRGB(Red, Green, Blue);
 
-            return CurrentHSL.Saturation;
+            return currentHSL.Saturation;
         }
     }
 
     /// <summary>
-    /// Returns you the luminance by calling GETHSLValuesFromRGB and and giving you the luminance value of coloritem
-    /// </summary>
+    /// Returns you the luminance by calling GETHSLValuesFromRGB and giving you the luminance value of color item
     public float Luminance
     {
         get
         {
-            HSL CurrentHSL = GetHSLValuesFromRGB(red, green, blue);
+            var currentHSL = GetHSLValuesFromRGB(Red, Green, Blue);
 
-            return CurrentHSL.Lightness;
+            return currentHSL.Lightness;
         }
     }
 
@@ -57,13 +52,13 @@ public class ColorItem
     /// takes HSL as input and set the correlating RGB values of the object
     /// </summary>
     /// <param name="inputHSL">Your HSL object input</param>
-    private void ColorToRGB(HSL inputHSL)
+    private void ColorToRGB(Hsl inputHSL)
     {
-        RGB colorInRGB = inputHSL.ToRGB();
+        var colorInRGB = inputHSL.ToRGB();
 
-        red = colorInRGB.Red;
-        green = colorInRGB.Green;
-        blue = colorInRGB.Blue;
+        Red = colorInRGB.Red;
+        Green = colorInRGB.Green;
+        Blue = colorInRGB.Blue;
     }
 
     /// <summary>
@@ -73,13 +68,13 @@ public class ColorItem
     /// <param name="inputGreen"></param>
     /// <param name="inputBlue"></param>
     /// <returns>returns a RGB object</returns>
-    public RGB SetByRGB(byte inputRed, byte inputGreen, byte inputBlue)
+    public Rgb SetByRGB(byte inputRed, byte inputGreen, byte inputBlue)
     {
-        red = inputRed;
-        green = inputGreen;
-        blue = inputBlue;
+        Red = inputRed;
+        Green = inputGreen;
+        Blue = inputBlue;
 
-        RGB outputRGB = new(red, green, blue);
+        Rgb outputRGB = new(Red, Green, Blue);
 
         return outputRGB;
     }
@@ -91,9 +86,9 @@ public class ColorItem
     /// <param name="inputSaturation"></param>
     /// <param name="inputLuminance"></param>
     /// <returns>returns a HSL object</returns>
-    public HSL SetByHSL(float inputHue, float inputSaturation, float inputLuminance)
+    public Hsl SetByHSL(float inputHue, float inputSaturation, float inputLuminance)
     {
-        HSL outputHSL = new(inputHue, inputSaturation, inputLuminance);
+        Hsl outputHSL = new(inputHue, inputSaturation, inputLuminance);
 
         ColorToRGB(outputHSL);
 
@@ -107,18 +102,18 @@ public class ColorItem
     /// <param name="inputgreen">your Green RGB value input</param>
     /// <param name="inputblue">your Blue RGB value input</param>
     /// <returns></returns>
-    private static HSL GetHSLValuesFromRGB(byte inputred, byte inputgreen, byte inputblue)
+    private static Hsl GetHSLValuesFromRGB(byte inputred, byte inputgreen, byte inputblue)
     {
-        RGB inputRGB = new(inputred, inputgreen, inputblue)
+        Rgb inputRGB = new(inputred, inputgreen, inputblue)
         {
             Red = inputred,
             Green = inputgreen,
             Blue = inputblue
         };
 
-        HSL CurrentHSL = HSL.FromRGB(inputRGB);
+        var currentHSL = Hsl.FromRGB(inputRGB);
 
-        return CurrentHSL;
+        return currentHSL;
     }
 
     /// <summary>
@@ -127,13 +122,12 @@ public class ColorItem
     /// <param name="colorItemToCopy"></param>
     public ColorItem(ColorItem colorItemToCopy)
     {
-        red = colorItemToCopy.red;
-        green = colorItemToCopy.green;
-        blue = colorItemToCopy.blue;
+        Red = colorItemToCopy.Red;
+        Green = colorItemToCopy.Green;
+        Blue = colorItemToCopy.Blue;
     }
 
     public ColorItem()
     {
-
     }
 }

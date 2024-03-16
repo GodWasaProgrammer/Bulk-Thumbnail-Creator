@@ -1,90 +1,68 @@
-﻿namespace BulkThumbnailCreator.PictureClasses;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+namespace BulkThumbnailCreator.PictureClasses;
 
 [Serializable]
 public class PictureData
 {
-    /// <summary>
-    /// The filename of this object, with relative output path example : output//001.png
-    /// </summary>
-    private string _FileName;
-    public string FileName { get { return _FileName; } set { _FileName = value; } }
+    public string FileName { get; set; }
+    public string OutPath { get; set; }
+    public List<ParamForTextCreation> BoxParameters { get; set; } = [];
 
-    private string _outPath;
-    public string OutPath { get { return _outPath; } set { _outPath = value; } }
+    public int _numberOfBoxes = 2;
+    public OutputType OutPutType { get; set; }
 
-    private List<ParamForTextCreation> _BoxParameters = [];
-    public List<ParamForTextCreation> BoxParameters { get { return _BoxParameters; } set { _BoxParameters = value; } }
-
-    public int NumberOfBoxes = 2;
-
-    /// <summary>
-    /// ImageMagick settings that belongs to this object, this is used to generate color/textsettings
-    /// </summary>
-    /// 
     [XmlIgnore]
     public MagickReadSettings ReadSettings { get; private set; }
 
-    public MagickReadSettings MakeTextSettings(ParamForTextCreation Parameters)
+    public MagickReadSettings MakeTextSettings(ParamForTextCreation parameters)
     {
-        ReadSettings = TextSettingsGeneration(Parameters);
+        ReadSettings = TextSettingsGeneration(parameters);
         return ReadSettings;
     }
+    public List<PictureData> Varieties { get; set; } = [];
 
-    /// <summary>
-    /// List of varieties belonging to this image
-    /// </summary>
-    /// 
-    private List<PictureData> _Varieties = [];
-    public List<PictureData> Varieties { get { return _Varieties; } set { _Varieties = value; } }
-
-    /// <summary>
-    /// Copy Constructor 
-    /// </summary>
-    /// <param name="pictureDataToCopy"></param>
+    // Copy Constructor 
     public PictureData(PictureData pictureDataToCopy)
     {
-        _FileName = (string)pictureDataToCopy.FileName.Clone();
+        FileName = (string)pictureDataToCopy.FileName.Clone();
         BoxParameters = [];
         foreach (var item in pictureDataToCopy.BoxParameters)
         {
             BoxParameters.Add(new ParamForTextCreation(item));
         }
-        _Varieties = new List<PictureData>(pictureDataToCopy.Varieties);
-        _OutputType = pictureDataToCopy.OutPutType;
+        Varieties = new List<PictureData>(pictureDataToCopy.Varieties);
+        OutPutType = pictureDataToCopy.OutPutType;
         if (pictureDataToCopy.OutPath != null)
         {
-            _outPath = (string)pictureDataToCopy.OutPath.Clone();
+            OutPath = (string)pictureDataToCopy.OutPath.Clone();
         }
     }
 
     public PictureData()
     {
-
     }
-
-    private OutputType _OutputType;
-    public OutputType OutPutType { get { return _OutputType; } set { _OutputType = value; } }
 
     /// <summary>
     /// Generates MagickReadSettings to be used in a PicturedataObject to decide how text will look
     /// </summary>
-    /// <param name="Parameters">The passed Parameters for text creation</param>
+    /// <param name="parameters">The passed Parameters for text creation</param>
     /// <returns></returns>
-    private static MagickReadSettings TextSettingsGeneration(ParamForTextCreation Parameters)
+    private static MagickReadSettings TextSettingsGeneration(ParamForTextCreation parameters)
     {
-        MagickReadSettings SettingsTextLinear = new()
+        return new()
         {
-            Font = Parameters.Font,
-            FillColor = MagickColor.FromRgb(Parameters.FillColor.Red, Parameters.FillColor.Green, Parameters.FillColor.Blue),
-            StrokeColor = MagickColor.FromRgb(Parameters.StrokeColor.Red, Parameters.StrokeColor.Green, Parameters.StrokeColor.Blue),
+            Font = parameters.Font,
+            FillColor = MagickColor.FromRgb(parameters.FillColor.Red, parameters.FillColor.Green, parameters.FillColor.Blue),
+            StrokeColor = MagickColor.FromRgb(parameters.StrokeColor.Red, parameters.StrokeColor.Green, parameters.StrokeColor.Blue),
             StrokeWidth = 5,
             FillRule = FillRule.EvenOdd,
             BackgroundColor = MagickColors.Transparent,
-            Height = Parameters.HeightOfBox, // height of text box
-            Width = Parameters.WidthOfBox, // width of text box
+            Height = parameters.HeightOfBox, // height of text box
+            Width = parameters.WidthOfBox, // width of text box
             FontStyle = FontStyleType.Bold
         };
-
-        return SettingsTextLinear;
     }
 }

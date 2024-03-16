@@ -23,7 +23,7 @@
             </PropertyColumn>
             <PropertyColumn Property="x => x.OutPutType" Title="Type" />
             <PropertyColumn Property=@( x => Path.GetFileNameWithoutExtension(x.FileName)) />
-            <PropertyColumn Property="x => x.NumberOfBoxes" Title="No. Of Boxes" />
+            <PropertyColumn Property="x => x._numberOfBoxes" Title="No. Of Boxes" />
             <PropertyColumn Property="x => x.BoxParameters.Count" Title="Parameters">
                 <CellTemplate>
                 <MudButton OnClick="() => ViewParameters(context.Item, context.Item.FileName)" Variant="Variant.Filled" Color="Color.Tertiary">View</MudButton>
@@ -52,7 +52,7 @@ else if(view && viewParameter is false)
     private bool view = false;
     public void ViewVarieties(PictureData p)
     {
-        passIndex = currentJob.PictureDatas.IndexOf(p);
+        passIndex = currentJob.PictureData.IndexOf(p);
         if (view)
         { view = false; }
         else
@@ -140,7 +140,7 @@ else if(view && viewParameter is false)
 
         if (currentJob is not null)
         {
-            ListOfPicData = currentJob.PictureDatas;
+            ListOfPicData = currentJob.PictureData;
         }
     }
 }

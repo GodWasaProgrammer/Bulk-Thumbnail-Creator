@@ -1,4 +1,10 @@
-﻿namespace BulkThumbnailCreator;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+// Ignore Spelling: ytdl Exe
+
+namespace BulkThumbnailCreator;
 
 public class Production
 {
@@ -7,48 +13,48 @@ public class Production
     /// </summary>
     public static async Task VerifyDirectoryAndExeIntegrity(Settings settings)
     {
-        string CurrentLoc = Assembly.GetExecutingAssembly().Location;
-        string parentDirectory = Directory.GetParent(CurrentLoc).FullName;
+        var currentLoc = Assembly.GetExecutingAssembly().Location;
+        var parentDirectory = Directory.GetParent(currentLoc).FullName;
 
         // if dir doesnt exist, make it
-        string ExePath = Path.Combine(parentDirectory, "Executables");
+        var exePath = Path.Combine(parentDirectory, "Executables");
 
-        if (!Path.Exists(ExePath))
+        if (!Path.Exists(exePath))
         {
-            Directory.CreateDirectory(ExePath);
+            Directory.CreateDirectory(exePath);
         }
 
-        OperatingSystem operatingSystem = Environment.OSVersion;
+        var operatingSystem = Environment.OSVersion;
 
-        string YTDLPDir = Path.Combine(ExePath, "yt-dlp");
-        string FfMpegDir = Path.Combine(ExePath, "ffmpeg");
+        var YtdlpDir = Path.Combine(exePath, "yt-dlp");
+        var ffMpegDir = Path.Combine(exePath, "ffmpeg");
 
         if (operatingSystem.Platform == PlatformID.Win32NT)
         {
             await settings.LogService.LogInformation("Windows OS Detected");
-            YTDLPDir += ".exe";
-            FfMpegDir += ".exe";
+            YtdlpDir += ".exe";
+            ffMpegDir += ".exe";
         }
         else if (operatingSystem.Platform == PlatformID.Unix)
         {
             await settings.LogService.LogInformation("Unix OS Detected");
         }
 
-        await settings.LogService.LogInformation($"Current Location: {CurrentLoc}");
+        await settings.LogService.LogInformation($"Current Location: {currentLoc}");
         await settings.LogService.LogInformation($"Parent Directory: {parentDirectory}");
-        await settings.LogService.LogInformation($"New Path: {ExePath}");
+        await settings.LogService.LogInformation($"New Path: {exePath}");
 
-        if (File.Exists(YTDLPDir))
+        if (File.Exists(YtdlpDir))
         {
-            await settings.LogService.LogInformation($"YTDLP Path: {YTDLPDir}");
+            await settings.LogService.LogInformation($"YTDLP Path: {YtdlpDir}");
         }
         else
         {
             await settings.LogService.LogError("yt-dlp was not found");
             await settings.LogService.LogInformation("Will Try To Download yt-dlp");
-            await YoutubeDLSharp.Utils.DownloadYtDlp(ExePath);
+            await YoutubeDLSharp.Utils.DownloadYtDlp(exePath);
 
-            if (File.Exists(YTDLPDir))
+            if (File.Exists(YtdlpDir))
             {
                 await settings.LogService.LogInformation("Successfully downloaded yt-dlp");
             }
@@ -56,13 +62,12 @@ public class Production
             {
                 await settings.LogService.LogError("Failed to download yt-dlp");
             }
-
         }
-        settings.YTDLPDir = YTDLPDir;
+        settings.YTDLPDir = YtdlpDir;
 
-        if (File.Exists(FfMpegDir))
+        if (File.Exists(ffMpegDir))
         {
-            await settings.LogService.LogInformation($"FFmpeg Path: {FfMpegDir}");
+            await settings.LogService.LogInformation($"FFmpeg Path: {ffMpegDir}");
         }
         else
         {
@@ -73,9 +78,9 @@ public class Production
             await settings.LogService.LogInformation("Will Try To Download ffmpeg");
 
             //attempts to download the file to local dir
-            await YoutubeDLSharp.Utils.DownloadFFmpeg(ExePath);
+            await YoutubeDLSharp.Utils.DownloadFFmpeg(exePath);
 
-            if (File.Exists(FfMpegDir))
+            if (File.Exists(ffMpegDir))
             {
                 await settings.LogService.LogInformation("File has been successfully downloaded");
             }
@@ -83,11 +88,10 @@ public class Production
             {
                 await settings.LogService.LogInformation("Download of FFMPEG has failed.");
             }
-
         }
 
-        settings.FfmpegDir = FfMpegDir;
-        string ytdlDir = Path.Combine(parentDirectory, "YTDL");
+        settings.FfmpegDir = ffMpegDir;
+        var ytdlDir = Path.Combine(parentDirectory, "YTDL");
 
         if (Directory.Exists(ytdlDir))
         {
@@ -101,13 +105,13 @@ public class Production
         }
         settings.YTDLOutPutDir = ytdlDir;
 
-        SetExecutePermission(YTDLPDir, settings);
-        SetExecutePermission(FfMpegDir, settings);
+        SetExecutePermission(YtdlpDir, settings);
+        SetExecutePermission(ffMpegDir, settings);
     }
 
     public static void SetExecutePermission(string filePath, Settings settings)
     {
-        OperatingSystem operatingSystem = Environment.OSVersion;
+        var operatingSystem = Environment.OSVersion;
 
         if (operatingSystem.Platform == PlatformID.Win32NT)
         {
@@ -137,8 +141,8 @@ public class Production
             chmodProcess.Start();
             chmodProcess.WaitForExit();
 
-            string output = chmodProcess.StandardOutput.ReadToEnd();
-            string error = chmodProcess.StandardError.ReadToEnd();
+            var output = chmodProcess.StandardOutput.ReadToEnd();
+            var error = chmodProcess.StandardError.ReadToEnd();
 
             if (!string.IsNullOrEmpty(output))
             {
@@ -159,9 +163,9 @@ public class Production
     /// <summary>
     /// Instantiates a YoutubeDL and downloads the specified string
     /// </summary>
-    /// <param name="URL">the specified link URL to download</param>
+    /// <param name="url">the specified link URL to download</param>
     /// <returns>returns the path to the downloaded video</returns>
-    public static async Task<string> YouTubeDL(string URL, Settings settings)
+    public static async Task<string> YouTubeDL(string url, Settings settings)
     {
         var ytdl = new YoutubeDL
         {
@@ -174,16 +178,15 @@ public class Production
         // downloads specified video from youtube if it does not already exist.
         RunResult<string> res;
 
-        if (URL == null)
+        if (url == null)
         {
             await settings.LogService.LogError("URL has been passed as null to YTDL");
-            throw new ArgumentNullException(nameof(URL));
-
+            throw new ArgumentNullException(nameof(url));
         }
         else
         {
-            await settings.LogService.LogInformation($"Attempting download of: {URL}");
-            res = await ytdl.RunVideoDownload(url: URL);
+            await settings.LogService.LogInformation($"Attempting download of: {url}");
+            res = await ytdl.RunVideoDownload(url: url);
         }
 
         await settings.LogService.LogInformation("Download Success:" + res.Success.ToString());
@@ -192,98 +195,91 @@ public class Production
         return res.Data;
     }
 
-    public static void CreateDirectories(string outputDir, string TextAdded, string YTDL, Settings settings)
+    public static void CreateDirectories(string outputDir, string textAdded, string ytdl, Settings settings)
     {
         if (!Directory.Exists(outputDir))
         {
             settings.LogService.LogInformation($"{outputDir} Directory was missing, will be created");
             Directory.CreateDirectory(outputDir);
         }
-        if (!Directory.Exists(YTDL))
+        if (!Directory.Exists(ytdl))
         {
-            settings.LogService.LogInformation($"{TextAdded} Directory was missing, will be created");
-            Directory.CreateDirectory(TextAdded);
+            settings.LogService.LogInformation($"{textAdded} Directory was missing, will be created");
+            Directory.CreateDirectory(textAdded);
         }
-        if (!Directory.Exists(YTDL))
+        if (!Directory.Exists(ytdl))
         {
-            settings.LogService.LogInformation($"{YTDL} Directory was missing, will be created");
-            Directory.CreateDirectory(YTDL);
+            settings.LogService.LogInformation($"{ytdl} Directory was missing, will be created");
+            Directory.CreateDirectory(ytdl);
         }
     }
 
     /// <summary>
     /// Produces Picture using the ImageMagick Library
     /// </summary>
-    /// <param name="PicData">PictureDataObject Containing everything needed to create an image</param>
-    public static async Task ProduceTextPictures(PictureData PicData, Settings settings)
+    /// <param name="pictureData">PictureDataObject Containing everything needed to create an image</param>
+    public static async Task ProduceTextPictures(PictureData pictureData, Settings settings)
     {
         string imageName;
-        string OutputPath = Path.GetFullPath(settings.TextAddedDir);
+        var outputPath = Path.GetFullPath(settings.TextAddedDir);
 
-        imageName = Path.GetFileName(PicData.FileName);
-        DateTime dateTime = DateTime.Now;
-        string trimDateTime = dateTime.ToString();
-        trimDateTime = trimDateTime.Replace(":", "");
-        string varietyof = "//varietyof";
+        imageName = Path.GetFileName(pictureData.FileName);
+        const string Varietyof = "//varietyof";
 
         // if not main type, we will make a directory for files to be written in
-        if (PicData.OutPutType != OutputType.Main)
+        if (pictureData.OutPutType != OutputType.Main)
         {
-            Directory.CreateDirectory(OutputPath + varietyof + Path.GetFileName(PicData.FileName));
+            Directory.CreateDirectory(outputPath + Varietyof + Path.GetFileName(pictureData.FileName));
         }
 
-        if (PicData.OutPutType == OutputType.Main)
+        if (pictureData.OutPutType == OutputType.Main)
         {
-            Guid guid = Guid.NewGuid();
-            OutputPath += "//" + guid + imageName;
-            PicData.OutPath = OutputPath;
+            var guid = Guid.NewGuid();
+            outputPath += "//" + guid + imageName;
+            pictureData.OutPath = outputPath;
         }
-        if (PicData.OutPutType == OutputType.BoxPositionVariety)
+        if (pictureData.OutPutType == OutputType.BoxPositionVariety)
         {
-            Guid guid = Guid.NewGuid();
-            OutputPath += $"{varietyof}{imageName}//{guid}.png";
-            PicData.OutPath = OutputPath;
+            var guid = Guid.NewGuid();
+            outputPath += $"{Varietyof}{imageName}//{guid}.png";
+            pictureData.OutPath = outputPath;
         }
-        if (PicData.OutPutType == OutputType.SaturationVariety)
+        if (pictureData.OutPutType == OutputType.SaturationVariety)
         {
-            Guid guid = Guid.NewGuid();
-            OutputPath += $"{varietyof}{imageName}//{guid}.png";
-            PicData.OutPath = OutputPath;
+            var guid = Guid.NewGuid();
+            outputPath += $"{Varietyof}{imageName}//{guid}.png";
+            pictureData.OutPath = outputPath;
         }
-        if (PicData.OutPutType == OutputType.FontVariety)
+        if (pictureData.OutPutType == OutputType.FontVariety)
         {
-            Guid guid = Guid.NewGuid();
-            OutputPath += $"{varietyof}{imageName}//{guid}.png";
-            PicData.OutPath = OutputPath;
+            var guid = Guid.NewGuid();
+            outputPath += $"{Varietyof}{imageName}//{guid}.png";
+            pictureData.OutPath = outputPath;
         }
-        if (PicData.OutPutType == OutputType.RandomVariety)
+        if (pictureData.OutPutType == OutputType.RandomVariety)
         {
-            Guid guid = Guid.NewGuid();
-            OutputPath += $"{varietyof}{imageName}//{guid}.png";
-            PicData.OutPath = OutputPath;
+            var guid = Guid.NewGuid();
+            outputPath += $"{Varietyof}{imageName}//{guid}.png";
+            pictureData.OutPath = outputPath;
         }
-        if (PicData.OutPutType == OutputType.MemeVariety)
+        if (pictureData.OutPutType == OutputType.MemeVariety)
         {
-            Guid guid = Guid.NewGuid();
-            OutputPath += $"{varietyof}{imageName}//{PicData.OutPutType}{guid}{imageName}.png";
-            PicData.OutPath = OutputPath;
+            var guid = Guid.NewGuid();
+            outputPath += $"{Varietyof}{imageName}//{pictureData.OutPutType}{guid}{imageName}.png";
+            pictureData.OutPath = outputPath;
         }
-        if (PicData.OutPutType == OutputType.Custom)
+        if (pictureData.OutPutType == OutputType.Custom)
         {
-            Guid guid = Guid.NewGuid();
-            OutputPath += $"{varietyof}{imageName}//{guid}Custom of{imageName}";
-            PicData.OutPath = OutputPath;
+            var guid = Guid.NewGuid();
+            outputPath += $"{Varietyof}{imageName}//{guid}Custom of{imageName}";
+            pictureData.OutPath = outputPath;
         }
 
         MagickImage outputImage = new();
 
         try
         {
-            if (PicData.FileName is null)
-            {
-                throw new Exception($"PicData.FileName was passed null to ProduceTextPictures");
-            }
-            byte[] fileBytes = await File.ReadAllBytesAsync(Path.GetFullPath(PicData.FileName));
+            var fileBytes = await File.ReadAllBytesAsync(Path.GetFullPath(pictureData.FileName));
             outputImage = new MagickImage(fileBytes);
         }
         catch (Exception ex)
@@ -291,41 +287,36 @@ public class Production
             await settings.LogService.LogError($"Error in reading image into ImageMagick: {ex.Message}");
         }
 
-        for (int Box = 0; Box < PicData.BoxParameters.Count; Box++)
+        for (var box = 0; box < pictureData.BoxParameters.Count; box++)
         {
-            if (PicData.BoxParameters[Box].CurrentBox.Type == BoxType.None)
+            if (pictureData.BoxParameters[box].CurrentBox.Type == BoxType.None)
             {
                 break;
             }
 
-            ParamForTextCreation BoxParam = PicData.BoxParameters[Box];
-            PicData.MakeTextSettings(PicData.BoxParameters[Box]);
+            var boxParam = pictureData.BoxParameters[box];
+            pictureData.MakeTextSettings(pictureData.BoxParameters[box]);
 
             await Task.Run(() =>
             {
-                if (PicData.OutPutType == OutputType.MemeVariety && PicData.BoxParameters[Box].Meme != null)
+                if (pictureData.OutPutType == OutputType.MemeVariety && pictureData.BoxParameters[box].Meme != null)
                 {
-                    MagickImage meme = new(BoxParam.Meme);
-                    meme.Resize(BoxParam.CurrentBox.Width, BoxParam.CurrentBox.Height);
-                    outputImage.Composite(meme, BoxParam.CurrentBox.X, BoxParam.CurrentBox.Y, CompositeOperator.Over);
+                    MagickImage meme = new(boxParam.Meme);
+                    meme.Resize(boxParam.CurrentBox.Width, boxParam.CurrentBox.Height);
+                    outputImage.Composite(meme, boxParam.CurrentBox.X, boxParam.CurrentBox.Y, CompositeOperator.Over);
                 }
-                else if (PicData.BoxParameters[Box].Meme == null)
+                else if (pictureData.BoxParameters[box].Meme == null)
                 {
                     //// Add the caption layer on top of the background image
-                    var caption = new MagickImage($"caption:{BoxParam.Text}", PicData.ReadSettings);
+                    var caption = new MagickImage($"caption:{boxParam.Text}", pictureData.ReadSettings);
 
-                    //Guid guid = Guid.NewGuid();
-                    //string createdTextOutPut = SkiaMethods.
-                    //(PicData.BoxParameters[Box].Text, PicData.BoxParameters[Box].Font, PicData.BoxParameters[Box].CurrentBox.Height, PicData.BoxParameters[Box].CurrentBox.Width, guid);
-                    //var caption = new MagickImage(createdTextOutPut);
-
-                    int takeX = BoxParam.CurrentBox.X;
-                    int takeY = BoxParam.CurrentBox.Y;
+                    var takeX = boxParam.CurrentBox.X;
+                    var takeY = boxParam.CurrentBox.Y;
 
                     outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
                 }
 
-                settings.LogService.LogInformation($"Picture:{Path.GetFileName(PicData.FileName)}Box Type:{PicData.BoxParameters[Box].CurrentBox.Type} Box: {Box + 1} of {PicData.BoxParameters.Count} has been composited");
+                settings.LogService.LogInformation($"Picture:{Path.GetFileName(pictureData.FileName)}Box Type:{pictureData.BoxParameters[box].CurrentBox.Type} Box: {box + 1} of {pictureData.BoxParameters.Count} has been composited");
             });
         }
 
@@ -346,7 +337,7 @@ public class Production
         outputImage.Quality = 100;
 
         // outputs the file to the provided path and name
-        await Task.Run(() => outputImage.Write(OutputPath));
-        await settings.LogService.LogInformation($"File Created: {OutputPath}");
+        await Task.Run(() => outputImage.Write(outputPath));
+        await settings.LogService.LogInformation($"File Created: {outputPath}");
     }
 }

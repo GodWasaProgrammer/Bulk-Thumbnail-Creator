@@ -1,39 +1,42 @@
-﻿namespace BulkThumbnailCreator;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
-public class ColorData
+namespace BulkThumbnailCreator;
+
+public static class ColorData
 {
-    static readonly Random Random = new();
-    public static List<string> selectedColors = [];
+    static readonly Random s_random = new();
+
+    public static List<string> SelectedColors { get; set; } = [];
+
     public static ParamForTextCreation SelectTwoRandomColors(ParamForTextCreation paramIn)
     {
         MagickColor firstcolor;
         MagickColor secondColor;
 
-        List<string> colorList = GetAllMagickColors();
+        var colorList = GetAllMagickColors();
 
         colorList.Remove("None");
         colorList.Remove("Transparent");
         colorList.Remove("RebeccaPurple");
 
-        if (selectedColors.Count == 140 || selectedColors.Count > 140)
+        if (SelectedColors.Count == 140 || SelectedColors.Count > 140)
         {
-            selectedColors.Clear();
+            SelectedColors.Clear();
         }
-        foreach (var alreadyselectedcolor in selectedColors)
+        foreach (var alreadyselectedcolor in SelectedColors)
         {
             colorList.Remove(alreadyselectedcolor);
         }
 
-        
-
-        int randomIndexofFirstColor = Random.Next(colorList.Count);
-        firstcolor = new(colorList[randomIndexofFirstColor]);
-        selectedColors.Add(colorList[randomIndexofFirstColor]);
+        firstcolor = new(colorList[s_random.Next(colorList.Count)]);
+        SelectedColors.Add(colorList[s_random.Next(colorList.Count)]);
         paramIn.FillColor.SetByRGB((byte)firstcolor.R, (byte)firstcolor.G, (byte)firstcolor.B);
 
-        int randomIndexofSecondColor = Random.Next(colorList.Count);
+        var randomIndexofSecondColor = s_random.Next(colorList.Count);
         secondColor = new(colorList[randomIndexofSecondColor]);
-        selectedColors.Add(colorList[randomIndexofSecondColor]);
+        SelectedColors.Add(colorList[randomIndexofSecondColor]);
         paramIn.StrokeColor.SetByRGB((byte)secondColor.R, (byte)secondColor.G, (byte)secondColor.B);
 
         return paramIn;
@@ -44,36 +47,36 @@ public class ColorData
         MagickColor firstcolor;
         MagickColor secondColor;
 
-        List<string> colorList = GetAllMagickColors();
+        var colorList = GetAllMagickColors();
 
         colorList.Remove("None");
         colorList.Remove("Transparent");
         colorList.Remove("RebeccaPurple");
 
-        if (selectedColors.Count == 140 || selectedColors.Count > 140)
+        if (SelectedColors.Count == 140 || SelectedColors.Count > 140)
         {
-            selectedColors.Clear();
+            SelectedColors.Clear();
         }
 
-        foreach (var alreadyselectedcolor in selectedColors)
+        foreach (var alreadyselectedcolor in SelectedColors)
         {
             colorList.Remove(alreadyselectedcolor);
         }
 
-        for (int i = 0; i < colorList.Count; i++)
+        for (var i = 0; i < colorList.Count; i++)
         {
             if (i == 0)
             {
                 firstcolor = new(colorList[i]);
-                selectedColors.Add(colorList[i]);
+                SelectedColors.Add(colorList[i]);
                 paramIn.FillColor.SetByRGB((byte)firstcolor.R, (byte)firstcolor.G, (byte)firstcolor.B);
             }
 
             if (i == colorList.Count - 1)
             {
-                string PassColor = colorList[i - 1];
-                secondColor = new(PassColor);
-                selectedColors.Add(colorList[i]);
+                var passColor = colorList[i - 1];
+                secondColor = new(passColor);
+                SelectedColors.Add(colorList[i]);
                 paramIn.StrokeColor.SetByRGB((byte)secondColor.R, (byte)secondColor.G, (byte)secondColor.B);
             }
         }
@@ -84,10 +87,10 @@ public class ColorData
     {
         List<string> colorsList = [];
 
-        Type magickColorsType = typeof(MagickColors);
-        PropertyInfo[] properties = magickColorsType.GetProperties(BindingFlags.Public | BindingFlags.Static);
+        var magickColorsType = typeof(MagickColors);
+        var properties = magickColorsType.GetProperties(BindingFlags.Public | BindingFlags.Static);
 
-        foreach (PropertyInfo property in properties)
+        foreach (var property in properties)
         {
             if (property.PropertyType == typeof(MagickColor))
             {

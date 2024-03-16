@@ -1,13 +1,17 @@
-﻿namespace BulkThumbnailCreator;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
-public partial class Creator
+namespace BulkThumbnailCreator;
+
+public static partial class Creator
 {
-    public static async Task<List<PictureData>> Process(ProductionType ProdType, string url, List<string> texts, Settings settings, PictureData PicdataObjToVarietize = null)
+    public static async Task<List<PictureData>> Process(ProductionType prodType, string url, List<string> texts, Settings settings, PictureData pictureData = null)
     {
         settings.ListOfText = texts;
 
         #region Front Page Picture Line Up Output
-        if (ProdType == ProductionType.FrontPagePictureLineUp)
+        if (prodType == ProductionType.FrontPagePictureLineUp)
         {
             settings.PictureDatas = [];
 
@@ -36,21 +40,16 @@ public partial class Creator
             #region Run FfMpeg
             var parameters = new Dictionary<string, string>();
 
-            string extractedfilename = Path.GetFileName(settings.PathToVideo);
+            var extractedfilename = Path.GetFileName(settings.PathToVideo);
             parameters["i"] = $@"""{extractedfilename}""";
             parameters["vf"] = "select='gt(scene,0.3)',select=key";
             parameters["vsync"] = "vfr";
 
             // get our current location
-            string CurrentLoc = Assembly.GetExecutingAssembly().Location;
-            string parentDirectory = Directory.GetParent(CurrentLoc).FullName;
+            var parentDirectory = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName;
 
-            // if dir doesnt exist, make it
-            string ExePath = Path.Combine(parentDirectory, "Executables");
-            string truePath = Path.GetRelativePath(ExePath, settings.OutputDir);
-            string pictureOutput = $@"""{truePath}/%03d.png""";
+            var pictureOutput = $@"""{Path.GetRelativePath(Path.Combine(parentDirectory, "Executables"), settings.OutputDir)}/%03d.png""";
 
-            FFmpegHandler fFmpegHandler = new();
             await FFmpegHandler.RunFFMPG(parameters, pictureOutput, settings);
 
             #endregion
@@ -65,21 +64,19 @@ public partial class Creator
             Array2D<RgbPixel> image = null;
             Rectangle[] faceRectangles = null;
 
-            for (int fileIndex = 0; fileIndex < settings.Files.Length; fileIndex++)
+            for (var fileIndex = 0; fileIndex < settings.Files.Length; fileIndex++)
             {
-                string file = settings.Files[fileIndex];
-
                 // Asynchronously load image and perform face detection in a non-blocking background thread
                 await Task.Run(async () =>
                 {
                     try
                     {
                         // Load image
-                        image = await Task.Run(() => Dlib.LoadImage<RgbPixel>(file));
+                        image = await Task.Run(() => Dlib.LoadImage<RgbPixel>(settings.Files[fileIndex]));
 
-                        using var FACEDETECT = Dlib.GetFrontalFaceDetector();
+                        using var frontalFaceDetector = Dlib.GetFrontalFaceDetector();
                         // Detect faces in the image
-                        faceRectangles = FACEDETECT.Operator(image);
+                        faceRectangles = frontalFaceDetector.Operator(image);
 
                         // Continue processing with image and faceRectangles...
                     }
@@ -98,45 +95,43 @@ public partial class Creator
 
                 #region Data Generation
 
-                PictureData PassPictureData = new()
+                PictureData passPictureData = new()
                 {
-                    FileName = file,
-                    NumberOfBoxes = 2,
+                    FileName = settings.Files[fileIndex],
+                    _numberOfBoxes = 2,
                 };
 
-                for (int AmountOfBoxes = 0; AmountOfBoxes < PassPictureData.NumberOfBoxes; AmountOfBoxes++)
+                for (var amountOfBoxes = 0; amountOfBoxes < passPictureData._numberOfBoxes; amountOfBoxes++)
                 {
                     ParamForTextCreation currentParameters = new();
 
-                    List<BoxType> PopulatedBoxes = [];
+                    List<BoxType> populatedBoxes = [];
 
-                    if (PassPictureData.BoxParameters.Count > 0)
-                        PopulatedBoxes.Add(PassPictureData.BoxParameters[0].CurrentBox.Type);
+                    if (passPictureData.BoxParameters.Count > 0)
+                        populatedBoxes.Add(passPictureData.BoxParameters[0].CurrentBox.Type);
 
-                    currentParameters = DataGeneration.GetTextPosition(currentParameters, image, faceRectangles, PopulatedBoxes);
+                    currentParameters = DataGeneration.GetTextPosition(currentParameters, image, faceRectangles, populatedBoxes);
                     currentParameters = ColorData.SelectTwoRandomColors(currentParameters);
                     currentParameters.Font = DataGeneration.PickRandomFont();
 
                     // picks a random string from the list
                     Random pickAString = new();
-                    int pickedString = pickAString.Next(settings.ListOfText.Count);
+                    var pickedString = pickAString.Next(settings.ListOfText.Count);
                     currentParameters.Text = settings.ListOfText[pickedString];
-                    PassPictureData.BoxParameters.Add(currentParameters);
+                    passPictureData.BoxParameters.Add(currentParameters);
                 }
 
-                settings.PictureDatas.Add(PassPictureData);
+                settings.PictureDatas.Add(passPictureData);
             }
             #endregion
 
             #region Variety Data Generation
             //// Produce varietydata for the current object
-            for (int i = 0; i < settings.PictureDatas.Count; i++)
+            for (var i = 0; i < settings.PictureDatas.Count; i++)
             {
-                //Variety.Saturation(settings.PictureDatas[i]);
-                // Variety.Font(settings.PictureDatas[i]);
                 Variety.Random(settings.PictureDatas[i]);
                 Variety.Meme(settings.PictureDatas[i]);
-                ColorData.selectedColors.Clear();
+                ColorData.SelectedColors.Clear();
             }
             #endregion
 
@@ -145,14 +140,14 @@ public partial class Creator
             SemaphoreSlim semaphore = new(4);
             List<Task> productionTasks = [];
 
-            foreach (PictureData picData in settings.PictureDatas)
+            foreach (var picData in settings.PictureDatas)
             {
-                bool NoBoxes = picData.BoxParameters.All(bp => bp.CurrentBox.Type == BoxType.None);
+                var noBoxes = picData.BoxParameters.All(bp => bp.CurrentBox.Type == BoxType.None);
 
-                if (!NoBoxes)
+                if (!noBoxes)
                 {
                     // Start the task asynchronously
-                    Task productionTask = Task.Run(async () =>
+                    var productionTask = Task.Run(async () =>
                     {
                         try
                         {
@@ -192,9 +187,9 @@ public partial class Creator
 
         #region Variety Picture Output
 
-        if (ProdType == ProductionType.VarietyList)
+        if (prodType == ProductionType.VarietyList)
         {
-            if (PicdataObjToVarietize == null)
+            if (pictureData == null)
             {
                 await settings.LogService.LogError("null has been passed to PicdataobjToVarietize");
             }
@@ -203,12 +198,11 @@ public partial class Creator
                 List<Task> productionVarietyTaskList = [];
                 SemaphoreSlim semaphore = new(4);
 
-                foreach (PictureData picData in PicdataObjToVarietize.Varieties)
+                foreach (var picData in pictureData.Varieties)
                 {
                     await semaphore.WaitAsync(); // Acquire a semaphore slot
 
-                    Production production = new();
-                    Task productionTask = Task.Run(async () =>
+                    var productionTask = Task.Run(async () =>
                     {
                         try
                         {
@@ -235,29 +229,18 @@ public partial class Creator
         #endregion
 
         #region Custom Picture OutPut
-        if (ProdType == ProductionType.CustomPicture)
+        if (prodType == ProductionType.CustomPicture)
         {
-            if (PicdataObjToVarietize == null)
+            if (pictureData == null)
             {
                 await settings.LogService.LogError("Null has been passed to CustomPicture");
             }
             else
             {
-                Production production = new();
-                await Production.ProduceTextPictures(PicdataObjToVarietize, settings);
-                settings.PictureDatas.Add(PicdataObjToVarietize);
+                await Production.ProduceTextPictures(pictureData, settings);
+                settings.PictureDatas.Add(pictureData);
             }
         }
-        #endregion
-
-        #region Make Showcase Video
-        //Dictionary<string, string> paramToMakeVideoOfResult = new Dictionary<string, string>();
-        //paramToMakeVideoOfResult["framerate"] = "2";
-        //paramToMakeVideoOfResult["i"] = $@"""{Path.GetFullPath(BTCSettings.TextAddedDir)}/%03d.png""";
-        //string getTruePath = Path.GetFullPath(BTCSettings.TextAddedDir);
-        //string showCaseVideoOutPut = $@"""{getTruePath}/showcase.mp4""";
-
-        //FFmpegHandler.RunFFMPG(paramToMakeVideoOfResult, showCaseVideoOutPut);
         #endregion
 
         #region Picdata serialization & Mock Setup
@@ -271,12 +254,12 @@ public partial class Creator
         settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
         await settings.LogService.LogInformation("Processing Finished");
 
-        if (ProdType == ProductionType.VarietyList)
+        if (prodType == ProductionType.VarietyList)
         {
             Mocking.BTCRunCount++;
         }
 
-        settings.JobService.CurrentJob.PictureDatas = settings.PictureDatas;
+        settings.JobService.CurrentJob.PictureData = settings.PictureDatas;
         settings.JobService.CurrentJob.Settings = settings;
         return settings.PictureDatas;
     }
@@ -284,16 +267,16 @@ public partial class Creator
     /// <summary>
     /// Mocking version of Process for debugging and testing
     /// </summary>
-    /// <param name="prodtype"></param>
+    /// <param name="productionType"></param>
     /// <param name="url"></param>
     /// <param name="texts"></param>
-    /// <param name="picdatatoMock"></param>
+    /// <param name="pictureData"></param>
     /// <returns></returns>
-    public static async Task<List<PictureData>> MockProcess(ProductionType prodtype, string url, List<string> texts, Settings settings, PictureData picdatatoMock = null)
+    public static async Task<List<PictureData>> MockProcess(ProductionType productionType, string url, List<string> texts, Settings settings, PictureData pictureData = null)
     {
         settings.ListOfText = texts;
 
-        if (prodtype == ProductionType.FrontPagePictureLineUp)
+        if (productionType == ProductionType.FrontPagePictureLineUp)
         {
             await Mocking.SetupFrontPagePictureLineUp(settings);
             await settings.LogService.LogInformation("Mocking of FrontPagePictureLineUp complete");
@@ -302,12 +285,12 @@ public partial class Creator
         ArgumentNullException.ThrowIfNull(texts);
         ArgumentNullException.ThrowIfNull(url);
 
-        if (prodtype == ProductionType.VarietyList)
+        if (productionType == ProductionType.VarietyList)
         {
             // fake variety list
             // this will never let you actually pick one, it will automatically mock to whatever was clicked
             // when the code ran last time
-            if (picdatatoMock is null)
+            if (pictureData is null)
             {
                 await settings.LogService.LogError("null has been passed to PicdataobjToVarietize");
             }
@@ -318,16 +301,16 @@ public partial class Creator
             }
         }
 
-        if (prodtype == ProductionType.CustomPicture)
+        if (productionType == ProductionType.CustomPicture)
         {
-            if (picdatatoMock == null)
+            if (pictureData == null)
             {
                 await settings.LogService.LogError("Null has been passed to CustomPicture");
             }
             else
             {
-                await Production.ProduceTextPictures(picdatatoMock, settings);
-                settings.PictureDatas.Add(picdatatoMock);
+                await Production.ProduceTextPictures(pictureData, settings);
+                settings.PictureDatas.Add(pictureData);
             }
         }
 
@@ -336,7 +319,7 @@ public partial class Creator
 
     static void Main()
     {
-
+        throw new NotSupportedException();
     }
 
     [GeneratedRegex(@"[^\w\d?]+")]

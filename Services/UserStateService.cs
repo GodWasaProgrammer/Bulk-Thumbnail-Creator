@@ -1,4 +1,8 @@
-﻿namespace BulkThumbnailCreator.Services
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+namespace BulkThumbnailCreator.Services
 {
     public class UserStateService
     {
@@ -19,21 +23,24 @@
 
         public static void UpdateJob(Job job)
         {
-            Job JobToUpdate = UserJobs.Where(x => x.JobID == job.JobID).FirstOrDefault();
+            var jobToUpdate = UserJobs.Where(x => x.JobID == job.JobID).FirstOrDefault();
 
-            JobToUpdate.VideoName = job.VideoName;
-            JobToUpdate.VideoPath = job.VideoPath;
-            JobToUpdate.VideoUrl = job.VideoUrl;
-            JobToUpdate.FrontLineUpUrls = job.FrontLineUpUrls;
-            JobToUpdate.VarietyUrls = job.VarietyUrls;
-            JobToUpdate.State = job.State;
-            JobToUpdate.LogEntries = job.LogEntries;
-            JobToUpdate.TextToPrint = job.TextToPrint;
-            JobToUpdate.User = job.User;
-            JobToUpdate.TextToPrint = job.TextToPrint;
-            JobToUpdate.Settings = job.Settings;
-            JobToUpdate.JobID = job.JobID;
-            JobToUpdate.PictureDatas = job.PictureDatas;
+            if (jobToUpdate != null)
+            {
+                jobToUpdate.VideoName = job.VideoName;
+                jobToUpdate.VideoPath = job.VideoPath;
+                jobToUpdate.VideoUrl = job.VideoUrl;
+                jobToUpdate.FrontLineUpUrls = job.FrontLineUpUrls;
+                jobToUpdate.VarietyUrls = job.VarietyUrls;
+                jobToUpdate.State = job.State;
+                jobToUpdate.LogEntries = job.LogEntries;
+                jobToUpdate.TextToPrint = job.TextToPrint;
+                jobToUpdate.User = job.User;
+                jobToUpdate.TextToPrint = job.TextToPrint;
+                jobToUpdate.Settings = job.Settings;
+                jobToUpdate.JobID = job.JobID;
+                jobToUpdate.PictureData = job.PictureData;
+            }
         }
 
         /// <summary>
@@ -50,11 +57,9 @@
         /// </summary>
         /// <param name="JobID"></param>
         /// <returns></returns>
-        public static Job GetJob(string User)
+        public static Job GetJob(string user)
         {
-            Job DebugJob = UserJobs.Where(x => x.User == User).FirstOrDefault();
-
-            return UserJobs.Where(x => x.User == User).LastOrDefault();
+            return UserJobs.LastOrDefault(x => x.User == user);
         }
     }
 }

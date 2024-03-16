@@ -1,29 +1,34 @@
-﻿namespace BulkThumbnailCreator;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
-internal class Variety
+// Ignore Spelling: Meme
+
+namespace BulkThumbnailCreator;
+
+internal static class Variety
 {
     /// <summary>
     /// Produces 5 varieties of the first randomized font that hasnt already been chosen
     /// </summary>
-    /// <param name="PicToVarietize">Your input PictureData object to produce varieties of</param>
-    /// <param name="TargetFolder">The target folder of your object</param>
-    public static void Font(PictureData PicToVarietize)
+    /// <param name="pictureData">Your input PictureData object to produce varieties of</param>
+    public static void Font(PictureData pictureData)
     {
-        for (int Box = 0; Box < PicToVarietize.BoxParameters.Count; Box++)
+        for (var box = 0; box < pictureData.BoxParameters.Count; box++)
         {
-            if (PicToVarietize.BoxParameters[Box].CurrentBox.Type == BoxType.None)
+            if (pictureData.BoxParameters[box].CurrentBox.Type == BoxType.None)
             {
                 break;
             }
             else
             {
-                List<string> fontList = [PicToVarietize.BoxParameters[Box].Font];
+                List<string> fontList = [pictureData.BoxParameters[box].Font];
 
-                int FontsToPick = 5;
+                const int FontsToPick = 5;
 
-                for (int i = 0; i < FontsToPick; i++)
+                for (var i = 0; i < FontsToPick; i++)
                 {
-                    string pickedFont = DataGeneration.PickRandomFont();
+                    var pickedFont = DataGeneration.PickRandomFont();
 
                     // if the list doesnt contain this font already, add it.
                     if (!fontList.Contains(pickedFont))
@@ -37,57 +42,53 @@ internal class Variety
                 }
                 // variety selection finished, proceed to creating
 
-                foreach (string font in fontList)
+                foreach (var font in fontList)
                 {
-                    PictureData createFontVariety = new(PicToVarietize);
+                    PictureData createFontVariety = new(pictureData);
                     createFontVariety.Varieties.Clear();
 
-                    createFontVariety.BoxParameters[Box].Font = font;
+                    createFontVariety.BoxParameters[box].Font = font;
                     createFontVariety.OutPutType = OutputType.FontVariety;
-                    PicToVarietize.Varieties.Add(createFontVariety);
+                    pictureData.Varieties.Add(createFontVariety);
                 }
             }
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="PictureInputData"></param>
-    public static void Random(PictureData PictureInputData)
+    public static void Random(PictureData pictureInputData)
     {
         const int NumberOfRandomsToProduce = 15;
 
-        for (int CurrentIndex = 0; CurrentIndex < NumberOfRandomsToProduce; CurrentIndex++)
+        for (var currentIndex = 0; currentIndex < NumberOfRandomsToProduce; currentIndex++)
         {
-            for (int CurrentBoxes = 0; CurrentBoxes < PictureInputData.NumberOfBoxes; CurrentBoxes++)
+            for (var currentBoxes = 0; currentBoxes < pictureInputData._numberOfBoxes; currentBoxes++)
             {
-                PictureData VarietyData = new(PictureInputData);
-                VarietyData.Varieties.Clear();
-                VarietyData.BoxParameters[CurrentBoxes] = ColorData.SelectTwoDifferentColors(VarietyData.BoxParameters[CurrentBoxes]);
-                string Font = DataGeneration.PickRandomFont();
-                VarietyData.BoxParameters[CurrentBoxes].Font = Font;
-                VarietyData.OutPutType = OutputType.RandomVariety;
-                PictureInputData.Varieties.Add(VarietyData);
+                PictureData varietyData = new(pictureInputData);
+                varietyData.Varieties.Clear();
+                varietyData.BoxParameters[currentBoxes] = ColorData.SelectTwoDifferentColors(varietyData.BoxParameters[currentBoxes]);
+                var font = DataGeneration.PickRandomFont();
+                varietyData.BoxParameters[currentBoxes].Font = font;
+                varietyData.OutPutType = OutputType.RandomVariety;
+                pictureInputData.Varieties.Add(varietyData);
             }
         }
     }
 
-    public static void Meme(PictureData picDataToVar)
+    public static void Meme(PictureData pictureData)
     {
         // call the copy ctor on the picdata object
-        PictureData CopiedData = new(picDataToVar);
+        PictureData copiedData = new(pictureData);
 
         // clear the variety list
-        CopiedData.Varieties.Clear();
+        copiedData.Varieties.Clear();
 
         /// make a list that collects the boxes of the current picdata object
         /// this is so we can determine which boxes are available to pick from
-        List<BoxType> ReadBoxes = [];
+        List<BoxType> readBoxes = [];
 
-        for (int i = 0; i < CopiedData.BoxParameters.Count; i++)
+        for (var i = 0; i < copiedData.BoxParameters.Count; i++)
         {
-            ReadBoxes.Add(CopiedData.BoxParameters[i].CurrentBox.Type);
+            readBoxes.Add(copiedData.BoxParameters[i].CurrentBox.Type);
         }
 
         // we will now determine if a meme is appropriate
@@ -96,14 +97,14 @@ internal class Variety
         // if that is not the case, memes shouldnt be used
         // so if readboxes count is less then 2, skip this iteration
 
-        if (ReadBoxes.Count == 2 || ReadBoxes.Count > 2)
+        if (readBoxes.Count == 2 || readBoxes.Count > 2)
         {
-            for (int i = 0; i < ReadBoxes.Count; i++)
+            for (var i = 0; i < readBoxes.Count; i++)
             {
                 // if we have looped and already made a meme, we need to make sure the text box
                 // also gets passed
 
-                if (CopiedData.OutPutType == OutputType.MemeVariety)
+                if (copiedData.OutPutType == OutputType.MemeVariety)
                 {
                     // dont modify object
                     // dont write any data to lists
@@ -115,11 +116,11 @@ internal class Variety
                 {
                     // pick a meme
                     Random pickRandomMeme = new();
-                    int PickedMeme = pickRandomMeme.Next(Settings.Memes.Length);
+                    var pickedMeme = pickRandomMeme.Next(Settings.Memes.Length);
 
                     // write our chosen meme to Meme property
-                    CopiedData.BoxParameters[i].Meme = Settings.Memes[PickedMeme];
-                    CopiedData.OutPutType = OutputType.MemeVariety;
+                    copiedData.BoxParameters[i].Meme = Settings.Memes[pickedMeme];
+                    copiedData.OutPutType = OutputType.MemeVariety;
                 }
             }
         }
@@ -131,6 +132,6 @@ internal class Variety
         }
 
         // add the copied data to the list of varieties if all is successful
-        picDataToVar.Varieties.Add(CopiedData);
+        pictureData.Varieties.Add(copiedData);
     }
 }

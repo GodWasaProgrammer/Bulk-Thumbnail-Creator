@@ -1,3 +1,7 @@
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 using BulkThumbnailCreator;
 using BulkThumbnailCreator.Interfaces;
 using BulkThumbnailCreator.Services;
@@ -7,7 +11,7 @@ using Microsoft.Extensions.FileProviders;
 using MudBlazor.Services;
 namespace WebUI;
 
-public class Program
+public static class Program
 {
     public static void Main(string[] args)
     {
@@ -52,7 +56,6 @@ public class Program
         {
             FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "TextAdded")),
             RequestPath = "/TextAdded"
-
         });
 
         app.UseRouting();

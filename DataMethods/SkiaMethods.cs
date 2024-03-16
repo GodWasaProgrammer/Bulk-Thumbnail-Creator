@@ -1,22 +1,27 @@
-﻿using SkiaSharp;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
 
-internal class SkiaMethods
+using SkiaSharp;
+
+namespace BulkThumbnailCreator
 {
-    public static string CreateTextImage(string text, string font, int height, int width, Guid filename)
+    internal static class SkiaMethods
     {
-        SKImageInfo info = new(width, height);
-
-        // Create a SKSurface to draw on using the SKImageInfo
-        using (SKSurface surface = SKSurface.Create(info))
+        public static string CreateTextImage(string text, string font, int height, int width, Guid filename)
         {
-            // Get the canvas from the surface
-            SKCanvas canvas = surface.Canvas;
+            SKImageInfo info = new(width, height);
 
-            // Create a paint object for drawing text
-            using (SKPaint textPaint = new())
+            // Create a SKSurface to draw on using the SKImageInfo
+            using (var surface = SKSurface.Create(info))
             {
+                // Get the canvas from the surface
+                var canvas = surface.Canvas;
+
+                // Create a paint object for drawing text
+                using SKPaint textPaint = new();
                 // Set text size based on box dimensions
-                float textSize = CalculateTextSizeToFitBox(text, width, height);
+                var textSize = CalculateTextSizeToFitBox(text, width, height);
                 textPaint.TextSize = textSize;
 
                 // Set other text paint properties
@@ -32,7 +37,7 @@ internal class SkiaMethods
                 SKColor endColor = new((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
 
                 // Create a gradient shader
-                SKShader gradientShader = SKShader.CreateLinearGradient(
+                var gradientShader = SKShader.CreateLinearGradient(
                     new SKPoint(0, 0),
                     new SKPoint(info.Width, info.Height),
                     new SKColor[] { startColor, endColor },
@@ -47,40 +52,38 @@ internal class SkiaMethods
                 textPaint.MeasureText(text, ref bounds);
 
                 // Calculate the position to center the text
-                float x = (width - bounds.Width) / 2;
-                float y = (height + bounds.Height) / 2 - bounds.Bottom;
+                var x = (width - bounds.Width) / 2;
+                var y = ((height + bounds.Height) / 2) - bounds.Bottom;
 
                 // Draw the text on the canvas
                 canvas.DrawText(text, x, y, textPaint);
 
                 // Encode the surface as a PNG image
-                using SKImage skImage = surface.Snapshot();
-                using SKData data = skImage.Encode();
+                using var skImage = surface.Snapshot();
+                using var data = skImage.Encode();
                 using Stream stream = File.OpenWrite(filename.ToString() + ".png");
                 data.SaveTo(stream);
             }
+            return filename.ToString() + ".png";
         }
-        return filename.ToString() + ".png";
-    }
 
-    // Helper method to calculate text size to fit the box
-    private static float CalculateTextSizeToFitBox(string text, int width, int height)
-    {
-        using SKPaint textPaint = new();
-        textPaint.TextSize = 100; // Initial estimation size
+        // Helper method to calculate text size to fit the box
+        private static float CalculateTextSizeToFitBox(string text, int width, int height)
+        {
+            using SKPaint textPaint = new();
+            textPaint.TextSize = 100; // Initial estimation size
 
-        // Measure the text bounds using a temporary paint object
-        SKRect bounds = new();
-        textPaint.MeasureText(text, ref bounds);
+            // Measure the text bounds using a temporary paint object
+            SKRect bounds = new();
+            textPaint.MeasureText(text, ref bounds);
 
-        // Calculate the scaling factor to fit the text within the box
-        float scaleX = width / bounds.Width;
-        float scaleY = height / bounds.Height;
-        float scale = Math.Min(scaleX, scaleY);
+            // Calculate the scaling factor to fit the text within the box
+            var scaleX = width / bounds.Width;
+            var scaleY = height / bounds.Height;
+            var scale = Math.Min(scaleX, scaleY);
 
-        // Adjust text size based on the scaling factor
-        return textPaint.TextSize * scale;
+            // Adjust text size based on the scaling factor
+            return textPaint.TextSize * scale;
+        }
     }
 }
-
-

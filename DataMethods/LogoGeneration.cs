@@ -1,8 +1,12 @@
-﻿using SkiaSharp;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using SkiaSharp;
 
 namespace BulkThumbnailCreator.DataMethods
 {
-    public class LogoGeneration
+    public static class LogoGeneration
     {
         public static void GenerateLogo(string outputDir)
         {
@@ -10,9 +14,9 @@ namespace BulkThumbnailCreator.DataMethods
             SKImageInfo info = new(1000, 125);
 
             // Create a SKSurface to draw on using the SKImageInfo
-            using SKSurface surface = SKSurface.Create(info);
+            using var surface = SKSurface.Create(info);
             // Get the canvas from the surface
-            SKCanvas canvas = surface.Canvas;
+            var canvas = surface.Canvas;
 
             // Create a paint object for drawing text
             using (SKPaint textPaint = new())
@@ -29,7 +33,7 @@ namespace BulkThumbnailCreator.DataMethods
                 SKColor endColor = new((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
 
                 // Create a gradient shader
-                SKShader gradientShader = SKShader.CreateLinearGradient(
+                var gradientShader = SKShader.CreateLinearGradient(
                     new SKPoint(0, 0),
                     new SKPoint(info.Width, info.Height),
                     new SKColor[] { startColor, endColor },
@@ -44,11 +48,11 @@ namespace BulkThumbnailCreator.DataMethods
             }
 
             // Encode the surface as a PNG image
-            using SKImage skImage = surface.Snapshot();
-            using SKData data = skImage.Encode();
+            using var skImage = surface.Snapshot();
+            using var data = skImage.Encode();
             try
             {
-                using FileStream stream = File.OpenWrite(outputDir);
+                using var stream = File.OpenWrite(outputDir);
                 data.SaveTo(stream);
                 stream.Close();
             }

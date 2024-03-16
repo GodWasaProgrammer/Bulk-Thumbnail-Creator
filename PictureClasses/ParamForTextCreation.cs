@@ -1,67 +1,37 @@
-﻿namespace BulkThumbnailCreator.PictureClasses;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+// Ignore Spelling: Meme
+
+namespace BulkThumbnailCreator.PictureClasses;
 
 public class ParamForTextCreation
 {
-    private string _Meme;
-    public string Meme { get { return _Meme; } set { _Meme = value; } }
-
-    /// <summary>
-    /// Text that will be printed on the image for this object
-    /// </summary>
-    private string _Text;
-    public string Text { get { return _Text; } set { _Text = value; } }
-
-    /// <summary>
-    /// The selected font of this object
-    /// </summary>
-    private string _Font;
-    public string Font { get { return _Font; } set { _Font = value; } }
-
-    /// <summary>
-    /// The Box Width which in text will be placed of this object
-    /// </summary>
-    private int _WidthOfBox;
-    public int WidthOfBox { get { return _WidthOfBox; } set { _WidthOfBox = value; } }
-
-    private int _HeightOfBox;
-    public int HeightOfBox { get { return _HeightOfBox; } set { _HeightOfBox = value; } }
-
-    /// <summary>
-    /// The Fillcolor for textoutput
-    /// </summary>
-    private ColorItem fillColor = new();
-    public ColorItem FillColor { get { return fillColor; } set { fillColor = FillColor; } }
-
-    /// <summary>
-    /// StrokeColor for textoutput
-    /// </summary>
-    private ColorItem strokeColor = new();
-    public ColorItem StrokeColor { get { return strokeColor; } set { strokeColor = StrokeColor; } }
-
-    private List<BoxType> _boxesWithNoFaceIntersect = [];
-    public List<BoxType> BoxesWithNoFaceIntersect { get { return _boxesWithNoFaceIntersect; } set { _boxesWithNoFaceIntersect = value; } }
-
-    private List<Box> _Boxes = [];
-    public List<Box> Boxes { get { return _Boxes; } set { _Boxes = value; } }
-
-    private Box _CurrentBox = new();
-    public Box CurrentBox { get { return _CurrentBox; } set { _CurrentBox = value; } }
-
+    public string Meme { get; set; }
+    public string Text { get; set; }
+    public string Font { get; set; }
+    public int WidthOfBox { get; set; }
+    public int HeightOfBox { get; set; }
+    public ColorItem FillColor { get; set; } = new();
+    public ColorItem StrokeColor { get; set; } = new();
+    public List<BoxType> BoxesWithNoFaceIntersect { get; set; } = [];
+    public List<Box> Boxes { get; set; } = [];
+    public Box CurrentBox { get; set; } = new();
     public ParamForTextCreation(ParamForTextCreation param)
     {
-        _Text = (string)param.Text.Clone(); // string
-        _Font = (string)param.Font.Clone(); // string
-        _WidthOfBox = param.WidthOfBox; // int
-        _HeightOfBox = param.HeightOfBox; // int
-        _Meme = (string)param.Meme?.Clone(); // string
-        fillColor = new ColorItem(param.FillColor); // object
-        strokeColor = new ColorItem(param.StrokeColor); // object
+        Text = (string)param.Text.Clone(); // string
+        Font = (string)param.Font.Clone(); // string
+        WidthOfBox = param.WidthOfBox; // int
+        HeightOfBox = param.HeightOfBox; // int
+        Meme = (string)param.Meme?.Clone(); // string
+        FillColor = new ColorItem(param.FillColor); // object
+        StrokeColor = new ColorItem(param.StrokeColor); // object
         Boxes = new List<Box>(param.Boxes); // dictionary
-        _CurrentBox = new(param._CurrentBox); // object
+        CurrentBox = new(param.CurrentBox); // object
     }
 
     public ParamForTextCreation()
     {
-
     }
 }
