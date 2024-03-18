@@ -1,8 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
-namespace BulkThumbnailCreator.Services
+﻿namespace BulkThumbnailCreator.Services
 {
     public class UserStateService
     {
@@ -55,8 +51,7 @@ namespace BulkThumbnailCreator.Services
         /// <summary>
         /// Fetches a job from the list, to be able to Maintain state between page refreshes
         /// </summary>
-        /// <param name="JobID"></param>
-        /// <returns></returns>
+        /// <returns>the job</returns>
         public static Job GetJob(string user)
         {
             return UserJobs.LastOrDefault(x => x.User == user);

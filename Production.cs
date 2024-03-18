@@ -1,12 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
-// Ignore Spelling: ytdl Exe
+﻿// Ignore Spelling: ytdl Exe
 
 namespace BulkThumbnailCreator;
 
-public class Production
+public static class Production
 {
     /// <summary>
     /// Checks if we have our directory/executables  in order
@@ -315,10 +311,10 @@ public class Production
                     {
                         using var sparseColorImage = caption.Clone(); // +clone
                         var fillColor = ColorData.MakeQuantumColor(boxParam.FillColor);
-                        var StrokeColor = ColorData.MakeQuantumColor(boxParam.StrokeColor);
+                        var strokeColor = ColorData.MakeQuantumColor(boxParam.StrokeColor);
                         var sparseColorArgs = new SparseColorArg[2];
                         sparseColorArgs[0] = new SparseColorArg(0, caption.Height, fillColor);
-                        sparseColorArgs[1] = new SparseColorArg(caption.Width, 0, StrokeColor);
+                        sparseColorArgs[1] = new SparseColorArg(caption.Width, 0, strokeColor);
                         sparseColorImage.SparseColor(SparseColorMethod.Bilinear, sparseColorArgs); // -sparse - color Barycentric
 
                         caption.Composite(sparseColorImage, CompositeOperator.In); // -compose In -composite

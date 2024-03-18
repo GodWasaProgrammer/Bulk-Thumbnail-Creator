@@ -1,8 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
-// Ignore Spelling: Pic
+﻿// Ignore Spelling: Pic
 
 namespace BulkThumbnailCreator.Services
 {
@@ -56,16 +52,13 @@ namespace BulkThumbnailCreator.Services
 
             _currentJob.TextToPrint = listOfTextToPrint;
 
-            var prodType = ProductionType.FrontPagePictureLineUp;
-            _currentJob.TextToPrint = listOfTextToPrint;
-
             if (Settings.Mocking && Settings.MakeMocking)
             {
-                PicDataServiceList = await Creator.MockProcess(prodType, url, listOfTextToPrint, settings);
+                PicDataServiceList = await Creator.MockProcess(ProductionType.FrontPagePictureLineUp, url, listOfTextToPrint, settings);
             }
             else
             {
-                PicDataServiceList = await Creator.Process(prodType, url, listOfTextToPrint, settings);
+                PicDataServiceList = await Creator.Process(ProductionType.FrontPagePictureLineUp, url, listOfTextToPrint, settings);
             }
 
             if (settings.PathToVideo != null)
@@ -96,14 +89,13 @@ namespace BulkThumbnailCreator.Services
             List<string> imageUrls = [];
             var url = string.Empty;
 
-            var prodType = ProductionType.VarietyList;
             if (Settings.Mocking && Settings.MakeMocking)
             {
-                PicDataServiceList = await Creator.MockProcess(prodType, url, _currentJob.TextToPrint, settings, pictureData);
+                PicDataServiceList = await Creator.MockProcess(ProductionType.VarietyList, url, _currentJob.TextToPrint, settings, pictureData);
             }
             else
             {
-                PicDataServiceList = await Creator.Process(prodType, url, _currentJob.TextToPrint, _currentJob.Settings, pictureData);
+                PicDataServiceList = await Creator.Process(ProductionType.VarietyList, url, _currentJob.TextToPrint, _currentJob.Settings, pictureData);
             }
 
             // sets the list on the job object
@@ -119,10 +111,7 @@ namespace BulkThumbnailCreator.Services
                     liftMockFolder = lastFolderName;
                 }
                 liftMockFolder = liftMockFolder.Replace("varietyof", "");
-
-                string liftFileName;
-                liftFileName = _currentJob.PictureData[0].FileName;
-                var path = Path.GetDirectoryName(liftFileName);
+                var path = Path.GetDirectoryName(_currentJob.PictureData[0].FileName);
 
                 liftMockFolder = Path.Combine(path, liftMockFolder);
                 var index = liftMockFolder.IndexOf("\\");
@@ -132,8 +121,7 @@ namespace BulkThumbnailCreator.Services
             }
 
             var parentfilename = Path.GetFileName(pictureData.FileName);
-            var varietyof = "varietyof";
-            var concatenatedString = $"{job.Settings.TextAddedDir}/{varietyof}{parentfilename}";
+            var concatenatedString = $"{job.Settings.TextAddedDir}/varietyof{parentfilename}";
             var arrayOfFilePaths = Directory.GetFiles(concatenatedString, "*.png");
 
             foreach (var filepath in arrayOfFilePaths)
@@ -179,7 +167,7 @@ namespace BulkThumbnailCreator.Services
 
             if (Settings.Mocking && Settings.MakeMocking)
             {
-                var dirToMockPicture = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", $"TextAdded");
+                var dirToMockPicture = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "TextAdded");
 
                 DirectoryInfo di = new(dirToMockPicture);
 
@@ -198,9 +186,9 @@ namespace BulkThumbnailCreator.Services
 
                     var numberOfPicture2 = Path.GetFileNameWithoutExtension(mockCorrelation);
 
-                    var varof = "varietyof ";
+                    const string Varof = "varietyof ";
 
-                    numberOfPicture2 = numberOfPicture2.Remove(0, varof.Length);
+                    numberOfPicture2 = numberOfPicture2.Remove(0, Varof.Length);
 
                     if (numberOfPicture == numberOfPicture2)
                     {
@@ -228,7 +216,7 @@ namespace BulkThumbnailCreator.Services
         {
             PictureData picData = new();
 
-            if (Settings.Mocking == true && Settings.MakeMocking)
+            if (Settings.Mocking && Settings.MakeMocking)
             {
                 // nonsense to just pick the first one
                 foreach (var item in PicDataServiceList)

@@ -1,8 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
-namespace BulkThumbnailCreator;
+﻿namespace BulkThumbnailCreator;
 
 public static class ColorData
 {
@@ -106,8 +102,6 @@ public static class ColorData
         var greenFill = (ushort)(colorItem.Green * 65535 / 255);
         var blueFill = (ushort)(colorItem.Blue * 65535 / 255);
 
-        var MagickColor = new MagickColor(redFill, greenFill, blueFill);
-
-        return MagickColor;
+        return new MagickColor(redFill, greenFill, blueFill);
     }
 }

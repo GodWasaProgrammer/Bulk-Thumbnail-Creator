@@ -1,25 +1,18 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
-namespace BulkThumbnailCreator.Services
+﻿namespace BulkThumbnailCreator.Services
 {
-    public class ZipService
+    public static class ZipService
     {
-
-        static readonly string wwwrootloc = "wwwroot";
+        const string Wwwrootloc = "wwwroot";
 
         public static string ZipOutputDir()
         {
-            string zippedFile = $"{wwwrootloc}/output.zip";
-
-            if (File.Exists(zippedFile))
+            if (File.Exists($"{Wwwrootloc}/output.zip"))
             {
-                File.Delete(zippedFile);
+                File.Delete($"{Wwwrootloc}/output.zip");
             }
 
             // ZipFile.CreateFromDirectory(Settings.OutputDir, zippedFile);
-            return Path.GetFileName(zippedFile);
+            return Path.GetFileName($"{Wwwrootloc}/output.zip");
         }
 
         public static string ZipVideo()
