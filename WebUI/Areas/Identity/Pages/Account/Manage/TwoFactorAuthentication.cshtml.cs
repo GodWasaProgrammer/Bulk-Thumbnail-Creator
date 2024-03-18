@@ -10,8 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebUI.Areas.Identity.Pages.Account.Manage
 {
-    public class TwoFactorAuthenticationModel(
-        UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) : PageModel
+    public class TwoFactorAuthenticationModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager = userManager;
         private readonly SignInManager<IdentityUser> _signInManager = signInManager;
