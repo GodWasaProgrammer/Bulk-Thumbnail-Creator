@@ -1,26 +1,34 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
 #nullable disable
 
+using System;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace WebUI.Areas.Identity.Pages.Account
 {
-#pragma warning disable S101 // Types should be named in PascalCase
-    public class LoginWith2faModel(
-        SignInManager<IdentityUser> signInManager,
-        UserManager<IdentityUser> userManager,
-        ILogger<LoginWith2faModel> logger) : PageModel
-#pragma warning restore S101 // Types should be named in PascalCase
+    public class LoginWith2faModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager = signInManager;
-        private readonly UserManager<IdentityUser> _userManager = userManager;
-        private readonly ILogger<LoginWith2faModel> _logger = logger;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly ILogger<LoginWith2faModel> _logger;
+
+        public LoginWith2faModel(
+            SignInManager<IdentityUser> signInManager,
+            UserManager<IdentityUser> userManager,
+            ILogger<LoginWith2faModel> logger)
+        {
+            _signInManager = signInManager;
+            _userManager = userManager;
+            _logger = logger;
+        }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -68,7 +76,13 @@ namespace WebUI.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnGetAsync(bool rememberMe, string returnUrl = null)
         {
             // Ensure the user has gone through the username & password screen first
-            _ = await _signInManager.GetTwoFactorAuthenticationUserAsync() ?? throw new InvalidOperationException("Unable to load two-factor authentication user.");
+            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+
+            if (user == null)
+            {
+                throw new InvalidOperationException($"Unable to load two-factor authentication user.");
+            }
+
             ReturnUrl = returnUrl;
             RememberMe = rememberMe;
 
@@ -82,13 +96,19 @@ namespace WebUI.Areas.Identity.Pages.Account
                 return Page();
             }
 
-            returnUrl ??= Url.Content("~/");
+            returnUrl = returnUrl ?? Url.Content("~/");
 
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync() ?? throw new InvalidOperationException("Unable to load two-factor authentication user.");
+            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+            if (user == null)
+            {
+                throw new InvalidOperationException($"Unable to load two-factor authentication user.");
+            }
+
             var authenticatorCode = Input.TwoFactorCode.Replace(" ", string.Empty).Replace("-", string.Empty);
 
             var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(authenticatorCode, rememberMe, Input.RememberMachine);
-            _ = await _userManager.GetUserIdAsync(user);
+
+            var userId = await _userManager.GetUserIdAsync(user);
 
             if (result.Succeeded)
             {

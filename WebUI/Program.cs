@@ -22,6 +22,7 @@ public static class Program
                         .AddEntityFrameworkStores<ApplicationDbContext>();
         // Add services
         builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor();
         builder.Services.AddScoped<CreatorService>();

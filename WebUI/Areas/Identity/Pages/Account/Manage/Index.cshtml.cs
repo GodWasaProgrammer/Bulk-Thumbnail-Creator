@@ -1,24 +1,29 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
-// Ignore Spelling: Username
-
 #nullable disable
 
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebUI.Areas.Identity.Pages.Account.Manage
 {
-    public class IndexModel(
-        UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager) : PageModel
+    public class IndexModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager = userManager;
-        private readonly SignInManager<IdentityUser> _signInManager = signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+
+        public IndexModel(
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+        }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -82,30 +87,30 @@ namespace WebUI.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (await _userManager.GetUserAsync(User) == null)
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
             if (!ModelState.IsValid)
             {
-                await LoadAsync(await _userManager.GetUserAsync(User));
+                await LoadAsync(user);
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(await _userManager.GetUserAsync(User));
+            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
-#pragma warning disable S1066 // Mergeable "if" statements should be combined
-                if (!(await _userManager.SetPhoneNumberAsync(await _userManager.GetUserAsync(User), Input.PhoneNumber)).Succeeded)
+                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                if (!setPhoneResult.Succeeded)
                 {
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
-#pragma warning restore S1066 // Mergeable "if" statements should be combined
             }
 
-            await _signInManager.RefreshSignInAsync(await _userManager.GetUserAsync(User));
+            await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
         }

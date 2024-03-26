@@ -1,23 +1,28 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
 #nullable disable
 
+using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 
 namespace WebUI.Areas.Identity.Pages.Account.Manage
 {
-#pragma warning disable S101 // Types should be named in PascalCase
-    public class Disable2faModel(
-        UserManager<IdentityUser> userManager,
-        ILogger<Disable2faModel> logger) : PageModel
-#pragma warning restore S101 // Types should be named in PascalCase
+    public class Disable2faModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager = userManager;
-        private readonly ILogger<Disable2faModel> _logger = logger;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly ILogger<Disable2faModel> _logger;
+
+        public Disable2faModel(
+            UserManager<IdentityUser> userManager,
+            ILogger<Disable2faModel> logger)
+        {
+            _userManager = userManager;
+            _logger = logger;
+        }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -36,7 +41,7 @@ namespace WebUI.Areas.Identity.Pages.Account.Manage
 
             if (!await _userManager.GetTwoFactorEnabledAsync(user))
             {
-                throw new InvalidOperationException("Cannot disable 2FA for user as it's not currently enabled.");
+                throw new InvalidOperationException($"Cannot disable 2FA for user as it's not currently enabled.");
             }
 
             return Page();
@@ -53,7 +58,7 @@ namespace WebUI.Areas.Identity.Pages.Account.Manage
             var disable2faResult = await _userManager.SetTwoFactorEnabledAsync(user, false);
             if (!disable2faResult.Succeeded)
             {
-                throw new InvalidOperationException("Unexpected error occurred disabling 2FA.");
+                throw new InvalidOperationException($"Unexpected error occurred disabling 2FA.");
             }
 
             _logger.LogInformation("User with ID '{UserId}' has disabled 2fa.", _userManager.GetUserId(User));

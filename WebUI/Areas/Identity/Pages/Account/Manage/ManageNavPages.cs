@@ -1,14 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
-// Ignore Spelling: Nav
-
 #nullable disable
 
+using System;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace WebUI.Areas.Identity.Pages.Account.Manage
+namespace  WebUI.Areas.Identity.Pages.Account.Manage
 {
     /// <summary>
     ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used

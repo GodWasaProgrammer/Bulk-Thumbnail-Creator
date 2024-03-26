@@ -10,7 +10,7 @@
     <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <CascadingAuthenticationState>
-            <UserDisplay />
+            <LoginDisplay></LoginDisplay>
         </CascadingAuthenticationState>
         <div style="display: flex; align-items: center; justify-content: center; height: 100%; width: 75%;">
             <img src="/images/BTCLogo.png?@(DateTime.UtcNow.Ticks)" style="max-width: 100%; max-height: 100%; object-fit: contain; margin: auto; display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" />
@@ -53,7 +53,7 @@
                 DrawerWidthRight = "0px",
                 AppbarHeight = "30px",
             }
-    };
+        };
 
     private int TakeEntries { get; set; } = 1;
 

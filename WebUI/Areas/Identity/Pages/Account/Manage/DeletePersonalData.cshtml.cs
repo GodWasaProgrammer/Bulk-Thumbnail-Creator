@@ -1,24 +1,32 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information.
-
 #nullable disable
 
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 
 namespace WebUI.Areas.Identity.Pages.Account.Manage
 {
-    public class DeletePersonalDataModel(
-        UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager,
-        ILogger<DeletePersonalDataModel> logger) : PageModel
+    public class DeletePersonalDataModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager = userManager;
-        private readonly SignInManager<IdentityUser> _signInManager = signInManager;
-        private readonly ILogger<DeletePersonalDataModel> _logger = logger;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly ILogger<DeletePersonalDataModel> _logger;
+
+        public DeletePersonalDataModel(
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            ILogger<DeletePersonalDataModel> logger)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _logger = logger;
+        }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -69,17 +77,20 @@ namespace WebUI.Areas.Identity.Pages.Account.Manage
             }
 
             RequirePassword = await _userManager.HasPasswordAsync(user);
-            if (RequirePassword && !await _userManager.CheckPasswordAsync(user, Input.Password))
+            if (RequirePassword)
             {
-                ModelState.AddModelError(string.Empty, "Incorrect password.");
-                return Page();
+                if (!await _userManager.CheckPasswordAsync(user, Input.Password))
+                {
+                    ModelState.AddModelError(string.Empty, "Incorrect password.");
+                    return Page();
+                }
             }
 
             var result = await _userManager.DeleteAsync(user);
             var userId = await _userManager.GetUserIdAsync(user);
             if (!result.Succeeded)
             {
-                throw new InvalidOperationException("Unexpected error occurred deleting user.");
+                throw new InvalidOperationException($"Unexpected error occurred deleting user.");
             }
 
             await _signInManager.SignOutAsync();
