@@ -26,9 +26,11 @@ internal static class Mocking
         // first we will clear the directory of any files
         var mockOutPutDir = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "output");
 
-        var mockDirectories = Directory.GetDirectories(mockOutPutDir);
-
-        foreach (var dir in mockDirectories)
+        if (!Directory.Exists(mockOutPutDir))
+        {
+            Directory.CreateDirectory(mockOutPutDir);
+        }
+        foreach (var dir in Directory.GetDirectories(mockOutPutDir))
         {
             Directory.Delete(dir, true);
         }
