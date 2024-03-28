@@ -24,17 +24,13 @@ public static class Program
         builder.Configuration.AddJsonFile("appsettings.json", optional: false);
         builder.Services.AddDefaultIdentity<IdentityUser>()
                         .AddEntityFrameworkStores<ApplicationDbContext>();
-        //GoogleOptions debugoptions = new();
-        //debugoptions.ClientId = configuration["Authentication:Google:ClientId"];
-        //debugoptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
         builder.Services.AddAuthentication().AddGoogle(googleOptions =>
         {
-            googleOptions.ClientId = "";
-            googleOptions.ClientSecret = "";
+            googleOptions.ClientId = Environment.GetEnvironmentVariable("ClientId")?.Trim();
+            googleOptions.ClientSecret = Environment.GetEnvironmentVariable("ClientSecret")?.Trim();
         });
         // Add services
         builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor();
         builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
@@ -44,7 +40,6 @@ public static class Program
         builder.Services.AddScoped<Settings>();
         builder.Services.AddSingleton<UserStateService>();
         builder.Services.AddMudServices();
-
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -68,22 +63,17 @@ public static class Program
         }
 
         app.UseHttpsRedirection();
-
         app.UseStaticFiles();
-
         app.UseStaticFiles(new StaticFileOptions
         {
             FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "TextAdded")),
             RequestPath = "/TextAdded"
         });
-
         app.UseRouting();
         app.UseAuthentication();
         app.UseAuthorization();
-
         app.MapBlazorHub();
         app.MapFallbackToPage("/_Host");
-
         app.Run();
     }
 }
