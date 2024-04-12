@@ -4,7 +4,7 @@ namespace BulkThumbnailCreator
 {
     public class Settings(ILogService logger, JobService jobService)
     {
-        public static bool Mocking { get; set; } = false;
+        public static bool Mocking { get; set; } = true;
         public static bool MakeMocking { get; set; } = true;
         public ILogService LogService { get; set; } = logger;
         public JobService JobService { get; set; } = jobService;

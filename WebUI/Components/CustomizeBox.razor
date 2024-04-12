@@ -53,7 +53,7 @@
         @if (_meme == false)
         {
             <MudColorPicker PickerVariant="PickerVariant.Dialog" ColorPickerMode="ColorPickerMode.HSL" DisableAlpha DisableModeSwitch @bind-Value="_colorValue"></MudColorPicker>
-            @if(_noPickedColor)
+            @if (_noPickedColor)
             {
                 <MudText>@_pickColor</MudText>
             }
@@ -65,6 +65,34 @@
                 }
 
             </MudSelect>
+
+            <div style="display:flex;">
+                @foreach (var boxparam in CurrentPagePictureData.BoxParameters)
+                {
+                    @if (boxparam.CurrentBox.Type == PickedBox)
+                    {
+
+                        if (boxparam.Gradient is true)
+                        {
+                            GradOrNo = "Yes";
+                            GradorNoColor = Color.Success;
+                            useGradient = "Disable Gradient";
+                            break;
+                        }
+                        else
+                        {
+                            GradOrNo = "No";
+                            GradorNoColor = Color.Warning;
+                            useGradient = "Enable Gradient";
+                            break;
+                        }
+                    }
+                }
+
+                <MudText Color="Color.Secondary">Gradient:</MudText>
+                <MudText Color="GradorNoColor">@GradOrNo</MudText>
+            </div>
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="GradientToggle">@useGradient</MudButton>
 
             <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="() => SetColor(_pickedGroup)">Set Color</MudButton>
 
@@ -125,7 +153,7 @@
             }
         }
     </MudPaper>
-            <MudButton Variant="Variant.Filled" Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">Produce</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">Produce</MudButton>
 }
 
 @code
@@ -142,6 +170,40 @@
         _boxParameters = null;
         _inputText = null;
         StateHasChanged();
+    }
+
+    string useGradient { get; set; }
+    string GradOrNo { get; set; }
+    Color GradorNoColor { get; set; }
+
+    private void GradientToggle()
+    {
+        @foreach (var boxparam in CurrentPagePictureData.BoxParameters)
+        {
+            @if (boxparam.CurrentBox.Type == PickedBox)
+            {
+                boxparam.Gradient = !boxparam.Gradient;
+
+                @if (boxparam.Gradient is true)
+                {
+                    GradOrNo = "Yes";
+                    GradorNoColor = Color.Success;
+                    useGradient = "Disable Gradient";
+                }
+                else
+                {
+                    GradOrNo = "No";
+                    GradorNoColor = Color.Warning;
+                    useGradient = "Use Gradient";
+                }
+
+
+
+
+
+                StateHasChanged();
+            }
+        }
     }
 
     private bool _nullOrWhiteSpace;
@@ -208,7 +270,8 @@
     {
         get
         {
-            _pickedFont ??= CurrentPagePictureData.BoxParameters[0].Font;
+            var param = CurrentPagePictureData.BoxParameters.Find(x => x.CurrentBox.Type == PickedBox);
+            _pickedFont ??= param.Font;
 
             return _pickedFont;
         }
@@ -374,7 +437,7 @@
         var currentDir = Directory.GetCurrentDirectory();
         var imgUrlRelative = Path.GetRelativePath(currentDir, picToCustomize.OutPath);
         var addBackSlash = "/" + imgUrlRelative;
-    // ReSharper disable once IdentifierTypo
+        // ReSharper disable once IdentifierTypo
         var replacefrontslash = addBackSlash.Replace('\\', '/');
 
         ImageUrl = replacefrontslash;
@@ -421,12 +484,12 @@
         foreach (var box in CurrentPagePictureData.BoxParameters[0].Boxes)
         {
             var param = new ParamForTextCreation
-            {
-                Text = CurrentPagePictureData.BoxParameters[0].Text,
-                Font = CurrentPagePictureData.BoxParameters[0].Font,
-                WidthOfBox = box.Width,
-                HeightOfBox = box.Height
-            };
+                {
+                    Text = CurrentPagePictureData.BoxParameters[0].Text,
+                    Font = CurrentPagePictureData.BoxParameters[0].Font,
+                    WidthOfBox = box.Width,
+                    HeightOfBox = box.Height
+                };
             param.FillColor.SetByHSL(_fillClrItem.Hue, _fillClrItem.Saturation, _fillClrItem.Luminance);
             param.StrokeColor.SetByHSL(_strokeClrItem.Hue, _strokeClrItem.Saturation, _strokeClrItem.Luminance);
             param.Boxes = CurrentPagePictureData.BoxParameters[0].Boxes;
