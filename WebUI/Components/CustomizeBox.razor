@@ -94,7 +94,7 @@
             </div>
             <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="GradientToggle">@useGradient</MudButton>
 
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="() => SetColor(_pickedGroup)">Set Color</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="() => SetLocalColorObjects(_pickedGroup)">Set Color</MudButton>
 
             <MudSelect Variant="Variant.Text" AdornmentColor="Color.Primary" Label="Select a font" @bind-Value="PickedFont">
 
@@ -196,11 +196,6 @@
                     GradorNoColor = Color.Warning;
                     useGradient = "Use Gradient";
                 }
-
-
-
-
-
                 StateHasChanged();
             }
         }
@@ -306,6 +301,32 @@
     }
 
     #region ColorLogic
+    /// <summary>
+    /// Finds the box that we are editing as you select a box from the dropdown menu
+    /// </summary>
+    private void BoxEdit()
+    {
+        var parameterToEdit = _boxParameters.Find(x => x.CurrentBox.Type == PickedBox);
+        if (parameterToEdit != null)
+        {
+            parameterToEdit.Font = PickedFont;
+
+            if (_pickedText != null)
+            {
+                parameterToEdit.Text = _pickedText;
+            }
+            if (_pickedGroup == ColorGroup.FillColor)
+            {
+                parameterToEdit.FillColor.SetByHSL((float)_colorValue.H, (float)_colorValue.S, (float)_colorValue.L);
+            }
+            if (_pickedGroup == ColorGroup.StrokeColor)
+            {
+                parameterToEdit.StrokeColor.SetByHSL((float)_colorValue.H, (float)_colorValue.S, (float)_colorValue.L);
+            }
+            // colors are set
+        }
+    }
+
     private bool _noPickedColor = false;
     private string _pickColor;
     /// <summary>
@@ -313,9 +334,9 @@
     /// This however only sets the local color items, not the parameters
     /// </summary>
     /// <param name="clrGrp"></param>
-    private void SetColor(ColorGroup clrGrp)
+    private void SetLocalColorObjects(ColorGroup clrGrp)
     {
-        DecideWhichBoxToEdit();
+        BoxEdit();
 
         if (_colorValue == null)
         {
@@ -326,19 +347,7 @@
 
         _pickColor = string.Empty;
         _noPickedColor = false;
-        switch (clrGrp)
-        {
-            case ColorGroup.FillColor:
-                _fillColor = _colorValue;
-                _fillClrItem.SetByHSL((float)_fillColor.H, (float)_fillColor.S, (float)_fillColor.L);
-                break;
-            case ColorGroup.StrokeColor:
-                _strokeColor = _colorValue;
-                _strokeClrItem.SetByHSL((float)_strokeColor.H, (float)_strokeColor.S, (float)_strokeColor.L);
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(clrGrp), clrGrp, null);
-        }
+
         StateHasChanged();
     }
 
@@ -353,16 +362,6 @@
     /// </summary>
     private MudColor _colorValue;
 
-    // get value from picker
-    private MudColor _fillColor;
-    // set value and display it
-    private ColorItem _fillClrItem;
-
-    // get value from picker
-    private MudColor _strokeColor;
-    // set value and display it
-    private ColorItem _strokeClrItem;
-
     /// <summary>
     /// Selection enum for our color group
     /// </summary>
@@ -372,34 +371,6 @@
         StrokeColor
     }
     #endregion
-    /// <summary>
-    /// Finds the box that we are editing as you select a box from the dropdown menu
-    /// </summary>
-    private void DecideWhichBoxToEdit()
-    {
-        var parameterToEdit = _boxParameters.Find(x => x.CurrentBox.Type == PickedBox);
-        ConstructParameter(parameterToEdit);
-    }
-
-    /// <summary>
-    /// This constructs the Parameter for the selected box
-    /// </summary>
-    /// <param name="paramIn"></param>
-    private void ConstructParameter(ParamForTextCreation paramIn)
-    {
-        if (paramIn != null)
-        {
-            paramIn.Font = PickedFont;
-
-            if (_pickedText != null)
-            {
-                paramIn.Text = _pickedText;
-            }
-            paramIn.FillColor.SetByHSL(_fillClrItem.Hue, _fillClrItem.Saturation, _fillClrItem.Luminance);
-            paramIn.StrokeColor.SetByHSL(_strokeClrItem.Hue, _strokeClrItem.Saturation, _strokeClrItem.Luminance);
-            // colors are set
-        }
-    }
 
     /// <summary>
     /// This calls the service which in turns calls BTC and produces a new picture
@@ -450,9 +421,6 @@
         if (CurrentPagePictureData != null)
             foreach (var boxParam in CurrentPagePictureData.BoxParameters)
             {
-                _fillClrItem = boxParam.FillColor;
-                _strokeClrItem = boxParam.StrokeColor;
-
                 // add the text to our list of text
                 if (!_inputText.Contains(boxParam.Text))
                     _inputText.Add(boxParam.Text);
@@ -490,8 +458,8 @@
                     WidthOfBox = box.Width,
                     HeightOfBox = box.Height
                 };
-            param.FillColor.SetByHSL(_fillClrItem.Hue, _fillClrItem.Saturation, _fillClrItem.Luminance);
-            param.StrokeColor.SetByHSL(_strokeClrItem.Hue, _strokeClrItem.Saturation, _strokeClrItem.Luminance);
+            param.FillColor = new();
+            param.StrokeColor = new();
             param.Boxes = CurrentPagePictureData.BoxParameters[0].Boxes;
             param.CurrentBox = new Box(box);
             param.BoxesWithNoFaceIntersect = CurrentPagePictureData.BoxParameters[0].BoxesWithNoFaceIntersect;
