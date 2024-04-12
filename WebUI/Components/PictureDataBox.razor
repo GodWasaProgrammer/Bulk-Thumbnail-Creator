@@ -1,6 +1,8 @@
 ﻿@using BulkThumbnailCreator.PictureClasses
 @using BulkThumbnailCreator.Services;
 @inject CreatorService ds;
+@inject NavigationManager Navigation;
+@inject IJSRuntime JavaScript;
 @inherits ComponentBase
 
 @if (GoBack != null)
@@ -16,7 +18,9 @@
         <MudItem>
             @if (ImageURL != null)
             {
-                <MudImage Fluid="true" Src="@ImageURL" />
+                <div style="cursor: pointer;" @onclick="() => OpenImageInNewTab(ImageURL) ">
+                    <MudImage Fluid="true" Src="@ImageURL" />
+                </div>
             }
 
         </MudItem>
@@ -53,4 +57,9 @@
 
     [Parameter]
     public Action GoBack { get; set; }
+
+    private async Task OpenImageInNewTab(string imageUrl)
+    {
+        await JavaScript.InvokeVoidAsync("open", ImageURL, "_blank");
+    }
 }
