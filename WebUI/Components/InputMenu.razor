@@ -29,12 +29,12 @@
             {
                 <MudText>@item</MudText>
             }
-
-            <div style="padding-top:20px;">
-
-                <MudTextField AdornmentColor="Color.Secondary" Label="Youtube Link" Variant="Variant.Filled" @bind-Value="youtubeLink" />
-                <MudButton OnClick="() => AwaitBTC()" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
-            </div>
+            <form @onsubmit="OnKeyPress">
+                <div style="padding-top:20px;">
+                    <MudTextField AdornmentColor="Color.Secondary" Label="Youtube Link" Variant="Variant.Filled" @bind-Value="youtubeLink" />
+                    <MudButton OnClick="() => AwaitBTC()" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
+                </div>
+            </form>
         </MudPaper>
         @if (!validURL && ButtonClicked)
         {
@@ -59,13 +59,11 @@
 
     List<string> userInputText = new();
 
-    async Task OnKeyPress(KeyboardEventArgs e)
+    async Task OnKeyPress()
     {
-        if (e.Key == "Enter")
-        {
-            // Enter key was pressed, trigger the button click
-            await AwaitBTC();
-        }
+        // Enter key was pressed, trigger the button click
+        await AwaitBTC();
+
     }
 
     private void SaveText()
@@ -134,7 +132,7 @@
             var UserInfo = AuthProvider.GetAuthenticationStateAsync();
 
             var userID = UserInfo.Result.User.Identity.Name;
-            
+
 
             // creates a job
             job = await JS.CreateJob(youtubeLink, userID);
@@ -151,7 +149,7 @@
             }
             /// otherwise we use our default text values
             else
-            { 
+            {
                 await ds.CreateInitialPictureArrayAsync(youtubeLink, defaultText, settings, job);
             }
 
