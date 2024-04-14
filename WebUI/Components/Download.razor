@@ -1,29 +1,31 @@
-﻿@using BulkThumbnailCreator.Interfaces
+﻿@using BulkThumbnailCreator
+@using BulkThumbnailCreator.Interfaces
 @using BulkThumbnailCreator.Services;
 @using Microsoft.JSInterop;
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Web
 @inject CreatorService ds;
+@inject Settings settings;
 @inject ILogService logger;
 
 <MudGrid>
     <MudPaper Class="mb-4" Elevation="7" Outlined="true">
         <MudText Color="Color.Warning">Downloads</MudText>
         <MudItem>
-            <MudText>Download the entire Video</MudText>
-            <MudButton href="@dlTextAddedDir" Color="Color.Tertiary">Download</MudButton>
+            <MudText Color="Color.Secondary">Download the entire Video</MudText>
+            <MudButton Variant="Variant.Filled" href="@downloadVideo" Color="Color.Tertiary">Download</MudButton>
         </MudItem>
         <MudItem>
-            <MudText>Download the output directory of unedited files</MudText>
-            <MudButton href="@dlOutputDir" Color="Color.Tertiary">Download</MudButton>
+            <MudText Color="Color.Secondary">Download the output directory of unedited files</MudText>
+            <MudButton Variant="Variant.Filled" href="@dlOutputDir" Color="Color.Tertiary">Download</MudButton>
         </MudItem>
         <MudItem>
-            <MudText>Download the Text Added Directory</MudText>
-            <MudButton href="@dlTextAddedDir" Color="Color.Tertiary">Download</MudButton>
+            <MudText Color="Color.Secondary">Download the Text Added Directory</MudText>
+            <MudButton Variant="Variant.Filled" href="@dlTextAddedDir" Color="Color.Tertiary">Download</MudButton>
         </MudItem>
         <MudItem>
-            <MudText>Download Variety Directory</MudText>
-            <MudButton Color="Color.Tertiary">Download</MudButton>
+            <MudText Color="Color.Secondary">Download Variety Directory</MudText>
+            <MudButton Variant="Variant.Filled" href="@dlVarDir" Color="Color.Tertiary">Download</MudButton>
         </MudItem>
     </MudPaper>
 </MudGrid>
@@ -33,39 +35,50 @@
     private string downloadVideo { get; set; }
     private string dlOutputDir { get; set; }
     private string dlTextAddedDir { get; set; }
+    private string dlVarDir { get; set; }
 
     protected override void OnInitialized()
     {
-        // DownloadVideo();
-        // DownloadOutPutDir();
-        // DownloadTextAddedDir();
+        DownloadVideo();
+        DownloadOutPutDir();
+        DownloadTextAddedDir();
+        DownloadVarietyDir();
     }
 
     private void DownloadVideo()
     {
-        // download the video
-        string zippedVideo = ZipService.ZipVideo();
-        downloadVideo = zippedVideo;
+        // feed the video to wwwroot loc for downloading
+        string videoname = Path.GetFileName(settings.PathToVideo);
+        string diroffile = "";
+        if (videoname is not null)
+        {
+            if (!File.Exists($"wwwroot/{videoname}"))
+            {
+                File.Copy(settings.PathToVideo, $"wwwroot/{videoname}");
+            }
+            diroffile = Path.GetFileName($"wwwwroot/{videoname}");
+        }
+        downloadVideo = diroffile;
     }
 
     private void DownloadOutPutDir()
     {
         // download outputdir
-        string zippedOutPutDir = ZipService.ZipOutputDir();
+        string zippedOutPutDir = ZipService.ZipOutputDir(settings);
         dlOutputDir = zippedOutPutDir;
     }
 
     private void DownloadTextAddedDir()
     {
         // download TextAddedDir
-        string zippedTextAddedDir = ZipService.ZipTextAddedDir();
+        string zippedTextAddedDir = ZipService.ZipTextAddedDir(settings);
         dlTextAddedDir = zippedTextAddedDir;
     }
 
     private void DownloadVarietyDir()
     {
         // download Variety Dir
-
+        dlVarDir = ZipService.ZipVarietyDir(settings);
     }
 
 }

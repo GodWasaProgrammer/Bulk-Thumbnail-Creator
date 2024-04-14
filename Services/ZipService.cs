@@ -1,50 +1,56 @@
-﻿namespace BulkThumbnailCreator.Services
+﻿using System.IO.Compression;
+
+namespace BulkThumbnailCreator.Services
 {
     public static class ZipService
     {
         const string Wwwrootloc = "wwwroot";
 
-        public static string ZipOutputDir()
+        public static string ZipOutputDir(Settings settings)
         {
             if (File.Exists($"{Wwwrootloc}/output.zip"))
             {
                 File.Delete($"{Wwwrootloc}/output.zip");
             }
 
-            // ZipFile.CreateFromDirectory(Settings.OutputDir, zippedFile);
+            ZipFile.CreateFromDirectory(settings.OutputDir, $"{Wwwrootloc}/output.zip");
             return Path.GetFileName($"{Wwwrootloc}/output.zip");
         }
 
-        public static string ZipVideo()
+        public static string ServeVideo(Settings settings)
         {
-            // string videoname = Path.GetFileName(Settings.PathToVideo);
-            // string zippedvideo = $"{wwwrootloc}/{videoname}.zip";
-
-            //if (File.Exists(zippedvideo))
-            //{
-            //    File.Delete(zippedvideo);
-            //}
-
-            //using var zip = ZipFile.Open(zippedvideo, ZipArchiveMode.Create);
-            //if (Settings.Mocking != true)
-            //{
-            //    zip.CreateEntryFromFile($"{Settings.PathToVideo}", $"{Path.GetFileNameWithoutExtension(Settings.PathToVideo)}");
-            //}
-            //return Path.GetFileName(zippedvideo);
-            return null;
+            string videoname = Path.GetFileName(settings.PathToVideo);
+            return Path.GetFileName(videoname);
         }
 
-        public static string ZipTextAddedDir()
+        public static string ZipTextAddedDir(Settings settings)
         {
-            //string zippedtextAddedDir = $"{wwwrootloc}/{Settings.TextAddedDir}.zip";
+            string zippedtextAddedDir = $"{Wwwrootloc}/textadded.zip";
 
-            //if (File.Exists(zippedtextAddedDir))
-            //{
-            //    File.Delete(zippedtextAddedDir);
-            //}
-            //ZipFile.CreateFromDirectory(Settings.TextAddedDir, zippedtextAddedDir);
-            //return Path.GetFileName(zippedtextAddedDir);
-            return null;
+            if (File.Exists(zippedtextAddedDir))
+            {
+                File.Delete(zippedtextAddedDir);
+            }
+            ZipFile.CreateFromDirectory(settings.TextAddedDir, zippedtextAddedDir);
+            return Path.GetFileName(zippedtextAddedDir);
+        }
+
+        public static string ZipVarietyDir(Settings settings)
+        {
+            var fetchVarietyDirs = Directory.GetDirectories(settings.TextAddedDir);
+
+            
+
+            // there should only be one varietydirectory
+            foreach (var dir in fetchVarietyDirs)
+            {
+                if (File.Exists($"{Wwwrootloc}/variety.zip"))
+                {
+                    File.Delete($"{Wwwrootloc}/variety.zip");
+                }
+                ZipFile.CreateFromDirectory(dir, $"{Wwwrootloc}/variety.zip");
+            }
+            return Path.GetFileName($"{Wwwrootloc}/variety.zip");
         }
     }
 }
