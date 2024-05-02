@@ -41,15 +41,6 @@
 {
     private bool Loading { get; set; }
 
-    public void OnGet()
-    {
-        string wwwrootPath = Path.Combine("wwwroot", "images");
-        string logoFilePath = Path.Combine(wwwrootPath, "BTCLogo.png");
-
-        // Generate the logo and save it to the specified location
-        LogoGeneration.GenerateLogo(logoFilePath);
-    }
-
     private void HandleLoadingStateChanged(object sender, bool isLoading)
     {
         Loading = isLoading;
@@ -70,8 +61,6 @@
     protected override async Task OnInitializedAsync()
     {
         var AuthState = await AuthProvider.GetAuthenticationStateAsync();
-
-        OnGet();
 
         CurrentUser = AuthState.User.Identity.Name;
 

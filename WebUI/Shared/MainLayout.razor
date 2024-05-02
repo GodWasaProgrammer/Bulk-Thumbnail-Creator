@@ -1,5 +1,7 @@
-﻿@using WebUI.Pages;
+﻿@using BulkThumbnailCreator.Services
+@using WebUI.Pages;
 @using WebUI.Components
+@inject LogoService LogoService
 @inherits LayoutComponentBase
 
 <MudThemeProvider Theme="BulkThumbnailCreatorTheme" IsDarkMode="true" />
@@ -13,7 +15,7 @@
             <LoginDisplay></LoginDisplay>
         </CascadingAuthenticationState>
         <div style="display: flex; align-items: center; justify-content: center; height: 100%; width: 75%;">
-            <img src="/images/BTCLogo.png?@(DateTime.UtcNow.Ticks)" style="max-width: 100%; max-height: 100%; object-fit: contain; margin: auto; display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" />
+            <img src=@logoUrl style="max-width: 100%; max-height: 100%; object-fit: contain; margin: auto; display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" />
         </div>
         <MudSpacer />
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" href="https://github.com/GodWasAProgrammer" Target="_blank" />
@@ -32,6 +34,9 @@
 
 @code {
     bool _drawerOpen = false;
+
+    [Parameter]
+    public string logoUrl { get; set; }
 
     MudTheme BulkThumbnailCreatorTheme = new MudTheme()
         {
@@ -55,10 +60,14 @@
             }
         };
 
-    private int TakeEntries { get; set; } = 1;
-
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+    protected override void OnInitialized()
+    {
+        // Call GetRandomLogo to set the logoUrl parameter
+        logoUrl = LogoService.GetRandomLogo();
     }
 }

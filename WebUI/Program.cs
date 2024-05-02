@@ -1,11 +1,12 @@
 ﻿using BulkThumbnailCreator;
+using BulkThumbnailCreator.DataMethods;
 using BulkThumbnailCreator.Interfaces;
 using BulkThumbnailCreator.Services;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Identity.Client;
 using MudBlazor.Services;
 using WebUI.Areas.Identity;
 namespace WebUI;
@@ -35,6 +36,7 @@ public static class Program
         builder.Services.AddServerSideBlazor();
         builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
         builder.Services.AddScoped<CreatorService>();
+        builder.Services.AddSingleton<LogoService>();
         builder.Services.AddScoped<JobService>();
         builder.Services.AddScoped<ILogService, LogService>();
         builder.Services.AddScoped<Settings>();

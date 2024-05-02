@@ -368,6 +368,7 @@ FodyWeavers.xsd
 /Executables/old dlp
 /Executables
 /WebUI/Picturedatas.xml
+/WebUI/wwwroot/images/BTCLogo*.png
 *.zip
 /WebUI/ListOfDownloadedVideos.xml
 /Mocking/FrontpagePictureLineUp
