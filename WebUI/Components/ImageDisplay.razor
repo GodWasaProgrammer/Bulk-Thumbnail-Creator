@@ -74,8 +74,8 @@
 
         if (CurrentJob != null)
         {
-            // set the service list
-            PicDataService.PicDataServiceList = CurrentJob.PictureData;
+            // // set the service list
+            // PicDataService.PicDataServiceList = CurrentJob.PictureData;
 
             if (CurrentJob.State == States.FrontPagePictureLineUp)
             {
@@ -83,13 +83,13 @@
             }
             if (CurrentJob.State == States.varietyList)
             {
-                picdata = await PicDataService.SetPictureDataImageDisplayCorrelation(CurrentJob.ClickedImage);
+                picdata = await PicDataService.SetPictureDataImageDisplayCorrelation(CurrentJob.ClickedImage, CurrentJob);
                 VarietyUrls = CurrentJob.VarietyUrls;
             }
             if (CurrentJob.State == States.CustomPicture)
             {
                 IMGDetailClicked = true;
-                picdata = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(CurrentJob.ClickedImage);
+                picdata = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(CurrentJob.ClickedImage, CurrentJob);
                 VarietyUrls = CurrentJob.VarietyUrls;
             }
 
@@ -157,7 +157,7 @@
 
         await InvokeAsync(() => StateHasChanged());
 
-        picdata = await PicDataService.SetPictureDataImageDisplayCorrelation(imageToDisplayVarietyOf);
+        picdata = await PicDataService.SetPictureDataImageDisplayCorrelation(imageToDisplayVarietyOf, CurrentJob);
 
 
         // crashes on refresh

@@ -32,7 +32,6 @@
                 jobToUpdate.LogEntries = job.LogEntries;
                 jobToUpdate.TextToPrint = job.TextToPrint;
                 jobToUpdate.User = job.User;
-                jobToUpdate.TextToPrint = job.TextToPrint;
                 jobToUpdate.Settings = job.Settings;
                 jobToUpdate.JobID = job.JobID;
                 jobToUpdate.PictureData = job.PictureData;
@@ -54,6 +53,8 @@
         /// <returns>the job</returns>
         public static Job GetJob(string user)
         {
+            Job debug = UserJobs.LastOrDefault(x => x.User == user);
+
             return UserJobs.LastOrDefault(x => x.User == user);
         }
     }

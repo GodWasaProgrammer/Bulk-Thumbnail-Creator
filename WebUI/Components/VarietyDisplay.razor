@@ -108,18 +108,16 @@
 
                     PictureData passData = new();
 
-                    /// The service will be reset if we refreshed and is missing the correlating picturedata
-                    /// So we lift it from the job and off to the races
-                    PicDataService.PicDataServiceList = CurrentJob.PictureData;
+                    // /// The service will be reset if we refreshed and is missing the correlating picturedata
+                    // /// So we lift it from the job and off to the races
+                    // PicDataService.PicDataServiceList = CurrentJob.PictureData;
 
-                    passData = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(passURL);
+                    passData = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(passURL, CurrentJob);
                     CustomPicture = true;
                     StateHasChanged();
                 }
-
             }
         }
-
     }
 
     private void NavToCustomizePicture(string imageURL)
@@ -136,7 +134,7 @@
 
         passURL = imageURL;
 
-        passData = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(imageURL);
+        passData = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(imageURL, CurrentJob);
 
         this.passData = passData;
     }

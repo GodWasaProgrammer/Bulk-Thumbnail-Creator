@@ -130,17 +130,12 @@
         else
         {
             var UserInfo = AuthProvider.GetAuthenticationStateAsync();
-
             var userID = UserInfo.Result.User.Identity.Name;
 
-
-            // creates a job
+            // // creates a job
             job = await JS.CreateJob(youtubeLink, userID);
-
             JS.CurrentJob = job;
-
             List<string> defaultText = new() { defaultText1, defaultText2, defaultText3 };
-
 
             /// if we have text, we pass it to the backend
             if (userInputText.Count != 0)
@@ -152,7 +147,6 @@
             {
                 await ds.CreateInitialPictureArrayAsync(youtubeLink, defaultText, settings, job);
             }
-
             returnStateUpdate(DisableMenu);
         }
         await InvokeAsync(() => StateHasChanged());

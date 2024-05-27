@@ -402,7 +402,7 @@
         picToCustomize.BoxParameters = _boxParameters;
 
         // The actual Service call where the production happens
-        picToCustomize = await PicDataService.CreateCustomPicDataObject(picToCustomize, Settings, CurrentJob);
+        picToCustomize = await PicDataService.CreateCustomPicDataObject(picToCustomize, CurrentJob);
 
         // get relative path of the out path
         var currentDir = Directory.GetCurrentDirectory();

@@ -7,6 +7,7 @@
 @using Microsoft.AspNetCore.Identity
 @using BulkThumbnailCreator.Services
 @using BulkThumbnailCreator.DataMethods
+@using BulkThumbnailCreator.Enums
 @inject CreatorService ds;
 @inject JobService js;
 @inject Settings settings;
@@ -21,7 +22,7 @@
             <div style="padding-top: 20px;">
                 <InputMenu job="CurrentJob" returnStateUpdate="BuildImageDisplay"></InputMenu>
             </div>
-            
+
             <ImageDisplay CurrentJob="CurrentJob" @ref="imageDisplayref"></ImageDisplay>
 
             <div>
@@ -67,9 +68,17 @@
         js.RegisterResetMethod(reset);
         ds.LoadingStateChanged += HandleLoadingStateChanged;
 
-        if (CurrentJob == null)
+        // we check if there is a job
+        if (CurrentJob is null)
         {
             CurrentJob = await js.RequestCurrentJob(CurrentUser);
+            if (CurrentJob is not null)
+            {
+                if(CurrentJob.State is States.Loading)
+                {
+                    Loading = true;
+                }
+            }
         }
         await InvokeAsync(() => StateHasChanged());
     }

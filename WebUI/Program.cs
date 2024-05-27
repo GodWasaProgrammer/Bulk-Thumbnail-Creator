@@ -9,6 +9,8 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Identity.Client;
 using MudBlazor.Services;
 using WebUI.Areas.Identity;
+using WebUI.Components;
+using WebUI.Pages;
 namespace WebUI;
 
 public static class Program
