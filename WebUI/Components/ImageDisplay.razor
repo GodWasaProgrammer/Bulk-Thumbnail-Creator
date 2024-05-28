@@ -162,7 +162,7 @@
 
         // crashes on refresh
 
-        VarietyUrls = await PicDataService.CreatePictureDataVariety(picdata, settings, CurrentJob);
+        VarietyUrls = await PicDataService.CreatePictureDataVariety(picdata, CurrentJob);
         CurrentJob.VarietyUrls = VarietyUrls;
         CurrentJob.ClickedImage = imageToDisplayVarietyOf;
         UserStateService.UpdateJob(CurrentJob);
