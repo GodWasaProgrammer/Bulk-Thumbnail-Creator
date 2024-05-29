@@ -5,12 +5,10 @@
         /// <summary>
         /// we will store all our jobs here
         /// So we can fetch them on page refreshes
-        /// </summary>
         public static List<Job> UserJobs { get; set; } = [];
 
         /// <summary>
         /// Saves or updates a job in the list
-        /// </summary>
         /// <param name="job"></param>
         public static void AddJob(Job job)
         {
@@ -40,7 +38,6 @@
 
         /// <summary>
         /// To delete jobs from the list
-        /// </summary>
         /// <param name="job"></param>
         public static void RemoveJob(Job job)
         {
@@ -49,7 +46,6 @@
 
         /// <summary>
         /// Fetches a job from the list, to be able to Maintain state between page refreshes
-        /// </summary>
         /// <returns>the job</returns>
         public static Job GetJob(string user)
         {

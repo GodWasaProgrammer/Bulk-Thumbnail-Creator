@@ -72,11 +72,8 @@
 
         CurrentUser = AuthState.User.Identity.Name;
 
-        if (CurrentJob != null)
+        if (CurrentJob is not null)
         {
-            // // set the service list
-            // PicDataService.PicDataServiceList = CurrentJob.PictureData;
-
             if (CurrentJob.State == States.FrontPagePictureLineUp)
             {
                 imageUrls = CurrentJob.FrontLineUpUrls;
@@ -98,7 +95,7 @@
         {
             CurrentJob = await JobService.RequestCurrentJob(CurrentUser);
 
-            if (CurrentJob != null)
+            if (CurrentJob is not null)
             {
                 if (CurrentJob.State == States.FrontPagePictureLineUp)
                 {
@@ -158,10 +155,6 @@
         await InvokeAsync(() => StateHasChanged());
 
         picdata = await PicDataService.SetPictureDataImageDisplayCorrelation(imageToDisplayVarietyOf, CurrentJob);
-
-
-        // crashes on refresh
-
         VarietyUrls = await PicDataService.CreatePictureDataVariety(picdata, CurrentJob);
         CurrentJob.VarietyUrls = VarietyUrls;
         CurrentJob.ClickedImage = imageToDisplayVarietyOf;

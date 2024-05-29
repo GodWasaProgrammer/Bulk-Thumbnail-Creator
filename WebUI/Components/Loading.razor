@@ -1,11 +1,12 @@
 ﻿@using BulkThumbnailCreator.Interfaces;
 @using BulkThumbnailCreator;
 @using BulkThumbnailCreator.Services;
+@using BulkThumbnailCreator.Enums;
 
 @inject ILogService Logger
 @inject CreatorService PicDataService
 @inject JobService JobService
-@inject AuthenticationStateProvider AuthProvider    
+@inject AuthenticationStateProvider AuthProvider
 
 @if (processing)
 {
@@ -19,7 +20,8 @@
     </MudContainer>
 }
 
-@code {
+@code 
+{
     private bool IsInitialized { get; set; } = false;
 
     [Parameter]
@@ -34,12 +36,6 @@
     public bool processing { get; set; }
 
     private List<string> LogEntries = new List<string>();
-
-    protected override void OnInitialized()
-    {
-        Logger.LogEntryAdded += OnLogEntryAdded;
-        IsInitialized = true;
-    }
 
     private void OnLogEntryAdded(string logEntry)
     {
@@ -80,14 +76,21 @@
 
         CurrentUser = AuthState.User.Identity.Name;
 
-        if (CurrentJob == null)
+        if (CurrentJob is null)
         {
             CurrentJob = await JobService.RequestCurrentJob(CurrentUser);
         }
 
-        if (CurrentJob != null)
+        if (CurrentJob is not null)
         {
             LogEntries = CurrentJob.LogEntries;
+
+            if (CurrentJob.State != States.Initial)
+            {
+                Logger = CurrentJob.Settings.LogService;
+            }
         }
+        Logger.LogEntryAdded += OnLogEntryAdded;
+        IsInitialized = true;
     }
 }

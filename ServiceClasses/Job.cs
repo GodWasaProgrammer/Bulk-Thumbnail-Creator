@@ -2,7 +2,6 @@
 {
     /// <summary>
     /// Constructor that takes a video url
-    /// </summary>
     /// <param name="videoUrl"></param>
     public class Job(string videoUrl, string currentUser)
     {
