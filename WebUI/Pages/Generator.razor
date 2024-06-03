@@ -20,7 +20,7 @@
         <Authorized>
 
             <div style="padding-top: 20px;">
-                <InputMenu job="CurrentJob" returnStateUpdate="BuildImageDisplay"></InputMenu>
+                <InputMenu job="CurrentJob"></InputMenu>
             </div>
 
             <ImageDisplay CurrentJob="CurrentJob" @ref="imageDisplayref"></ImageDisplay>
@@ -56,15 +56,20 @@
 
             if (CurrentJob.State is States.FrontPagePictureLineUp)
             {
-                await imageDisplayref.UpdateImageUrls(CurrentJob.Settings);
+                imageDisplayref.RefreshImageDisplay();
             }
         }
+        if (CurrentJob.State is States.varietyList)
+        {
+
+        }
+
         await InvokeAsync(() => StateHasChanged());
     }
 
     public void reset()
     {
-        CurrentJob = js.Reset();
+        CurrentJob = null;
     }
 
     public Job CurrentJob { get; set; }
@@ -78,6 +83,13 @@
         if (CurrentJob is null)
         {
             CurrentJob = await js.RequestCurrentJob(CurrentUser);
+        }
+
+        var fetchjob = await js.RequestCurrentJob(CurrentUser);
+
+        if (CurrentJob != fetchjob)
+        {
+            CurrentJob = fetchjob;
         }
     }
 
@@ -105,17 +117,5 @@
             }
         }
         await InvokeAsync(() => StateHasChanged());
-    }
-
-    /// <summary>
-    /// Passed to InputMenu as delegate to be able to set the state of child component ImageDisplay
-    /// </summary>
-    /// <param name="dirdone"></param>
-    private async void BuildImageDisplay(bool dirdone)
-    {
-        if (dirdone)
-        {
-            await imageDisplayref.UpdateImageUrls(settings);
-        }
     }
 }

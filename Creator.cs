@@ -256,8 +256,9 @@ public static partial class Creator
             Mocking.BTCRunCount++;
         }
 
-        settings.JobService.CurrentJob.PictureData = settings.PictureDatas;
-        settings.JobService.CurrentJob.Settings = settings;
+
+        //settings.JobService.CurrentJob.PictureData = settings.PictureDatas;
+        //settings.JobService.CurrentJob.Settings = settings;
         return settings.PictureDatas;
     }
     #endregion

@@ -48,9 +48,6 @@
 @code
 {
     [Parameter]
-    public Action<bool> returnStateUpdate { get; set; }
-
-    [Parameter]
     public Job job { get; set; }
 
     private string defaultText1 = "Good Ole Rambler try!";
@@ -107,7 +104,7 @@
 
             // // creates a job
             job = await JS.CreateJob(youtubeLink, userID);
-            JS.CurrentJob = job;
+            // JS.CurrentJob = job;
             List<string> defaultText = new() { defaultText1, defaultText2, defaultText3 };
 
             /// if we have text, we pass it to the backend
@@ -120,7 +117,7 @@
             {
                 await ds.CreateInitialPictureArrayAsync(youtubeLink, defaultText, settings, job);
             }
-            returnStateUpdate(DisableMenu);
+            job.State = States.FrontPagePictureLineUp;
         }
         await InvokeAsync(() => StateHasChanged());
     }

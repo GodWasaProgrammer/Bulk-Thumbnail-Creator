@@ -9,31 +9,38 @@
 @inject AuthenticationStateProvider AuthProvider;
 
 <div class="image-container">
-    @if (IMGDetailClicked == false && imageUrls != null)
+    @if (CurrentJob is not null)
     {
-        <div class="image-grid">
-            @for (int i = 0; i < imageUrls.Count; i++)
-            {
-                var index = i;
-
-                <img class="image-button" src="@imageUrls[index]" @onclick="(() => ShowImageDetail(imageUrls[index]))" />
-                @if ((i + 1) % 3 == 0)
+        @if(CurrentJob.State is States.FrontPagePictureLineUp || CurrentJob.State is States.varietyList)
+        {
+            
+        @if (IMGDetailClicked == false && CurrentJob.FrontLineUpUrls != null)
+        {
+            <div class="image-grid">
+                @for (int i = 0; i < CurrentJob.FrontLineUpUrls.Count; i++)
                 {
-                    <div style="flex-basis: 100%; height: 0;"></div>
-                }
-            }
-        </div>
+                    var index = i;
 
-        <div class="centered-text">
-            <MudText>Pick an image to receive more varieties</MudText>
-            <div class="button-container">
-                <MudButton Variant="Variant.Filled" Color="Color.Secondary" ButtonType="ButtonType.Reset" OnClick="JService.ResetState">Restart</MudButton>
+                    <img class="image-button" src="@CurrentJob.FrontLineUpUrls[index]" @onclick="(() => ShowImageDetail(CurrentJob.FrontLineUpUrls[index]))" />
+                    @if ((i + 1) % 3 == 0)
+                    {
+                        <div style="flex-basis: 100%; height: 0;"></div>
+                    }
+                }
             </div>
-        </div>
-    }
-    else
-    {
-        <VarietyDisplay CurrentJob="CurrentJob" ParentPictureProp="picdata" VarietyUrls="VarietyUrls"></VarietyDisplay>
+
+            <div class="centered-text">
+                <MudText>Pick an image to receive more varieties</MudText>
+                <div class="button-container">
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" ButtonType="ButtonType.Reset" OnClick="JService.ResetState">Restart</MudButton>
+                </div>
+            </div>
+        }
+        else
+        {
+            <VarietyDisplay CurrentJob="CurrentJob" ParentPictureProp="picdata" VarietyUrls="CurrentJob.FrontLineUpUrls"></VarietyDisplay>
+        }
+        }
     }
 </div>
 
@@ -44,10 +51,6 @@
 
     private string CurrentUser;
 
-    private List<string> imageUrls;
-
-    private List<string> VarietyUrls;
-
     private PictureData picdata = new();
 
     private bool IMGDetailClicked = false;
@@ -56,14 +59,22 @@
     {
         CurrentJob = null;
         picdata = null;
-        imageUrls = null;
-        VarietyUrls = null;
         IMGDetailClicked = false;
         InvokeAsync(() => StateHasChanged());
     }
 
     public void OnStateChangedHandler(object sender, EventArgs e)
     {
+        if (CurrentJob.State is States.FrontPagePictureLineUp)
+        {
+            // imageUrls = CurrentJob.FrontLineUpUrls;
+
+        }
+        if (CurrentJob.State is States.varietyList)
+        {
+            IMGDetailClicked = true;
+            // VarietyUrls = CurrentJob.VarietyUrls;
+        }
         InvokeAsync(() => StateHasChanged());
     }
 
@@ -88,18 +99,16 @@
             JService.RegisterDelegateForJobChange(JobStateHasChanged);
             if (CurrentJob.State == States.FrontPagePictureLineUp)
             {
-                imageUrls = CurrentJob.FrontLineUpUrls;
+
             }
             if (CurrentJob.State == States.varietyList)
             {
                 picdata = await PicDataService.SetPictureDataImageDisplayCorrelation(CurrentJob.ClickedImage, CurrentJob);
-                VarietyUrls = CurrentJob.VarietyUrls;
             }
             if (CurrentJob.State == States.CustomPicture)
             {
                 IMGDetailClicked = true;
                 picdata = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(CurrentJob.ClickedImage, CurrentJob);
-                VarietyUrls = CurrentJob.VarietyUrls;
             }
 
         }
@@ -112,12 +121,10 @@
                 CurrentJob.StateChanged += OnStateChangedHandler;
                 if (CurrentJob.State == States.FrontPagePictureLineUp)
                 {
-                    imageUrls = CurrentJob.FrontLineUpUrls;
                     StateHasChanged();
                 }
                 if (CurrentJob.State == States.varietyList)
                 {
-                    VarietyUrls = CurrentJob.VarietyUrls;
                     StateHasChanged();
                 }
             }
@@ -125,45 +132,20 @@
         await InvokeAsync(() => StateHasChanged());
     }
 
-    /// <summary>
-    /// Builds Directory List of the produced images
-    /// </summary>
-    /// <returns></returns>
-    public async Task UpdateImageUrls(Settings settings)
+    public void RefreshImageDisplay()
     {
-        string imagePath = settings.TextAddedDir;
-
-        // Get the list of image files in the folder asynchronously
-        string[] imageFiles = await Task.Run(() => Directory.GetFiles(imagePath, "*.png"));
-
-        // Initialize the image URLs list
-        imageUrls = new List<string>();
-
-        // Create the URLs for the images and add them to the list
-        foreach (string imageFile in imageFiles)
-        {
-            string imageUrl = $"/{imageFile}";
-            imageUrls.Add(imageUrl);
-        }
-
-        // write the url list to the currentjob
-        CurrentJob.FrontLineUpUrls = imageUrls;
-
-        // Update the UI
-        await InvokeAsync(() => StateHasChanged());
+        InvokeAsync(() => StateHasChanged());
     }
 
     private async Task ShowImageDetail(string imageToDisplayVarietyOf)
     {
         IMGDetailClicked = true;
 
-        await InvokeAsync(() => StateHasChanged());
-
         picdata = await PicDataService.SetPictureDataImageDisplayCorrelation(imageToDisplayVarietyOf, CurrentJob);
-        VarietyUrls = await PicDataService.CreatePictureDataVariety(picdata, CurrentJob);
-        CurrentJob.VarietyUrls = VarietyUrls;
+        CurrentJob.VarietyUrls = await PicDataService.CreatePictureDataVariety(picdata, CurrentJob);
+
         CurrentJob.ClickedImage = imageToDisplayVarietyOf;
-        UserStateService.UpdateJob(CurrentJob);
+        await InvokeAsync(() => StateHasChanged());
     }
 }
 

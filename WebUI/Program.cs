@@ -1,16 +1,12 @@
 ﻿using BulkThumbnailCreator;
-using BulkThumbnailCreator.DataMethods;
 using BulkThumbnailCreator.Interfaces;
 using BulkThumbnailCreator.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Identity.Client;
 using MudBlazor.Services;
 using WebUI.Areas.Identity;
-using WebUI.Components;
-using WebUI.Pages;
 namespace WebUI;
 
 public static class Program

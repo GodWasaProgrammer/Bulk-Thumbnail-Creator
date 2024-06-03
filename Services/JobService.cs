@@ -29,40 +29,40 @@
             _resetDelegate?.Invoke();
         }
 
-        // store the current job that is active
-        public Job CurrentJob { get; set; }
+        //// store the current job that is active
+        //public Job CurrentJob { get; set; }
 
 
         public Task<Job> RequestCurrentJob(string user)
         {
-            CurrentJob = UserStateService.GetJob(user);
+            var job = UserStateService.GetJob(user);
 
-            return Task.FromResult(CurrentJob);
+            return Task.FromResult(job);
         }
 
         public Task<Job> CreateJob(string videoUrl, string currentUser)
         {
             Job job = new(videoUrl, currentUser);
 
-            // set the current job to the job that was just created
-            // so we are able to lift it on demand
-            CurrentJob = job;
-            CurrentJob.User = currentUser;
+            //// set the current job to the job that was just created
+            //// so we are able to lift it on demand
+            //CurrentJob = job;
+            //CurrentJob.User = currentUser;
 
             // add the job the joblist
-            UserStateService.AddJob(CurrentJob);
+            UserStateService.AddJob(job);
             _currentJobHasChanged.Invoke();
 
             // will return the job if it was created successfully, otherwise will return a null object
             return job != null ? Task.FromResult(job) : null;
         }
 
-        public Job Reset()
-        {
-            // reset the current job
-            CurrentJob = null;
+        //public Job Reset()
+        //{
+        //    // reset the current job
+        //    CurrentJob = null;
 
-            return CurrentJob;
-        }
+        //    return CurrentJob;
+        //}
     }
 }

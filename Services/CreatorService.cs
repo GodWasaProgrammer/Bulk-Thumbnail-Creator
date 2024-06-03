@@ -57,6 +57,23 @@
                 job.VideoName = Path.GetFileNameWithoutExtension(settings.PathToVideo);
             }
 
+            string imagePath = settings.TextAddedDir;
+
+            // Get the list of image files in the folder asynchronously
+            string[] imageFiles = await Task.Run(() => Directory.GetFiles(imagePath, "*.png"));
+
+            // Initialize the image URLs list
+            List<string> imageUrls = new List<string>();
+
+            // Create the URLs for the images and add them to the list
+            foreach (string imageFile in imageFiles)
+            {
+                string imageUrl = $"/{imageFile}";
+                imageUrls.Add(imageUrl);
+            }
+
+            // write the url list to the currentjob
+            job.FrontLineUpUrls = imageUrls;
             job.State = States.FrontPagePictureLineUp;
             IsLoading = false;
         }

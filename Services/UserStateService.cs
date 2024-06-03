@@ -15,27 +15,6 @@
             UserJobs.Add(job);
         }
 
-        public static void UpdateJob(Job job)
-        {
-            var jobToUpdate = UserJobs.Where(x => x.JobID == job.JobID).FirstOrDefault();
-
-            if (jobToUpdate != null)
-            {
-                jobToUpdate.VideoName = job.VideoName;
-                jobToUpdate.VideoPath = job.VideoPath;
-                jobToUpdate.VideoUrl = job.VideoUrl;
-                jobToUpdate.FrontLineUpUrls = job.FrontLineUpUrls;
-                jobToUpdate.VarietyUrls = job.VarietyUrls;
-                jobToUpdate.State = job.State;
-                jobToUpdate.LogEntries = job.LogEntries;
-                jobToUpdate.TextToPrint = job.TextToPrint;
-                jobToUpdate.User = job.User;
-                jobToUpdate.Settings = job.Settings;
-                jobToUpdate.JobID = job.JobID;
-                jobToUpdate.PictureData = job.PictureData;
-            }
-        }
-
         /// <summary>
         /// To delete jobs from the list
         /// <param name="job"></param>
