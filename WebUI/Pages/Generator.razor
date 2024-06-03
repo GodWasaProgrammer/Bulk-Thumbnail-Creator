@@ -48,22 +48,45 @@
         InvokeAsync(() => StateHasChanged());
     }
 
+    public async void OnStateChangedHandler(object sender, EventArgs e)
+    {
+        if (CurrentJob.State != States.Loading)
+        {
+            Loading = false;
+
+            if (CurrentJob.State is States.FrontPagePictureLineUp)
+            {
+                await imageDisplayref.UpdateImageUrls(CurrentJob.Settings);
+            }
+        }
+        await InvokeAsync(() => StateHasChanged());
+    }
+
     public void reset()
     {
         CurrentJob = js.Reset();
     }
 
-    public Job CurrentJob;
+    public Job CurrentJob { get; set; }
 
     ImageDisplay imageDisplayref;
 
     private string CurrentUser;
 
+    private async void FetchChangedJob()
+    {
+        if (CurrentJob is null)
+        {
+            CurrentJob = await js.RequestCurrentJob(CurrentUser);
+        }
+    }
+
     protected override async Task OnInitializedAsync()
     {
         var AuthState = await AuthProvider.GetAuthenticationStateAsync();
-
         CurrentUser = AuthState.User.Identity.Name;
+
+        js.RegisterDelegateForJobChange(FetchChangedJob);
 
         js.RegisterResetMethod(reset);
         ds.LoadingStateChanged += HandleLoadingStateChanged;
@@ -74,10 +97,11 @@
             CurrentJob = await js.RequestCurrentJob(CurrentUser);
             if (CurrentJob is not null)
             {
-                if(CurrentJob.State is States.Loading)
+                if (CurrentJob.State is States.Loading)
                 {
                     Loading = true;
                 }
+                CurrentJob.StateChanged += OnStateChangedHandler;
             }
         }
         await InvokeAsync(() => StateHasChanged());

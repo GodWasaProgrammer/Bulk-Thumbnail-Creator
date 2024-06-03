@@ -41,6 +41,7 @@
             job.Settings = settings;
             job.TextToPrint = listOfTextToPrint;
 
+
             if (Settings.Mocking && Settings.MakeMocking)
             {
                 job.PictureData = await Creator.MockProcess(ProductionType.FrontPagePictureLineUp, url, listOfTextToPrint, settings);

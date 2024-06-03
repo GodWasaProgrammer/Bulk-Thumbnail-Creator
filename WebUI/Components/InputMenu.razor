@@ -47,9 +47,16 @@
 
 @code
 {
+    [Parameter]
+    public Action<bool> returnStateUpdate { get; set; }
+
+    [Parameter]
+    public Job job { get; set; }
+
     private string defaultText1 = "Good Ole Rambler try!";
     private string defaultText2 = "I've Taken Dunkirk! Onwards Men!";
     private string defaultText3 = "Tallyhoo Laddiooo";
+    List<string> userInputText = new();
     private string userText;
     private string youtubeLink;
 
@@ -57,55 +64,21 @@
     private bool validURL = false;
     bool ButtonClicked = false;
 
-    List<string> userInputText = new();
-
-    async Task OnKeyPress()
+    protected override void OnInitialized()
     {
-        // Enter key was pressed, trigger the button click
-        await AwaitBTC();
+        JS.RegisterResetMethod(Reset);
 
-    }
-
-    private void SaveText()
-    {
-        if (userText == null)
+        if (job != null)
         {
-            return;
-        }
-        else
-        {
-            if (userInputText.Contains(userText) == false)
+            if (job.State == States.Initial)
             {
-                userInputText.Add(userText);
-                userText = null;
+                DisableMenu = false;
+            }
+            else
+            {
+                DisableMenu = true;
             }
         }
-    }
-    /// <summary>
-    /// Regex validation for youtube links
-    /// </summary>
-    /// <param name="url"></param>
-    /// <returns></returns>
-    bool ValidateYTLink(string url)
-    {
-        ButtonClicked = true;
-
-        if (url == null)
-        {
-            return false;
-        }
-
-        // YouTube video URL pattern
-        string pattern = @"^(https?://)?(www\.)?(youtube\.com/watch\?v=|youtu\.be/)([a-zA-Z0-9_-]{11})";
-
-        // Create a Regex object
-        Regex regex = new Regex(pattern);
-
-        // Match the input URL against the pattern
-        Match match = regex.Match(url);
-
-        // Check if the match is successful
-        return match.Success;
     }
 
     /// <summary>
@@ -152,11 +125,55 @@
         await InvokeAsync(() => StateHasChanged());
     }
 
-    [Parameter]
-    public Action<bool> returnStateUpdate { get; set; }
+    async Task OnKeyPress()
+    {
+        // Enter key was pressed, trigger the button click
+        await AwaitBTC();
 
-    [Parameter]
-    public Job job { get; set; }
+    }
+
+    private void SaveText()
+    {
+        if (userText == null)
+        {
+            return;
+        }
+        else
+        {
+            if (userInputText.Contains(userText) == false)
+            {
+                userInputText.Add(userText);
+                userText = null;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Regex validation for youtube links
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
+    bool ValidateYTLink(string url)
+    {
+        ButtonClicked = true;
+
+        if (url == null)
+        {
+            return false;
+        }
+
+        // YouTube video URL pattern
+        string pattern = @"^(https?://)?(www\.)?(youtube\.com/watch\?v=|youtu\.be/)([a-zA-Z0-9_-]{11})";
+
+        // Create a Regex object
+        Regex regex = new Regex(pattern);
+
+        // Match the input URL against the pattern
+        Match match = regex.Match(url);
+
+        // Check if the match is successful
+        return match.Success;
+    }
 
     public void Reset()
     {
@@ -168,22 +185,5 @@
         validURL = false;
         ButtonClicked = false;
         InvokeAsync(() => StateHasChanged());
-    }
-
-    protected override void OnInitialized()
-    {
-        JS.RegisterResetMethod(Reset);
-
-        if (job != null)
-        {
-            if (job.State == States.Initial)
-            {
-                DisableMenu = false;
-            }
-            else
-            {
-                DisableMenu = true;
-            }
-        }
     }
 }

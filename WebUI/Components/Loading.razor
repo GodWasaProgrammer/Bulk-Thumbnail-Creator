@@ -20,7 +20,7 @@
     </MudContainer>
 }
 
-@code 
+@code
 {
     private bool IsInitialized { get; set; } = false;
 
@@ -37,12 +37,13 @@
 
     private List<string> LogEntries = new List<string>();
 
+    private void JobStateHasChanged()
+    {
+        StateHasChanged();
+    }
+
     private void OnLogEntryAdded(string logEntry)
     {
-        var AuthState = AuthProvider.GetAuthenticationStateAsync().Result;
-
-        CurrentUser = AuthState.User.Identity.Name;
-
         // so its supposed to request a job if its null, otherwise it shouldnt disrupt anything
         if (CurrentJob == null)
         {
@@ -70,8 +71,14 @@
         }
     }
 
+    public void OnStateChangedHandler(object sender, EventArgs e)
+    {
+        InvokeAsync(() => StateHasChanged());
+    }
+
     protected override async Task OnInitializedAsync()
     {
+        JobService.RegisterDelegateForJobChange(JobStateHasChanged);
         var AuthState = AuthProvider.GetAuthenticationStateAsync().Result;
 
         CurrentUser = AuthState.User.Identity.Name;
@@ -84,6 +91,7 @@
         if (CurrentJob is not null)
         {
             LogEntries = CurrentJob.LogEntries;
+            CurrentJob.StateChanged += OnStateChangedHandler;
 
             if (CurrentJob.State != States.Initial)
             {

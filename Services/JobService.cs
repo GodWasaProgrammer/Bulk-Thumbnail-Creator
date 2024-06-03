@@ -14,6 +14,15 @@
             _resetDelegate += resetGlobalState;
         }
 
+        public void RegisterDelegateForJobChange(CurrentJobHasChanged currentJobHasChanged)
+        {
+            _currentJobHasChanged += currentJobHasChanged;
+        }
+
+        public delegate void CurrentJobHasChanged();
+
+        private CurrentJobHasChanged _currentJobHasChanged;
+
         // here is our actual global reset
         public void ResetState()
         {
@@ -22,6 +31,7 @@
 
         // store the current job that is active
         public Job CurrentJob { get; set; }
+
 
         public Task<Job> RequestCurrentJob(string user)
         {
@@ -41,6 +51,7 @@
 
             // add the job the joblist
             UserStateService.AddJob(CurrentJob);
+            _currentJobHasChanged.Invoke();
 
             // will return the job if it was created successfully, otherwise will return a null object
             return job != null ? Task.FromResult(job) : null;

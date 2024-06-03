@@ -4,7 +4,7 @@
 @using BulkThumbnailCreator.Enums
 
 @inject CreatorService PicDataService;
-@inject JobService JobService;
+@inject JobService JService;
 @inject Settings settings;
 @inject AuthenticationStateProvider AuthProvider;
 
@@ -27,7 +27,7 @@
         <div class="centered-text">
             <MudText>Pick an image to receive more varieties</MudText>
             <div class="button-container">
-                <MudButton Variant="Variant.Filled" Color="Color.Secondary" ButtonType="ButtonType.Reset" OnClick="JobService.ResetState">Restart</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Secondary" ButtonType="ButtonType.Reset" OnClick="JService.ResetState">Restart</MudButton>
             </div>
         </div>
     }
@@ -62,11 +62,21 @@
         InvokeAsync(() => StateHasChanged());
     }
 
+    public void OnStateChangedHandler(object sender, EventArgs e)
+    {
+        InvokeAsync(() => StateHasChanged());
+    }
+
+    private void JobStateHasChanged()
+    {
+        StateHasChanged();
+    }
+
     // Load image URLs in the OnInitializedAsync lifecycle method
     // decide which state the current job is in and load the appropriate image urls
     protected override async Task OnInitializedAsync()
     {
-        JobService.RegisterResetMethod(reset);
+        JService.RegisterResetMethod(reset);
 
         var AuthState = await AuthProvider.GetAuthenticationStateAsync();
 
@@ -74,6 +84,8 @@
 
         if (CurrentJob is not null)
         {
+            CurrentJob.StateChanged += OnStateChangedHandler;
+            JService.RegisterDelegateForJobChange(JobStateHasChanged);
             if (CurrentJob.State == States.FrontPagePictureLineUp)
             {
                 imageUrls = CurrentJob.FrontLineUpUrls;
@@ -93,10 +105,11 @@
         }
         else
         {
-            CurrentJob = await JobService.RequestCurrentJob(CurrentUser);
+            CurrentJob = await JService.RequestCurrentJob(CurrentUser);
 
             if (CurrentJob is not null)
             {
+                CurrentJob.StateChanged += OnStateChangedHandler;
                 if (CurrentJob.State == States.FrontPagePictureLineUp)
                 {
                     imageUrls = CurrentJob.FrontLineUpUrls;
@@ -118,12 +131,6 @@
     /// <returns></returns>
     public async Task UpdateImageUrls(Settings settings)
     {
-        var AuthState = await AuthProvider.GetAuthenticationStateAsync();
-
-        CurrentUser = AuthState.User.Identity.Name;
-
-        CurrentJob = await JobService.RequestCurrentJob(CurrentUser);
-
         string imagePath = settings.TextAddedDir;
 
         // Get the list of image files in the folder asynchronously
@@ -141,8 +148,6 @@
 
         // write the url list to the currentjob
         CurrentJob.FrontLineUpUrls = imageUrls;
-
-        UserStateService.UpdateJob(CurrentJob);
 
         // Update the UI
         await InvokeAsync(() => StateHasChanged());
