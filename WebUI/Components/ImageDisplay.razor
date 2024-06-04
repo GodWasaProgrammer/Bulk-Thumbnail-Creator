@@ -11,7 +11,7 @@
 <div class="image-container">
     @if (CurrentJob is not null)
     {
-        @if(CurrentJob.State is States.FrontPagePictureLineUp || CurrentJob.State is States.varietyList)
+        @if(CurrentJob.State is not States.Loading)
         {
             
         @if (IMGDetailClicked == false && CurrentJob.FrontLineUpUrls != null)
@@ -36,9 +36,9 @@
                 </div>
             </div>
         }
-        else
+        @if(IMGDetailClicked)
         {
-            <VarietyDisplay CurrentJob="CurrentJob" ParentPictureProp="picdata" VarietyUrls="CurrentJob.FrontLineUpUrls"></VarietyDisplay>
+            <VarietyDisplay CurrentJob="CurrentJob" ParentPictureProp="picdata" VarietyUrls="CurrentJob.VarietyUrls"></VarietyDisplay>
         }
         }
     }
@@ -65,22 +65,7 @@
 
     public void OnStateChangedHandler(object sender, EventArgs e)
     {
-        if (CurrentJob.State is States.FrontPagePictureLineUp)
-        {
-            // imageUrls = CurrentJob.FrontLineUpUrls;
-
-        }
-        if (CurrentJob.State is States.varietyList)
-        {
-            IMGDetailClicked = true;
-            // VarietyUrls = CurrentJob.VarietyUrls;
-        }
         InvokeAsync(() => StateHasChanged());
-    }
-
-    private void JobStateHasChanged()
-    {
-        StateHasChanged();
     }
 
     // Load image URLs in the OnInitializedAsync lifecycle method
@@ -96,7 +81,6 @@
         if (CurrentJob is not null)
         {
             CurrentJob.StateChanged += OnStateChangedHandler;
-            JService.RegisterDelegateForJobChange(JobStateHasChanged);
             if (CurrentJob.State == States.FrontPagePictureLineUp)
             {
 
@@ -130,11 +114,6 @@
             }
         }
         await InvokeAsync(() => StateHasChanged());
-    }
-
-    public void RefreshImageDisplay()
-    {
-        InvokeAsync(() => StateHasChanged());
     }
 
     private async Task ShowImageDetail(string imageToDisplayVarietyOf)

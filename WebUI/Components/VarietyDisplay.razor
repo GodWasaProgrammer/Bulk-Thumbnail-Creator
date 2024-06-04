@@ -129,12 +129,9 @@
         CurrentJob.ClickedImage = imageURL;
 
         CustomPicture = true;
-
-        PictureData passData = new();
-
         passURL = imageURL;
 
-        passData = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(imageURL, CurrentJob);
+        PictureData passData = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(imageURL, CurrentJob);
 
         this.passData = passData;
     }

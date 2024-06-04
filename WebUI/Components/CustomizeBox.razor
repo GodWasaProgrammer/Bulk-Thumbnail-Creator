@@ -429,7 +429,7 @@
             }
     }
 
-    BoxType _pickedOverrideBox;
+    BoxType _pickedOverrideBox = BoxType.None;
     public void OverWriteBox()
     {
         var index = _boxParameters.FindIndex(p => p.CurrentBox.Type == PickedBox);

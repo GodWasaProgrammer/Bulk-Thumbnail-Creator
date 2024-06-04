@@ -53,15 +53,6 @@
         if (CurrentJob.State != States.Loading)
         {
             Loading = false;
-
-            if (CurrentJob.State is States.FrontPagePictureLineUp)
-            {
-                imageDisplayref.RefreshImageDisplay();
-            }
-        }
-        if (CurrentJob.State is States.varietyList)
-        {
-
         }
 
         await InvokeAsync(() => StateHasChanged());

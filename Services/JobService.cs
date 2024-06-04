@@ -29,10 +29,6 @@
             _resetDelegate?.Invoke();
         }
 
-        //// store the current job that is active
-        //public Job CurrentJob { get; set; }
-
-
         public Task<Job> RequestCurrentJob(string user)
         {
             var job = UserStateService.GetJob(user);
@@ -43,12 +39,6 @@
         public Task<Job> CreateJob(string videoUrl, string currentUser)
         {
             Job job = new(videoUrl, currentUser);
-
-            //// set the current job to the job that was just created
-            //// so we are able to lift it on demand
-            //CurrentJob = job;
-            //CurrentJob.User = currentUser;
-
             // add the job the joblist
             UserStateService.AddJob(job);
             _currentJobHasChanged.Invoke();
