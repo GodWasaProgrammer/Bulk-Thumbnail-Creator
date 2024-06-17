@@ -13,6 +13,11 @@ public class PictureData
     public MagickReadSettings MakeTextSettings(ParamForTextCreation parameters)
     {
         ReadSettings = TextSettingsGeneration(parameters);
+        if (parameters.CurrentBox.Type == BoxType.BottomBox || parameters.CurrentBox.Type == BoxType.BottomLeft || parameters.CurrentBox.Type == BoxType.BottomRight)
+        {
+            ReadSettings.TextGravity = Gravity.Center;
+        }
+
         return ReadSettings;
     }
     public List<PictureData> Varieties { get; set; } = [];
