@@ -11,7 +11,6 @@
         public Settings Settings { get; set; }
         public string User { get; set; } = currentUser;
         public List<string> LogEntries { get; set; } = [];
-        //public States State { get; set; } = States.Initial;
 
         protected virtual void OnStateChanged(EventArgs e)
         {

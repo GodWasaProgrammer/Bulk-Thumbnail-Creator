@@ -22,7 +22,6 @@
     <PackageReference Include="libpng-msvc-x64" Version="1.6.33.8807" />
     <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="13.6.0" />
     <PackageReference Include="Magick.NET.Core" Version="13.6.0" />
-    <PackageReference Include="Microsoft.NET.Build.Containers" Version="8.0.202" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />

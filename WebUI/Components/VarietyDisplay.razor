@@ -112,7 +112,7 @@
                     // /// So we lift it from the job and off to the races
                     // PicDataService.PicDataServiceList = CurrentJob.PictureData;
 
-                    passData = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(passURL, CurrentJob);
+                    passData = CreatorService.SetPictureDataImageDisplayCorrelationForVarietyList(passURL, CurrentJob);
                     CustomPicture = true;
                     StateHasChanged();
                 }
@@ -131,7 +131,7 @@
         CustomPicture = true;
         passURL = imageURL;
 
-        PictureData passData = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(imageURL, CurrentJob);
+        PictureData passData = CreatorService.SetPictureDataImageDisplayCorrelationForVarietyList(imageURL, CurrentJob);
 
         this.passData = passData;
     }

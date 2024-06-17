@@ -87,12 +87,12 @@
             }
             if (CurrentJob.State == States.varietyList)
             {
-                picdata = await PicDataService.SetPictureDataImageDisplayCorrelation(CurrentJob.ClickedImage, CurrentJob);
+                picdata = await CreatorService.SetPictureDataImageDisplayCorrelation(CurrentJob.ClickedImage, CurrentJob);
             }
             if (CurrentJob.State == States.CustomPicture)
             {
                 IMGDetailClicked = true;
-                picdata = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(CurrentJob.ClickedImage, CurrentJob);
+                picdata = CreatorService.SetPictureDataImageDisplayCorrelationForVarietyList(CurrentJob.ClickedImage, CurrentJob);
             }
 
         }
@@ -120,7 +120,7 @@
     {
         IMGDetailClicked = true;
 
-        picdata = await PicDataService.SetPictureDataImageDisplayCorrelation(imageToDisplayVarietyOf, CurrentJob);
+        picdata = await CreatorService.SetPictureDataImageDisplayCorrelation(imageToDisplayVarietyOf, CurrentJob);
         CurrentJob.VarietyUrls = await PicDataService.CreatePictureDataVariety(picdata, CurrentJob);
 
         CurrentJob.ClickedImage = imageToDisplayVarietyOf;

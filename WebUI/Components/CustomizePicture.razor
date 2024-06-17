@@ -88,7 +88,7 @@
         {
             if (CurrentJob.State == States.CustomPicture)
             {
-                CurrentPagePictureData = PicDataService.SetPictureDataImageDisplayCorrelationForVarietyList(CurrentJob.ClickedImage, CurrentJob);
+                CurrentPagePictureData = CreatorService.SetPictureDataImageDisplayCorrelationForVarietyList(CurrentJob.ClickedImage, CurrentJob);
                 ImageURL = CurrentJob.ClickedImage;
             }
         }

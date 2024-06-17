@@ -57,18 +57,18 @@
                 job.VideoName = Path.GetFileNameWithoutExtension(settings.PathToVideo);
             }
 
-            string imagePath = settings.TextAddedDir;
+            var imagePath = settings.TextAddedDir;
 
             // Get the list of image files in the folder asynchronously
-            string[] imageFiles = await Task.Run(() => Directory.GetFiles(imagePath, "*.png"));
+            var imageFiles = await Task.Run(() => Directory.GetFiles(imagePath, "*.png"));
 
             // Initialize the image URLs list
-            List<string> imageUrls = new List<string>();
+            var imageUrls = new List<string>();
 
             // Create the URLs for the images and add them to the list
-            foreach (string imageFile in imageFiles)
+            foreach (var imageFile in imageFiles)
             {
-                string imageUrl = $"/{imageFile}";
+                var imageUrl = $"/{imageFile}";
                 imageUrls.Add(imageUrl);
             }
 
@@ -143,7 +143,7 @@
             return pictureData;
         }
 
-        public Task<PictureData> SetPictureDataImageDisplayCorrelation(string imageUrl, Job job)
+        public static Task<PictureData> SetPictureDataImageDisplayCorrelation(string imageUrl, Job job)
         {
             PictureData picData = new();
 
@@ -194,25 +194,16 @@
             return Task.FromResult(picData);
         }
 
-        public PictureData SetPictureDataImageDisplayCorrelationForVarietyList(string imageUrl, Job job)
+        public static PictureData SetPictureDataImageDisplayCorrelationForVarietyList(string imageUrl, Job job)
         {
             PictureData picData = new();
 
             if (Settings.Mocking && Settings.MakeMocking)
             {
                 // nonsense to just pick the first one
-                foreach (var item in job.PictureData)
-                {
-                    foreach (var variety in item.Varieties)
-                    {
-                        picData = new PictureData(variety);
-                        break;
-                    }
-                    if (picData != null)
-                    {
-                        break;
-                    }
-                }
+                var jobdata = job.PictureData[0];
+                var jobvarietyData = jobdata.Varieties[0];
+                picData = jobvarietyData;
             }
             else
             {

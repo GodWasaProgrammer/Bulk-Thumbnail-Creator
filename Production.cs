@@ -36,10 +36,6 @@ public static class Production
             await settings.LogService.LogInformation("Unix OS Detected");
         }
 
-        //await settings.LogService.LogInformation($"Current Location: {currentLoc}");
-        //await settings.LogService.LogInformation($"Parent Directory: {parentDirectory}");
-        //await settings.LogService.LogInformation($"New Path: {exePath}");
-
         if (File.Exists(YtdlpDir))
         {
             await settings.LogService.LogInformation($"YTDLP has been confirmed");
