@@ -2,6 +2,7 @@
 @using BulkThumbnailCreator;
 @using BulkThumbnailCreator.Services;
 @using BulkThumbnailCreator.Enums;
+@using MudBlazor;
 
 @inject ILogService Logger
 @inject CreatorService PicDataService
@@ -10,18 +11,29 @@
 
 @if (processing)
 {
-    <MudContainer @onclick="ExpandLog">
-        <MudPaper Elevation="4" Class="small">
-            @foreach (var entry in LogEntries.TakeLast(takeEntries))
+    <MudPaper Elevation="2" Class="validation-message">
+        <MudTimeline TimelinePosition="TimelinePosition.Left">
+            @for (int i = LogEntries.TakeLast(takeEntries).Count() - 1; i >= 0; i--)
             {
-                <MudTextField AdornmentIcon="" Label="Log Entry" Multiline="true" Variant="Variant.Filled" FullWidth="true" ReadOnly="true" Value="@entry" />
+                var entry = LogEntries.ElementAt(i);
+                <MudTimelineItem Icon="@Icons.Material.Filled.Article" Variant="Variant.Filled" Color="Color.Success">
+                    <div class="fit-container">
+                        <div class="fit-content">
+                            <MudAlert Severity="Severity.Success">@entry</MudAlert>
+                        </div>
+                        <div class="timestamp">
+                            <MudAlert Severity="Severity.Normal">@DateTime.Now</MudAlert>
+                        </div>
+                    </div>
+                </MudTimelineItem>
             }
-        </MudPaper>
-    </MudContainer>
+        </MudTimeline>
+    </MudPaper>
 }
 
 @code
 {
+
     private bool IsInitialized { get; set; } = false;
 
     [Parameter]
@@ -30,7 +42,7 @@
     private string CurrentUser;
 
     [Parameter]
-    public int takeEntries { get; set; } = 1;
+    public int takeEntries { get; set; } = 10;
 
     [Parameter]
     public bool processing { get; set; }
@@ -53,6 +65,7 @@
         // this way we dont have to worry about the job being null before it passes the download stage
         if (CurrentJob != null)
             CurrentJob.LogEntries = LogEntries;
+        takeEntries++;
 
         LogEntries.Add(logEntry);
         InvokeAsync(() => StateHasChanged());
@@ -102,3 +115,28 @@
         IsInitialized = true;
     }
 }
+<style>
+    .fit-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 25px;
+    }
+
+    .fit-content {
+        width: fit-content;
+        max-width: 100%;
+        text-align: center;
+        font-size: 1vw; /* Adjust the font size based on viewport width */
+    }
+
+    }
+
+    .timestamp {
+        margin-left: 10px;
+        font-size: 0.8vw; /* Adjust as needed */
+        color: gray; /* Adjust as needed */
+    }
+</style>

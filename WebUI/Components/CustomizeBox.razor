@@ -178,7 +178,7 @@
 
     private void GradientToggle()
     {
-        @foreach (var boxparam in CurrentPagePictureData.BoxParameters)
+        @foreach (var boxparam in _boxParameters)
         {
             @if (boxparam.CurrentBox.Type == PickedBox)
             {
@@ -315,13 +315,17 @@
             {
                 parameterToEdit.Text = _pickedText;
             }
-            if (_pickedGroup == ColorGroup.FillColor)
+
+            if (_colorValue != null)
             {
-                parameterToEdit.FillColor.SetByHSL((float)_colorValue.H, (float)_colorValue.S, (float)_colorValue.L);
-            }
-            if (_pickedGroup == ColorGroup.StrokeColor)
-            {
-                parameterToEdit.StrokeColor.SetByHSL((float)_colorValue.H, (float)_colorValue.S, (float)_colorValue.L);
+                if (_pickedGroup == ColorGroup.FillColor)
+                {
+                    parameterToEdit.FillColor.SetByHSL((float)_colorValue.H, (float)_colorValue.S, (float)_colorValue.L);
+                }
+                if (_pickedGroup == ColorGroup.StrokeColor)
+                {
+                    parameterToEdit.StrokeColor.SetByHSL((float)_colorValue.H, (float)_colorValue.S, (float)_colorValue.L);
+                }
             }
             // colors are set
         }
@@ -435,9 +439,15 @@
         var index = _boxParameters.FindIndex(p => p.CurrentBox.Type == PickedBox);
         if (index != -1) // Check if the element was found
         {
-            var index2 = _overrideBoxList.FindIndex(p => p.CurrentBox.Type == _pickedOverrideBox);
-            _boxParameters[index] = _overrideBoxList[index2]; // Replace the element at the found index with pickedOverrideBox
-            PickedBox = _pickedOverrideBox;
+            var ParamToReplace = _overrideBoxList.FindIndex(prop => prop.CurrentBox.Type == _pickedOverrideBox);
+            
+            _boxParameters[index] = _overrideBoxList[ParamToReplace];
+            PickedBox = _boxParameters[index].CurrentBox.Type;
+        }
+        else
+        {
+            var ParamToReplace = _overrideBoxList.FindIndex(prop => prop.CurrentBox.Type == PickedBox);
+            _boxParameters[index] = _overrideBoxList[ParamToReplace];
         }
         StateHasChanged();
     }
@@ -465,6 +475,10 @@
             param.BoxesWithNoFaceIntersect = CurrentPagePictureData.BoxParameters[0].BoxesWithNoFaceIntersect;
             _overrideBoxList.Add(param);
         }
+        // make none object
+        var noneParam = new ParamForTextCreation(_overrideBoxList[0]);
+        noneParam.CurrentBox.Type = BoxType.None;
+        _overrideBoxList.Add(noneParam);
         _overrideBoxes = true;
         InvokeAsync(StateHasChanged);
     }

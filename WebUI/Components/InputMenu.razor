@@ -13,12 +13,15 @@
 @if (DisableMenu == false)
 {
     <MudContainer MaxWidth="MaxWidth.Small">
-        <MudPaper>
-            <MudText Color="Color.Secondary">Enter your text here, you should add multiple unique phrases/sentences</MudText>
-            <MudText Color="Color.Secondary">However, you may change this later aswell.</MudText>
-            <MudText Color="Color.Secondary">If you dont enter anything, some sample text will be printed.</MudText>
-            <MudText Color="Color.Secondary">Duplicates will not be saved</MudText>
-            <MudTextField AdornmentColor="Color.Tertiary" Label="Enter Text here" Variant="Variant.Filled" @bind-Value="userText" />
+        <MudPaper  Outlined="true" Elevation="15">
+
+            <MudAlert Icon="@Icons.Material.Filled.Article" Variant="Variant.Filled" Color="Color.Success">
+                Enter your text here, you should add multiple unique phrases/sentences.
+                However, you may change this later aswell.
+                If you dont enter anything, some sample text will be printed.
+                Duplicates will not be saved
+            </MudAlert>
+            <MudTextField AutoFocus="true" AdornmentColor="Color.Tertiary" Label="Enter Text here" Variant="Variant.Outlined" @bind-Value="userText" />
             <MudButton OnClick="() => SaveText()" Variant="Variant.Filled" Color="Color.Primary">Save Text</MudButton>
 
             @if (userInputText.Count != 0)
@@ -31,7 +34,7 @@
             }
             <form @onsubmit="OnKeyPress">
                 <div style="padding-top:20px;">
-                    <MudTextField AdornmentColor="Color.Secondary" Label="Youtube Link" Variant="Variant.Filled" @bind-Value="youtubeLink" />
+                    <MudTextField AdornmentColor="Color.Secondary" Label="Youtube Link" Variant="Variant.Outlined" @bind-Value="youtubeLink" />
                     <MudButton OnClick="() => AwaitBTC()" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
                 </div>
             </form>
@@ -42,7 +45,6 @@
             <MudImage Width="500" Height="500" Src="/images/MemeTrickery.jpeg"></MudImage>
         }
     </MudContainer>
-
 }
 
 @code

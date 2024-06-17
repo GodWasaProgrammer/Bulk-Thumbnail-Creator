@@ -14,16 +14,19 @@
         <CascadingAuthenticationState>
             <LoginDisplay></LoginDisplay>
         </CascadingAuthenticationState>
-        <div style="display: flex; align-items: center; justify-content: center; height: 100%; width: 75%;">
-            <img src=@logoUrl style="max-width: 100%; max-height: 100%; object-fit: contain; margin: auto; display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" />
-        </div>
+        <img src=@logoUrl style="max-width: 100%; max-height: 100%; object-fit: contain; margin: auto; display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" />
         <MudSpacer />
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" href="https://github.com/GodWasAProgrammer" Target="_blank" />
+        <MudIconButton Icon="@Icons.Custom.Brands.LinkedIn" Color="Color.Inherit" href="https://www.linkedin.com/in/bnilssondev/" Target="_blank" />
+        <MudIconButton OnClick="ToggleMusicPlayer" ButtonType="ButtonType.Button" Icon="@Icons.Material.Rounded.MusicNote"></MudIconButton>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
-        <MudDrawerHeader>
-        </MudDrawerHeader>
         <NavMenu />
+    </MudDrawer>
+    <MudDrawer Anchor="Anchor.Right" @bind-Open="_MusicPlayerOpen">
+        <MudContainer>
+            <MusicPlayer></MusicPlayer>
+        </MudContainer>
     </MudDrawer>
     <MudMainContent>
         <MudContainer Class="align-content-center">
@@ -34,28 +37,34 @@
 
 @code {
     bool _drawerOpen = false;
+    bool _MusicPlayerOpen = false;
 
     [Parameter]
     public string logoUrl { get; set; }
 
+    public void ToggleMusicPlayer()
+    {
+        _MusicPlayerOpen = !_MusicPlayerOpen;
+    }
+
     MudTheme BulkThumbnailCreatorTheme = new MudTheme()
         {
-            // PaletteDark = new()
-            // {
-            //     Primary = Colors.DeepPurple.Default,
-            //     Secondary = Colors.Shades.Black,
-            //     // AppbarBackground = Colors.DeepOrange.Accent4,
-            //     // Background = Colors.Teal.Default,
-            //     // Surface = Colors.Blue.Default,
-            //     // TextPrimary = Colors.Shades.Black,
-            //     // InfoContrastText = Colors.Shades.Black,
-            //     TextSecondary = Colors.Shades.Black,
-            // },
+            PaletteDark = new()
+            {
+                Primary = Colors.DeepPurple.Default,
+                Secondary = Colors.DeepPurple.Accent4,
+                AppbarBackground = Colors.Blue.Darken1,
+                Background = Colors.Shades.Black,
+                Surface = Colors.Shades.Black,
+                TextPrimary = Colors.Shades.Black,
+                // InfoContrastText = Colors.Shades.Black,
+                TextSecondary = Colors.Shades.Black,
+            },
 
             LayoutProperties = new LayoutProperties()
             {
-                DrawerWidthLeft = "200px",
-                DrawerWidthRight = "0px",
+                DrawerWidthLeft = "150px",
+                DrawerWidthRight = "150px",
                 AppbarHeight = "30px",
             }
         };

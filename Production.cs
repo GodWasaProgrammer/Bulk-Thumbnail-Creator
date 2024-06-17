@@ -36,13 +36,13 @@ public static class Production
             await settings.LogService.LogInformation("Unix OS Detected");
         }
 
-        await settings.LogService.LogInformation($"Current Location: {currentLoc}");
-        await settings.LogService.LogInformation($"Parent Directory: {parentDirectory}");
-        await settings.LogService.LogInformation($"New Path: {exePath}");
+        //await settings.LogService.LogInformation($"Current Location: {currentLoc}");
+        //await settings.LogService.LogInformation($"Parent Directory: {parentDirectory}");
+        //await settings.LogService.LogInformation($"New Path: {exePath}");
 
         if (File.Exists(YtdlpDir))
         {
-            await settings.LogService.LogInformation($"YTDLP Path: {YtdlpDir}");
+            await settings.LogService.LogInformation($"YTDLP has been confirmed");
         }
         else
         {
@@ -63,7 +63,7 @@ public static class Production
 
         if (File.Exists(ffMpegDir))
         {
-            await settings.LogService.LogInformation($"FFmpeg Path: {ffMpegDir}");
+            await settings.LogService.LogInformation($"FFmpeg Has been confirmed");
         }
         else
         {
@@ -91,13 +91,13 @@ public static class Production
 
         if (Directory.Exists(ytdlDir))
         {
-            await settings.LogService.LogInformation($"YTDL Dir found:{ytdlDir}");
+            await settings.LogService.LogInformation($"YTDL has been confirmed");
         }
         else
         {
             await settings.LogService.LogError("YTDL Dir was not found");
             Directory.CreateDirectory(ytdlDir);
-            await settings.LogService.LogInformation($"Dir Created at:{ytdlDir}");
+            await settings.LogService.LogInformation($"YTDL Dir has been created");
         }
         settings.YTDLOutPutDir = ytdlDir;
 
@@ -217,7 +217,7 @@ public static class Production
     public static async Task ProduceTextPictures(PictureData pictureData, Settings settings)
     {
         string imageName;
-        var outputPath = Path.GetFullPath(settings.TextAddedDir);
+        var outputPath = Path.GetRelativePath(Environment.CurrentDirectory, settings.TextAddedDir);
 
         imageName = Path.GetFileName(pictureData.FileName);
         const string Varietyof = "//varietyof";
@@ -285,11 +285,6 @@ public static class Production
 
         for (var box = 0; box < pictureData.BoxParameters.Count; box++)
         {
-            if (pictureData.BoxParameters[box].CurrentBox.Type == BoxType.None)
-            {
-                break;
-            }
-
             var boxParam = pictureData.BoxParameters[box];
             pictureData.MakeTextSettings(pictureData.BoxParameters[box]);
 
@@ -301,7 +296,7 @@ public static class Production
                     meme.Resize(boxParam.CurrentBox.Width, boxParam.CurrentBox.Height);
                     outputImage.Composite(meme, boxParam.CurrentBox.X, boxParam.CurrentBox.Y, CompositeOperator.Over);
                 }
-                else if (pictureData.BoxParameters[box].Meme == null)
+                else if (pictureData.BoxParameters[box].Meme == null && pictureData.BoxParameters[box].CurrentBox.Type != BoxType.None)
                 {
                     //// Add the caption layer on top of the background image
                     var caption = new MagickImage($"caption:{boxParam.Text}", pictureData.ReadSettings);
@@ -345,6 +340,6 @@ public static class Production
 
         // outputs the file to the provided path and name
         await Task.Run(() => outputImage.Write(outputPath));
-        await settings.LogService.LogInformation($"File Created: {outputPath}");
+        await settings.LogService.LogInformation($"File Created: {Path.GetFileName(outputPath)}");
     }
 }
