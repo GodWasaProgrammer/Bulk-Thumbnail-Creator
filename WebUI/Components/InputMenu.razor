@@ -21,7 +21,7 @@
                 If you dont enter anything, some sample text will be printed.
                 Duplicates will not be saved
             </MudAlert>
-            <MudTextField AutoFocus="true" AdornmentColor="Color.Tertiary" Label="Enter Text here" Variant="Variant.Outlined" @bind-Value="userText" />
+            <MudTextField AutoFocus="true" Label="Enter Text here" Variant="Variant.Text" @bind-Value="userText" />
             <MudButton OnClick="() => SaveText()" Variant="Variant.Filled" Color="Color.Primary">Save Text</MudButton>
 
             @if (userInputText.Count != 0)
@@ -34,7 +34,7 @@
             }
             <form @onsubmit="OnKeyPress">
                 <div style="padding-top:20px;">
-                    <MudTextField AdornmentColor="Color.Secondary" Label="Youtube Link" Variant="Variant.Outlined" @bind-Value="youtubeLink" />
+                    <MudTextField AdornmentColor="Color.Success" Label="Youtube Link" Variant="Variant.Outlined" @bind-Value="youtubeLink" />
                     <MudButton OnClick="() => AwaitBTC()" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
                 </div>
             </form>

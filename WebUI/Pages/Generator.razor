@@ -23,7 +23,7 @@
                 <InputMenu job="CurrentJob"></InputMenu>
             </div>
 
-            <ImageDisplay CurrentJob="CurrentJob" @ref="imageDisplayref"></ImageDisplay>
+            <ImageDisplay CurrentJob="CurrentJob"></ImageDisplay>
 
             <div>
                 @if (Loading)
@@ -64,8 +64,6 @@
     }
 
     public Job CurrentJob { get; set; }
-
-    ImageDisplay imageDisplayref;
 
     private string CurrentUser;
 
