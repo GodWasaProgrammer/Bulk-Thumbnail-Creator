@@ -6,14 +6,18 @@
 @using Microsoft.AspNetCore.Components.Web
 @inject CreatorService ds;
 @inject Settings settings;
+@inject IJSRuntime JSInterop;
 @inject ILogService logger;
 
 <MudGrid>
     <MudPaper Class="mb-4" Elevation="7" Outlined="true">
         <MudText Color="Color.Warning">Downloads</MudText>
         <MudItem>
-            <MudText Color="Color.Secondary">Download the entire Video</MudText>
-            <MudButton Variant="Variant.Filled" href="@downloadVideo" Color="Color.Tertiary">Download</MudButton>
+            @if (!string.IsNullOrEmpty(downloadVideo))
+            {
+                <MudText Color="Color.Secondary">Download the entire Video</MudText>
+                <MudButton Variant="Variant.Filled" OnClick="(() => DLvideo())" Color="Color.Tertiary">Download</MudButton>
+            }
         </MudItem>
         <MudItem>
             <MudText Color="Color.Secondary">Download the output directory of unedited files</MudText>
@@ -32,7 +36,8 @@
 
 @code
 {
-    private string downloadVideo { get; set; }
+    [Parameter]
+    public string downloadVideo { get; set; }
     private string dlOutputDir { get; set; }
     private string dlTextAddedDir { get; set; }
     private string dlVarDir { get; set; }
@@ -45,16 +50,29 @@
         DownloadVarietyDir();
     }
 
+    private async Task DLvideo()
+    {
+        await JSInterop.InvokeVoidAsync("downloadFileFromUrl", downloadVideo);
+    }
+
     private void DownloadVideo()
     {
         // feed the video to wwwroot loc for downloading
-        string videoname = Path.GetFileName(settings.PathToVideo);
+        string videoname;
+        @if (!string.IsNullOrEmpty(downloadVideo))
+        {
+            videoname = Path.GetFileName(downloadVideo);
+        }
+        else
+        {
+            videoname = Path.GetFileName(settings.PathToVideo);
+        }
         string diroffile = "";
         if (videoname is not null)
         {
             if (!File.Exists($"wwwroot/{videoname}"))
             {
-                File.Copy(settings.PathToVideo, $"wwwroot/{videoname}");
+                File.Copy($"{settings.YTDLOutPutDir}/{videoname}", $"wwwroot/{videoname}");
             }
             diroffile = Path.GetFileName($"wwwwroot/{videoname}");
         }
@@ -80,5 +98,4 @@
         // download Variety Dir
         dlVarDir = ZipService.ZipVarietyDir(settings);
     }
-
 }

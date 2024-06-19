@@ -2,6 +2,13 @@
 
 public static partial class Creator
 {
+    public static async Task<string> FetchVideo(string url, Settings settings)
+    {
+        await Production.VerifyDirectoryAndExeIntegrity(settings);
+        var PathToDownloadedVideo = await Production.YouTubeDL(url, settings);
+        return PathToDownloadedVideo;
+    }
+
     public static async Task<List<PictureData>> Process(ProductionType prodType, string url, List<string> texts, Settings settings, PictureData pictureData = null)
     {
         settings.ListOfText = texts;

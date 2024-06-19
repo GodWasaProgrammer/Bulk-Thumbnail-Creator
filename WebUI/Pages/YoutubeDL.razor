@@ -1,0 +1,45 @@
+﻿@page "/Youtube Downloader"
+@using BulkThumbnailCreator.Services
+@using BulkThumbnailCreator
+@using WebUI.Components
+@inject CreatorService CreatorService;
+@inject Settings settings
+
+@if (!Loading)
+{
+    <MudContainer MaxWidth="MudBlazor.MaxWidth.Small">
+        <MudAlert Dense="true" Icon="@Icons.Material.Filled.Download" Variant="Variant.Outlined" Severity="Severity.Success">
+            Youtube video downloader, also able to extract only sound from a given video,
+            can also split a video into its chapters and much more
+        </MudAlert>
+        <MudTextField AdornmentColor="Color.Success" Label="Youtube Link" Variant="Variant.Outlined" @bind-Value="youtubeLink" />
+        <MudButton OnClick="(() => FetchVideo(youtubeLink))" ButtonType="ButtonType.Submit" Color="Color.Success" Variant="Variant.Filled">Fetch Video</MudButton>
+    </MudContainer>
+}
+else
+{
+    <IntermediateLoading>
+
+    </IntermediateLoading>
+}
+@if(FetchedVideoPath != "")
+{
+    <Download downloadVideo="@PassVideoPath"></Download>
+}
+
+@code
+{
+    string youtubeLink { get; set; }
+    string FetchedVideoPath { get; set; } = "";
+    string PassVideoPath;
+    bool Loading { get; set; }
+
+    async void FetchVideo(string YTlink)
+    {
+        Loading = true;
+        FetchedVideoPath = await CreatorService.FetchVideo(YTlink, settings);
+        Loading = false;
+        PassVideoPath = FetchedVideoPath;
+        await InvokeAsync(StateHasChanged);
+    }
+}

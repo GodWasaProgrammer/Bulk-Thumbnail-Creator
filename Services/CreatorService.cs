@@ -14,6 +14,30 @@
             settings.LogService = logger;
             settings.JobService = jobService;
         }
+        public static void ClearBaseOutPutDirectories(Settings settings)
+        {
+            DirectoryInfo di = new(settings.TextAddedDir);
+
+            foreach (var file in di.GetFiles())
+            {
+                file.Delete();
+            }
+            foreach (var dir in di.GetDirectories())
+            {
+                dir.Delete(true);
+            }
+
+            DirectoryInfo di2 = new(settings.OutputDir);
+
+            foreach (var file in di2.GetFiles())
+            {
+                file.Delete();
+            }
+            foreach (var dir in di2.GetDirectories())
+            {
+                dir.Delete(true);
+            }
+        }
 
         public event EventHandler<bool> LoadingStateChanged;
 
@@ -222,29 +246,10 @@
             return picData;
         }
 
-        public static void ClearBaseOutPutDirectories(Settings settings)
+        public static async Task<string> FetchVideo(string urlToVideo, Settings settings)
         {
-            DirectoryInfo di = new(settings.TextAddedDir);
-
-            foreach (var file in di.GetFiles())
-            {
-                file.Delete();
-            }
-            foreach (var dir in di.GetDirectories())
-            {
-                dir.Delete(true);
-            }
-
-            DirectoryInfo di2 = new(settings.OutputDir);
-
-            foreach (var file in di2.GetFiles())
-            {
-                file.Delete();
-            }
-            foreach (var dir in di2.GetDirectories())
-            {
-                dir.Delete(true);
-            }
+            var pathToVideo = await Creator.FetchVideo(urlToVideo, settings);
+            return pathToVideo;
         }
     }
 }
