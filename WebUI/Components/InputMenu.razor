@@ -21,7 +21,7 @@
                 If you dont enter anything, some sample text will be printed.
                 Duplicates will not be saved
             </MudAlert>
-            <MudTextField AutoFocus="true" Label="Enter Text here" Variant="Variant.Text" @bind-Value="userText" />
+            <MudTextField AutoFocus="true" Label="Enter Text here" Variant="Variant.Outlined" @bind-Value="userText" />
             <MudButton OnClick="() => SaveText()" Variant="Variant.Filled" Color="Color.Primary">Save Text</MudButton>
 
             @if (userInputText.Count != 0)
