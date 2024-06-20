@@ -18,7 +18,6 @@ public static class Program
         Directory.CreateDirectory("TextAdded");
         Directory.CreateDirectory("logs");
         var builder = WebApplication.CreateBuilder(args);
-        var configuration = builder.Configuration;
         // Add configuration settings
         builder.Configuration.AddJsonFile("appsettings.json", optional: false);
         builder.Services.AddDefaultIdentity<IdentityUser>()
