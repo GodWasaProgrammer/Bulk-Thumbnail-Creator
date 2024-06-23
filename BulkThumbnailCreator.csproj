@@ -8,13 +8,17 @@
     <DockerfileContext>.</DockerfileContext>
     <Platforms>AnyCPU;x64</Platforms>
 	  <ImplicitUsing>enable</ImplicitUsing>
+      <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Executables\**" />
+    <Compile Remove="Tests\**" />
     <Compile Remove="WebUI\**" />
     <EmbeddedResource Remove="Executables\**" />
+    <EmbeddedResource Remove="Tests\**" />
     <EmbeddedResource Remove="WebUI\**" />
     <None Remove="Executables\**" />
+    <None Remove="Tests\**" />
     <None Remove="WebUI\**" />
   </ItemGroup>
   <ItemGroup>
