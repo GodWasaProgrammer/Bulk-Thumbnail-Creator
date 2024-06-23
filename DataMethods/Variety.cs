@@ -1,4 +1,6 @@
-﻿namespace BulkThumbnailCreator;
+﻿using BulkThumbnailCreator.Wrappers;
+
+namespace BulkThumbnailCreator;
 
 internal static class Variety
 {
@@ -22,7 +24,9 @@ internal static class Variety
 
                 for (var i = 0; i < FontsToPick; i++)
                 {
-                    var pickedFont = DataGeneration.PickRandomFont();
+                    var directoryWrapper = new DirectoryWrapper();
+                    var dg = new DataGeneration(directoryWrapper);
+                    var pickedFont = dg.PickRandomFont();
 
                     // if the list doesnt contain this font already, add it.
                     if (!fontList.Contains(pickedFont))
@@ -60,7 +64,10 @@ internal static class Variety
                 PictureData varietyData = new(pictureInputData);
                 varietyData.Varieties.Clear();
                 varietyData.BoxParameters[currentBoxes] = ColorData.SelectTwoDifferentColors(varietyData.BoxParameters[currentBoxes]);
-                var font = DataGeneration.PickRandomFont();
+
+                var directoryWrapper = new DirectoryWrapper();
+                var dg = new DataGeneration(directoryWrapper);
+                var font = dg.PickRandomFont();
                 varietyData.BoxParameters[currentBoxes].Gradient = DataGeneration.RandomGradient();
                 varietyData.BoxParameters[currentBoxes].Font = font;
                 varietyData.OutPutType = OutputType.RandomVariety;

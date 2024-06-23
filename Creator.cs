@@ -1,4 +1,6 @@
-﻿namespace BulkThumbnailCreator;
+﻿using BulkThumbnailCreator.Wrappers;
+
+namespace BulkThumbnailCreator;
 
 public static partial class Creator
 {
@@ -116,7 +118,10 @@ public static partial class Creator
                     currentParameters = DataGeneration.GetTextPosition(currentParameters, image, faceRectangles, populatedBoxes);
                     currentParameters = ColorData.SelectTwoRandomColors(currentParameters);
                     currentParameters.Gradient = DataGeneration.RandomGradient();
-                    currentParameters.Font = DataGeneration.PickRandomFont();
+
+                    var directoryWrapper = new DirectoryWrapper();
+                    var dg = new DataGeneration(directoryWrapper);
+                    currentParameters.Font = dg.PickRandomFont();
 
                     // picks a random string from the list
                     Random pickAString = new();

@@ -1,8 +1,7 @@
 ﻿using BulkThumbnailCreator;
 using BulkThumbnailCreator.PictureClasses;
 
-
-namespace Tests
+namespace Tests.DataMethodsTests
 {
     public class ColorDataTests
     {

@@ -1,14 +1,21 @@
 ﻿namespace BulkThumbnailCreator;
 
-public static class DataGeneration
+public class DataGeneration
 {
+    private readonly IDirectoryWrapper _directoryWrapper;
+
+    public DataGeneration(IDirectoryWrapper directoryWrapper)
+    {
+        _directoryWrapper = directoryWrapper;
+    }
+
     /// <summary>
     /// Picks a random font from the provided font folder
     /// </summary>
     /// <returns></returns>
-    public static string PickRandomFont()
+    public string PickRandomFont()
     {
-        var fontNames = Directory.GetFiles("Fonts", "*.TTF*");
+        var fontNames = _directoryWrapper.GetFiles("Fonts", "*.TTF*");
 
         var randommax = fontNames.Length;
 
