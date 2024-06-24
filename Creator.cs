@@ -115,7 +115,9 @@ public static partial class Creator
                     if (passPictureData.BoxParameters.Count > 0)
                         populatedBoxes.Add(passPictureData.BoxParameters[0].CurrentBox.Type);
 
-                    currentParameters = DataGeneration.GetTextPosition(currentParameters, image, faceRectangles, populatedBoxes);
+
+                    currentParameters.Boxes = DataGeneration.BuildDefaultBoxes(image);
+                    currentParameters = DataGeneration.GetTextPosition(currentParameters, faceRectangles, populatedBoxes);
                     currentParameters = ColorData.SelectTwoRandomColors(currentParameters);
                     currentParameters.Gradient = DataGeneration.RandomGradient();
 

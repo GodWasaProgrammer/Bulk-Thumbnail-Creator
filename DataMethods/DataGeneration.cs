@@ -23,12 +23,69 @@ public class DataGeneration
 
         return fontNames[fontChosen];
     }
-    public static ParamForTextCreation GetTextPosition(ParamForTextCreation parameters, Array2D<RgbPixel> sourcePicture, Rectangle[] faceRect, List<BoxType> populatedBoxes)
+    public static ParamForTextCreation GetTextPosition(ParamForTextCreation parameters, Rectangle[] faceRect, List<BoxType> populatedBoxes)
     {
-        var defaultBoxes = BuildDefaultBoxes(sourcePicture);
-        parameters.Boxes = defaultBoxes;
+        var defaultBoxes = parameters.Boxes;
         // boxes that we will pick from after calcs done
 
+        // checks to see if we have boxes not occupied by faces or other content
+        var freeBoxes = CalculateFreeBoxes(faceRect, defaultBoxes);
+
+        // early exit if there are no free boxes left after intersecting with faces
+        if (freeBoxes.Count == 0)
+        {
+            return parameters;
+        }
+
+        // excludes our populated boxes from the calculations
+        ExcludePopulatedBoxesIntersection(populatedBoxes, defaultBoxes, freeBoxes);
+
+        // check what boxes are left
+        if (freeBoxes.Count != 0)
+        {
+            // all calculations done, pick one box
+            Random random = new();
+            BoxType pickedBoxName;
+            BoxType[] boxes = [.. freeBoxes];
+
+            pickedBoxName = boxes[random.Next(boxes.Length)];
+
+            parameters.CurrentBox = parameters.Boxes.Find(x => x.Type == pickedBoxName);
+            parameters.WidthOfBox = parameters.CurrentBox.Width;
+            parameters.HeightOfBox = parameters.CurrentBox.Height;
+
+            freeBoxes.Remove(pickedBoxName);
+
+            parameters.BoxesWithNoFaceIntersect = freeBoxes;
+        }
+        return parameters;
+    }
+
+    private static void ExcludePopulatedBoxesIntersection(List<BoxType> populatedBoxes, List<Box> defaultBoxes, List<BoxType> freeBoxes)
+    {
+        if (populatedBoxes.Count != 0)
+        {
+            for (var boxIndex = 0; boxIndex < populatedBoxes.Count; boxIndex++)
+            {
+                var boxtype = populatedBoxes[boxIndex];
+                var populatedRect = defaultBoxes.Find(x => x.Type == boxtype).Rectangle;
+                List<(BoxType, bool)> intersectResults = [];
+                for (var rectangleIndex = 0; rectangleIndex < defaultBoxes.Count; rectangleIndex++)
+                {
+                    var boxRectangle = defaultBoxes[rectangleIndex].Rectangle;
+                    var boxIntersect = IntersectCheck(populatedRect, boxRectangle);
+                    if (boxIntersect)
+                    {
+                        freeBoxes.Remove(defaultBoxes[rectangleIndex].Type);
+                    }
+                    intersectResults.Add((defaultBoxes[rectangleIndex].Type, boxIntersect));
+                }
+            }
+        }
+    }
+
+    private static List<BoxType> CalculateFreeBoxes(Rectangle[] faceRect, List<Box> defaultBoxes)
+    {
         List<BoxType> freeBoxes = [];
         foreach (var box in defaultBoxes)
         {
@@ -52,52 +109,9 @@ public class DataGeneration
             }
         }
 
-        // early exit if there are no free boxes left after intersecting with faces
-        if (freeBoxes.Count == 0)
-        {
-            return parameters;
-        }
-
-        if (populatedBoxes.Count != 0)
-        {
-            for (var boxIndex = 0; boxIndex < populatedBoxes.Count; boxIndex++)
-            {
-                var boxtype = populatedBoxes[boxIndex];
-                var populatedRect = defaultBoxes.Find(x => x.Type == boxtype).Rectangle;
-                List<(BoxType, bool)> intersectResults = [];
-                for (var rectangleIndex = 0; rectangleIndex < defaultBoxes.Count; rectangleIndex++)
-                {
-                    var boxRectangle = defaultBoxes[rectangleIndex].Rectangle;
-                    var boxIntersect = IntersectCheck(populatedRect, boxRectangle);
-                    if (boxIntersect)
-                    {
-                        freeBoxes.Remove(defaultBoxes[rectangleIndex].Type);
-                    }
-                    intersectResults.Add((defaultBoxes[rectangleIndex].Type, boxIntersect));
-                }
-            }
-        }
-
-        // check what boxes are left
-        if (freeBoxes.Count != 0)
-        {
-            // all calculations done, pick one box
-            Random random = new();
-            BoxType pickedBoxName;
-            BoxType[] boxes = [.. freeBoxes];
-
-            pickedBoxName = boxes[random.Next(boxes.Length)];
-
-            parameters.CurrentBox = parameters.Boxes.Find(x => x.Type == pickedBoxName);
-            parameters.WidthOfBox = parameters.CurrentBox.Width;
-            parameters.HeightOfBox = parameters.CurrentBox.Height;
-
-            freeBoxes.Remove(pickedBoxName);
-
-            parameters.BoxesWithNoFaceIntersect = freeBoxes;
-        }
-        return parameters;
+        return freeBoxes;
     }
+
     public static bool IntersectCheck(Rectangle rect1, Rectangle rect2)
     {
         return rect1.Left < rect2.Right &&
@@ -105,7 +119,7 @@ public class DataGeneration
                rect1.Top < rect2.Bottom &&
                rect1.Bottom > rect2.Top;
     }
-    private static List<Box> BuildDefaultBoxes(Array2D<RgbPixel> sourcePicture)
+    public static List<Box> BuildDefaultBoxes(Array2D<RgbPixel> sourcePicture)
     {
         List<Box> boxes = [];
         // top box
