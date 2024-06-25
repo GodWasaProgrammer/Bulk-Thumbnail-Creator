@@ -13,7 +13,6 @@ namespace BulkThumbnailCreator.DataMethods
 
             for (var i = 0; i < 100; i++)
             {
-
                 // Create a SKImageInfo object for the canvas size
                 SKImageInfo info = new(1000, 125);
 

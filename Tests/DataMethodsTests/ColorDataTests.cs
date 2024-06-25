@@ -6,7 +6,7 @@ namespace Tests.DataMethodsTests;
 public class ColorDataTests
 {
     [Fact]
-    public void SelectTwoRandomColors_SetsFillColorAndStrokeColor()
+    public void SelectTwoRandomColors_But_Different_SetsFillColorAndStrokeColor()
     {
         // Arrange
         var paramIn = new ParamForTextCreation();

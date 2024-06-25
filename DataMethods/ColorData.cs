@@ -3,6 +3,7 @@
 public static class ColorData
 {
     static readonly Random s_random = new();
+    const int MAX_COLORS = 140;
 
     public static List<string> SelectedColors { get; set; } = [];
 
@@ -13,26 +14,17 @@ public static class ColorData
 
         var colorList = GetAllMagickColors();
 
-        colorList.Remove("None");
-        colorList.Remove("Transparent");
-        colorList.Remove("RebeccaPurple");
-
         if (SelectedColors.Count == 140 || SelectedColors.Count > 140)
         {
             SelectedColors.Clear();
         }
-        foreach (var alreadyselectedcolor in SelectedColors)
-        {
-            colorList.Remove(alreadyselectedcolor);
-        }
 
         firstcolor = new(colorList[s_random.Next(colorList.Count)]);
-        SelectedColors.Add(colorList[s_random.Next(colorList.Count)]);
+        SelectedColors.Add(firstcolor.ToString());
         paramIn.FillColor.SetByRGB((byte)firstcolor.R, (byte)firstcolor.G, (byte)firstcolor.B);
 
-        var randomIndexofSecondColor = s_random.Next(colorList.Count);
-        secondColor = new(colorList[randomIndexofSecondColor]);
-        SelectedColors.Add(colorList[randomIndexofSecondColor]);
+        secondColor = new(colorList[s_random.Next(colorList.Count)]);
+        SelectedColors.Add(secondColor.ToString());
         paramIn.StrokeColor.SetByRGB((byte)secondColor.R, (byte)secondColor.G, (byte)secondColor.B);
 
         return paramIn;
@@ -45,37 +37,19 @@ public static class ColorData
 
         var colorList = GetAllMagickColors();
 
-        colorList.Remove("None");
-        colorList.Remove("Transparent");
-        colorList.Remove("RebeccaPurple");
-
         if (SelectedColors.Count == 140 || SelectedColors.Count > 140)
         {
             SelectedColors.Clear();
         }
 
-        foreach (var alreadyselectedcolor in SelectedColors)
-        {
-            colorList.Remove(alreadyselectedcolor);
-        }
+        firstcolor = new(colorList[0]);
+        SelectedColors.Add(firstcolor.ToString());
+        paramIn.FillColor.SetByRGB((byte)firstcolor.R, (byte)firstcolor.G, (byte)firstcolor.B);
 
-        for (var i = 0; i < colorList.Count; i++)
-        {
-            if (i == 0)
-            {
-                firstcolor = new(colorList[i]);
-                SelectedColors.Add(colorList[i]);
-                paramIn.FillColor.SetByRGB((byte)firstcolor.R, (byte)firstcolor.G, (byte)firstcolor.B);
-            }
+        secondColor = new(colorList[^1]);
+        SelectedColors.Add(secondColor.ToString());
+        paramIn.StrokeColor.SetByRGB((byte)secondColor.R, (byte)secondColor.G, (byte)secondColor.B);
 
-            if (i == colorList.Count - 1)
-            {
-                var passColor = colorList[i - 1];
-                secondColor = new(passColor);
-                SelectedColors.Add(colorList[i]);
-                paramIn.StrokeColor.SetByRGB((byte)secondColor.R, (byte)secondColor.G, (byte)secondColor.B);
-            }
-        }
         return paramIn;
     }
 
@@ -93,6 +67,15 @@ public static class ColorData
                 colorsList.Add(property.Name);
             }
         }
+        colorsList.Remove("None");
+        colorsList.Remove("Transparent");
+        colorsList.Remove("RebeccaPurple");
+
+        foreach (var alreadyselectedcolor in SelectedColors)
+        {
+            colorsList.Remove(alreadyselectedcolor);
+        }
+
         return colorsList;
     }
 
