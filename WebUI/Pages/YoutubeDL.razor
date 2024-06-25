@@ -2,8 +2,9 @@
 @using BulkThumbnailCreator.Services
 @using BulkThumbnailCreator
 @using WebUI.Components
-@inject CreatorService CreatorService;
+@inject CreatorService CreatorService
 @inject Settings settings
+@inject IJSRuntime JSinterOP
 
 @if (!Loading)
 {
@@ -14,6 +15,10 @@
         </MudAlert>
         <MudTextField AdornmentColor="Color.Success" Label="Youtube Link" Variant="Variant.Outlined" @bind-Value="youtubeLink" />
         <MudButton OnClick="(() => FetchVideo(youtubeLink))" ButtonType="ButtonType.Submit" Color="Color.Success" Variant="Variant.Filled">Fetch Video</MudButton>
+    @if (FetchedVideoPath != "")
+    {
+        <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.Download" OnClick="DLvideo">Download Video</MudButton>
+    }
     </MudContainer>
 }
 else
@@ -22,24 +27,42 @@ else
 
     </IntermediateLoading>
 }
-@if(FetchedVideoPath != "")
-{
-    <Download downloadVideo="@PassVideoPath"></Download>
-}
+
 
 @code
 {
     string youtubeLink { get; set; }
     string FetchedVideoPath { get; set; } = "";
-    string PassVideoPath;
     bool Loading { get; set; }
+
+    private async Task DLvideo()
+    {
+        await JSinterOP.InvokeVoidAsync("downloadFileFromUrl", FetchedVideoPath);
+    }
 
     async void FetchVideo(string YTlink)
     {
         Loading = true;
         FetchedVideoPath = await CreatorService.FetchVideo(YTlink, settings);
         Loading = false;
-        PassVideoPath = FetchedVideoPath;
         await InvokeAsync(StateHasChanged);
+
+        string videoname;
+        @if (!string.IsNullOrEmpty(FetchedVideoPath))
+        {
+            videoname = Path.GetFileName(FetchedVideoPath);
+        }
+        else
+        {
+            videoname = Path.GetFileName(settings.PathToVideo);
+        }
+        if (FetchedVideoPath is not null)
+        {
+            if (!File.Exists($"wwwroot/{videoname}"))
+            {
+                File.Copy($"{settings.YTDLOutPutDir}/{videoname}", $"wwwroot/{videoname}");
+            }
+            FetchedVideoPath = Path.GetFileName($"wwwwroot/{videoname}");
+        }
     }
 }
