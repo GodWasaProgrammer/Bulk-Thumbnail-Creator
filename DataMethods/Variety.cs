@@ -55,7 +55,7 @@ internal static class Variety
 
     public static void Random(PictureData pictureInputData)
     {
-        const int NumberOfRandomsToProduce = 15;
+        const int NumberOfRandomsToProduce = 5;
 
         for (var currentIndex = 0; currentIndex < NumberOfRandomsToProduce; currentIndex++)
         {

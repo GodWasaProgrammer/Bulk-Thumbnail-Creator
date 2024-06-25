@@ -142,7 +142,6 @@ public static partial class Creator
             {
                 Variety.Random(settings.PictureDatas[i]);
                 Variety.Meme(settings.PictureDatas[i]);
-                ColorData.SelectedColors.Clear();
             }
             #endregion
 

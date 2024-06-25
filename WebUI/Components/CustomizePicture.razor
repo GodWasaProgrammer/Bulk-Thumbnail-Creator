@@ -17,14 +17,14 @@
             </MudItem>
             <MudItem xs="12" sm="6">
                 <CustomizeBox ImageUrl="@ImageURL" CurrentPagePictureData="CurrentPagePictureData" OnCustomBoxHasProducedPicture="SetCustomPicture" @ref="customizeBoxRef" CurrentJob="CurrentJob"></CustomizeBox>
-            <div style="position:absolute;right:0; top:40px; transform: scale(0.8);">
-                <Download/>
-               </div>
+            
             </MudItem>
         </MudGrid>
     </MudPaper>
     <div style="margin-top: 20px;">
-
+        <div style="position:absolute;right:0; top:40px; transform: scale(0.8);">
+                <Download/>
+               </div>
         <div style="justify-content:center">
             <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Reset" Color="Color.Secondary" OnClick="JobService.ResetState">Restart</MudButton>
         </div>

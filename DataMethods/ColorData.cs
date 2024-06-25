@@ -9,21 +9,13 @@ public static class ColorData
 
     public static ParamForTextCreation SelectTwoRandomColors(ParamForTextCreation paramIn)
     {
-        MagickColor firstcolor;
-        MagickColor secondColor;
-
         var colorList = GetAllMagickColors();
 
-        if (SelectedColors.Count == 140 || SelectedColors.Count > 140)
-        {
-            SelectedColors.Clear();
-        }
-
-        firstcolor = new(colorList[s_random.Next(colorList.Count)]);
+        MagickColor firstcolor = new(colorList[s_random.Next(colorList.Count)]);
         SelectedColors.Add(firstcolor.ToString());
         paramIn.FillColor.SetByRGB((byte)firstcolor.R, (byte)firstcolor.G, (byte)firstcolor.B);
 
-        secondColor = new(colorList[s_random.Next(colorList.Count)]);
+        MagickColor secondColor = new(colorList[s_random.Next(colorList.Count)]);
         SelectedColors.Add(secondColor.ToString());
         paramIn.StrokeColor.SetByRGB((byte)secondColor.R, (byte)secondColor.G, (byte)secondColor.B);
 
@@ -32,21 +24,13 @@ public static class ColorData
 
     public static ParamForTextCreation SelectTwoDifferentColors(ParamForTextCreation paramIn)
     {
-        MagickColor firstcolor;
-        MagickColor secondColor;
-
         var colorList = GetAllMagickColors();
 
-        if (SelectedColors.Count == 140 || SelectedColors.Count > 140)
-        {
-            SelectedColors.Clear();
-        }
-
-        firstcolor = new(colorList[0]);
+        MagickColor firstcolor = new(colorList[0]);
         SelectedColors.Add(firstcolor.ToString());
         paramIn.FillColor.SetByRGB((byte)firstcolor.R, (byte)firstcolor.G, (byte)firstcolor.B);
 
-        secondColor = new(colorList[^1]);
+        MagickColor secondColor = new(colorList[^1]);
         SelectedColors.Add(secondColor.ToString());
         paramIn.StrokeColor.SetByRGB((byte)secondColor.R, (byte)secondColor.G, (byte)secondColor.B);
 
@@ -56,7 +40,6 @@ public static class ColorData
     private static List<string> GetAllMagickColors()
     {
         List<string> colorsList = [];
-
         var magickColorsType = typeof(MagickColors);
         var properties = magickColorsType.GetProperties(BindingFlags.Public | BindingFlags.Static);
 
@@ -70,6 +53,11 @@ public static class ColorData
         colorsList.Remove("None");
         colorsList.Remove("Transparent");
         colorsList.Remove("RebeccaPurple");
+
+        if (SelectedColors.Count is MAX_COLORS or > MAX_COLORS)
+        {
+            SelectedColors.Clear();
+        }
 
         foreach (var alreadyselectedcolor in SelectedColors)
         {
