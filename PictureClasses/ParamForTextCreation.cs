@@ -15,8 +15,14 @@ public class ParamForTextCreation
     public Box CurrentBox { get; set; } = new();
     public ParamForTextCreation(ParamForTextCreation param)
     {
-        Text = (string)param.Text.Clone(); // string
-        Font = (string)param.Font.Clone(); // string
+        if (Text is not null)
+        {
+            Text = (string)param.Text.Clone(); // string
+        }
+        if (Font is not null)
+        {
+            Font = (string)param.Font.Clone(); // string
+        }
         WidthOfBox = param.WidthOfBox; // int
         HeightOfBox = param.HeightOfBox; // int
         Meme = (string)param.Meme?.Clone(); // string

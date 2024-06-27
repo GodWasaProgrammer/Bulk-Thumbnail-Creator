@@ -12,14 +12,14 @@ public class ColorDataTests
         var paramIn = new ParamForTextCreation();
 
         // Act
-        var result = ColorData.SelectTwoRandomColors(paramIn);
+        ColorData.SelectTwoRandomColors(paramIn);
 
         // Assert
-        Assert.NotNull(result.FillColor);
-        Assert.NotNull(result.StrokeColor);
-        Assert.NotEqual(result.StrokeColor.Red, result.FillColor.Red);
-        Assert.NotEqual(result.StrokeColor.Green, result.FillColor.Green);
-        Assert.NotEqual(result.StrokeColor.Blue, result.FillColor.Blue);
+        Assert.NotNull(paramIn.FillColor);
+        Assert.NotNull(paramIn.StrokeColor);
+        Assert.NotEqual(paramIn.StrokeColor.Red, paramIn.FillColor.Red);
+        Assert.NotEqual(paramIn.StrokeColor.Green, paramIn.FillColor.Green);
+        Assert.NotEqual(paramIn.StrokeColor.Blue, paramIn.FillColor.Blue);
     }
 
     [Fact]
@@ -29,14 +29,14 @@ public class ColorDataTests
         var param = new ParamForTextCreation();
 
         // Act
-        var result = ColorData.SelectTwoDifferentColors(param);
+        ColorData.SelectTwoDifferentColors(param);
 
         // Assert
-        Assert.NotNull(result.FillColor);
-        Assert.NotNull(result.StrokeColor);
-        Assert.NotEqual(result.FillColor.Red, result.StrokeColor.Red);
-        Assert.NotEqual(result.FillColor.Green, result.StrokeColor.Green);
-        Assert.NotEqual(result.FillColor.Blue, result.StrokeColor.Blue);
+        Assert.NotNull(param.FillColor);
+        Assert.NotNull(param.StrokeColor);
+        Assert.NotEqual(param.FillColor.Red, param.StrokeColor.Red);
+        Assert.NotEqual(param.FillColor.Green, param.StrokeColor.Green);
+        Assert.NotEqual(param.FillColor.Blue, param.StrokeColor.Blue);
     }
 
     [Fact]

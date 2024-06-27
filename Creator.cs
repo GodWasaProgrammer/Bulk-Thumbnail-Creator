@@ -135,10 +135,12 @@ public static partial class Creator
             #endregion
 
             #region Variety Data Generation
+            var dirWrapper = new DirectoryWrapper();
+            var varietyInstance = new Variety(dirWrapper);
             //// Produce varietydata for the current object
             for (var i = 0; i < settings.PictureDatas.Count; i++)
             {
-                Variety.Random(settings.PictureDatas[i]);
+                varietyInstance.Random(settings.PictureDatas[i]);
                 Variety.Meme(settings.PictureDatas[i]);
             }
             #endregion

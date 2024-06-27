@@ -2,58 +2,16 @@
 
 namespace BulkThumbnailCreator;
 
-internal static class Variety
+public class Variety
 {
-    /// <summary>
-    /// Produces 5 varieties of the first randomized font that hasnt already been chosen
-    /// </summary>
-    /// <param name="pictureData">Your input PictureData object to produce varieties of</param>
-    public static void Font(PictureData pictureData)
+    private readonly IDirectoryWrapper _directoryWrapper;
+
+    public Variety(IDirectoryWrapper directoryWrapper)
     {
-        for (var box = 0; box < pictureData.BoxParameters.Count; box++)
-        {
-            if (pictureData.BoxParameters[box].CurrentBox.Type == BoxType.None)
-            {
-                break;
-            }
-            else
-            {
-                List<string> fontList = [pictureData.BoxParameters[box].Font];
-
-                const int FontsToPick = 5;
-
-                for (var i = 0; i < FontsToPick; i++)
-                {
-                    var directoryWrapper = new DirectoryWrapper();
-                    var dg = new DataGeneration(directoryWrapper);
-                    var pickedFont = dg.PickRandomFont();
-
-                    // if the list doesnt contain this font already, add it.
-                    if (!fontList.Contains(pickedFont))
-                    {
-                        fontList.Add(pickedFont);
-                    }
-                    else
-                    {
-                        i--;
-                    }
-                }
-                // variety selection finished, proceed to creating
-
-                foreach (var font in fontList)
-                {
-                    PictureData createFontVariety = new(pictureData);
-                    createFontVariety.Varieties.Clear();
-
-                    createFontVariety.BoxParameters[box].Font = font;
-                    createFontVariety.OutPutType = OutputType.FontVariety;
-                    pictureData.Varieties.Add(createFontVariety);
-                }
-            }
-        }
+        _directoryWrapper = directoryWrapper;
     }
 
-    public static void Random(PictureData pictureInputData)
+    public void Random(PictureData pictureInputData)
     {
         const int NumberOfRandomsToProduce = 5;
 
@@ -65,11 +23,9 @@ internal static class Variety
                 varietyData.Varieties.Clear();
                 ColorData.SelectTwoDifferentColors(varietyData.BoxParameters[currentBoxes]);
 
-                var directoryWrapper = new DirectoryWrapper();
-                var dg = new DataGeneration(directoryWrapper);
-                var font = dg.PickRandomFont();
+                var dg = new DataGeneration(_directoryWrapper);
                 varietyData.BoxParameters[currentBoxes].Gradient = DataGeneration.RandomGradient();
-                varietyData.BoxParameters[currentBoxes].Font = font;
+                varietyData.BoxParameters[currentBoxes].Font = dg.PickRandomFont();
                 varietyData.OutPutType = OutputType.RandomVariety;
                 pictureInputData.Varieties.Add(varietyData);
             }
