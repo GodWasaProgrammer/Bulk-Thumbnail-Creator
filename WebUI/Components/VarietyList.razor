@@ -6,32 +6,31 @@
 @inject Settings settings
 @inject AuthenticationStateProvider AuthProvider
 
-@if(!view)
+@if (!view)
 {
-    
-<div style="display: flex; justify-content: center;">
-<MudButton Variant="Variant.Filled" OnClick="GoBack" Color="Color.Secondary">Back</MudButton>
-</div>
-<MudDataGrid Items="@ListOfPicData">
-    <Columns>
-        <PropertyColumn Property="x => x.FileName" Title="">
-            <CellTemplate>
-                <MudImage Width="100" Fit="Contain" Src="@MatchUrl(context.Item.FileName)"></MudImage>
-            </CellTemplate>
-        </PropertyColumn>
-        <PropertyColumn Property="x => x.OutPutType" Title="Type" />
-        <PropertyColumn Property=@( x => Path.GetFileNameWithoutExtension(x.FileName))/>
-        <PropertyColumn Property="x => x.BoxParameters.Count" Title="Parameters"> 
-            <CellTemplate>
-                <MudButton OnClick="() => ViewParameters(context.Item, context.Item.FileName)" Variant="Variant.Filled" Color="Color.Tertiary">View</MudButton>
-            </CellTemplate>
-        </PropertyColumn>
+    <div style="display: flex; justify-content: center;">
+        <MudButton Variant="Variant.Filled" OnClick="GoBack" Color="Color.Secondary">Back</MudButton>
+    </div>
+    <MudDataGrid Items="@ListOfPicData">
+        <Columns>
+            <PropertyColumn Property="x => x.FileName" Title="">
+                <CellTemplate>
+                    <MudImage Width="100" Fit="Contain" Src="@MatchUrl(context.Item.FileName)"></MudImage>
+                </CellTemplate>
+            </PropertyColumn>
+            <PropertyColumn Property="x => x.OutPutType" Title="Type" />
+            <PropertyColumn Property=@( x => Path.GetFileNameWithoutExtension(x.FileName)) />
+            <PropertyColumn Property="x => x.BoxParameters.Count" Title="Parameters">
+                <CellTemplate>
+                    <MudButton OnClick="() => ViewParameters(context.Item, context.Item.FileName)" Variant="Variant.Filled" Color="Color.Tertiary">View</MudButton>
+                </CellTemplate>
+            </PropertyColumn>
 
-    </Columns>
-</MudDataGrid>
-<div style="display: flex; justify-content: center;">
-<MudButton Variant="Variant.Filled" ButtonType="ButtonType.Reset"   OnClick="GoBack" Color="Color.Secondary">Back</MudButton>
-</div>
+        </Columns>
+    </MudDataGrid>
+    <div style="display: flex; justify-content: center;">
+        <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Reset" OnClick="GoBack" Color="Color.Secondary">Back</MudButton>
+    </div>
 }
 @if (viewParameter)
 {
@@ -67,7 +66,7 @@
         return null;
     }
 
-    
+
     public void CloseParameters()
     {
         view = false;

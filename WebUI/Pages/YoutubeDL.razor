@@ -1,6 +1,7 @@
 ﻿@page "/Youtube Downloader"
 @using BulkThumbnailCreator.Services
 @using BulkThumbnailCreator
+@using System.Text.RegularExpressions
 @using WebUI.Components
 @inject CreatorService CreatorService
 @inject Settings settings
@@ -15,10 +16,10 @@
         </MudAlert>
         <MudTextField AdornmentColor="Color.Success" Label="Youtube Link" Variant="Variant.Outlined" @bind-Value="youtubeLink" />
         <MudButton OnClick="(() => FetchVideo(youtubeLink))" ButtonType="ButtonType.Submit" Color="Color.Success" Variant="Variant.Filled">Fetch Video</MudButton>
-    @if (FetchedVideoPath != "")
-    {
-        <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.Download" OnClick="DLvideo">Download Video</MudButton>
-    }
+        @if (FetchedVideoPath != "")
+        {
+            <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.Download" OnClick="DLvideo">Download Video</MudButton>
+        }
     </MudContainer>
 }
 else
@@ -26,6 +27,11 @@ else
     <IntermediateLoading>
 
     </IntermediateLoading>
+}
+@if (linkValid is not true)
+{
+    <MudAlert Severity="Severity.Error" Color="Color.Primary">Whoa buddy, you trying to trick me? You need to give me an actual YoutubeLink.</MudAlert>
+    <MudImage Width="500" Height="500" Src="/images/MemeTrickery.jpeg"></MudImage>
 }
 
 
@@ -40,29 +46,59 @@ else
         await JSinterOP.InvokeVoidAsync("downloadFileFromUrl", FetchedVideoPath);
     }
 
+    bool linkValid = true;
+    /// <summary>
+    /// Regex validation for youtube links
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
+    bool ValidateYTLink(string url)
+    {
+        if (url == null)
+        {
+            return false;
+        }
+
+        // YouTube video URL pattern
+        string pattern = @"^(https?://)?(www\.)?(youtube\.com/watch\?v=|youtu\.be/)([a-zA-Z0-9_-]{11})";
+
+        // Create a Regex object
+        Regex regex = new Regex(pattern);
+
+        // Match the input URL against the pattern
+        Match match = regex.Match(url);
+
+        // Check if the match is successful
+        return match.Success;
+    }
+
+
     async void FetchVideo(string YTlink)
     {
-        Loading = true;
-        FetchedVideoPath = await CreatorService.FetchVideo(YTlink, settings);
-        Loading = false;
-        await InvokeAsync(StateHasChanged);
-
-        string videoname;
-        @if (!string.IsNullOrEmpty(FetchedVideoPath))
+        linkValid = ValidateYTLink(YTlink);
+        if (linkValid)
         {
-            videoname = Path.GetFileName(FetchedVideoPath);
-        }
-        else
-        {
-            videoname = Path.GetFileName(settings.PathToVideo);
-        }
-        if (FetchedVideoPath is not null)
-        {
-            if (!File.Exists($"wwwroot/{videoname}"))
+            Loading = true;
+            FetchedVideoPath = await CreatorService.FetchVideo(YTlink, settings);
+            Loading = false;
+            string videoname;
+            @if (!string.IsNullOrEmpty(FetchedVideoPath))
             {
-                File.Copy($"{settings.YTDLOutPutDir}/{videoname}", $"wwwroot/{videoname}");
+                videoname = Path.GetFileName(FetchedVideoPath);
             }
-            FetchedVideoPath = Path.GetFileName($"wwwwroot/{videoname}");
+            else
+            {
+                videoname = Path.GetFileName(settings.PathToVideo);
+            }
+            if (FetchedVideoPath is not null)
+            {
+                if (!File.Exists($"wwwroot/{videoname}"))
+                {
+                    File.Copy($"{settings.YTDLOutPutDir}/{videoname}", $"wwwroot/{videoname}");
+                }
+                FetchedVideoPath = Path.GetFileName($"wwwwroot/{videoname}");
+            }
         }
+        await InvokeAsync(StateHasChanged);
     }
 }
