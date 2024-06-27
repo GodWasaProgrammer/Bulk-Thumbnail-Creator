@@ -6,6 +6,9 @@
 @inject Settings settings
 @inject AuthenticationStateProvider AuthProvider
 
+@if(!view)
+{
+    
 <div style="display: flex; justify-content: center;">
 <MudButton Variant="Variant.Filled" OnClick="GoBack" Color="Color.Secondary">Back</MudButton>
 </div>
@@ -20,7 +23,7 @@
         <PropertyColumn Property=@( x => Path.GetFileNameWithoutExtension(x.FileName))/>
         <PropertyColumn Property="x => x.BoxParameters.Count" Title="Parameters"> 
             <CellTemplate>
-                <MudButton Variant="Variant.Filled" Color="Color.Tertiary">View</MudButton>
+                <MudButton OnClick="() => ViewParameters(context.Item, context.Item.FileName)" Variant="Variant.Filled" Color="Color.Tertiary">View</MudButton>
             </CellTemplate>
         </PropertyColumn>
 
@@ -29,12 +32,19 @@
 <div style="display: flex; justify-content: center;">
 <MudButton Variant="Variant.Filled" ButtonType="ButtonType.Reset"   OnClick="GoBack" Color="Color.Secondary">Back</MudButton>
 </div>
+}
+@if (viewParameter)
+{
+    <PictureDataBox ImageURL="@urlPass" PicData="picDataPass" GoBack="CloseParameters"></PictureDataBox>
+}
 @code
 {
     [Parameter]
     public int indexOfPicData { get; set; }
     [Parameter]
     public Action GoBack { get; set; }
+
+    bool view;
 
     public Job currentJob;
     public string currentUser;
@@ -55,6 +65,26 @@
             }
         }
         return null;
+    }
+
+    
+    public void CloseParameters()
+    {
+        view = false;
+        viewParameter = false;
+    }
+
+    PictureData picDataPass;
+    string urlPass;
+    bool viewParameter;
+    public void ViewParameters(PictureData p, string url)
+    {
+        view = true;
+        this.urlPass = MatchUrl(url);
+        picDataPass = p;
+        if (!viewParameter)
+        { viewParameter = true; }
+        StateHasChanged();
     }
 
     public async void SetUrls()
