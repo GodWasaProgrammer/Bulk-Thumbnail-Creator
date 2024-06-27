@@ -11,29 +11,15 @@
 
 @if (processing)
 {
-    <MudPaper Elevation="2" Class="validation-message">
-        <MudTimeline TimelinePosition="TimelinePosition.Left">
-            @for (int i = LogEntries.TakeLast(takeEntries).Count() - 1; i >= 0; i--)
-            {
-                var entry = LogEntries.ElementAt(i);
-                <MudTimelineItem Icon="@Icons.Material.Filled.Article" Variant="Variant.Filled" Color="Color.Success">
-                    <div class="fit-container">
-                        <div class="fit-content">
-                            <MudAlert Severity="Severity.Success">@entry</MudAlert>
-                        </div>
-                        <div class="timestamp">
-                            <MudAlert Severity="Severity.Normal">@DateTime.Now</MudAlert>
-                        </div>
-                    </div>
-                </MudTimelineItem>
-            }
-        </MudTimeline>
-    </MudPaper>
+    @for (int i = LogEntries.TakeLast(takeEntries).Count() - 1; i >= 0; i--)
+    {
+        var entry = LogEntries.ElementAt(i);
+        <MudAlert Dense="true" Severity="Severity.Success">@entry</MudAlert>
+    }
 }
 
 @code
 {
-
     private bool IsInitialized { get; set; } = false;
 
     [Parameter]
@@ -115,26 +101,3 @@
         IsInitialized = true;
     }
 }
-<style>
-    .fit-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        padding: 25px;
-    }
-
-    .fit-content {
-        width: fit-content;
-        max-width: 100%;
-        text-align: center;
-        font-size: 1vw; /* Adjust the font size based on viewport width */
-    }
-
-    .timestamp {
-        margin-left: 10px;
-        font-size: 0.8vw; /* Adjust as needed */
-        color: gray; /* Adjust as needed */
-    }
-</style>
