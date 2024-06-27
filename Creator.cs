@@ -26,12 +26,10 @@ public static partial class Creator
             await Production.VerifyDirectoryAndExeIntegrity(settings);
 
             settings.PathToVideo = await Production.YouTubeDL(url, settings);
-            settings.OutputDir = "output";
 
             settings.OutputDir = settings.OutputDir + "/" + CleanPathRegEx().Replace(Path.GetFileNameWithoutExtension(settings.PathToVideo), "");
             Directory.CreateDirectory(settings.OutputDir);
 
-            settings.TextAddedDir = "TextAdded";
             settings.TextAddedDir = settings.TextAddedDir + "/" + CleanPathRegEx().Replace(Path.GetFileNameWithoutExtension(settings.PathToVideo), "");
             Directory.CreateDirectory(settings.TextAddedDir);
             Settings.DownloadedVideosList.Add(settings.PathToVideo);
@@ -117,8 +115,8 @@ public static partial class Creator
 
 
                     currentParameters.Boxes = DataGeneration.BuildDefaultBoxes(image);
-                    currentParameters = DataGeneration.GetTextPosition(currentParameters, faceRectangles, populatedBoxes);
-                    currentParameters = ColorData.SelectTwoRandomColors(currentParameters);
+                    DataGeneration.GetTextPosition(currentParameters, faceRectangles, populatedBoxes);
+                    ColorData.SelectTwoRandomColors(currentParameters);
                     currentParameters.Gradient = DataGeneration.RandomGradient();
 
                     var directoryWrapper = new DirectoryWrapper();

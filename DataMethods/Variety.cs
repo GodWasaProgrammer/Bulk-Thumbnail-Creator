@@ -63,7 +63,7 @@ internal static class Variety
             {
                 PictureData varietyData = new(pictureInputData);
                 varietyData.Varieties.Clear();
-                varietyData.BoxParameters[currentBoxes] = ColorData.SelectTwoDifferentColors(varietyData.BoxParameters[currentBoxes]);
+                ColorData.SelectTwoDifferentColors(varietyData.BoxParameters[currentBoxes]);
 
                 var directoryWrapper = new DirectoryWrapper();
                 var dg = new DataGeneration(directoryWrapper);

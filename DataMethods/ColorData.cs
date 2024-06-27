@@ -7,7 +7,7 @@ public static class ColorData
 
     public static List<string> SelectedColors { get; set; } = [];
 
-    public static ParamForTextCreation SelectTwoRandomColors(ParamForTextCreation paramIn)
+    public static void SelectTwoRandomColors(ParamForTextCreation paramIn)
     {
         var colorList = GetAllMagickColors();
 
@@ -18,11 +18,9 @@ public static class ColorData
         MagickColor secondColor = new(colorList[s_random.Next(colorList.Count)]);
         SelectedColors.Add(secondColor.ToString());
         paramIn.StrokeColor.SetByRGB((byte)secondColor.R, (byte)secondColor.G, (byte)secondColor.B);
-
-        return paramIn;
     }
 
-    public static ParamForTextCreation SelectTwoDifferentColors(ParamForTextCreation paramIn)
+    public static void SelectTwoDifferentColors(ParamForTextCreation paramIn)
     {
         var colorList = GetAllMagickColors();
 
@@ -33,8 +31,6 @@ public static class ColorData
         MagickColor secondColor = new(colorList[^1]);
         SelectedColors.Add(secondColor.ToString());
         paramIn.StrokeColor.SetByRGB((byte)secondColor.R, (byte)secondColor.G, (byte)secondColor.B);
-
-        return paramIn;
     }
 
     private static List<string> GetAllMagickColors()

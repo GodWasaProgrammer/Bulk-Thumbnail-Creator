@@ -24,7 +24,7 @@
             return fontNames[fontChosen];
         }
 
-        public static ParamForTextCreation GetTextPosition(ParamForTextCreation parameters, Rectangle[] faceRect, List<BoxType> populatedBoxes)
+        public static void GetTextPosition(ParamForTextCreation parameters, Rectangle[] faceRect, List<BoxType> populatedBoxes)
         {
             var defaultBoxes = parameters.Boxes;
             // boxes that we will pick from after calcs done
@@ -35,7 +35,7 @@
             // early exit if there are no free boxes left after intersecting with faces
             if (freeBoxes.Count == 0)
             {
-                return parameters;
+                return;
             }
 
             // excludes our populated boxes from the calculations
@@ -59,7 +59,6 @@
 
                 parameters.BoxesWithNoFaceIntersect = freeBoxes;
             }
-            return parameters;
         }
 
         public static void ExcludePopulatedBoxesIntersection(List<BoxType> populatedBoxes, List<Box> defaultBoxes, List<BoxType> freeBoxes)
