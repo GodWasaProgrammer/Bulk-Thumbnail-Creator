@@ -1,6 +1,4 @@
-﻿using BulkThumbnailCreator.Wrappers;
-
-namespace BulkThumbnailCreator;
+﻿namespace BulkThumbnailCreator;
 
 public class Variety
 {
@@ -17,18 +15,32 @@ public class Variety
 
         for (var currentIndex = 0; currentIndex < NumberOfRandomsToProduce; currentIndex++)
         {
-            for (var currentBoxes = 0; currentBoxes < pictureInputData._numberOfBoxes; currentBoxes++)
-            {
-                PictureData varietyData = new(pictureInputData);
-                varietyData.Varieties.Clear();
-                ColorData.SelectTwoDifferentColors(varietyData.BoxParameters[currentBoxes]);
+            // create a copy of the object to varietize
+            PictureData varietyData = new(pictureInputData);
 
+            // clear the objects list of varieties.
+            varietyData.Varieties.Clear();
+
+            // create the values for each box parameter
+            foreach (var boxparameter in varietyData.BoxParameters)
+            {
+                ColorData.SelectTwoRandomColors(boxparameter);
                 var dg = new DataGeneration(_directoryWrapper);
-                varietyData.BoxParameters[currentBoxes].Gradient = DataGeneration.RandomGradient();
-                varietyData.BoxParameters[currentBoxes].Font = dg.PickRandomFont();
+                boxparameter.Gradient = DataGeneration.RandomGradient();
+
+                var ExcludeFonts = new List<string>();
+                foreach (var liftfonts in varietyData.BoxParameters)
+                {
+                    ExcludeFonts.Add(liftfonts.Font);
+                }
+                do
+                {
+                    boxparameter.Font = dg.PickRandomFont();
+                } while (ExcludeFonts.Contains(boxparameter.Font));
+
                 varietyData.OutPutType = OutputType.RandomVariety;
-                pictureInputData.Varieties.Add(varietyData);
             }
+            pictureInputData.Varieties.Add(varietyData);
         }
     }
 

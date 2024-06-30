@@ -1,8 +1,7 @@
-﻿using BulkThumbnailCreator.Enums;
-using BulkThumbnailCreator.PictureClasses;
-using BulkThumbnailCreator;
-using Moq;
+﻿using BulkThumbnailCreator;
 using BulkThumbnailCreator.Interfaces;
+using BulkThumbnailCreator.PictureClasses;
+using Moq;
 
 namespace Tests.DataMethodsTests;
 
@@ -12,11 +11,11 @@ public class VarietyTests
     public void Variety_Tests()
     {
         // Arrange
-        var param1 = new ParamForTextCreation();
-        var param2 = new ParamForTextCreation();
+        var param1 = new ParamForTextCreation { Font = "font1.ttf", Text = "text1" };
+        var param2 = new ParamForTextCreation { Font = "font2.ttf", Text = "text2" };
         var mockDirectoryWrapper = new Mock<IDirectoryWrapper>();
         mockDirectoryWrapper.Setup(x => x.GetFiles(It.IsAny<string>(), It.IsAny<string>()))
-                            .Returns(new string[] { "font1.ttf", "font2.ttf", "font3.ttf" });
+                            .Returns(new string[] { "font1.ttf", "font2.ttf", "font3.ttf", "font4.ttf", "font5.ttf", "font6.ttf" });
         var varietyMocked = new Variety(mockDirectoryWrapper.Object);
         var picdata1 = new PictureData
         {
@@ -62,10 +61,6 @@ public class VarietyTests
         {
             varietyMocked.Random(pictureData);
         }
-
-        // make lists of all the objects we want to assert
-        var gradients = new List<bool>();
-
 
         // Assert
         foreach (var pictureData in pictureDatas)
