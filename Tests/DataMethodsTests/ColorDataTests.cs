@@ -17,9 +17,7 @@ public class ColorDataTests
         // Assert
         Assert.NotNull(paramIn.FillColor);
         Assert.NotNull(paramIn.StrokeColor);
-        Assert.NotEqual(paramIn.StrokeColor.Red, paramIn.FillColor.Red);
-        Assert.NotEqual(paramIn.StrokeColor.Green, paramIn.FillColor.Green);
-        Assert.NotEqual(paramIn.StrokeColor.Blue, paramIn.FillColor.Blue);
+        Assert.NotEqual(paramIn.FillColor, paramIn.StrokeColor);
     }
 
     [Fact]

@@ -66,7 +66,7 @@
             job.TextToPrint = listOfTextToPrint;
 
 
-            if (Settings.Mocking && Settings.MakeMocking)
+            if (job.Settings.Mocking && job.Settings.MakeMocking)
             {
                 job.PictureData = await Creator.MockProcess(ProductionType.FrontPagePictureLineUp, url, listOfTextToPrint, settings);
             }
@@ -108,7 +108,7 @@
             List<string> imageUrls = [];
             var url = string.Empty;
 
-            if (Settings.Mocking && Settings.MakeMocking)
+            if (job.Settings.Mocking && job.Settings.MakeMocking)
             {
                 job.PictureData = await Creator.MockProcess(ProductionType.VarietyList, url, job.TextToPrint, job.Settings, pictureData);
                 job.State = States.varietyList;
@@ -121,7 +121,7 @@
             }
 
             var liftMockFolder = "";
-            if (Settings.Mocking)
+            if (job.Settings.Mocking)
             {
                 var subdirs = Directory.GetDirectories(job.Settings.TextAddedDir);
                 foreach (var subdir in subdirs)
@@ -171,7 +171,7 @@
         {
             PictureData picData = new();
 
-            if (Settings.Mocking && Settings.MakeMocking)
+            if (job.Settings.Mocking && job.Settings.MakeMocking)
             {
                 var dirToMockPicture = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "TextAdded");
 
@@ -222,7 +222,7 @@
         {
             PictureData picData = new();
 
-            if (Settings.Mocking && Settings.MakeMocking)
+            if (job.Settings.Mocking && job.Settings.MakeMocking)
             {
                 // nonsense to just pick the first one
                 var jobdata = job.PictureData[0];

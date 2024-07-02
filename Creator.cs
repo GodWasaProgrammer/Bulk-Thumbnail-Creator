@@ -32,12 +32,12 @@ public static partial class Creator
 
             settings.TextAddedDir = settings.TextAddedDir + "/" + CleanPathRegEx().Replace(Path.GetFileNameWithoutExtension(settings.PathToVideo), "");
             Directory.CreateDirectory(settings.TextAddedDir);
-            Settings.DownloadedVideosList.Add(settings.PathToVideo);
+            settings.DownloadedVideosList.Add(settings.PathToVideo);
 
             // Adds To DownloadedVideosList if it is not already containing it,
-            if (!Settings.DownloadedVideosList.Contains(settings.PathToVideo))
+            if (!settings.DownloadedVideosList.Contains(settings.PathToVideo))
             {
-                Settings.DownloadedVideosList.Add(settings.PathToVideo);
+                settings.DownloadedVideosList.Add(settings.PathToVideo);
             }
 
             #region Run FfMpeg
@@ -57,7 +57,7 @@ public static partial class Creator
 
             #endregion
 
-            Settings.Memes = Directory.GetFiles(Settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
+            settings.Memes = Directory.GetFiles(settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
 
             #region Face Detection
 
@@ -136,12 +136,12 @@ public static partial class Creator
 
             #region Variety Data Generation
             var dirWrapper = new DirectoryWrapper();
-            var varietyInstance = new Variety(dirWrapper);
+            var varietyInstance = new Variety(dirWrapper, settings);
             //// Produce varietydata for the current object
             for (var i = 0; i < settings.PictureDatas.Count; i++)
             {
                 varietyInstance.Random(settings.PictureDatas[i]);
-                Variety.Meme(settings.PictureDatas[i]);
+                varietyInstance.Meme(settings.PictureDatas[i]);
             }
             #endregion
 
@@ -185,7 +185,7 @@ public static partial class Creator
             #endregion
 
             #region Front Page Picture Line Up Mocking
-            if (Mocking.BTCRunCount != 1 && Settings.MakeMocking)
+            if (Mocking.BTCRunCount != 1 && settings.MakeMocking)
             {
                 // ffmpeg has finished, lets copy our mock data
                 Mocking.CopyOutPutDir(settings);
@@ -230,7 +230,7 @@ public static partial class Creator
                 await Task.WhenAll(productionVarietyTaskList);
             }
 
-            if (Mocking.BTCRunCount != 1 && Settings.MakeMocking)
+            if (Mocking.BTCRunCount != 1 && settings.MakeMocking)
             {
                 await Mocking.CopyVarietyDir(settings);
             }
@@ -255,7 +255,7 @@ public static partial class Creator
 
         #region Picdata serialization & Mock Setup
 
-        if (Mocking.BTCRunCount != 1 && Settings.MakeMocking)
+        if (Mocking.BTCRunCount != 1 && settings.MakeMocking)
         {
             Mocking.SerializePicData(settings);
             Mocking.CopyTextAddedDir(settings);

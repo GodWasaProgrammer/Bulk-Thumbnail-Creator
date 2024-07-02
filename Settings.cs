@@ -1,26 +1,23 @@
-﻿// Ignore Spelling: Ffmpeg Meme Memes Datas
+﻿namespace BulkThumbnailCreator;
 
-namespace BulkThumbnailCreator
+public class Settings(ILogService logger, JobService jobService) : ISettings
 {
-    public class Settings(ILogService logger, JobService jobService)
-    {
-        public static bool Mocking { get; set; } = false;
-        public static bool MakeMocking { get; set; } = false;
-        public ILogService LogService { get; set; } = logger;
-        public JobService JobService { get; set; } = jobService;
-        public string OutputDir { get; set; } = "output";
-        public string TextAddedDir { get; set; } = "TextAdded";
-        public string YTDLPDir { get; set; }
-        public string YTDLOutPutDir { get; set; } = "YTDL";
-        public string FfmpegDir { get; set; }
-        public string[] Files { get; set; }
-        public static string DankMemeStashDir { get; set; } = "DankMemeStash";
-        public static string[] Memes { get; set; }
-        public List<PictureData> PictureDatas { get; set; } = [];
-        private const int MaxRGB = 256;
-        public static int RGBMax { get { return MaxRGB; } }
-        public List<string> ListOfText { get; set; } = [];
-        public string PathToVideo { get; set; }
-        public static List<string> DownloadedVideosList { get; set; } = [];
-    }
+    public bool Mocking { get; set; } = false;
+    public bool MakeMocking { get; set; } = false;
+    public ILogService LogService { get; set; } = logger;
+    public JobService JobService { get; set; } = jobService;
+    public string OutputDir { get; set; } = "output";
+    public string TextAddedDir { get; set; } = "TextAdded";
+    public string YTDLPDir { get; set; }
+    public string YTDLOutPutDir { get; set; } = "YTDL";
+    public string FfmpegDir { get; set; }
+    public string[] Files { get; set; }
+    public string DankMemeStashDir { get; set; } = "DankMemeStash";
+    public string[] Memes { get; set; }
+    public List<PictureData> PictureDatas { get; set; } = [];
+    private const int MaxRGB = 256;
+    public int RGBMax { get { return MaxRGB; } }
+    public List<string> ListOfText { get; set; } = [];
+    public string PathToVideo { get; set; }
+    public List<string> DownloadedVideosList { get; set; } = [];
 }

@@ -3,10 +3,12 @@
 public class Variety
 {
     private readonly IDirectoryWrapper _directoryWrapper;
+    private readonly ISettings _isettings;
 
-    public Variety(IDirectoryWrapper directoryWrapper)
+    public Variety(IDirectoryWrapper directoryWrapper, ISettings settings)
     {
         _directoryWrapper = directoryWrapper;
+        _isettings = settings;
     }
 
     public void Random(PictureData pictureInputData)
@@ -44,7 +46,7 @@ public class Variety
         }
     }
 
-    public static void Meme(PictureData pictureData)
+    public void Meme(PictureData pictureData)
     {
         // call the copy ctor on the picdata object
         PictureData copiedData = new(pictureData);
@@ -74,32 +76,20 @@ public class Variety
                 // if we have looped and already made a meme, we need to make sure the text box
                 // also gets passed
 
-                if (copiedData.OutPutType == OutputType.MemeVariety)
-                {
-                    // dont modify object
-                    // dont write any data to lists
-                    // break out of loop
-                    // this should ensure that we only make one meme per picture
-                    // and that we dont end up with a meme and no text box
-                }
-                else
+                if (copiedData.OutPutType is not OutputType.MemeVariety)
                 {
                     // pick a meme
                     Random pickRandomMeme = new();
-                    var pickedMeme = pickRandomMeme.Next(Settings.Memes.Length);
+                    var pickedMeme = pickRandomMeme.Next(_isettings.Memes.Length);
 
                     // write our chosen meme to Meme property
-                    copiedData.BoxParameters[i].Meme = Settings.Memes[pickedMeme];
+                    copiedData.BoxParameters[i].Meme = _isettings.Memes[pickedMeme];
                     copiedData.OutPutType = OutputType.MemeVariety;
                 }
             }
         }
-        else
-        {
-            // do not modify picdata object
-            // do not write any data to lists
-            // break out of loop
-        }
+        // do not modify picdata object
+        // do not write any data to lists
 
         // add the copied data to the list of varieties if all is successful
         pictureData.Varieties.Add(copiedData);
