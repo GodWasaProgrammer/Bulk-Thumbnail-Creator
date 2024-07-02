@@ -15,6 +15,7 @@ public static class ColorData
         SelectedColors.Add(firstcolor.ToString());
         paramIn.FillColor.SetByRGB((byte)firstcolor.R, (byte)firstcolor.G, (byte)firstcolor.B);
 
+        colorList = GetAllMagickColors();
         MagickColor secondColor = new(colorList[s_random.Next(colorList.Count)]);
         SelectedColors.Add(secondColor.ToString());
         paramIn.StrokeColor.SetByRGB((byte)secondColor.R, (byte)secondColor.G, (byte)secondColor.B);

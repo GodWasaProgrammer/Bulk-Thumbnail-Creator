@@ -30,8 +30,8 @@ public class DataGenerationTests
     {
         // Arrange
         const int iterations = 10000;
-        int trueCount = 0;
-        int falseCount = 0;
+        var trueCount = 0;
+        var falseCount = 0;
 
         // Act
         for (var i = 0; i < iterations; i++)

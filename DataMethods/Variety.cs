@@ -28,15 +28,15 @@ public class Variety
                 var dg = new DataGeneration(_directoryWrapper);
                 boxparameter.Gradient = DataGeneration.RandomGradient();
 
-                var ExcludeFonts = new List<string>();
+                var excludeFonts = new List<string>();
                 foreach (var liftfonts in varietyData.BoxParameters)
                 {
-                    ExcludeFonts.Add(liftfonts.Font);
+                    excludeFonts.Add(liftfonts.Font);
                 }
                 do
                 {
                     boxparameter.Font = dg.PickRandomFont();
-                } while (ExcludeFonts.Contains(boxparameter.Font));
+                } while (excludeFonts.Contains(boxparameter.Font));
 
                 varietyData.OutPutType = OutputType.RandomVariety;
             }

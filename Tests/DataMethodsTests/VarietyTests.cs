@@ -13,6 +13,7 @@ public class VarietyTests
         // Arrange
         var param1 = new ParamForTextCreation { Font = "font1.ttf", Text = "text1" };
         var param2 = new ParamForTextCreation { Font = "font2.ttf", Text = "text2" };
+
         var mockDirectoryWrapper = new Mock<IDirectoryWrapper>();
         mockDirectoryWrapper.Setup(x => x.GetFiles(It.IsAny<string>(), It.IsAny<string>()))
                             .Returns(new string[] { "font1.ttf", "font2.ttf", "font3.ttf", "font4.ttf", "font5.ttf", "font6.ttf" });
@@ -75,6 +76,7 @@ public class VarietyTests
                 Assert.NotNull(pickedFonts[0]);
                 Assert.NotNull(pickedFonts[1]);
                 Assert.NotEqual(pickedFonts[0], pickedFonts[1]);
+                Assert.NotEqual(pickedFonts[2], pickedFonts[3]);
             }
         }
     }
