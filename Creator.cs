@@ -270,8 +270,8 @@ public static partial class Creator
         }
 
         return settings.PictureDatas;
+        #endregion
     }
-    #endregion
     /// <summary>
     /// Mocking version of Process for debugging and testing
     /// <param name="productionType"></param>

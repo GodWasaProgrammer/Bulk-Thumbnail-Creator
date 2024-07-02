@@ -1,6 +1,7 @@
 ﻿using BulkThumbnailCreator;
 using BulkThumbnailCreator.Interfaces;
 using BulkThumbnailCreator.PictureClasses;
+using BulkThumbnailCreator.Enums;
 using Moq;
 
 namespace Tests.DataMethodsTests;
@@ -76,8 +77,10 @@ public class VarietyTests
                 Assert.NotNull(pickedFonts[0]);
                 Assert.NotNull(pickedFonts[1]);
                 Assert.NotEqual(pickedFonts[0], pickedFonts[1]);
-                Assert.NotEqual(pickedFonts[2], pickedFonts[3]);
+                Assert.True(variety.OutPutType is OutputType.RandomVariety);
             }
+            Assert.NotNull(pictureData.Varieties);
+            Assert.Equal(5, pictureData.Varieties.Count);
         }
     }
 }
