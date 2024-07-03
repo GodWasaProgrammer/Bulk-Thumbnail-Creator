@@ -281,7 +281,7 @@ public static class Production
     /// <param name="pictureData"></param>
     /// <param name="settings"></param>
     /// <returns></returns>
-    private static async Task<MagickImage> CreateImage(PictureData pictureData, Settings settings)
+    public static async Task<MagickImage> CreateImage(PictureData pictureData, Settings settings)
     {
         MagickImage outputImage = new();
 
@@ -303,7 +303,7 @@ public static class Production
     /// <param name="pictureData">Source to create the name from</param>
     /// <param name="settings">Settings to build the correct directory structure</param>
     /// <returns></returns>
-    private static string BuildFileName(PictureData pictureData, Settings settings)
+    public static string BuildFileName(PictureData pictureData, Settings settings)
     {
         string imageName;
         var outputPath = Path.GetRelativePath(Environment.CurrentDirectory, settings.TextAddedDir);

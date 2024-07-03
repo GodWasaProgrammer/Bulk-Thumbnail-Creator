@@ -136,5 +136,7 @@ public class VarietyTests
         // and also make sure we have the newly generated memevariety in the varietylist
         Assert.Equal(OutputType.Main, pictureData.Varieties[0].OutPutType);
         Assert.Equal(OutputType.MemeVariety, pictureData.Varieties[1].OutPutType);
+
+        // make sure there is a null meme field in one of the boxes
     }
 }
