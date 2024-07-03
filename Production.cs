@@ -212,72 +212,8 @@ public static class Production
     /// <param name="pictureData">PictureDataObject Containing everything needed to create an image</param>
     public static async Task ProduceTextPictures(PictureData pictureData, Settings settings)
     {
-        string imageName;
-        var outputPath = Path.GetRelativePath(Environment.CurrentDirectory, settings.TextAddedDir);
-
-        imageName = Path.GetFileName(pictureData.FileName);
-        const string Varietyof = "//varietyof";
-
-        // if not main type, we will make a directory for files to be written in
-        if (pictureData.OutPutType != OutputType.Main)
-        {
-            Directory.CreateDirectory(outputPath + Varietyof + Path.GetFileName(pictureData.FileName));
-        }
-
-        if (pictureData.OutPutType == OutputType.Main)
-        {
-            var guid = Guid.NewGuid();
-            outputPath += "//" + guid + imageName;
-            pictureData.OutPath = outputPath;
-        }
-        if (pictureData.OutPutType == OutputType.BoxPositionVariety)
-        {
-            var guid = Guid.NewGuid();
-            outputPath += $"{Varietyof}{imageName}//{guid}.png";
-            pictureData.OutPath = outputPath;
-        }
-        if (pictureData.OutPutType == OutputType.SaturationVariety)
-        {
-            var guid = Guid.NewGuid();
-            outputPath += $"{Varietyof}{imageName}//{guid}.png";
-            pictureData.OutPath = outputPath;
-        }
-        if (pictureData.OutPutType == OutputType.FontVariety)
-        {
-            var guid = Guid.NewGuid();
-            outputPath += $"{Varietyof}{imageName}//{guid}.png";
-            pictureData.OutPath = outputPath;
-        }
-        if (pictureData.OutPutType == OutputType.RandomVariety)
-        {
-            var guid = Guid.NewGuid();
-            outputPath += $"{Varietyof}{imageName}//{guid}.png";
-            pictureData.OutPath = outputPath;
-        }
-        if (pictureData.OutPutType == OutputType.MemeVariety)
-        {
-            var guid = Guid.NewGuid();
-            outputPath += $"{Varietyof}{imageName}//{pictureData.OutPutType}{guid}{imageName}.png";
-            pictureData.OutPath = outputPath;
-        }
-        if (pictureData.OutPutType == OutputType.Custom)
-        {
-            var guid = Guid.NewGuid();
-            outputPath += $"{Varietyof}{imageName}//{guid}Custom of{imageName}";
-            pictureData.OutPath = outputPath;
-        }
-
-        MagickImage outputImage = new();
-
-        try
-        {
-            var fileBytes = await File.ReadAllBytesAsync(Path.GetFullPath(pictureData.FileName));
-            outputImage = new MagickImage(fileBytes);
-        }
-        catch (Exception ex)
-        {
-            await settings.LogService.LogError($"Error in reading image into ImageMagick: {ex.Message}");
-        }
+        var outputPath = BuildFileName(pictureData, settings);
+        var outputImage = await CreateImage(pictureData, settings);
 
         for (var box = 0; box < pictureData.BoxParameters.Count; box++)
         {
@@ -337,5 +273,93 @@ public static class Production
         // outputs the file to the provided path and name
         await Task.Run(() => outputImage.Write(outputPath));
         await settings.LogService.LogInformation($"File Created: {Path.GetFileName(outputPath)}");
+    }
+
+    /// <summary>
+    /// Creates our image object to read size
+    /// </summary>
+    /// <param name="pictureData"></param>
+    /// <param name="settings"></param>
+    /// <returns></returns>
+    private static async Task<MagickImage> CreateImage(PictureData pictureData, Settings settings)
+    {
+        MagickImage outputImage = new();
+
+        try
+        {
+            var fileBytes = await File.ReadAllBytesAsync(Path.GetFullPath(pictureData.FileName));
+            outputImage = new MagickImage(fileBytes);
+        }
+        catch (Exception ex)
+        {
+            await settings.LogService.LogError($"Error in reading image into ImageMagick: {ex.Message}");
+        }
+
+        return outputImage;
+    }
+    /// <summary>
+    /// Builds our filenames for ProduceTextPictures
+    /// </summary>
+    /// <param name="pictureData">Source to create the name from</param>
+    /// <param name="settings">Settings to build the correct directory structure</param>
+    /// <returns></returns>
+    private static string BuildFileName(PictureData pictureData, Settings settings)
+    {
+        string imageName;
+        var outputPath = Path.GetRelativePath(Environment.CurrentDirectory, settings.TextAddedDir);
+
+        imageName = Path.GetFileName(pictureData.FileName);
+        const string Varietyof = "//varietyof";
+
+        // if not main type, we will make a directory for files to be written in
+        if (pictureData.OutPutType != OutputType.Main)
+        {
+            Directory.CreateDirectory(outputPath + Varietyof + Path.GetFileName(pictureData.FileName));
+        }
+
+        if (pictureData.OutPutType == OutputType.Main)
+        {
+            var guid = Guid.NewGuid();
+            outputPath += "//" + guid + imageName;
+            pictureData.OutPath = outputPath;
+        }
+        if (pictureData.OutPutType == OutputType.BoxPositionVariety)
+        {
+            var guid = Guid.NewGuid();
+            outputPath += $"{Varietyof}{imageName}//{guid}.png";
+            pictureData.OutPath = outputPath;
+        }
+        if (pictureData.OutPutType == OutputType.SaturationVariety)
+        {
+            var guid = Guid.NewGuid();
+            outputPath += $"{Varietyof}{imageName}//{guid}.png";
+            pictureData.OutPath = outputPath;
+        }
+        if (pictureData.OutPutType == OutputType.FontVariety)
+        {
+            var guid = Guid.NewGuid();
+            outputPath += $"{Varietyof}{imageName}//{guid}.png";
+            pictureData.OutPath = outputPath;
+        }
+        if (pictureData.OutPutType == OutputType.RandomVariety)
+        {
+            var guid = Guid.NewGuid();
+            outputPath += $"{Varietyof}{imageName}//{guid}.png";
+            pictureData.OutPath = outputPath;
+        }
+        if (pictureData.OutPutType == OutputType.MemeVariety)
+        {
+            var guid = Guid.NewGuid();
+            outputPath += $"{Varietyof}{imageName}//{pictureData.OutPutType}{guid}{imageName}.png";
+            pictureData.OutPath = outputPath;
+        }
+        if (pictureData.OutPutType == OutputType.Custom)
+        {
+            var guid = Guid.NewGuid();
+            outputPath += $"{Varietyof}{imageName}//{guid}Custom of{imageName}";
+            pictureData.OutPath = outputPath;
+        }
+
+        return outputPath;
     }
 }
