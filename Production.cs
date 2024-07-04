@@ -292,6 +292,7 @@ public static class Production
         }
         catch (Exception ex)
         {
+            outputImage = null;
             await settings.LogService.LogError($"Error in reading image into ImageMagick: {ex.Message}");
         }
 
