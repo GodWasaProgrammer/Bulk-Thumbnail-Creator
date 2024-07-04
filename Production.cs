@@ -323,24 +323,6 @@ public static class Production
             outputPath += "//" + guid + imageName;
             pictureData.OutPath = outputPath;
         }
-        if (pictureData.OutPutType == OutputType.BoxPositionVariety)
-        {
-            var guid = Guid.NewGuid();
-            outputPath += $"{Varietyof}{imageName}//{guid}.png";
-            pictureData.OutPath = outputPath;
-        }
-        if (pictureData.OutPutType == OutputType.SaturationVariety)
-        {
-            var guid = Guid.NewGuid();
-            outputPath += $"{Varietyof}{imageName}//{guid}.png";
-            pictureData.OutPath = outputPath;
-        }
-        if (pictureData.OutPutType == OutputType.FontVariety)
-        {
-            var guid = Guid.NewGuid();
-            outputPath += $"{Varietyof}{imageName}//{guid}.png";
-            pictureData.OutPath = outputPath;
-        }
         if (pictureData.OutPutType == OutputType.RandomVariety)
         {
             var guid = Guid.NewGuid();
