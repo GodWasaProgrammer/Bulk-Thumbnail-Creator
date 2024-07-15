@@ -1,8 +1,8 @@
 ﻿using BulkThumbnailCreator;
-using BulkThumbnailCreator.PictureClasses;
-using BulkThumbnailCreator.Services;
 using BulkThumbnailCreator.Enums;
 using BulkThumbnailCreator.Interfaces;
+using BulkThumbnailCreator.PictureClasses;
+using BulkThumbnailCreator.Services;
 using ImageMagick;
 using Moq;
 
@@ -57,7 +57,7 @@ public class ProductionTests
         var settings = new Settings(mockLogService.Object, jobService);
 
         // Act
-        var result = await Production.CreateImage(pictureData,settings);
+        var result = await Production.CreateImage(pictureData, settings);
 
         // Assert
         Assert.NotNull(result);
