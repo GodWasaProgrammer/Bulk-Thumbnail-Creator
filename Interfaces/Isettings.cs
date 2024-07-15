@@ -15,7 +15,6 @@ public interface ISettings
     string DankMemeStashDir { get; set; }
     string[] Memes { get; set; }
     List<PictureData> PictureDatas { get; set; }
-    int RGBMax { get; }
     List<string> ListOfText { get; set; }
     string PathToVideo { get; set; }
     List<string> DownloadedVideosList { get; set; }
