@@ -38,7 +38,13 @@
 
         public Task<Job> CreateJob(string videoUrl, string currentUser)
         {
+            if (currentUser is null)
+            {
+                var anonUser = Guid.NewGuid();
+                currentUser = anonUser.ToString();
+            }
             Job job = new(videoUrl, currentUser);
+
             // add the job the joblist
             UserStateService.AddJob(job);
             _currentJobHasChanged.Invoke();

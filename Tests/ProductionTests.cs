@@ -1,8 +1,8 @@
 ﻿using BulkThumbnailCreator;
-using BulkThumbnailCreator.PictureClasses;
-using BulkThumbnailCreator.Services;
 using BulkThumbnailCreator.Enums;
 using BulkThumbnailCreator.Interfaces;
+using BulkThumbnailCreator.PictureClasses;
+using BulkThumbnailCreator.Services;
 using ImageMagick;
 using Moq;
 
@@ -17,9 +17,56 @@ public class ProductionTests
     //}
 
     //[Fact]
-    //public void ProduceTextPictures_Test()
+    //public void ProduceTextPictures_Produce_Text_Image_Text()
     //{
-    //throw new NotImplementedException();
+    //    // Arrange
+    //    // First we set up our services
+    //    var logService = new Mock<ILogService>();
+    //    var logger = logService.Object;
+    //    var jobService = new JobService();
+
+    //    // We then set up our settings and parameters and dependencies
+    //    var settings = new Settings(logger, jobService);
+
+    //    // We dont mock this as we want to fetch some actual fonts
+    //    var dirWrapper = new DirectoryWrapper();
+
+    //    var dg = new DataGeneration(dirWrapper);
+    //    var picData = new PictureData();
+    //    picData.OutPutType = OutputType.Main;
+
+    //    // first we make an actual file to read into the memory
+    //    // for this we will utilize imagemagick
+    //    var imageMagickSettings = new MagickReadSettings
+    //    {
+    //        BackgroundColor = MagickColors.None,
+    //        Font = "Arial",
+    //        TextGravity = Gravity.Center,
+    //        Width = 800,
+    //        Height = 200,
+    //        FontPointsize = 72
+    //    };
+
+    //    var tempFilePath = "output_Unit_test.png";
+
+    //    using (var image = new MagickImage("label:Hello", imageMagickSettings))
+    //    {
+    //        image.Wave(PixelInterpolateMethod.Spline, 5, 100);
+    //        image.Write(tempFilePath);
+    //    }
+    //    picData.FileName = tempFilePath;
+
+    //    // we now have an actual picture, so we set up some parameters
+
+    //    var param1 = new ParamForTextCreation();
+    //    param1.Text = "param1";
+
+
+    //    param1.Boxes = DataGeneration.BuildDefaultBoxes();
+    //    var param2 = new ParamForTextCreation();
+
+    //    // Act
+    //    Production.ProduceTextPictures()
     //}
 
     [Fact]
@@ -57,7 +104,7 @@ public class ProductionTests
         var settings = new Settings(mockLogService.Object, jobService);
 
         // Act
-        var result = await Production.CreateImage(pictureData,settings);
+        var result = await Production.CreateImage(pictureData, settings);
 
         // Assert
         Assert.NotNull(result);

@@ -13,30 +13,20 @@
 @inject Settings settings;
 @inject AuthenticationStateProvider AuthProvider;
 
-<CascadingAuthenticationState>
 
-    <AuthorizeView>
+<div style="padding-top: 20px;">
+    <InputMenu job="CurrentJob"></InputMenu>
+</div>
 
-        <Authorized>
+<ImageDisplay CurrentJob="CurrentJob"></ImageDisplay>
 
-            <div style="padding-top: 20px;">
-                <InputMenu job="CurrentJob"></InputMenu>
-            </div>
+<div>
+    @if (Loading)
+    {
+        <IntermediateLoading />
+    }
+</div>
 
-            <ImageDisplay CurrentJob="CurrentJob"></ImageDisplay>
-
-            <div>
-                @if (Loading)
-                {
-                    <IntermediateLoading />
-                }
-            </div>
-
-        </Authorized>
-
-    </AuthorizeView>
-
-</CascadingAuthenticationState>
 
 @code
 {
