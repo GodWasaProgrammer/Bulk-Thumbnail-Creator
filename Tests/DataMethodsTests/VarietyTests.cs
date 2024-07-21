@@ -1,7 +1,7 @@
 ﻿using BulkThumbnailCreator;
+using BulkThumbnailCreator.Enums;
 using BulkThumbnailCreator.Interfaces;
 using BulkThumbnailCreator.PictureClasses;
-using BulkThumbnailCreator.Enums;
 using BulkThumbnailCreator.Services;
 using BulkThumbnailCreator.Wrappers;
 using Moq;

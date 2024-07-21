@@ -39,7 +39,7 @@ namespace BulkThumbnailCreator.Services
         {
             var fetchVarietyDirs = Directory.GetDirectories(settings.TextAddedDir);
 
-            
+
 
             // there should only be one varietydirectory
             foreach (var dir in fetchVarietyDirs)
