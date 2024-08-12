@@ -13,7 +13,7 @@
 @if (DisableMenu == false)
 {
     <MudContainer MaxWidth="MaxWidth.Small">
-        <MudPaper  Outlined="true" Elevation="15">
+        <MudPaper Outlined="true" Elevation="15">
 
             <MudAlert Icon="@Icons.Material.Filled.Article" Variant="Variant.Filled" Severity="Severity.Success">
                 Enter your text here, you should add multiple unique phrases/sentences.
@@ -35,7 +35,7 @@
             <form @onsubmit="OnKeyPress">
                 <div style="padding-top:20px;">
                     <MudTextField AdornmentColor="Color.Success" Label="Youtube Link" Variant="Variant.Outlined" @bind-Value="youtubeLink" />
-                    <MudButton OnClick="() => AwaitBTC()" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
+                    <MudButton OnClick="() => AwaitBTC(User)" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
                 </div>
             </form>
         </MudPaper>
@@ -51,6 +51,9 @@
 {
     [Parameter]
     public Job job { get; set; }
+
+    [Parameter]
+    public string User { get; set; }
 
     private string defaultText1 = "Good Ole Rambler try!";
     private string defaultText2 = "I've Taken Dunkirk! Onwards Men!";
@@ -84,7 +87,7 @@
     /// This is where we actually call the backend Bulk Thumbnail Creator
     /// </summary>
     /// <returns></returns>
-    private async Task AwaitBTC()
+    private async Task AwaitBTC(string User)
     {
         // validate that our input is not something else than a youtube link
         validURL = ValidateYTLink(youtubeLink);
@@ -102,11 +105,22 @@
         else
         {
             var UserInfo = AuthProvider.GetAuthenticationStateAsync();
-            var userID = UserInfo.Result.User.Identity.Name;
+            string userID = "";
+            if (UserInfo.Result.User.Identity.Name is not null)
+            {
+                userID = UserInfo.Result.User.Identity.Name;
+            }
 
             // // creates a job
-            job = await JS.CreateJob(youtubeLink, userID);
-            // JS.CurrentJob = job;
+            if (userID is not "")
+            {
+                job = await JS.CreateJob(youtubeLink, userID);
+            }
+            else
+            {
+                job = await JS.CreateJob(youtubeLink, User);
+            }
+
             List<string> defaultText = new() { defaultText1, defaultText2, defaultText3 };
 
             /// if we have text, we pass it to the backend
@@ -126,7 +140,7 @@
     async Task OnKeyPress()
     {
         // Enter key was pressed, trigger the button click
-        await AwaitBTC();
+        await AwaitBTC(User);
 
     }
 

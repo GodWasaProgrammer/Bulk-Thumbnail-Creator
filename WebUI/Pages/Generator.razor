@@ -15,7 +15,7 @@
 
 
 <div style="padding-top: 20px;">
-    <InputMenu job="CurrentJob"></InputMenu>
+    <InputMenu job="CurrentJob" User="@CurrentUser"></InputMenu>
 </div>
 
 <ImageDisplay CurrentJob="CurrentJob"></ImageDisplay>
@@ -76,6 +76,12 @@
     {
         var AuthState = await AuthProvider.GetAuthenticationStateAsync();
         CurrentUser = AuthState.User.Identity.Name;
+
+        if (CurrentUser is null)
+        {
+            var anonUser = Guid.NewGuid();
+            CurrentUser = anonUser.ToString();
+        }
 
         js.RegisterDelegateForJobChange(FetchChangedJob);
 

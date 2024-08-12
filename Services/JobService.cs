@@ -38,11 +38,6 @@
 
         public Task<Job> CreateJob(string videoUrl, string currentUser)
         {
-            if (currentUser is null)
-            {
-                var anonUser = Guid.NewGuid();
-                currentUser = anonUser.ToString();
-            }
             Job job = new(videoUrl, currentUser);
 
             // add the job the joblist
@@ -52,13 +47,5 @@
             // will return the job if it was created successfully, otherwise will return a null object
             return job != null ? Task.FromResult(job) : null;
         }
-
-        //public Job Reset()
-        //{
-        //    // reset the current job
-        //    CurrentJob = null;
-
-        //    return CurrentJob;
-        //}
     }
 }
