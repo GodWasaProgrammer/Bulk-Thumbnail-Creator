@@ -6,7 +6,7 @@
     <Nullable>disable</Nullable>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
-    <Platforms>AnyCPU;x64</Platforms>
+    <Platforms>x64</Platforms>
 	  <ImplicitUsing>enable</ImplicitUsing>
       <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
   </PropertyGroup>

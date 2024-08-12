@@ -5,7 +5,7 @@
         <RootNamespace>WebUI</RootNamespace>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Platforms>AnyCPU;x64</Platforms>
+        <Platforms>x64</Platforms>
         <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
       <UserSecretsId>a3e1d2c4-2ebe-4585-bcbb-822b26be72d0</UserSecretsId>
   </PropertyGroup>
