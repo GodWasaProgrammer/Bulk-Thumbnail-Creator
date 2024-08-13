@@ -4,8 +4,8 @@
 @inject IDialogService DialogService
 
         <MudColorPicker @bind-Value="SelectedColor" ColorPickerMode="ColorPickerMode.HSL" PickerVariant="PickerVariant.Static" DisableAlpha DisableModeSwitch />
-        <MudButton OnClick="ConfirmSelection">OK</MudButton>
-        <MudButton OnClick="CloseDialog">Cancel</MudButton>
+        <MudButton Color="Color.Success" OnClick="ConfirmSelection">OK</MudButton>
+        <MudButton Color="Color.Error" OnClick="CloseDialog">Cancel</MudButton>
 @code 
 {
     [CascadingParameter] private MudDialogInstance MudDialog { get; set; }

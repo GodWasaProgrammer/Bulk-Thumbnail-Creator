@@ -142,18 +142,17 @@
 
             </MudSelect>
         }
-
-        @if (CurrentPagePictureData != null)
-        {
-            @if (PickedBox != BoxType.None)
-            {
-                // find the box that we are editing
-                var param = _boxParameters.FirstOrDefault(p => p.CurrentBox.Type == PickedBox);
-                <ParamDisplay param="param"></ParamDisplay>
-                @* <Param_Modifier param="param"></Param_Modifier> *@
-            }
-        }
     </MudPaper>
+    @if (CurrentPagePictureData != null)
+    {
+        @if (PickedBox != BoxType.None)
+        {
+            // find the box that we are editing
+            var param = _boxParameters.FirstOrDefault(p => p.CurrentBox.Type == PickedBox);
+            @* <ParamDisplay param="param"></ParamDisplay> *@
+            <Param_Modifier param="param"></Param_Modifier>
+        }
+    }
     <MudButton Variant="Variant.Filled" Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">Produce</MudButton>
 }
 

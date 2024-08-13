@@ -23,7 +23,12 @@
                     <MudTd DataLabel="Meme">@Path.GetFileNameWithoutExtension(param.Meme)</MudTd>
                 }
                 <MudTd DataLabel="Text">@param.Text</MudTd>
-                <MudTd DataLabel="Font">@Path.GetFileNameWithoutExtension(param.Font)</MudTd>
+
+                <MudTd DataLabel="Font">
+                    <MudButton Style="color: white; width: 25px; height: 25px;" OnClick="() => OpenFontDialog(param.Font)">
+                        @Path.GetFileNameWithoutExtension(param.Font)
+                    </MudButton>
+                </MudTd>
                 <MudTd DataLabel="FillColor">
                     <MudButton OnClick="() => OpenColorDialog(param.FillColor)">
                         <div style="width: 20px; height: 20px; background-color: @HslToRgb(param.FillColor.Hue, param.FillColor.Saturation, param.FillColor.Luminance);"></div>
@@ -45,6 +50,20 @@
     public ParamForTextCreation param { get; set; }
     [Inject]
     IDialogService DialogService { get; set; }
+
+    private async Task OpenFontDialog(string font)
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var parameters = new DialogParameters { { "CurrentFont", $"{font}" } };
+        var dialog = DialogService.Show<FontDialog>("Select Font", parameters, options);
+        var result = await dialog.Result;
+
+        if(!result.Canceled)
+        {
+            param.Font = (string)result.Data;
+            StateHasChanged();
+        }
+    }
 
     private async Task OpenColorDialog(ColorItem Color)
     {
