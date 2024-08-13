@@ -11,6 +11,9 @@
         <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="GoBack">Back</MudButton>
     </div>
 }
+<div style="display: flex; justify-content: center;">
+    <MudButton OnClick="DisplayValues" Color="Color.Secondary" Variant="Variant.Outlined">Display Values</MudButton>
+</div>
 <MudPaper Elevation="6">
 
     <MudContainer>
@@ -22,15 +25,18 @@
                     <MudImage Fluid="true" Src="@ImageURL" />
                 </div>
             }
-
         </MudItem>
 
+
         <MudGrid>
-            @if (PicData != null)
+            @if (_displayValues)
             {
-                @foreach (ParamForTextCreation boxParam in PicData.BoxParameters)
+                @if (PicData != null)
                 {
-                    <ParamDisplay param="boxParam"></ParamDisplay>
+                    @foreach (ParamForTextCreation boxParam in PicData.BoxParameters)
+                    {
+                        <ParamDisplay param="boxParam"></ParamDisplay>
+                    }
                 }
             }
 
@@ -49,6 +55,13 @@
 
 @code
 {
+    private bool _displayValues;
+
+    void DisplayValues()
+    {
+        _displayValues = !_displayValues;
+    }
+
     [Parameter]
     public string ImageURL { get; set; }
 

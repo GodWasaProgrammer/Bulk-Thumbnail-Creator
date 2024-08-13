@@ -1,0 +1,44 @@
+﻿@namespace WebUI.Components
+
+@using MudBlazor.Utilities
+@inject IDialogService DialogService
+
+        <MudColorPicker @bind-Value="SelectedColor" ColorPickerMode="ColorPickerMode.HSL" PickerVariant="PickerVariant.Static" DisableAlpha DisableModeSwitch />
+        <MudButton OnClick="ConfirmSelection">OK</MudButton>
+        <MudButton OnClick="CloseDialog">Cancel</MudButton>
+@code 
+{
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
+    [Parameter]
+    public string InitialColor { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        // Initialize SelectedColor based on InitialColor
+        if (string.IsNullOrEmpty(InitialColor))
+        {
+            InitialColor = "#FFFFFF"; // Default color
+        }
+
+        SelectedColor = new MudColor(InitialColor);
+    }
+
+    private MudColor SelectedColor { get; set; } = new MudColor("#FFFFFF"); // Default color
+
+    private void CloseDialog()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void ConfirmSelection()
+    {
+        MudDialog.Close(DialogResult.Ok(SelectedColor));
+    }
+
+    private Task OpenDialogAsync()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+
+        return DialogService.ShowAsync<ColorDialog>("Color Picker", options);
+    }
+}
