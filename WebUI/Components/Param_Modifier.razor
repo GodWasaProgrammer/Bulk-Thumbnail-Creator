@@ -22,7 +22,9 @@
                 {
                     <MudTd DataLabel="Meme">@Path.GetFileNameWithoutExtension(param.Meme)</MudTd>
                 }
-                <MudTd DataLabel="Text">@param.Text</MudTd>
+                <MudButton OnClick="OpenTextDialog">
+                    <MudTd DataLabel="Text">@param.Text</MudTd>
+                </MudButton>
 
                 <MudTd DataLabel="Font">
                     <MudButton Style="color: white; width: 25px; height: 25px;" OnClick="() => OpenFontDialog(param.Font)">
@@ -58,9 +60,23 @@
         var dialog = DialogService.Show<FontDialog>("Select Font", parameters, options);
         var result = await dialog.Result;
 
-        if(!result.Canceled)
+        if (!result.Canceled)
         {
             param.Font = (string)result.Data;
+            StateHasChanged();
+        }
+    }
+
+    private async Task OpenTextDialog()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var parameters = new DialogParameters { { "CurrentText", param.Text } };
+        var dialog = DialogService.Show<TextDialog>("Select Text To Print",parameters, options);
+        var result = await dialog.Result;
+
+        if (!result.Canceled)
+        {
+            param.Text = (string)result.Data;
             StateHasChanged();
         }
     }
@@ -98,7 +114,7 @@
             {
                 param.FillColor.SetByHSL((float)selectedColor.H, (float)selectedColor.S, (float)selectedColor.L);
             }
-            if(Color == param.StrokeColor)
+            if (Color == param.StrokeColor)
             {
                 param.StrokeColor.SetByHSL((float)selectedColor.H, (float)selectedColor.S, (float)selectedColor.L);
             }
