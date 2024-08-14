@@ -1,0 +1,52 @@
+﻿@namespace WebUI.Components
+
+@using BulkThumbnailCreator.Enums
+@using BulkThumbnailCreator.PictureClasses
+@using MudBlazor.Utilities
+@inject IDialogService DialogService
+
+<MudImage Src="_pickedtext">Chosen meme</MudImage>
+
+<MudSelect Variant="Variant.Text" AdornmentColor="Color.Primary" Label="Select Box" @bind-Value="_pickedBox">
+    @foreach (var box in _boxes)
+    {
+        <MudSelectItem Value="@box.Type">@box.Type</MudSelectItem>
+    }
+</MudSelect>
+
+<MudButton Color="Color.Success" OnClick="ConfirmSelection">OK</MudButton>
+<MudButton Color="Color.Error" OnClick="CloseDialog">Cancel</MudButton>
+@code
+{
+    private List<Box> _boxes = new List<Box>();
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
+    [Parameter]
+    public PictureData picData { get; set; }
+
+    private BoxType _pickedBox;
+
+    protected override void OnParametersSet()
+    {
+        foreach(var param in picData.BoxParameters)
+        {
+            _boxes.Add(param.CurrentBox);
+        }
+    }
+
+    private void CloseDialog()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void ConfirmSelection()
+    {
+        MudDialog.Close(DialogResult.Ok(_pickedBox));
+    }
+
+    private Task OpenDialogAsync()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+
+        return DialogService.ShowAsync<ColorDialog>("Text Picker", options);
+    }
+}

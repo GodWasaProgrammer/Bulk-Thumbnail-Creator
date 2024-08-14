@@ -79,6 +79,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Content Update="Components\Dialogs\BoxPickDialog.razor">
+          <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        </Content>
         <Content Update="wwwroot\images\MemeTrickery.jpeg">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>

@@ -283,7 +283,7 @@ public static class Production
     /// <returns></returns>
     public static async Task<MagickImage> CreateImage(PictureData pictureData, Settings settings)
     {
-        MagickImage outputImage = new();
+        MagickImage outputImage;
 
         try
         {

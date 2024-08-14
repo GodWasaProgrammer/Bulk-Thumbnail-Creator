@@ -15,16 +15,6 @@
 @*First you will pick a box, this will default be the first box in the list *@
 @if (CurrentPagePictureData != null)
 {
-    <MudSelect AdornmentColor="Color.Primary" Label="Select an output box" @bind-Value="PickedBox">
-        @if (CurrentPagePictureData != null)
-        {
-            @foreach (var boxParam in _boxParameters)
-            {
-                <MudSelectItem Value="@boxParam.CurrentBox.Type"><MudText Color="Color.Secondary">@boxParam.CurrentBox.Type</MudText></MudSelectItem>
-            }
-        }
-    </MudSelect>
-
     @if (_overrideBoxes is not true)
     {
         <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="BuildOverrideBoxes">Override Boxes</MudButton>
@@ -40,121 +30,24 @@
         </MudSelect>
         <MudButton OnClick="OverWriteBox">Overwrite</MudButton>
     }
-
-    @*This allows you to swap to inserting a meme instead of text*@
-    <MudButton Variant="Variant.Filled" Color="Color.Success" @onclick="MemeSelected">@_memeOrText</MudButton>
 }
 
 @*This is our Text Customization options with Fonts,Colors, etc*@
-@if (PickedBox != BoxType.None)
-{
-    <MudPaper Class="mb-4">
-
-        @if (_meme == false)
-        {
-            <MudColorPicker PickerVariant="PickerVariant.Dialog" ColorPickerMode="ColorPickerMode.HSL" DisableAlpha DisableModeSwitch @bind-Value="_colorValue"></MudColorPicker>
-            @if (_noPickedColor)
-            {
-                <MudText>@_pickColor</MudText>
-            }
-            <MudSelect AdornmentColor="Color.Primary" Label="Select a Color to edit" @bind-Value="_pickedGroup">
-
-                @foreach (var color in _colorBoxes)
-                {
-                    <MudSelectItem Value="@color"><MudText Color="Color.Secondary">@color</MudText></MudSelectItem>
-                }
-
-            </MudSelect>
-
-            <div style="display:flex;">
-                @foreach (var boxparam in CurrentPagePictureData.BoxParameters)
-                {
-                    @if (boxparam.CurrentBox.Type == PickedBox)
-                    {
-
-                        if (boxparam.Gradient is true)
-                        {
-                            GradOrNo = "Yes";
-                            GradorNoColor = Color.Success;
-                            useGradient = "Disable Gradient";
-                            break;
-                        }
-                        else
-                        {
-                            GradOrNo = "No";
-                            GradorNoColor = Color.Warning;
-                            useGradient = "Enable Gradient";
-                            break;
-                        }
-                    }
-                }
-
-                <MudText Color="Color.Secondary">Gradient:</MudText>
-                <MudText Color="GradorNoColor">@GradOrNo</MudText>
-            </div>
-            <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="GradientToggle">@useGradient</MudButton>
-
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="() => SetLocalColorObjects(_pickedGroup)">Set Color</MudButton>
-
-            <MudSelect Variant="Variant.Text" AdornmentColor="Color.Primary" Label="Select a font" @bind-Value="PickedFont">
-
-                @foreach (var fontPath in AvailableFonts)
-                {
-                    var fontFileName = Path.GetFileNameWithoutExtension(fontPath);
-                    <MudSelectItem Value="@fontPath" Style="@(($"font-family: '{fontFileName}';"))"><MudText Color="Color.Secondary">@fontFileName</MudText></MudSelectItem>
-                }
-
-            </MudSelect>
-
-            <MudSelect AdornmentColor="Color.Primary" Label="Select text" @bind-Value="_pickedText">
-
-                @foreach (var text in _inputText)
-                {
-                    <MudSelectItem Value="@text"><MudText Color="Color.Secondary">@text</MudText></MudSelectItem>
-                }
-
-            </MudSelect>
-
-            @if (!_addText)
-            {
-                <MudButton Variant="Variant.Filled" OnClick="AddNewText" Color="Color.Primary">Add new text</MudButton>
-            }
-            @if (_addText)
-            {
-                <MudTextField Margin="Margin.Dense" Label="Add text here" Variant="Variant.Filled" @bind-Value="_textToAdd" />
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SaveText">Save</MudButton>
-
-                @if (_nullOrWhiteSpace)
-                {
-                    <MudText Color="Color.Secondary">Bruh. You forgot to enter your text.</MudText>
-                }
-            }
-        }
-        else
-        {
-            <MudSelect AdornmentColor="Color.Primary" Label="Select a meme" @bind-Value="_pickedMeme">
-
-                @foreach (var memePath in AvailableMemes)
-                {
-                    var memeFileName = Path.GetFileNameWithoutExtension(memePath);
-                    <MudSelectItem Value="@memePath"><MudText Color="Color.Secondary">@memeFileName</MudText></MudSelectItem>
-                }
-
-            </MudSelect>
-        }
-    </MudPaper>
     @if (CurrentPagePictureData != null)
     {
-        @if (PickedBox != BoxType.None)
+        <MudSelect AdornmentColor="Color.Primary" Label="Box To Edit" @bind-Value="PickedBox">
+
+        @foreach (var box in CurrentPagePictureData.BoxParameters)
         {
+            <MudSelectItem Value="@box.CurrentBox.Type">@box.CurrentBox.Type</MudSelectItem>
+        }
+
+        </MudSelect>
             // find the box that we are editing
             var param = _boxParameters.FirstOrDefault(p => p.CurrentBox.Type == PickedBox);
-            @* <ParamDisplay param="param"></ParamDisplay> *@
-            <Param_Modifier param="param"></Param_Modifier>
-        }
+            <ParamModifier pictureData="CurrentPagePictureData" param="param"></ParamModifier>
     }
     <MudButton Variant="Variant.Filled" Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">Produce</MudButton>
-}
 
 @code
 {
@@ -163,65 +56,11 @@
         CurrentPagePictureData = null;
         ImageUrl = null;
         PickedBox = BoxType.None;
-        PickedFont = null;
         _pickedText = null;
-        PicDataToCustomize = null;
         CurrentJob = null;
         _boxParameters = null;
         _inputText = null;
         StateHasChanged();
-    }
-
-    string useGradient { get; set; }
-    string GradOrNo { get; set; }
-    Color GradorNoColor { get; set; }
-
-    private void GradientToggle()
-    {
-        @foreach (var boxparam in _boxParameters)
-        {
-            @if (boxparam.CurrentBox.Type == PickedBox)
-            {
-                boxparam.Gradient = !boxparam.Gradient;
-
-                @if (boxparam.Gradient is true)
-                {
-                    GradOrNo = "Yes";
-                    GradorNoColor = Color.Success;
-                    useGradient = "Disable Gradient";
-                }
-                else
-                {
-                    GradOrNo = "No";
-                    GradorNoColor = Color.Warning;
-                    useGradient = "Use Gradient";
-                }
-                StateHasChanged();
-            }
-        }
-    }
-
-    private bool _nullOrWhiteSpace;
-    private void SaveText()
-    {
-        // verifies that the user doesn't try to add a null or whitespace string
-        _nullOrWhiteSpace = string.IsNullOrWhiteSpace(_textToAdd);
-
-        // if the list doesn't contain the entry and the entry is not null or whitespace, then add it
-        if (!_inputText.Contains(_textToAdd) && !_nullOrWhiteSpace)
-        {
-            _inputText.Add(_textToAdd);
-            // reset the add text bool
-            _addText = false;
-        }
-        StateHasChanged();
-    }
-
-    private bool _addText = false;
-    private string _textToAdd;
-    private void AddNewText()
-    {
-        _addText = !_addText;
     }
 
     /// <summary>
@@ -242,8 +81,7 @@
     public PictureData CurrentPagePictureData { get; set; }
 
     private string _pickedText;
-    // this is the separate PicData object being passed back in as you create a custom Picture, every production will be considered a new picture
-    public PictureData PicDataToCustomize = new();
+
     List<ParamForTextCreation> _boxParameters = new();
 
     // The PickedBox that we have chosen to edit
@@ -253,128 +91,12 @@
     private List<string> _inputText = new();
 
     /// <summary>
-    /// List of the fonts available on drive
-    /// </summary>
-    private List<string> AvailableFonts => Directory.GetFiles("Fonts", "*.TTF*").ToList();
-
-    private string _pickedFont;
-    /// <summary>
-    /// Our Font that has been selected for production
-    /// </summary>
-    public string PickedFont
-    {
-        get
-        {
-            var param = CurrentPagePictureData.BoxParameters.Find(x => x.CurrentBox.Type == PickedBox);
-            _pickedFont ??= param.Font;
-
-            return _pickedFont;
-        }
-        set => _pickedFont = value;
-    }
-
-    /// <summary>
     /// If this is true, then we are currently processing results with Bulk Thumbnail Creator
     /// </summary>
     private bool _processing = false;
 
-    /// Our picked meme
-    private string _pickedMeme;
-    private List<string> AvailableMemes => Directory.GetFiles("DankMemeStash").ToList();
-
     /// Bool to swap between meme and text and related fields
     private bool _meme = false;
-    private string _memeOrText = "Use Meme instead";
-
-    private void MemeSelected()
-    {
-        if (_meme)
-        {
-            _meme = false;
-            _memeOrText = "Use Meme instead";
-        }
-        else
-        {
-            _meme = true;
-            _memeOrText = "Use Text instead";
-        }
-    }
-
-    #region ColorLogic
-    /// <summary>
-    /// Finds the box that we are editing as you select a box from the dropdown menu
-    /// </summary>
-    private void BoxEdit()
-    {
-        var parameterToEdit = _boxParameters.Find(x => x.CurrentBox.Type == PickedBox);
-        if (parameterToEdit != null)
-        {
-            parameterToEdit.Font = PickedFont;
-
-            if (_pickedText != null)
-            {
-                parameterToEdit.Text = _pickedText;
-            }
-
-            if (_colorValue != null)
-            {
-                if (_pickedGroup == ColorGroup.FillColor)
-                {
-                    parameterToEdit.FillColor.SetByHSL((float)_colorValue.H, (float)_colorValue.S, (float)_colorValue.L);
-                }
-                if (_pickedGroup == ColorGroup.StrokeColor)
-                {
-                    parameterToEdit.StrokeColor.SetByHSL((float)_colorValue.H, (float)_colorValue.S, (float)_colorValue.L);
-                }
-            }
-            // colors are set
-        }
-    }
-
-    private bool _noPickedColor = false;
-    private string _pickColor;
-    /// <summary>
-    /// Logic to set the correlating colors of the color groups based on which you have selected
-    /// This however only sets the local color items, not the parameters
-    /// </summary>
-    /// <param name="clrGrp"></param>
-    private void SetLocalColorObjects(ColorGroup clrGrp)
-    {
-        BoxEdit();
-
-        if (_colorValue == null)
-        {
-            _noPickedColor = true;
-            _pickColor = "Use the Color picker to choose a color";
-            return;
-        }
-
-        _pickColor = string.Empty;
-        _noPickedColor = false;
-
-        StateHasChanged();
-    }
-
-    /// <summary>
-    /// our list of ColorGroup items
-    /// </summary>
-    private List<ColorGroup> _colorBoxes = Enum.GetValues(typeof(ColorGroup)).Cast<ColorGroup>().ToList();
-    private ColorGroup _pickedGroup;
-
-    /// <summary>
-    /// this is the color value being returned from the color picker
-    /// </summary>
-    private MudColor _colorValue;
-
-    /// <summary>
-    /// Selection enum for our color group
-    /// </summary>
-    private enum ColorGroup
-    {
-        FillColor,
-        StrokeColor
-    }
-    #endregion
 
     /// <summary>
     /// This calls the service which in turns calls BTC and produces a new picture
@@ -382,42 +104,33 @@
     /// </summary>
     public async void CreateCustomPicDataObject()
     {
-        // makes a copy of our current page picture data
-        PictureData picToCustomize = new(CurrentPagePictureData);
-
-        if (_meme)
+        if (CurrentPagePictureData.BoxParameters.Any(x => x.MemeBool))
         {
-            _boxParameters.Find(x => x.CurrentBox.Type == PickedBox).Meme = _pickedMeme;
-            picToCustomize.OutPutType = OutputType.MemeVariety;
+            CurrentPagePictureData.OutPutType = OutputType.MemeVariety;
         }
         else
         {
             _boxParameters.Find(x => x.CurrentBox.Type == PickedBox).Meme = null;
-            _boxParameters.Find(x => x.CurrentBox.Type == PickedBox).Font = PickedFont;
             if (_pickedText != null)
             {
                 _boxParameters.Find(x => x.CurrentBox.Type == PickedBox).Text = _pickedText;
             }
-            picToCustomize.OutPutType = OutputType.Custom;
+            CurrentPagePictureData.OutPutType = OutputType.Custom;
         }
 
-        // these are our edited boxes that we will write to the PictureData object
-        // The BoxParameters is the local edited box parameters
-        picToCustomize.BoxParameters = _boxParameters;
-
         // The actual Service call where the production happens
-        picToCustomize = await PicDataService.CreateCustomPicDataObject(picToCustomize, CurrentJob);
+        CurrentPagePictureData = await PicDataService.CreateCustomPicDataObject(CurrentPagePictureData, CurrentJob);
 
         // get relative path of the out path
         var currentDir = Directory.GetCurrentDirectory();
-        var imgUrlRelative = Path.GetRelativePath(currentDir, picToCustomize.OutPath);
+        var imgUrlRelative = Path.GetRelativePath(currentDir, CurrentPagePictureData.OutPath);
         var addBackSlash = "/" + imgUrlRelative;
         // ReSharper disable once IdentifierTypo
         var replacefrontslash = addBackSlash.Replace('\\', '/');
 
         ImageUrl = replacefrontslash;
         StateHasChanged();
-        OnCustomBoxHasProducedPicture?.Invoke(picToCustomize, ImageUrl);
+        OnCustomBoxHasProducedPicture?.Invoke(CurrentPagePictureData, ImageUrl);
     }
 
     protected override void OnInitialized()
@@ -440,7 +153,7 @@
         if (index != -1) // Check if the element was found
         {
             var ParamToReplace = _overrideBoxList.FindIndex(prop => prop.CurrentBox.Type == _pickedOverrideBox);
-            
+
             _boxParameters[index] = _overrideBoxList[ParamToReplace];
             PickedBox = _boxParameters[index].CurrentBox.Type;
         }
@@ -454,6 +167,7 @@
 
     private bool _overrideBoxes;
     List<ParamForTextCreation> _overrideBoxList = new();
+    
     public void BuildOverrideBoxes()
     {
         // build the list based of the first box parameter and then

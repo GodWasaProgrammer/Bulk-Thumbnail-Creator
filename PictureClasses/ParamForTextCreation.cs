@@ -3,6 +3,7 @@
 public class ParamForTextCreation
 {
     public string Meme { get; set; }
+    public bool MemeBool { get; set; }
     public string Text { get; set; }
     public string Font { get; set; }
     public bool Gradient { get; set; }

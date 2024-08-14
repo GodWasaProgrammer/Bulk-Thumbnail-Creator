@@ -1,0 +1,48 @@
+﻿@namespace WebUI.Components
+
+@using MudBlazor.Utilities
+@inject IDialogService DialogService
+
+<MudImage Src="_pickedtext">Chosen meme</MudImage>
+
+<MudSelect Variant="Variant.Text" AdornmentColor="Color.Primary" Label="Select meme" @bind-Value="_pickedMeme">
+    @foreach (var Meme in Memes)
+    {
+        var fontFileName = Path.GetFileNameWithoutExtension(Meme);
+        <MudSelectItem Value="@Meme" Style="@(($"font-family: '{fontFileName}';"))"><MudText Color="Color.Secondary">@fontFileName</MudText></MudSelectItem>
+    }
+</MudSelect>
+
+<MudButton Color="Color.Success" OnClick="ConfirmSelection">OK</MudButton>
+<MudButton Color="Color.Error" OnClick="CloseDialog">Cancel</MudButton>
+@code
+{
+    private List<string> Memes => Directory.GetFiles("DankMemeStash").ToList();
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
+    [Parameter]
+    public string CurrentText { get; set; }
+
+    private string _pickedMeme;
+
+    protected override void OnParametersSet()
+    {
+        
+    }
+
+    private void CloseDialog()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void ConfirmSelection()
+    {
+        MudDialog.Close(DialogResult.Ok(_pickedMeme));
+    }
+
+    private Task OpenDialogAsync()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+
+        return DialogService.ShowAsync<ColorDialog>("Text Picker", options);
+    }
+}
