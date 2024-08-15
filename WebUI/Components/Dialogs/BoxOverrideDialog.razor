@@ -1,0 +1,116 @@
+﻿@namespace WebUI.Components
+
+@using BulkThumbnailCreator.Enums
+@using BulkThumbnailCreator.PictureClasses
+@using MudBlazor.Utilities
+@inject IDialogService DialogService
+
+<MudSelect @bind-Value="_boxToReplace">
+
+    @foreach(var box in _overrideBoxList)
+    {
+    <MudSelectItem Value="@box.CurrentBox.Type">@box.CurrentBox.Type</MudSelectItem>
+    }
+
+</MudSelect>
+
+<MudButton Color="Color.Success" OnClick="ConfirmSelection">OK</MudButton>
+<MudButton Color="Color.Error" OnClick="CloseDialog">Cancel</MudButton>
+@code
+{
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public PictureData picData { get; set; }
+
+    [Parameter]
+    public BoxType ChosenBox { get; set; }
+
+    private BoxType _boxToReplace;
+
+    public void OverWriteBox()
+    {
+        // Hitta indexet för boxen som ska ersättas i picData.BoxParameters
+        var indexToReplace = picData.BoxParameters.FindIndex(p => p.CurrentBox.Type == ChosenBox);
+
+        if (indexToReplace == -1)
+        {
+            // Om boxen inte finns i listan, gör inget
+            return;
+        }
+
+        // Hitta indexet på den nya boxen i _overrideBoxList
+        var replacementIndex = _overrideBoxList.FindIndex(prop => prop.CurrentBox.Type == _boxToReplace );
+
+        if (replacementIndex != -1)
+        {
+            // Skapa en djup kopia av ParamForTextCreation för att undvika referensproblem
+            var replacement = new ParamForTextCreation(_overrideBoxList[replacementIndex])
+                {
+                    // Skapa en kopia av boxarna om de refereras till samma objekt
+                    Boxes = _overrideBoxList[replacementIndex].Boxes.Select(b => new Box(b)).ToList(),
+                    CurrentBox = new Box(_overrideBoxList[replacementIndex].CurrentBox)
+                };
+
+            // Ersätt den gamla boxen med den nya kopian
+            picData.BoxParameters[indexToReplace] = replacement;
+        }
+
+        StateHasChanged();
+    }
+
+    public void BuildOverrideBoxes()
+    {
+        // Skapa en ny lista baserat på box-parametrarna i den första BoxParameters
+        foreach (var box in picData.BoxParameters[0].Boxes)
+        {
+            var param = new ParamForTextCreation
+                {
+                    Text = picData.BoxParameters[0].Text,
+                    Font = picData.BoxParameters[0].Font,
+                    WidthOfBox = box.Width,
+                    HeightOfBox = box.Height,
+                    FillColor = picData.BoxParameters[0].FillColor,
+                    StrokeColor = picData.BoxParameters[0].StrokeColor,
+                    CurrentBox = new Box(box), // Skapa en kopia av varje box
+                    Boxes = new List<Box>(picData.BoxParameters[0].Boxes), // Skapa en ny lista med kopior av boxarna
+                    BoxesWithNoFaceIntersect = new(picData.BoxParameters[0].BoxesWithNoFaceIntersect)
+                };
+
+            _overrideBoxList.Add(param);
+        }
+
+        // Lägg till en "None" typ box med kopierade värden
+        var noneParam = new ParamForTextCreation(_overrideBoxList[0])
+            {
+                CurrentBox = new Box { Type = BoxType.None }
+            };
+        _overrideBoxList.Add(noneParam);
+    }
+
+    List<ParamForTextCreation> _overrideBoxList = new();
+
+    protected override void OnParametersSet()
+    {
+        BuildOverrideBoxes();
+        _boxToReplace = BoxType.TopRight;
+    }
+
+    private void CloseDialog()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void ConfirmSelection()
+    {
+        OverWriteBox();
+        MudDialog.Close(DialogResult.Ok(_boxToReplace));
+    }
+
+    private Task OpenDialogAsync()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+
+        return DialogService.ShowAsync<ColorDialog>("Text Picker", options);
+    }
+}

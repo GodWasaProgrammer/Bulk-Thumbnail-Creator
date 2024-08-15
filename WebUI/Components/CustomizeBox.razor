@@ -12,42 +12,8 @@
 @inject ILogService Logger;
 @inject Settings Settings;
 
-@*First you will pick a box, this will default be the first box in the list *@
-@if (CurrentPagePictureData != null)
-{
-    @if (_overrideBoxes is not true)
-    {
-        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="BuildOverrideBoxes">Override Boxes</MudButton>
-    }
-
-    @if (_overrideBoxes)
-    {
-        <MudSelect AdornmentColor="Color.Primary" Label="Select a box to override to" @bind-Value="_pickedOverrideBox">
-            @foreach (var param in _overrideBoxList)
-            {
-                <MudSelectItem Value="@param.CurrentBox.Type"><MudText Color="Color.Secondary">@param.CurrentBox.Type</MudText>select box to override with</MudSelectItem>
-            }
-        </MudSelect>
-        <MudButton OnClick="OverWriteBox">Overwrite</MudButton>
-    }
-}
-
-@*This is our Text Customization options with Fonts,Colors, etc*@
-    @if (CurrentPagePictureData != null)
-    {
-        <MudSelect AdornmentColor="Color.Primary" Label="Box To Edit" @bind-Value="PickedBox">
-
-        @foreach (var box in CurrentPagePictureData.BoxParameters)
-        {
-            <MudSelectItem Value="@box.CurrentBox.Type">@box.CurrentBox.Type</MudSelectItem>
-        }
-
-        </MudSelect>
-            // find the box that we are editing
-            var param = _boxParameters.FirstOrDefault(p => p.CurrentBox.Type == PickedBox);
-            <ParamModifier pictureData="CurrentPagePictureData" param="param"></ParamModifier>
-    }
-    <MudButton Variant="Variant.Filled" Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">Produce</MudButton>
+<ParamModifier pictureData="CurrentPagePictureData"></ParamModifier>
+<MudButton Variant="Variant.Filled" Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">Produce</MudButton>
 
 @code
 {
@@ -55,10 +21,8 @@
     {
         CurrentPagePictureData = null;
         ImageUrl = null;
-        PickedBox = BoxType.None;
         _pickedText = null;
         CurrentJob = null;
-        _boxParameters = null;
         _inputText = null;
         StateHasChanged();
     }
@@ -82,11 +46,6 @@
 
     private string _pickedText;
 
-    List<ParamForTextCreation> _boxParameters = new();
-
-    // The PickedBox that we have chosen to edit
-    public BoxType PickedBox { get; set; }
-
     // the text that is input by the user
     private List<string> _inputText = new();
 
@@ -94,9 +53,6 @@
     /// If this is true, then we are currently processing results with Bulk Thumbnail Creator
     /// </summary>
     private bool _processing = false;
-
-    /// Bool to swap between meme and text and related fields
-    private bool _meme = false;
 
     /// <summary>
     /// This calls the service which in turns calls BTC and produces a new picture
@@ -110,12 +66,13 @@
         }
         else
         {
-            _boxParameters.Find(x => x.CurrentBox.Type == PickedBox).Meme = null;
-            if (_pickedText != null)
-            {
-                _boxParameters.Find(x => x.CurrentBox.Type == PickedBox).Text = _pickedText;
-            }
             CurrentPagePictureData.OutPutType = OutputType.Custom;
+
+            foreach (var param in CurrentPagePictureData.BoxParameters)
+            {
+                if (param.Meme is not null)
+                    param.Meme = null;
+            }
         }
 
         // The actual Service call where the production happens
@@ -131,78 +88,5 @@
         ImageUrl = replacefrontslash;
         StateHasChanged();
         OnCustomBoxHasProducedPicture?.Invoke(CurrentPagePictureData, ImageUrl);
-    }
-
-    protected override void OnInitialized()
-    {
-        if (CurrentPagePictureData != null)
-            foreach (var boxParam in CurrentPagePictureData.BoxParameters)
-            {
-                // add the text to our list of text
-                if (!_inputText.Contains(boxParam.Text))
-                    _inputText.Add(boxParam.Text);
-
-                InitBoxParam();
-            }
-    }
-
-    BoxType _pickedOverrideBox = BoxType.None;
-    public void OverWriteBox()
-    {
-        var index = _boxParameters.FindIndex(p => p.CurrentBox.Type == PickedBox);
-        if (index != -1) // Check if the element was found
-        {
-            var ParamToReplace = _overrideBoxList.FindIndex(prop => prop.CurrentBox.Type == _pickedOverrideBox);
-
-            _boxParameters[index] = _overrideBoxList[ParamToReplace];
-            PickedBox = _boxParameters[index].CurrentBox.Type;
-        }
-        else
-        {
-            var ParamToReplace = _overrideBoxList.FindIndex(prop => prop.CurrentBox.Type == PickedBox);
-            _boxParameters[index] = _overrideBoxList[ParamToReplace];
-        }
-        StateHasChanged();
-    }
-
-    private bool _overrideBoxes;
-    List<ParamForTextCreation> _overrideBoxList = new();
-    
-    public void BuildOverrideBoxes()
-    {
-        // build the list based of the first box parameter and then
-        // feed it with a selection of the boxes info and box parameter info
-        // to frankenstein together a overridden box selection
-        foreach (var box in CurrentPagePictureData.BoxParameters[0].Boxes)
-        {
-            var param = new ParamForTextCreation
-                {
-                    Text = CurrentPagePictureData.BoxParameters[0].Text,
-                    Font = CurrentPagePictureData.BoxParameters[0].Font,
-                    WidthOfBox = box.Width,
-                    HeightOfBox = box.Height
-                };
-            param.FillColor = new();
-            param.StrokeColor = new();
-            param.Boxes = CurrentPagePictureData.BoxParameters[0].Boxes;
-            param.CurrentBox = new Box(box);
-            param.BoxesWithNoFaceIntersect = CurrentPagePictureData.BoxParameters[0].BoxesWithNoFaceIntersect;
-            _overrideBoxList.Add(param);
-        }
-        // make none object
-        var noneParam = new ParamForTextCreation(_overrideBoxList[0]);
-        noneParam.CurrentBox.Type = BoxType.None;
-        _overrideBoxList.Add(noneParam);
-        _overrideBoxes = true;
-        InvokeAsync(StateHasChanged);
-    }
-
-    /// <summary>
-    /// Builds our boxes on initialization
-    /// </summary>
-    private void InitBoxParam()
-    {
-        _boxParameters = new List<ParamForTextCreation>(CurrentPagePictureData.BoxParameters);
-        PickedBox = _boxParameters[0].CurrentBox.Type;
     }
 }

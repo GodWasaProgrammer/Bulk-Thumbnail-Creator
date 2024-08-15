@@ -2,24 +2,31 @@
 @using BulkThumbnailCreator.PictureClasses
 @using MudBlazor.Utilities
 
-@if (param != null && param.CurrentBox.Type != BulkThumbnailCreator.Enums.BoxType.None)
+@if (param != null)
 {
     <MudGrid>
-       
-            
         <MudItem>
+        <MudItem>
+                        <MudPaper Outlined="true" Elevation="2" Class="pa-4">
+
+        <MudSelect AdornmentColor="Color.Primary" Label="Box To Edit" @bind-Value="PickedBox">
+
+            @foreach (var box in pictureData.BoxParameters)
+            {
+                <MudSelectItem Value="@box.CurrentBox.Type">@box.CurrentBox.Type</MudSelectItem>
+            }
+
+        </MudSelect>
+        </MudPaper>
+        </MudItem>
             @if(!param.MemeBool)
             {
                 
             <MudPaper Outlined="true" Elevation="2" Class="pa-4">
-                <MudTextField Label="Enter Text here" Variant="Variant.Outlined" @bind-Value="_userText" />
-                <MudButton OnClick="ChangeText">Change Text</MudButton>
-                    <MudItem>
-                    <MudText>@param.Text</MudText>
-                    </MudItem>
-
+                <MudTextField Label="Enter Text here" Variant="Variant.Filled" @bind-Value="_userText" />
+                <MudButton Variant="Variant.Filled" Color="Color.Success" ButtonType="ButtonType.Submit" OnClick="ChangeText">Change Text</MudButton>
             <MudItem>
-               <MudButton Style="color: white; width: auto; height: auto;" OnClick="() => OpenFontDialog(param.Font)">
+               <MudButton Color="Color.Primary" Variant="Variant.Filled" Style="color: white; width: auto; height: auto;" OnClick="() => OpenFontDialog(param.Font)">
                     <MudText>Font:</MudText>
                     @Path.GetFileNameWithoutExtension(param.Font)
                 </MudButton>
@@ -28,12 +35,12 @@
 
                 <MudItem>
                     <MudPaper Outlined="true" Elevation="2" Class="pa-4">
-                        <MudButton OnClick="() => OpenColorDialog(param.FillColor)">
+                        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="() => OpenColorDialog(param.FillColor)">
                             <MudText>FillColor</MudText>
                             <div style="width: 20px; height: 20px; background-color: @HslToRgb(param.FillColor.Hue, param.FillColor.Saturation, param.FillColor.Luminance);"></div>
                         </MudButton>
 
-                        <MudButton OnClick="() => OpenColorDialog(param.StrokeColor)">
+                        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="() => OpenColorDialog(param.StrokeColor)">
                             <MudText>StrokeColor</MudText>
                             <div style="width: 20px; height: 20px; background-color: @HslToRgb(param.StrokeColor.Hue, param.StrokeColor.Saturation, param.StrokeColor.Luminance);"></div>
                         </MudButton>
@@ -61,20 +68,36 @@
                         </MudButton>
                     }
                 </MudPaper>
+            <MudItem>
+                <MudPaper Outlined="true" Elevation="2" Class="pa-4">
+
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="BoxChangeDialog">Change Box</MudButton>
+            </MudPaper>
+            </MudItem>
 
             </MudItem>
             </MudItem>
 
-
-           
 
     </MudGrid>
 }
 
 @code
 {
-    [Parameter]
-    public ParamForTextCreation param { get; set; }
+    private BoxType _pickedBox;
+    BoxType PickedBox
+    {
+        get { return _pickedBox; }
+        set
+        {
+            _pickedBox = value;
+            param = pictureData.BoxParameters.Find(x => x.CurrentBox.Type == value);
+            _userText = param.Text;
+            StateHasChanged();
+        }
+    }
+
+    private ParamForTextCreation param { get; set; }
 
     [Parameter]
     public PictureData pictureData { get; set; }
@@ -85,7 +108,30 @@
 
     protected override void OnParametersSet()
     {
-        _userText = param.Text;
+        if (param is null && pictureData.BoxParameters.Any())
+        {
+            param = pictureData.BoxParameters[0];
+            PickedBox = param.CurrentBox.Type;
+        }
+
+        if (param is not null)
+            _userText = param.Text;
+    }
+
+    private async Task BoxChangeDialog()
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var parameters = new DialogParameters { { "picData", pictureData } };
+        parameters.Add("ChosenBox", param.CurrentBox.Type);
+        var dialog = DialogService.Show<BoxOverrideDialog>("Pick a box you want to replace, then pick box to replace with", parameters, options);
+        var result = await dialog.Result;
+
+        if(!result.Canceled)
+        {
+            param = pictureData.BoxParameters.Find(x => x.CurrentBox.Type == (BoxType)result.Data);
+            PickedBox = param.CurrentBox.Type;
+            StateHasChanged();
+        }
     }
 
     private void ChangeText()
