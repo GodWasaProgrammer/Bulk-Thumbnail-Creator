@@ -248,7 +248,44 @@ public static class Production
                     }
                     var takeY = boxParam.CurrentBox.Y;
                     var takeX = boxParam.CurrentBox.X;
+                    if (boxParam.Shadows)
+                    {
+                        // Create a larger canvas to accommodate the shadow
+                        using (var largerCanvas = new MagickImage(MagickColors.Transparent, caption.Width + 50, caption.Height + 50))
+                        {
+                            // Composite the text onto the larger canvas
+                            largerCanvas.Composite(caption, 10, 10, CompositeOperator.Over);
+
+                            // Create a shadow image with larger width
+                            using (var shadow = new MagickImage(MagickColors.Transparent, largerCanvas.Width, largerCanvas.Height))
+                            {
+                                var shadowcaption = new MagickImage($"caption:{boxParam.Text}", pictureData.ReadSettings);
+
+                                // Clone the text image onto the shadow image
+                                shadow.Composite(caption, 0, 0, CompositeOperator.Over);
+
+                                // shadow 2
+                                shadow.Shadow(0, 0, 6, new Percentage(200), MagickColors.Black);
+                                largerCanvas.Composite(shadow, 10, 0, CompositeOperator.DstOver);
+
+                                // shadow 2
+                                shadow.Shadow(0, 0, 6, new Percentage(200), MagickColors.Black);
+                                largerCanvas.Composite(shadow, 10, 0, CompositeOperator.DstOver);
+
+                                // if you want the shadow to be offset you have to do it here
+                                // Composite the shadow behind the text on the larger canvas
+                                largerCanvas.Composite(shadow, 10, 0, CompositeOperator.DstOver);
+                            }
+                            if (boxParam.Shadows)
+                            {
+                                outputImage.Composite(largerCanvas, takeX, takeY, CompositeOperator.Over);
+                            }
+                        }
+                    }
+                    if(!boxParam.Shadows)
+                    {
                     outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
+                    }
                 }
                 settings.LogService.LogInformation($"Picture:{Path.GetFileName(pictureData.FileName)}Box Type:{pictureData.BoxParameters[box].CurrentBox.Type} Box: {box + 1} of {pictureData.BoxParameters.Count} has been composited");
             });

@@ -28,7 +28,8 @@ public class Variety
             {
                 ColorData.SelectTwoRandomColors(boxparameter);
                 var dg = new DataGeneration(_directoryWrapper);
-                boxparameter.Gradient = DataGeneration.RandomGradient();
+                boxparameter.Gradient = DataGeneration.RandomBool();
+                boxparameter.Shadows = DataGeneration.RandomBool();
 
                 var excludeFonts = new List<string>();
                 foreach (var liftfonts in varietyData.BoxParameters)

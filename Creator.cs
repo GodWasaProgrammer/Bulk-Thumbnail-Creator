@@ -117,7 +117,8 @@ public static partial class Creator
                     currentParameters.Boxes = DataGeneration.BuildDefaultBoxes(image);
                     DataGeneration.GetTextPosition(currentParameters, faceRectangles, populatedBoxes);
                     ColorData.SelectTwoRandomColors(currentParameters);
-                    currentParameters.Gradient = DataGeneration.RandomGradient();
+                    currentParameters.Gradient = DataGeneration.RandomBool();
+                    currentParameters.Shadows = DataGeneration.RandomBool();
 
                     var directoryWrapper = new DirectoryWrapper();
                     var dg = new DataGeneration(directoryWrapper);

@@ -36,7 +36,7 @@ public class DataGenerationTests
         // Act
         for (var i = 0; i < iterations; i++)
         {
-            if (DataGeneration.RandomGradient())
+            if (DataGeneration.RandomBool())
             {
                 trueCount++;
             }
