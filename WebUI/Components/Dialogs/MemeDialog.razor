@@ -3,13 +3,13 @@
 @using MudBlazor.Utilities
 @inject IDialogService DialogService
 
-<MudImage Src="_pickedtext">Chosen meme</MudImage>
+<MudImage Src="@_pickedMeme">Chosen meme</MudImage>
 
 <MudSelect Variant="Variant.Text" AdornmentColor="Color.Primary" Label="Select meme" @bind-Value="_pickedMeme">
     @foreach (var Meme in Memes)
     {
         var fontFileName = Path.GetFileNameWithoutExtension(Meme);
-        <MudSelectItem Value="@Meme" Style="@(($"font-family: '{fontFileName}';"))"><MudText Color="Color.Secondary">@fontFileName</MudText></MudSelectItem>
+        <MudSelectItem Value="@Meme"><MudText Color="Color.Secondary">@fontFileName</MudText></MudSelectItem>
     }
 </MudSelect>
 
@@ -19,14 +19,12 @@
 {
     private List<string> Memes => Directory.GetFiles("DankMemeStash").ToList();
     [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
-    [Parameter]
-    public string CurrentText { get; set; }
 
     private string _pickedMeme;
 
     protected override void OnParametersSet()
     {
-        
+        _pickedMeme = Memes[0];
     }
 
     private void CloseDialog()

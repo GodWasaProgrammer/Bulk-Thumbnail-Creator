@@ -62,6 +62,11 @@ public static class Program
             FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "TextAdded")),
             RequestPath = "/TextAdded"
         });
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "DankMemeStash")),
+            RequestPath = "/DankMemeStash"
+        });
         app.UseRouting();
         app.UseAuthentication();
         app.UseAuthorization();
