@@ -12,7 +12,7 @@
 @inject ILogService Logger;
 @inject Settings Settings;
 
-<ParamModifier pictureData="CurrentPagePictureData"></ParamModifier>
+<ParamModifier ImageURL="@ImageUrl" pictureData="CurrentPagePictureData"></ParamModifier>
 <MudButton Variant="Variant.Filled" Color="Color.Secondary" Disabled="@_processing" @onclick="CreateCustomPicDataObject">Produce</MudButton>
 
 @code
@@ -21,9 +21,7 @@
     {
         CurrentPagePictureData = null;
         ImageUrl = null;
-        _pickedText = null;
         CurrentJob = null;
-        _inputText = null;
         StateHasChanged();
     }
 
@@ -44,22 +42,22 @@
     [Parameter]
     public PictureData CurrentPagePictureData { get; set; }
 
-    private string _pickedText;
-
-    // the text that is input by the user
-    private List<string> _inputText = new();
-
     /// <summary>
     /// If this is true, then we are currently processing results with Bulk Thumbnail Creator
     /// </summary>
     private bool _processing = false;
 
+    protected override void OnParametersSet()
+    {
+
+    }
+
     /// <summary>
     /// This calls the service which in turns calls BTC and produces a new picture
-    /// This also
     /// </summary>
     public async void CreateCustomPicDataObject()
     {
+        _processing = true;
         if (CurrentPagePictureData.BoxParameters.Any(x => x.MemeBool))
         {
             CurrentPagePictureData.OutPutType = OutputType.MemeVariety;
@@ -88,5 +86,7 @@
         ImageUrl = replacefrontslash;
         StateHasChanged();
         OnCustomBoxHasProducedPicture?.Invoke(CurrentPagePictureData, ImageUrl);
+        _processing = false;
+        StateHasChanged();
     }
 }

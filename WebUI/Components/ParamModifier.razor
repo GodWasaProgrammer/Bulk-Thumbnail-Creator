@@ -74,6 +74,8 @@
 
             <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="BoxChangeDialog">Change Box</MudButton>
             </MudPaper>
+
+                    <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="BoxMakerDialog">Make your own box</MudButton>
             </MudItem>
 
             </MudItem>
@@ -102,6 +104,9 @@
 
     [Parameter]
     public PictureData pictureData { get; set; }
+
+    [Parameter]
+    public string ImageURL { get; set; } 
 
     [Inject]
     IDialogService DialogService { get; set; }
@@ -140,16 +145,23 @@
         param.Text = _userText;
     }
 
-    private async Task BoxChoiceDialog()
+    private async Task BoxMakerDialog()
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };
-        var parameters = new DialogParameters { { "picdata", pictureData } };
-        var dialog = DialogService.Show<BoxPickDialog>("Select Box", parameters, options);
+        var parameters = new DialogParameters { { "ImageURL", $"{ImageURL}" } };
+        var dialog = DialogService.Show<CustomBoxMakerDialog>("imageDialog", parameters, options);
         var result = await dialog.Result;
 
-        if(!result.Canceled)
+        if (!result.Canceled)
         {
-            param = pictureData.BoxParameters.Find(Box => Box.CurrentBox.Type == (BoxType)result.Data);
+            var Data = (RectangleData)result.Data;
+            param.CurrentBox.X = (int)Data.X;
+            param.CurrentBox.Y = (int)Data.Y;
+            param.CurrentBox.Height = (int)Data.Height;
+            param.CurrentBox.Width = (int)Data.Width;
+            param.WidthOfBox = (int)Data.Width;
+            param.HeightOfBox = (int)Data.Height;
+            StateHasChanged();
         }
     }
 
@@ -178,20 +190,6 @@
         if (!result.Canceled)
         {
             param.Font = (string)result.Data;
-            StateHasChanged();
-        }
-    }
-
-    private async Task OpenTextDialog()
-    {
-        var options = new DialogOptions { CloseOnEscapeKey = true };
-        var parameters = new DialogParameters { { "CurrentText", param.Text } };
-        var dialog = DialogService.Show<TextDialog>("Select Text To Print", parameters, options);
-        var result = await dialog.Result;
-
-        if (!result.Canceled)
-        {
-            param.Text = (string)result.Data;
             StateHasChanged();
         }
     }

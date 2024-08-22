@@ -282,9 +282,9 @@ public static class Production
                             }
                         }
                     }
-                    if(!boxParam.Shadows)
+                    if (!boxParam.Shadows)
                     {
-                    outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
+                        outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
                     }
                 }
                 settings.LogService.LogInformation($"Picture:{Path.GetFileName(pictureData.FileName)}Box Type:{pictureData.BoxParameters[box].CurrentBox.Type} Box: {box + 1} of {pictureData.BoxParameters.Count} has been composited");

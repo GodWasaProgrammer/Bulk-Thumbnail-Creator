@@ -1,0 +1,92 @@
+﻿@namespace WebUI.Components
+
+@using MudBlazor
+@inject IJSRuntime JSRuntime
+
+<MudDialog>
+    <DialogContent>
+        <div style="position: relative; width: 400px; height: 300px;" id="BoxPicker">
+            <!-- Bilden -->
+            <MudImage src="@ImageURL" alt="Image" style="width: 400px; height: 300px;" />
+
+            <!-- Canvas ovanpå bilden -->
+            <canvas id="canvas" width="400" height="300" @onmousedown="StartDrag" @onmousemove="OnMouseMove"
+                    style="position: absolute; top: 0; left: 0; z-index: 1; border: 1px solid transparent;"></canvas>
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Success" OnClick="ConfirmSelection">OK</MudButton>
+        <MudButton Color="Color.Error" OnClick="CloseDialog">Cancel</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public string ImageURL { get; set; }
+
+    private bool _isDragging = false;
+    private double _startX, _startY, _currentX, _currentY;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initCanvas");
+        }
+    }
+
+    private void StartDrag(MouseEventArgs e)
+    {
+        _isDragging = true;
+        _startX = e.ClientX;
+        _startY = e.ClientY;
+    }
+
+    private void OnMouseMove(MouseEventArgs e)
+    {
+        if (_isDragging)
+        {
+            _currentX = e.ClientX;
+            _currentY = e.ClientY;
+            StateHasChanged();
+        }
+    }
+
+    private void EndDrag(MouseEventArgs e)
+    {
+        _isDragging = false;
+    }
+
+    private void CloseDialog()
+    {
+        MudDialog.Cancel();
+    }
+
+
+    private async Task ConfirmSelection()
+    {
+        RectangleData WRECKTDATA = new();
+        bool success = false;
+
+        var rectData = await JSRuntime.InvokeAsync<RectangleData>("getRectangleData");
+        if(rectData is null)
+        {
+            MudDialog.Close(DialogResult.Cancel());
+            // throw new Exception("javascript shit itself. tell it to fuck off");
+        }
+        else
+        {
+            WRECKTDATA = rectData;
+            success = true;
+        }
+
+        if (success)
+        {
+            MudDialog.Close(DialogResult.Ok(WRECKTDATA));
+        }
+    }
+}
+
