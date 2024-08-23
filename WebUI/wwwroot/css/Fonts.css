@@ -1,0 +1,309 @@
+@font-face {
+    font-family: 'Alger';
+    src: url('/fonts/ALGER.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Arial';
+    src: url('/fonts/arial.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Arial Bold';
+    src: url('/fonts/arialbd.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Arial Bold Italic';
+    src: url('/fonts/arialbi.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Arial Italic';
+    src: url('/fonts/ariali.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Arial Narrow';
+    src: url('/fonts/ARIALN.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Arial Narrow Bold';
+    src: url('/fonts/ARIALNB.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Arial Narrow Bold Italic';
+    src: url('/fonts/ARIALNBI.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Arial Narrow Italic';
+    src: url('/fonts/ARIALNI.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Arial Black';
+    src: url('/fonts/ariblk.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Bauhaus 93';
+    src: url('/fonts/BAUHS93.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Book Antiqua';
+    src: url('/fonts/BOOKOS.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Book Antiqua Bold';
+    src: url('/fonts/BOOKOSB.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Book Antiqua Bold Italic';
+    src: url('/fonts/BOOKOSBI.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Book Antiqua Italic';
+    src: url('/fonts/BOOKOSI.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Britannic Bold';
+    src: url('/fonts/BRITANIC.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Cooper Black';
+    src: url('/fonts/COOPBL.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Forte';
+    src: url('/fonts/FORTE.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Gill Sans Ultra Bold';
+    src: url('/fonts/GILLUBCD.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Gill Sans Ultra Bold Condensed';
+    src: url('/fonts/GILSANUB.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Goudy Stout';
+    src: url('/fonts/GOUDYSTO.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Jokerman';
+    src: url('/fonts/JOKERMAN.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Latin Wide';
+    src: url('/fonts/LATINWD.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Magneto';
+    src: url('/fonts/MAGNETOB.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat Black';
+    src: url('/fonts/Montserrat-Black.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat Black Italic';
+    src: url('/fonts/Montserrat-BlackItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat Bold';
+    src: url('/fonts/Montserrat-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat Bold Italic';
+    src: url('/fonts/Montserrat-BoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat ExtraBold';
+    src: url('/fonts/Montserrat-ExtraBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat ExtraBold Italic';
+    src: url('/fonts/Montserrat-ExtraBoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat ExtraLight';
+    src: url('/fonts/Montserrat-ExtraLight.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat ExtraLight Italic';
+    src: url('/fonts/Montserrat-ExtraLightItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat Italic Variable Font Weight';
+    src: url('/fonts/Montserrat-Italic-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat Italic';
+    src: url('/fonts/Montserrat-Italic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat Light';
+    src: url('/fonts/Montserrat-Light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat Light Italic';
+    src: url('/fonts/Montserrat-LightItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat Medium';
+    src: url('/fonts/Montserrat-Medium.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat Medium Italic';
+    src: url('/fonts/Montserrat-MediumItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat Regular';
+    src: url('/fonts/Montserrat-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat SemiBold';
+    src: url('/fonts/Montserrat-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat SemiBold Italic';
+    src: url('/fonts/Montserrat-SemiBoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat Thin';
+    src: url('/fonts/Montserrat-Thin.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat Thin Italic';
+    src: url('/fonts/Montserrat-ThinItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat Variable Font Weight';
+    src: url('/fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Black';
+    src: url('/fonts/Roboto-Black.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Black Italic';
+    src: url('/fonts/Roboto-BlackItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Bold';
+    src: url('/fonts/Roboto-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Bold Italic';
+    src: url('/fonts/Roboto-BoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Italic';
+    src: url('/fonts/Roboto-Italic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Light';
+    src: url('/fonts/Roboto-Light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Light Italic';
+    src: url('/fonts/Roboto-LightItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Medium';
+    src: url('/fonts/Roboto-Medium.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Medium Italic';
+    src: url('/fonts/Roboto-MediumItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Regular';
+    src: url('/fonts/Roboto-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Thin';
+    src: url('/fonts/Roboto-Thin.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Thin Italic';
+    src: url('/fonts/Roboto-ThinItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Segoe Print';
+    src: url('/fonts/segoepr.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Segoe Print Bold';
+    src: url('/fonts/segoeprb.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Showcard Gothic';
+    src: url('/fonts/SHOWG.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Snap ITC';
+    src: url('/fonts/SNAP____.TTF') format('truetype');
+}
+
+@font-face {
+    font-family: 'Tahoma';
+    src: url('/fonts/tahoma.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Times New Roman';
+    src: url('/fonts/times.ttf') format('truetype');
+}

@@ -6,31 +6,39 @@
 {
     <MudGrid>
         <MudItem>
-        <MudItem>
-                        <MudPaper Outlined="true" Elevation="2" Class="pa-4">
-
-        <MudSelect AdornmentColor="Color.Primary" Label="Box To Edit" @bind-Value="PickedBox">
-
-            @foreach (var box in pictureData.BoxParameters)
-            {
-                <MudSelectItem Value="@box.CurrentBox.Type">@box.CurrentBox.Type</MudSelectItem>
-            }
-
-        </MudSelect>
-        </MudPaper>
-        </MudItem>
-            @if(!param.MemeBool)
-            {
-                
-            <MudPaper Outlined="true" Elevation="2" Class="pa-4">
-                <MudTextField Label="Enter Text here" Variant="Variant.Filled" @bind-Value="_userText" />
-                <MudButton Variant="Variant.Filled" Color="Color.Success" ButtonType="ButtonType.Submit" OnClick="ChangeText">Change Text</MudButton>
             <MudItem>
-               <MudButton Color="Color.Primary" Variant="Variant.Filled" Style="color: white; width: auto; height: auto;" OnClick="() => OpenFontDialog(param.Font)">
-                    <MudText>Font:</MudText>
-                    @Path.GetFileNameWithoutExtension(param.Font)
-                </MudButton>
-            </MudItem>                
+                <MudPaper Outlined="true" Elevation="2" Class="pa-4">
+
+                    <MudSelect AdornmentColor="Color.Primary" Label="Box To Edit" @bind-Value="PickedBox">
+
+                        @foreach (var box in pictureData.BoxParameters)
+                        {
+                            <MudSelectItem Value="@box.CurrentBox.Type">@box.CurrentBox.Type</MudSelectItem>
+                        }
+
+                    </MudSelect>
+                </MudPaper>
+            </MudItem>
+            @if (!param.MemeBool)
+            {
+
+                <MudPaper Outlined="true" Elevation="2" Class="pa-4">
+                    <MudTextField Label="Enter Text here" Variant="Variant.Filled" @bind-Value="param.Text" />
+                    <MudItem>
+
+                        <MudSelect AdornmentColor="Color.Primary" Label="Change Font" @bind-Value="param.Font">
+
+                            @foreach (var font in _availableFonts)
+                            {
+                                <MudSelectItem Value="font">
+                                    <div style="font-family: '@font';">@Path.GetFileNameWithoutExtension(font)</div>
+                                    
+                                    </MudSelectItem>
+                            }
+
+                        </MudSelect>
+
+                    </MudItem>
                 </MudPaper>
 
                 <MudItem>
@@ -44,45 +52,44 @@
                             <MudText>StrokeColor</MudText>
                             <div style="width: 20px; height: 20px; background-color: @HslToRgb(param.StrokeColor.Hue, param.StrokeColor.Saturation, param.StrokeColor.Luminance);"></div>
                         </MudButton>
-                        
+
                     </MudPaper>
-                    <MudItem>
 
-                        <MudPaper Outlined="true" Elevation="2" Class="pa-4">
-                            <MudCheckBox @bind-Value="param.Gradient">Gradient</MudCheckBox>
-                            <MudCheckBox @bind-Value="param.Shadows">Shadows</MudCheckBox>
-                        </MudPaper>
-
-                    </MudItem>
 
 
                 </MudItem>
             }
             <MudItem>
 
-                <MudPaper Outlined="true" Elevation="2" Class="pa-4">
-                    <MudCheckBox @bind-Value="param.MemeBool">Meme</MudCheckBox>
-                    @if (param.MemeBool)
-                    {
-                        <MudButton OnClick="MemeDialog">
-                            <MudText>Select Meme</MudText>
-                        </MudButton>
-                    }
-                </MudPaper>
-            <MudItem>
-                <MudPaper Outlined="true" Elevation="2" Class="pa-4">
+                <MudItem>
+                    <MudPaper Outlined="true" Elevation="2" Class="pa-4">
+                        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="BoxChangeDialog">Change Box</MudButton>
+                        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="BoxMakerDialog">Make your own box</MudButton>
+                    </MudPaper>
 
-            <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="BoxChangeDialog">Change Box</MudButton>
+                </MudItem>
+
+            </MudItem>
+        </MudItem>
+
+        <MudItem xs="12" md="4">
+
+            <MudPaper Outlined="true" Elevation="2" Class="pa-4">
+                <MudText Color="Color.Success">Effects</MudText>
+                <MudCheckBox @bind-Value="param.Gradient">Gradient</MudCheckBox>
+                <MudCheckBox @bind-Value="param.Shadows">Shadows</MudCheckBox>
+                <MudCheckBox @bind-Value="param.MemeBool">Meme</MudCheckBox>
+                @if (param.MemeBool)
+                {
+                    <MudButton OnClick="MemeDialog">
+                        <MudText>Select Meme</MudText>
+                    </MudButton>
+                }
             </MudPaper>
 
-                    <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="BoxMakerDialog">Make your own box</MudButton>
-            </MudItem>
-
-            </MudItem>
-            </MudItem>
-
-
+        </MudItem>
     </MudGrid>
+
 }
 
 @code
@@ -100,13 +107,15 @@
         }
     }
 
+    private List<string> _availableFonts => Directory.GetFiles("Fonts", "*.TTF*").ToList();
+
     private ParamForTextCreation param { get; set; }
 
     [Parameter]
     public PictureData pictureData { get; set; }
 
     [Parameter]
-    public string ImageURL { get; set; } 
+    public string ImageURL { get; set; }
 
     [Inject]
     IDialogService DialogService { get; set; }
@@ -119,9 +128,10 @@
             param = pictureData.BoxParameters[0];
             PickedBox = param.CurrentBox.Type;
         }
-
         if (param is not null)
+        {
             _userText = param.Text;
+        }
     }
 
     private async Task BoxChangeDialog()
@@ -132,17 +142,12 @@
         var dialog = DialogService.Show<BoxOverrideDialog>("Pick a box you want to replace, then pick box to replace with", parameters, options);
         var result = await dialog.Result;
 
-        if(!result.Canceled)
+        if (!result.Canceled)
         {
             param = pictureData.BoxParameters.Find(x => x.CurrentBox.Type == (BoxType)result.Data);
             PickedBox = param.CurrentBox.Type;
             StateHasChanged();
         }
-    }
-
-    private void ChangeText()
-    {
-        param.Text = _userText;
     }
 
     private async Task BoxMakerDialog()
@@ -176,20 +181,6 @@
             param.Meme = (string)result.Data;
             param.MemeBool = true;
             pictureData.OutPutType = OutputType.MemeVariety;
-            StateHasChanged();
-        }
-    }
-
-    private async Task OpenFontDialog(string font)
-    {
-        var options = new DialogOptions { CloseOnEscapeKey = true };
-        var parameters = new DialogParameters { { "CurrentFont", $"{font}" } };
-        var dialog = DialogService.Show<FontDialog>("Select Font", parameters, options);
-        var result = await dialog.Result;
-
-        if (!result.Canceled)
-        {
-            param.Font = (string)result.Data;
             StateHasChanged();
         }
     }

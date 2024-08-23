@@ -11,10 +11,6 @@
         <MudButton Variant="Variant.Outlined" Color="Color.Secondary" OnClick="GoBack">Back</MudButton>
     </div>
 }
-<div style="display: flex; justify-content: center;">
-    <MudButton OnClick="DisplayValues" Color="Color.Secondary" Variant="Variant.Outlined">Display Values</MudButton>
-</div>
-<MudPaper Elevation="6">
 
     <MudContainer>
 
@@ -28,6 +24,9 @@
         </MudItem>
 
 
+<div style="display: flex; justify-content: center;">
+    <MudButton OnClick="DisplayValues" Color="Color.Secondary" Variant="Variant.Outlined">Display Values</MudButton>
+</div>
         <MudGrid>
             @if (_displayValues)
             {
@@ -44,7 +43,6 @@
 
     </MudContainer>
 
-</MudPaper>
 
 @if (GoBack != null)
 {

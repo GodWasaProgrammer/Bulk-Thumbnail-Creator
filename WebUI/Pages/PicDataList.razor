@@ -16,9 +16,7 @@
         <Columns>
             <PropertyColumn Property="x => x.FileName" Title="Picture">
                 <CellTemplate>
-
-                    <MudImage Width="100" Fit="Contain" Src="@MatchUrl(context.Item.FileName)">here i wanna display the image of the actual file in mini</MudImage>
-
+                    <MudImage Width="100" Src="@MatchUrl(context.Item.FileName)">here i wanna display the image of the actual file in mini</MudImage>
                 </CellTemplate>
             </PropertyColumn>
             <PropertyColumn Property="x => x.OutPutType" Title="Type" />

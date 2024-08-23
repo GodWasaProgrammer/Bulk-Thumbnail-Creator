@@ -2,35 +2,22 @@
 
 @if (param != null && param.CurrentBox.Type != BulkThumbnailCreator.Enums.BoxType.None)
 {
-    <div style="overflow-x: auto; overflow-y: auto; max-height: 200px;">
-        <Row>
-            <MudTh>
-                <Row>
-                    <MudTh>Box</MudTh>
-                    @if (param.Meme != null)
-                    {
-                        <MudTh>Meme</MudTh>
-                    }
-                    <MudTh>Text</MudTh>
-                    <MudTh>Font</MudTh>
-                    <MudTh>FillColor</MudTh>
-                    <MudTh>StrokeColor</MudTh>
-                </Row>
-                <MudTd DataLabel="Box">@param.CurrentBox.Type</MudTd>
+    <div style="display: flex; flex-wrap: wrap; gap: 16px; padding: 16px;">
+        <MudCard Style="max-width: 400px; width: 100%;">
+            <MudCardContent>
+                <MudText Typo="Typo.h6">@param.CurrentBox.Type</MudText>
                 @if (param.Meme != null)
                 {
-                    <MudTd DataLabel="Meme">@Path.GetFileNameWithoutExtension(param.Meme)</MudTd>
+                    <MudText>**Meme:** @Path.GetFileNameWithoutExtension(param.Meme)</MudText>
                 }
-                <MudTd DataLabel="Text">@param.Text</MudTd>
-                <MudTd DataLabel="Font">@Path.GetFileNameWithoutExtension(param.Font)</MudTd>
-                <MudTd DataLabel="FillColor">
-                    <div style="width: 20px; height: 20px; background-color: @HslToRgb(param.FillColor.Hue, param.FillColor.Saturation, param.FillColor.Luminance);"></div>
-                </MudTd>
-                <MudTd DataLabel="StrokeColor">
-                    <div style="width: 20px; height: 20px; background-color: @HslToRgb(param.StrokeColor.Hue, param.StrokeColor.Saturation, param.StrokeColor.Luminance);"></div>
-                </MudTd>
-            </MudTh>
-        </Row>
+                <MudText>**Text:** @param.Text</MudText>
+                <MudText>**Font:** @Path.GetFileNameWithoutExtension(param.Font)</MudText>
+                <MudText>**FillColor:**</MudText>
+                <div style="width: 20px; height: 20px; background-color: @HslToRgb(param.FillColor.Hue, param.FillColor.Saturation, param.FillColor.Luminance); border: 1px solid #000;"></div>
+                <MudText>**StrokeColor:**</MudText>
+                <div style="width: 20px; height: 20px; background-color: @HslToRgb(param.StrokeColor.Hue, param.StrokeColor.Saturation, param.StrokeColor.Luminance); border: 1px solid #000;"></div>
+            </MudCardContent>
+        </MudCard>
     </div>
 }
 

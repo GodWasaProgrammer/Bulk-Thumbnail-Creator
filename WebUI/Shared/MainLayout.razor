@@ -5,6 +5,7 @@
 @inherits LayoutComponentBase
 
 <MudThemeProvider Theme="BulkThumbnailCreatorTheme" IsDarkMode="true" />
+<MudPopoverProvider/>
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -78,7 +79,11 @@
 
     protected override void OnInitialized()
     {
-        // Call GetRandomLogo to set the logoUrl parameter
-        logoUrl = LogoService.GetRandomLogo();
+        var fetchlogo = LogoService.GetRandomLogo();
+
+        // Förutsatt att wwwroot är rotkatalogen för dina statiska filer
+        var wwwrootPath = Path.Combine(Environment.CurrentDirectory, "wwwroot");
+        var relativePath = Path.GetRelativePath(wwwrootPath, fetchlogo);
+        logoUrl = $"/{relativePath.Replace('\\', '/')}";
     }
 }

@@ -15,7 +15,7 @@
         <Columns>
             <PropertyColumn Property="x => x.FileName" Title="">
                 <CellTemplate>
-                    <MudImage Width="100" Fit="Contain" Src="@MatchUrl(context.Item.FileName)"></MudImage>
+                    <MudImage Width="100" Src="@MatchUrl(context.Item.FileName)"></MudImage>
                 </CellTemplate>
             </PropertyColumn>
             <PropertyColumn Property="x => x.OutPutType" Title="Type" />

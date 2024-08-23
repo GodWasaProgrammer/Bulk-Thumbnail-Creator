@@ -45,15 +45,16 @@
 
     <ItemGroup>
         <PackageReference Include="libpng-msvc-x64" Version="1.6.33.8807" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.3" />
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.3" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.3" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.3" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.3" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.3" />
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
-        <PackageReference Include="MudBlazor" Version="6.19.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.8" />
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.8" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.4" />
+        <PackageReference Include="MudBlazor" Version="7.6.0" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.8" />
 
     </ItemGroup>
 

@@ -29,6 +29,17 @@ RUN apt-get update && \
         libopenblas-dev \
         libfreetype6 \
         libgdiplus \
+        libfontconfig1 \
+        libfreetype6 \
+        libjpeg-dev \
+        libpng-dev \
+        libtiff-dev \
+        libwebp-dev \
+        libcairo2 \
+        libharfbuzz0b \
+        libpango-1.0-0 \
+        libpangoft2-1.0-0 \
+        libpixman-1-0 \
     && curl -s -o ttf-mscorefonts-installer_3.7_all.deb http://ftp.us.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.7_all.deb \
     && sh -c "echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections" \
     && dpkg -i ttf-mscorefonts-installer_3.7_all.deb \

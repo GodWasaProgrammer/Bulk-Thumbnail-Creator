@@ -55,7 +55,7 @@ namespace BulkThumbnailCreator.DataMethods
                 using var data = skImage.Encode();
                 try
                 {
-                    string outPutFile = $"{logoFilePath}{i}.png";
+                    var outPutFile = $"{logoFilePath}{i}.png";
                     using var stream = File.OpenWrite(outPutFile);
                     outPutFile = outPutFile.Replace("wwwroot\\", "");
                     logos.Add(outPutFile);

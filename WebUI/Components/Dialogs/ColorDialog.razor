@@ -3,7 +3,7 @@
 @using MudBlazor.Utilities
 @inject IDialogService DialogService
 
-        <MudColorPicker @bind-Value="SelectedColor" ColorPickerMode="ColorPickerMode.HSL" PickerVariant="PickerVariant.Static" DisableAlpha DisableModeSwitch />
+        <MudColorPicker @bind-Value="SelectedColor" ColorPickerMode="ColorPickerMode.HSL" PickerVariant="PickerVariant.Static"/>
         <MudButton Color="Color.Success" OnClick="ConfirmSelection">OK</MudButton>
         <MudButton Color="Color.Error" OnClick="CloseDialog">Cancel</MudButton>
 @code 
