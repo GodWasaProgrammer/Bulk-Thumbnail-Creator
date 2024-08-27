@@ -8,39 +8,6 @@ function initCanvas()
     const image = container.querySelector('img');
     let isDragging = false;
     let startX, startY, currentX, currentY;
-    let markerSize = 8; // Size of the corner markers
-
-    function createMarkers()
-    {
-        // Ensure the parent container is positioned relatively
-        container.style.position = 'relative';
-
-        // Define marker positions relative to the canvas
-        const markers = [
-            { left: 0, top: 0 }, // Top-left
-            { left: canvas.width - markerSize, top: 0 }, // Top-right
-            { left: 0, top: canvas.height - markerSize }, // Bottom-left
-            { left: canvas.width - markerSize, top: canvas.height - markerSize } // Bottom-right
-        ];
-
-        markers.forEach(marker => {
-            const mark = document.createElement('div');
-            mark.style.position = 'absolute';
-            mark.style.width = `${markerSize}px`;
-            mark.style.height = `${markerSize}px`;
-            mark.style.backgroundColor = 'red';
-            mark.style.borderRadius = '50%';
-            mark.style.cursor = 'pointer';
-            mark.style.left = `${marker.left}px`;
-            mark.style.top = `${marker.top}px`;
-            mark.className = 'corner-marker';
-            mark.dataset.x = marker.x;
-            mark.dataset.y = marker.y;
-            mark.addEventListener('mousedown', (e) => startDragging(e, marker.x, marker.y));
-            document.body.appendChild(mark);
-            container.appendChild(mark);
-        });
-    }
 
     function startDragging(e, x, y)
     {
@@ -135,15 +102,15 @@ function initCanvas()
             return null;
         }
 
-        // Bildens faktiska storlek
+        // Pictures actual size
         const originalWidth = image.naturalWidth;
         const originalHeight = image.naturalHeight;
 
-        // Skalningsfaktorer
+        // Scaling Factors
         const scaleX = originalWidth / displayedWidth;
         const scaleY = originalHeight / displayedHeight;
 
-        // Justera rektangeldatan
+        // Adjust rectangle data
         return {
             x: rect.x * scaleX,
             y: rect.y * scaleY,
@@ -151,14 +118,5 @@ function initCanvas()
             height: rect.height * scaleY
         };
     }
-
-    // Make methods available to Blazor
     window.getRectangleData = getRectangleData;
-    window.removeMarkers = function ()
-    {
-        const markers = document.querySelectorAll('.corner-marker');
-        markers.forEach(marker => marker.remove());
-    };
-
-    createMarkers();
 }
