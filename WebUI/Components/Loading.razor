@@ -3,6 +3,7 @@
 @using BulkThumbnailCreator.Services;
 @using BulkThumbnailCreator.Enums;
 @using MudBlazor;
+@using System.Text.RegularExpressions
 
 @inject ILogService Logger
 @inject CreatorService PicDataService
@@ -11,6 +12,7 @@
 
 @if (processing)
 {
+    <MudProgressLinear Buffer="true" BufferValue="BufferValue" Size="Size.Medium" Color="Color.Warning" Value="@Value" Class="my-7" />
     @for (int i = LogEntries.TakeLast(takeEntries).Count() - 1; i >= 0; i--)
     {
         var entry = LogEntries.ElementAt(i);
@@ -20,6 +22,8 @@
 
 @code
 {
+    private bool _disposed;
+
     private bool IsInitialized { get; set; } = false;
 
     [Parameter]
@@ -40,6 +44,18 @@
         StateHasChanged();
     }
 
+    // value of progress bar
+    private double Value { get; set; }
+
+    // Buffer
+    public int BufferValue { get; set; }
+
+    // number of images being processed
+    private double _numberOfImages;
+
+    // number of created files
+    private int _createdFilesCount = 0;
+
     private void OnLogEntryAdded(string logEntry)
     {
         // so its supposed to request a job if its null, otherwise it shouldnt disrupt anything
@@ -54,7 +70,76 @@
         takeEntries++;
 
         LogEntries.Add(logEntry);
+        if (logEntry.Contains("Windows OS Detected"))
+        {
+            Value += 2.5;
+            BufferValue = 10;
+        }
+        if (logEntry.Contains("YTDLP has been confirmed"))
+        {
+            Value += 2.5;
+        }
+        if (logEntry.Contains("FFmpeg Has been confirmed"))
+        {
+            Value += 2.5;
+        }
+        if (logEntry.Contains("YTDL has been confirmed"))
+        {
+            Value += 2.5;
+        }
+        if (logEntry.Contains("Attempting download of:"))
+        {
+            Value += 10;
+        }
+        if (logEntry.Contains("Download Success:True"))
+        {
+            Value += 30;
+        }
+        if (logEntry.Contains("FFMpeg started"))
+        {
+            Value += 5;
+        }
+        if (logEntry.Contains("Ffmpeg finished producing pictures"))
+        {
+            Value += 5;
+        }
+        if (logEntry.Contains("Processing"))
+        {
+            // Regex för att hitta en eller flera siffror i strängen
+            Regex regex = new Regex(@"\d+");
+            Match match = regex.Match(logEntry);
+
+            if (match.Success)
+            {
+                // Konvertera det matchade värdet till en int (eller annan siffertyp om så behövs)
+                var number = double.Parse(match.Value);
+                _numberOfImages = number;
+            }
+
+            Value += 5;
+        }
+
+        if (logEntry.Contains("File Created"))
+        {
+            _createdFilesCount++;
+
+            double valueOfProcess = 30;
+            double valueToAdd = valueOfProcess / _numberOfImages;
+            Value += valueToAdd;
+
+        }
+
+        if (logEntry.Contains("Processing Finished"))
+        {
+            if (Value is < 100)
+            {
+                Value = 100;
+            }
+        }
+
         InvokeAsync(() => StateHasChanged());
+        if (Value is 100)
+            Value = 0;
     }
 
     private void ExpandLog()
@@ -100,4 +185,5 @@
         Logger.LogEntryAdded += OnLogEntryAdded;
         IsInitialized = true;
     }
+    public void Dispose() => _disposed = true;
 }
