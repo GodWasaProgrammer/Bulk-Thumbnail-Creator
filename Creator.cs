@@ -138,6 +138,7 @@ public static partial class Creator
             #region Variety Data Generation
             var dirWrapper = new DirectoryWrapper();
             var varietyInstance = new Variety(dirWrapper, settings);
+
             //// Produce varietydata for the current object
             for (var i = 0; i < settings.PictureDatas.Count; i++)
             {

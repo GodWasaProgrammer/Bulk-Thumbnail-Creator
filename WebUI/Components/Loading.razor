@@ -12,7 +12,7 @@
 
 @if (processing)
 {
-    <MudProgressLinear Buffer="true" BufferValue="BufferValue" Size="Size.Medium" Color="Color.Warning" Value="@Value" Class="my-7" />
+    <MudProgressLinear Striped="true" Buffer="true" BufferValue="BufferValue" Size="Size.Medium" Color="Color.Warning" Value="@Value" Class="my-7" />
     @for (int i = LogEntries.TakeLast(takeEntries).Count() - 1; i >= 0; i--)
     {
         var entry = LogEntries.ElementAt(i);
@@ -29,7 +29,8 @@
     [Parameter]
     public Job CurrentJob { get; set; }
 
-    private string CurrentUser;
+    [Parameter]
+    public string CurrentUser { get; set; }
 
     [Parameter]
     public int takeEntries { get; set; } = 10;
@@ -48,7 +49,7 @@
     private double Value { get; set; }
 
     // Buffer
-    public int BufferValue { get; set; }
+    private double BufferValue = 10;
 
     // number of images being processed
     private double _numberOfImages;
@@ -73,60 +74,99 @@
         if (logEntry.Contains("Windows OS Detected"))
         {
             Value += 2.5;
-            BufferValue = 10;
+            BufferValue += 2.5;
         }
         if (logEntry.Contains("YTDLP has been confirmed"))
         {
             Value += 2.5;
+            BufferValue += 2.5;
         }
         if (logEntry.Contains("FFmpeg Has been confirmed"))
         {
             Value += 2.5;
+            BufferValue += 2.5;
         }
         if (logEntry.Contains("YTDL has been confirmed"))
         {
             Value += 2.5;
+            BufferValue += 2.5;
         }
         if (logEntry.Contains("Attempting download of:"))
         {
             Value += 10;
+            BufferValue += 10;
         }
         if (logEntry.Contains("Download Success:True"))
         {
             Value += 30;
+            BufferValue += 30;
         }
         if (logEntry.Contains("FFMpeg started"))
         {
             Value += 5;
+            BufferValue += 5;
         }
         if (logEntry.Contains("Ffmpeg finished producing pictures"))
         {
             Value += 5;
+            BufferValue += 5;
         }
         if (logEntry.Contains("Processing"))
         {
-            // Regex för att hitta en eller flera siffror i strängen
+            // Regex to find the number in the string
             Regex regex = new Regex(@"\d+");
             Match match = regex.Match(logEntry);
 
             if (match.Success)
             {
-                // Konvertera det matchade värdet till en int (eller annan siffertyp om så behövs)
+                // lift number of processed image from string using regex
                 var number = double.Parse(match.Value);
                 _numberOfImages = number;
             }
 
             Value += 5;
+            BufferValue += 5;
         }
 
+        if (logEntry.Contains("composited"))
+        {
+            if (_numberOfImages is not 0)
+            {
+                if (BufferValue > 10)
+                {
+                    double valueOfProcess = 15;
+                    double PresumedAmountOfBoxes = _numberOfImages * 2;
+                    double valueToAdd = valueOfProcess / PresumedAmountOfBoxes;
+                    Value += valueToAdd;
+                    BufferValue += valueToAdd;
+                }
+            }
+            else
+            {
+                double valueOfProcess = 50;
+                double PresumedAmountOfBoxes = 6 * 2;
+                double valueToAdd = valueOfProcess / PresumedAmountOfBoxes;
+                Value += valueToAdd;
+                BufferValue += valueToAdd;
+            }
+        }
         if (logEntry.Contains("File Created"))
         {
-            _createdFilesCount++;
-
-            double valueOfProcess = 30;
-            double valueToAdd = valueOfProcess / _numberOfImages;
-            Value += valueToAdd;
-
+            if (_numberOfImages is not 0)
+            {
+                _createdFilesCount++;
+                double valueOfProcess = 15;
+                double valueToAdd = valueOfProcess / _numberOfImages;
+                Value += valueToAdd;
+                BufferValue += valueToAdd;
+            }
+            else
+            {
+                double valueOfProcess = 15;
+                double valueToAdd = valueOfProcess / 6;
+                Value += valueToAdd;
+                BufferValue += valueToAdd;
+            }
         }
 
         if (logEntry.Contains("Processing Finished"))
@@ -134,12 +174,16 @@
             if (Value is < 100)
             {
                 Value = 100;
+                BufferValue = 10;
             }
         }
 
         InvokeAsync(() => StateHasChanged());
-        if (Value is 100)
-            Value = 0;
+        if (Value > 100 || Value == 100)
+        {
+            if (logEntry.Contains("Processing Finished"))
+                Value = 1; BufferValue = 10;
+        }
     }
 
     private void ExpandLog()
@@ -163,9 +207,13 @@
     protected override async Task OnInitializedAsync()
     {
         JobService.RegisterDelegateForJobChange(JobStateHasChanged);
-        var AuthState = AuthProvider.GetAuthenticationStateAsync().Result;
 
-        CurrentUser = AuthState.User.Identity.Name;
+        if (CurrentUser is null)
+        {
+            var AuthState = AuthProvider.GetAuthenticationStateAsync().Result;
+            CurrentUser = AuthState.User.Identity.Name;
+        }
+
 
         if (CurrentJob is null)
         {

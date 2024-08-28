@@ -8,13 +8,15 @@
     <MudText Color="Color.Info" Typo="Typo.h4">@loadingMessage</MudText>
     </div>
     <div>
-        <Loading processing="true"></Loading>
+        <Loading CurrentUser="@CurrentUser" processing="true"></Loading>
     </div>
 
     @code
-    {
+{
     private string loadingMessage = "We are loading your content";
 
+    [Parameter]
+    public string CurrentUser { get; set; }
     private Timer timer;
     private int dotCount = 1;
 

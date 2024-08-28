@@ -170,6 +170,8 @@ public static class Production
         // downloads specified video from youtube if it does not already exist.
         RunResult<string> res;
 
+        ytdl.OverwriteFiles = false;
+
         if (url == null)
         {
             await settings.LogService.LogError("URL has been passed as null to YTDL");
