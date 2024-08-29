@@ -23,19 +23,15 @@
     <MudGrid Justify="Justify.Center">
         <MudPaper Outlined="true" Elevation="3">
 
-
             @if (loading is false)
             {
                 <MudItem>
                     <MudText Align="Align.Center" Color="Color.Tertiary">Make Varieties</MudText>
-
                     <MudButton OnClick="CreateFonts" Variant="Variant.Filled" Color="Color.Secondary">Fonts</MudButton>
                     <MudButton OnClick="CreateColors" Variant="Variant.Filled" Color="Color.Secondary">Colors</MudButton>
                     <MudButton OnClick="FXVariety" Variant="Variant.Filled" Color="Color.Secondary">F/X</MudButton>
                     <MudButton Variant="Variant.Filled" Color="Color.Secondary">Memes</MudButton>
-
                     <MudButton Variant="Variant.Filled" Color="Color.Secondary">Randomize</MudButton>
-
                 </MudItem>
             }
 
@@ -44,7 +40,6 @@
 }
 @if (loading is false)
 {
-
     <div class="image-container">
         @if (VarietyUrls != null && CustomPicture == false)
         {
@@ -52,7 +47,21 @@
             {
                 var index = ClickedImage;
 
-                <img class="image-button" src="@VarietyUrls[index]" @onclick="(() => NavToCustomizePicture(VarietyUrls[index]))" />
+                <div class="image-wrapper">
+                    <!-- Bilden -->
+                    <MudImage Fluid="true" class="image-button" src="@VarietyUrls[index]" />
+
+                    <!-- Knappar som visas ovanpå bilden -->
+                    <div class="buttons">
+                        <MudButton Class="button" OnClick="(() => NavToCustomizePicture(VarietyUrls[index]))" Color="Color.Primary" Variant="Variant.Filled">
+                            Customize
+                        </MudButton>
+                        <MudButton Class="button" OnClick="(() => SelectPicture(VarietyUrls[index]))" Color="Color.Secondary" Variant="Variant.Filled">
+                            Select
+                        </MudButton>
+                    </div>
+                </div>
+
                 @if ((ClickedImage + 1) % 3 == 0)
                 {
                     <div style="flex-basis: 100%; height: 0;"></div>
@@ -64,16 +73,8 @@
         {
             <CustomizePicture CurrentJob="CurrentJob" CurrentPagePictureData="passData" ImageURL="@passURL" />
         }
-
     </div>
 
-    @if (VarietyUrls != null && CustomPicture == false)
-    {
-        <div style="justify-content:center">
-
-            <MudButton Variant="Variant.Filled" Color="Color.Secondary" ButtonType="ButtonType.Reset" OnClick="JobService.ResetState">Restart</MudButton>
-        </div>
-    }
 }
 
 @code
@@ -86,6 +87,22 @@
         CustomPicture = false;
         VarietyUrls = null;
         InvokeAsync(() => StateHasChanged());
+    }
+
+    private void SelectPicture(string VarietyUrl)
+    {
+        foreach (var variety in ParentPictureProp.Varieties)
+        {
+            var filename = Path.GetFileName(VarietyUrl);
+            if (variety.OutPath.Contains(filename))
+            {
+                ParentPictureProp = variety;
+                picDataBoxURL = ParentPictureProp.OutPath;
+                VarietyUrls.Clear();
+                break;
+            }
+        }
+        StateHasChanged();
     }
 
     private async Task FXVariety()
@@ -216,29 +233,66 @@
 }
 
 <style>
-    /* Style the image container */
-    .image-container2 {
-        display: flex;
-        flex-wrap: wrap;
-        height: 100%;
-        justify-content: center;
-    }
-
-    image-container img {
-        max-width: calc(50% - 50px); /* Set the width for each image in the row */
-        margin: 10px;
-    }
-</style>
-
-<style>
     .image-container {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
+        gap: 20px; /* Mellanrum mellan bilder */
     }
 
-        .image-container img {
-            max-width: calc(30% - 50px); /* Set the width for each image in the row */
-            margin: 10px;
+    .image-wrapper {
+        position: relative;
+        width: 300px; /* Fastställd bredd */
+        height: 200px; /* Fastställd höjd */
+        overflow: hidden; /* Ser till att inget sticker ut */
+        box-sizing: border-box;
+    }
+
+        .image-wrapper img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            margin: auto; /* Centrera bilden */
+            object-fit: cover; /* Ser till att bilden täcker hela wrappern och behåller proportioner */
+            display: block;
         }
+
+    .buttons {
+        position: absolute;
+        bottom: 21px; /* 21px från botten */
+        left: 0; /* För vänsterknappen */
+        right: 0; /* För högerknappen */
+        display: flex;
+        justify-content: space-between; /* Placera knappar i vänster och höger hörn */
+        padding: 0 10px; /* Lägg till padding så knapparna är inramade */
+        z-index: 10; /* Gör så att knapparna ligger ovanpå bilden */
+        visibility: hidden; /* Dölj knappar initialt, visa med opacity i hover */
+        opacity: 0; /* Sätt opacity till 0 för att dölja knapparna */
+        transition: opacity 0.3s ease; /* Gör övergången smidig */
+    }
+
+    .image-wrapper:hover .buttons {
+        visibility: visible; /* Gör knapparna synliga när man hovrar över bilden */
+        opacity: 1; /* Sätt opacity till 1 vid hovring */
+    }
+
+    .button {
+        background-color: rgba(0, 0, 0, 0.6); /* Bakgrundsfärg på knapparna */
+        color: white;
+        border: none;
+        border-radius: 5px; /* Rundade hörn */
+        cursor: pointer; /* Pekare vid hovring */
+        transition: background-color 0.3s ease; /* Smidig övergång vid hovring */
+    }
+
+        .button:hover {
+            background-color: rgba(0, 0, 0, 0.8); /* Bakgrundsfärg vid hovring */
+        }
+
 </style>
