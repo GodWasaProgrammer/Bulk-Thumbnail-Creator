@@ -1,4 +1,5 @@
-﻿using BulkThumbnailCreator.Wrappers;
+﻿using BulkThumbnailCreator.PictureClasses;
+using BulkThumbnailCreator.Wrappers;
 
 namespace BulkThumbnailCreator;
 
@@ -10,8 +11,24 @@ public static partial class Creator
         var pathToDownloadedVideo = await Production.YouTubeDL(url, settings);
         return pathToDownloadedVideo;
     }
+    private static async Task RunFFMpeg(Settings settings)
+    {
+        var parameters = new Dictionary<string, string>();
 
-    public static async Task<List<PictureData>> FrontPagePictureLineup(string url, Settings settings)
+        var extractedfilename = Path.GetFileName(settings.PathToVideo);
+        parameters["i"] = $@"""{extractedfilename}""";
+        parameters["vf"] = "select='gt(scene,0.3)',select=key";
+        parameters["vsync"] = "vfr";
+
+        // get our current location
+        var parentDirectory = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName;
+
+        var pictureOutput = $@"""{Path.GetRelativePath(Path.Combine(parentDirectory, "Executables"), settings.OutputDir)}/%03d.png""";
+
+        await FFmpegHandler.RunFFMPG(parameters, pictureOutput, settings);
+    }
+
+    public static async Task<List<PictureData>> FrontPageLineup(string url, Settings settings)
     {
         settings.PictureDatas = [];
 
@@ -166,21 +183,84 @@ public static partial class Creator
         return settings.PictureDatas;
     }
 
-    private static async Task RunFFMpeg(Settings settings)
+    public static async Task<List<PictureData>> VarietyLineup(Settings settings, PictureData pictureData)
     {
-        var parameters = new Dictionary<string, string>();
+        if (pictureData == null)
+        {
+            await settings.LogService.LogError("null has been passed to PicdataobjToVarietize");
+        }
+        else
+        {
+            List<Task> productionVarietyTaskList = [];
+            SemaphoreSlim semaphore = new(4);
 
-        var extractedfilename = Path.GetFileName(settings.PathToVideo);
-        parameters["i"] = $@"""{extractedfilename}""";
-        parameters["vf"] = "select='gt(scene,0.3)',select=key";
-        parameters["vsync"] = "vfr";
+            foreach (var picData in pictureData.Varieties)
+            {
+                await semaphore.WaitAsync(); // Acquire a semaphore slot
 
-        // get our current location
-        var parentDirectory = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName;
+                var productionTask = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await Production.ProduceTextPictures(picData, settings);
+                    }
+                    finally
+                    {
+                        semaphore.Release(); // Release the semaphore slot when done
+                    }
+                });
 
-        var pictureOutput = $@"""{Path.GetRelativePath(Path.Combine(parentDirectory, "Executables"), settings.OutputDir)}/%03d.png""";
+                productionVarietyTaskList.Add(productionTask);
+            }
 
-        await FFmpegHandler.RunFFMPG(parameters, pictureOutput, settings);
+            await Task.WhenAll(productionVarietyTaskList);
+        }
+
+        if (Mocking.BTCRunCount != 1 && settings.MakeMocking)
+        {
+            await Mocking.CopyVarietyDir(settings);
+        }
+        return settings.PictureDatas;
+    }
+
+    public static async Task<List<PictureData>> CustomPicture(Settings settings, PictureData pictureData)
+    {
+        if (pictureData == null)
+        {
+            await settings.LogService.LogError("Null has been passed to CustomPicture");
+        }
+        else
+        {
+            await Production.ProduceTextPictures(pictureData, settings);
+            settings.PictureDatas.Add(pictureData);
+        }
+        return settings.PictureDatas;
+    }
+
+    public static async Task FontVariety(Job job, PictureData pictureData)
+    {
+        DirectoryWrapper directoryWrapper = new();
+        Variety variety = new(directoryWrapper, job.Settings);
+        var picdata = await variety.Fonts(pictureData);
+        job.VarietyUrls.Clear();
+
+        foreach(var varietyData in picdata.Varieties)
+        {
+            await Production.ProduceTextPictures(varietyData,job.Settings);
+        }
+
+        var parentfilename = Path.GetFileName(pictureData.FileName);
+        var concatenatedString = $"{job.Settings.TextAddedDir}/varietyof{parentfilename}/FontVariety";
+        var arrayOfFilePaths = Directory.GetFiles(concatenatedString, "*.png");
+
+        List<string> imageUrls = [];
+        foreach (var filepath in arrayOfFilePaths)
+        {
+            var imageurl = $"/{filepath}"; // convert to URL
+            imageUrls.Add(imageurl);
+        }
+        job.VarietyUrls = imageUrls;
+        job.PictureData.Add(picdata);
     }
 
     public static async Task<List<PictureData>> Process(ProductionType prodType, string url, List<string> texts, Settings settings, PictureData pictureData = null)

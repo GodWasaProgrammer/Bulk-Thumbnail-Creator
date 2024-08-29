@@ -67,8 +67,6 @@ public class CreatorService
         settings.ListOfText = listOfTextToPrint;
         job.Settings = settings;
         job.TextToPrint = listOfTextToPrint;
-        
-
 
         if (job.Settings.Mocking && job.Settings.MakeMocking)
         {
@@ -76,7 +74,7 @@ public class CreatorService
         }
         else
         {
-            job.PictureData = await Creator.FrontPagePictureLineup(url, settings);
+            job.PictureData = await Creator.FrontPageLineup(url, settings);
         }
 
         if (settings.PathToVideo != null)
@@ -120,7 +118,8 @@ public class CreatorService
         else
         {
             job.State = States.Loading;
-            job.PictureData = await Creator.Process(ProductionType.VarietyList, url, job.TextToPrint, job.Settings, pictureData);
+            //job.PictureData = await Creator.Process(ProductionType.VarietyList, url, job.TextToPrint, job.Settings, pictureData);
+            job.PictureData = await Creator.VarietyLineup(job.Settings, pictureData);
             job.State = States.varietyList;
         }
 
@@ -163,39 +162,19 @@ public class CreatorService
     public async Task<PictureData> CreateFontVariety(PictureData pictureData, Job job)
     {
         IsLoading = true;
-        DirectoryWrapper directoryWrapper = new();
-        Variety variety = new(directoryWrapper, job.Settings);
-        var picdata = await variety.Fonts(pictureData);
-        var ProdType = ProductionType.VarietyList;
 
-        job.PictureData = await Creator.Process(ProdType, "", job.TextToPrint, job.Settings, picdata);
-
-        job.VarietyUrls.Clear();
-
-        var parentfilename = Path.GetFileName(pictureData.FileName);
-        var concatenatedString = $"{job.Settings.TextAddedDir}/varietyof{parentfilename}";
-        var arrayOfFilePaths = Directory.GetFiles(concatenatedString, "*.png");
-
-        List<string> imageUrls = [];
-        foreach (var filepath in arrayOfFilePaths)
-        {
-            var imageurl = $"/{filepath}"; // convert to URL
-            imageUrls.Add(imageurl);
-        }
-
-        job.PictureData.Add(picdata);
+        await Creator.FontVariety(job, pictureData);
 
         IsLoading = false;
 
-        return picdata;
+        return pictureData;
     }
 
     public async Task<PictureData> CreateCustomPicDataObject(PictureData pictureData, Job job)
     {
         _isLoading = true;
         job.State = States.CustomPicture;
-        var url = string.Empty;
-        job.PictureData = await Creator.Process(ProductionType.CustomPicture, url, job.TextToPrint, job.Settings, pictureData);
+        job.PictureData = await Creator.CustomPicture(job.Settings, pictureData);
         _isLoading = false;
 
         return pictureData;

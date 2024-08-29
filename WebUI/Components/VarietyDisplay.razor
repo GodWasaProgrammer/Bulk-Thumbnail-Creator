@@ -15,53 +15,65 @@
 {
     <MudGrid Justify="Justify.Center">
         <MudPaper Outlined="true" Elevation="3">
-
             <MudItem>
                 <MudImage ObjectPosition="ObjectPosition.Center" style="width: 300px; height: 200px;" Fluid="true" Src="@picDataBoxURL"></MudImage>
             </MudItem>
+        </MudPaper>
+    </MudGrid>
+    <MudGrid Justify="Justify.Center">
+        <MudPaper Outlined="true" Elevation="3">
 
-            <MudItem>
-                <MudText Align="Align.Center" Color="Color.Tertiary">Make Varieties</MudText>
-                
-                    <MudButton OnClick="CreateFonts" Variant="Variant.Filled" Color="Color.Secondary" >Fonts</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" >Colors</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" >F/X</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" >Memes</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" >Randomize</MudButton>
-                
-            </MudItem>
+
+            @if (loading is false)
+            {
+                <MudItem>
+                    <MudText Align="Align.Center" Color="Color.Tertiary">Make Varieties</MudText>
+
+                    <MudButton OnClick="CreateFonts" Variant="Variant.Filled" Color="Color.Secondary">Fonts</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary">Colors</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary">F/X</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary">Memes</MudButton>
+
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary">Randomize</MudButton>
+
+                </MudItem>
+            }
 
         </MudPaper>
     </MudGrid>
 }
-<div class="image-container">
-    @if (VarietyUrls != null && CustomPicture == false)
-    {
-        @for (int ClickedImage = 0; ClickedImage < VarietyUrls.Count; ClickedImage++)
-        {
-            var index = ClickedImage;
+@if (loading is false)
+{
 
-            <img class="image-button" src="@VarietyUrls[index]" @onclick="(() => NavToCustomizePicture(VarietyUrls[index]))" />
-            @if ((ClickedImage + 1) % 3 == 0)
+    <div class="image-container">
+        @if (VarietyUrls != null && CustomPicture == false)
+        {
+            @for (int ClickedImage = 0; ClickedImage < VarietyUrls.Count; ClickedImage++)
             {
-                <div style="flex-basis: 100%; height: 0;"></div>
+                var index = ClickedImage;
+
+                <img class="image-button" src="@VarietyUrls[index]" @onclick="(() => NavToCustomizePicture(VarietyUrls[index]))" />
+                @if ((ClickedImage + 1) % 3 == 0)
+                {
+                    <div style="flex-basis: 100%; height: 0;"></div>
+                }
             }
         }
-    }
 
-    @if (CustomPicture)
-    {
-        <CustomizePicture CurrentJob="CurrentJob" CurrentPagePictureData="passData" ImageURL="@passURL" />
-    }
+        @if (CustomPicture)
+        {
+            <CustomizePicture CurrentJob="CurrentJob" CurrentPagePictureData="passData" ImageURL="@passURL" />
+        }
 
-</div>
-
-@if (VarietyUrls != null && CustomPicture == false)
-{
-    <div style="justify-content:center">
-
-        <MudButton Variant="Variant.Filled" Color="Color.Secondary" ButtonType="ButtonType.Reset" OnClick="JobService.ResetState">Restart</MudButton>
     </div>
+
+    @if (VarietyUrls != null && CustomPicture == false)
+    {
+        <div style="justify-content:center">
+
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" ButtonType="ButtonType.Reset" OnClick="JobService.ResetState">Restart</MudButton>
+        </div>
+    }
 }
 
 @code
@@ -80,15 +92,24 @@
 
     public async Task CreateFonts()
     {
+        loading = true;
         _disableButtons = true;
         ParentPictureProp = await PicDataService.CreateFontVariety(ParentPictureProp, CurrentJob);
         _VarietyUrls = CurrentJob.VarietyUrls;
         picDataBoxURL = ParentPictureProp.OutPath;
+        loading = false;
         StateHasChanged();
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
     }
 
     [Parameter]
     public string picDataBoxURL { get; set; }
+
+    private bool loading = false;
 
     [Parameter]
     public Job CurrentJob { get; set; }

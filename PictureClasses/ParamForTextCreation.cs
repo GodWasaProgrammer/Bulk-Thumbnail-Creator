@@ -22,6 +22,8 @@ public class ParamForTextCreation
         WidthOfBox = param.WidthOfBox; // int
         HeightOfBox = param.HeightOfBox; // int
         Meme = (string)param.Meme?.Clone(); // string
+        MemeBool = param.MemeBool; // boolean
+        Shadows = param.Shadows; // boolean
         FillColor = new ColorItem(param.FillColor); // object
         StrokeColor = new ColorItem(param.StrokeColor); // object
         Boxes = new List<Box>(param.Boxes); // dictionary

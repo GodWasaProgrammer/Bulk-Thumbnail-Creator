@@ -127,6 +127,7 @@
     private async Task ShowImageDetail(string imageToDisplayVarietyOf)
     {
         IMGDetailClicked = true;
+        passUrl = imageToDisplayVarietyOf;
 
         picdata = await CreatorService.SetPictureDataImageDisplayCorrelation(imageToDisplayVarietyOf, CurrentJob);
         CurrentJob.VarietyUrls = await PicDataService.CreatePictureDataVariety(picdata, CurrentJob);
