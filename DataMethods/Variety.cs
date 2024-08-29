@@ -11,6 +11,38 @@ public class Variety
         _isettings = settings;
     }
 
+    public async Task<PictureData> Fonts(PictureData pictureData)
+    {
+        // we will make 6 new font varieties
+        const int FontVarietiesToMake = 6;
+
+        // make a new object with same values
+        var copiedPicData = new PictureData(pictureData);
+
+        // clear out the list
+        copiedPicData.Varieties.Clear();
+
+        for (var i = 0; i < FontVarietiesToMake; i++)
+        {
+            PictureData varietyData = new(copiedPicData);
+
+            foreach (var boxparameter in varietyData.BoxParameters)
+            {
+                var dg = new DataGeneration(_directoryWrapper);
+                var excludeFonts = boxparameter.Font;
+
+                do
+                {
+                    boxparameter.Font = await Task.Run(() => dg.PickRandomFont());
+                } while (excludeFonts.Contains(boxparameter.Font));
+            }
+            // add the result
+            varietyData.OutPutType = OutputType.FontVariety;
+            copiedPicData.Varieties.Add(varietyData);
+        }
+        return copiedPicData;
+    }
+
     public void Random(PictureData pictureInputData)
     {
         const int NumberOfRandomsToProduce = 5;

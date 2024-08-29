@@ -30,8 +30,9 @@
 
                             @foreach (var font in _availableFonts)
                             {
+                                var displayInFont = @Path.GetFileNameWithoutExtension(font);
                                 <MudSelectItem Value="font">
-                                    <div style="font-family: '@font';">@Path.GetFileNameWithoutExtension(font)</div>
+                                    <div style="font-family: '@displayInFont';">@Path.GetFileNameWithoutExtension(font)</div>
                                     
                                     </MudSelectItem>
                             }

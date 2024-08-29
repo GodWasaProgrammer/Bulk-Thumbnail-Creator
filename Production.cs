@@ -361,6 +361,14 @@ public static class Production
             outputPath += "//" + guid + imageName;
             pictureData.OutPath = outputPath;
         }
+        if (pictureData.OutPutType is OutputType.FontVariety)
+        {
+            var guid = Guid.NewGuid();
+            outputPath += $"{Varietyof}/FontVariety";
+            Directory.CreateDirectory(outputPath);
+            outputPath += $"{imageName}//{guid}.png";
+            pictureData.OutPath = outputPath;
+        }
         if (pictureData.OutPutType == OutputType.RandomVariety)
         {
             var guid = Guid.NewGuid();

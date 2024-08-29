@@ -11,6 +11,178 @@ public static partial class Creator
         return pathToDownloadedVideo;
     }
 
+    //public static async Task<List<PictureData>> FrontPagePictureLineup(string url, Settings settings)
+    //{
+    //    #region Front Page Picture Line Up Output
+
+    //    settings.PictureDatas = [];
+
+    //    // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
+    //    Production.CreateDirectories(settings.OutputDir, settings.TextAddedDir, settings.YTDLOutPutDir, settings);
+
+    //    await Production.VerifyDirectoryAndExeIntegrity(settings);
+
+    //    settings.PathToVideo = await Production.YouTubeDL(url, settings);
+
+    //    settings.OutputDir = settings.OutputDir + "/" + CleanPathRegEx().Replace(Path.GetFileNameWithoutExtension(settings.PathToVideo), "");
+    //    Directory.CreateDirectory(settings.OutputDir);
+
+    //    settings.TextAddedDir = settings.TextAddedDir + "/" + CleanPathRegEx().Replace(Path.GetFileNameWithoutExtension(settings.PathToVideo), "");
+    //    Directory.CreateDirectory(settings.TextAddedDir);
+
+    //    await RunFFMpeg(settings);
+
+    //    settings.Memes = Directory.GetFiles(settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
+
+    //    #region Face Detection
+
+    //    settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
+
+    //    await settings.LogService.LogInformation($"Processing {settings.Files.Length} images");
+    //    Array2D<RgbPixel> image = null;
+    //    Rectangle[] faceRectangles = null;
+
+    //    for (var fileIndex = 0; fileIndex < settings.Files.Length; fileIndex++)
+    //    {
+    //        // Asynchronously load image and perform face detection in a non-blocking background thread
+    //        await Task.Run(async () =>
+    //        {
+    //            try
+    //            {
+    //                // Load image
+    //                image = await Task.Run(() => Dlib.LoadImage<RgbPixel>(settings.Files[fileIndex]));
+
+    //                using var frontalFaceDetector = Dlib.GetFrontalFaceDetector();
+    //                // Detect faces in the image
+    //                faceRectangles = frontalFaceDetector.Operator(image);
+
+    //                // Continue processing with image and faceRectangles...
+    //            }
+    //            catch (Exception ex)
+    //            {
+    //                Console.WriteLine($"Error processing image: {ex.Message}");
+    //                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+    //                if (ex.InnerException != null)
+    //                {
+    //                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+    //                }
+    //            }
+    //        });
+
+    //        #endregion
+
+
+    //        PictureData passPictureData = new()
+    //        {
+    //            FileName = settings.Files[fileIndex],
+    //            _numberOfBoxes = 2,
+    //        };
+
+    //        for (var amountOfBoxes = 0; amountOfBoxes < passPictureData._numberOfBoxes; amountOfBoxes++)
+    //        {
+    //            ParamForTextCreation currentParameters = new();
+
+    //            List<BoxType> populatedBoxes = [];
+
+    //            if (passPictureData.BoxParameters.Count > 0)
+    //                populatedBoxes.Add(passPictureData.BoxParameters[0].CurrentBox.Type);
+
+
+    //            currentParameters.Boxes = DataGeneration.BuildDefaultBoxes(image);
+    //            DataGeneration.GetTextPosition(currentParameters, faceRectangles, populatedBoxes);
+    //            ColorData.SelectTwoRandomColors(currentParameters);
+    //            currentParameters.Gradient = DataGeneration.RandomBool();
+    //            currentParameters.Shadows = DataGeneration.RandomBool();
+
+    //            var directoryWrapper = new DirectoryWrapper();
+    //            var dg = new DataGeneration(directoryWrapper);
+    //            currentParameters.Font = dg.PickRandomFont();
+
+    //            // picks a random string from the list
+    //            Random pickAString = new();
+    //            var pickedString = pickAString.Next(settings.ListOfText.Count);
+    //            currentParameters.Text = settings.ListOfText[pickedString];
+    //            passPictureData.BoxParameters.Add(currentParameters);
+    //        }
+
+    //        settings.PictureDatas.Add(passPictureData);
+    //    }
+
+    //    var dirWrapper = new DirectoryWrapper();
+    //    var varietyInstance = new Variety(dirWrapper, settings);
+
+    //    //// Produce varietydata for the current object
+    //    for (var i = 0; i < settings.PictureDatas.Count; i++)
+    //    {
+    //        varietyInstance.Random(settings.PictureDatas[i]);
+    //        varietyInstance.Meme(settings.PictureDatas[i]);
+    //    }
+
+    //    #region File Production
+
+    //    SemaphoreSlim semaphore = new(4);
+    //    List<Task> productionTasks = [];
+
+    //    foreach (var picData in settings.PictureDatas)
+    //    {
+    //        var noBoxes = picData.BoxParameters.All(bp => bp.CurrentBox.Type == BoxType.None);
+
+    //        if (!noBoxes)
+    //        {
+    //            // Start the task asynchronously
+    //            var productionTask = Task.Run(async () =>
+    //            {
+    //                try
+    //                {
+    //                    // Acquire a slot from the semaphore
+    //                    await semaphore.WaitAsync();
+
+    //                    // Execute the image processing task
+    //                    await Production.ProduceTextPictures(picData, settings);
+    //                }
+    //                finally
+    //                {
+    //                    // Release the slot when the task completes or throws an exception
+    //                    semaphore.Release();
+    //                }
+    //            });
+
+    //            // Add the task to the list
+    //            productionTasks.Add(productionTask);
+    //        }
+    //    }
+
+    //    // Wait for all tasks to complete
+    //    await Task.WhenAll(productionTasks);
+
+    //    #endregion
+
+    //    #region Front Page Picture Line Up Mocking
+    //    if (Mocking.BTCRunCount != 1 && settings.MakeMocking)
+    //    {
+    //        // ffmpeg has finished, lets copy our mock data
+    //        Mocking.CopyOutPutDir(settings);
+    //    }
+    //    #endregion
+    //}
+
+    private static async Task RunFFMpeg(Settings settings)
+    {
+        var parameters = new Dictionary<string, string>();
+
+        var extractedfilename = Path.GetFileName(settings.PathToVideo);
+        parameters["i"] = $@"""{extractedfilename}""";
+        parameters["vf"] = "select='gt(scene,0.3)',select=key";
+        parameters["vsync"] = "vfr";
+
+        // get our current location
+        var parentDirectory = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName;
+
+        var pictureOutput = $@"""{Path.GetRelativePath(Path.Combine(parentDirectory, "Executables"), settings.OutputDir)}/%03d.png""";
+
+        await FFmpegHandler.RunFFMPG(parameters, pictureOutput, settings);
+    }
+
     public static async Task<List<PictureData>> Process(ProductionType prodType, string url, List<string> texts, Settings settings, PictureData pictureData = null)
     {
         settings.ListOfText = texts;

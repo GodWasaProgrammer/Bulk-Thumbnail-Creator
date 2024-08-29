@@ -10,6 +10,30 @@
 @inject JobService JobService;
 @inject AuthenticationStateProvider AuthProvider;
 
+@* here we will show the image that has been selected *@
+@if (VarietyUrls != null && CustomPicture == false)
+{
+    <MudGrid Justify="Justify.Center">
+        <MudPaper Outlined="true" Elevation="3">
+
+            <MudItem>
+                <MudImage ObjectPosition="ObjectPosition.Center" style="width: 300px; height: 200px;" Fluid="true" Src="@picDataBoxURL"></MudImage>
+            </MudItem>
+
+            <MudItem>
+                <MudText Align="Align.Center" Color="Color.Tertiary">Make Varieties</MudText>
+                
+                    <MudButton OnClick="CreateFonts" Variant="Variant.Filled" Color="Color.Secondary" >Fonts</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" >Colors</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" >F/X</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" >Memes</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" >Randomize</MudButton>
+                
+            </MudItem>
+
+        </MudPaper>
+    </MudGrid>
+}
 <div class="image-container">
     @if (VarietyUrls != null && CustomPicture == false)
     {
@@ -51,6 +75,20 @@
         VarietyUrls = null;
         InvokeAsync(() => StateHasChanged());
     }
+
+    private bool _disableButtons = false;
+
+    public async Task CreateFonts()
+    {
+        _disableButtons = true;
+        ParentPictureProp = await PicDataService.CreateFontVariety(ParentPictureProp, CurrentJob);
+        _VarietyUrls = CurrentJob.VarietyUrls;
+        picDataBoxURL = ParentPictureProp.OutPath;
+        StateHasChanged();
+    }
+
+    [Parameter]
+    public string picDataBoxURL { get; set; }
 
     [Parameter]
     public Job CurrentJob { get; set; }
@@ -97,6 +135,7 @@
                 {
                     VarietyUrls = CurrentJob.VarietyUrls;
                     StateHasChanged();
+                    picDataBoxURL = CurrentJob.ClickedImage;
                 }
                 if (CurrentJob.State == States.CustomPicture)
                 {
