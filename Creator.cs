@@ -11,160 +11,160 @@ public static partial class Creator
         return pathToDownloadedVideo;
     }
 
-    //public static async Task<List<PictureData>> FrontPagePictureLineup(string url, Settings settings)
-    //{
-    //    #region Front Page Picture Line Up Output
+    public static async Task<List<PictureData>> FrontPagePictureLineup(string url, Settings settings)
+    {
+        settings.PictureDatas = [];
 
-    //    settings.PictureDatas = [];
+        // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
+        Production.CreateDirectories(settings.OutputDir, settings.TextAddedDir, settings.YTDLOutPutDir, settings);
 
-    //    // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
-    //    Production.CreateDirectories(settings.OutputDir, settings.TextAddedDir, settings.YTDLOutPutDir, settings);
+        await Production.VerifyDirectoryAndExeIntegrity(settings);
 
-    //    await Production.VerifyDirectoryAndExeIntegrity(settings);
+        settings.PathToVideo = await Production.YouTubeDL(url, settings);
 
-    //    settings.PathToVideo = await Production.YouTubeDL(url, settings);
+        settings.OutputDir = settings.OutputDir + "/" + CleanPathRegEx().Replace(Path.GetFileNameWithoutExtension(settings.PathToVideo), "");
+        Directory.CreateDirectory(settings.OutputDir);
 
-    //    settings.OutputDir = settings.OutputDir + "/" + CleanPathRegEx().Replace(Path.GetFileNameWithoutExtension(settings.PathToVideo), "");
-    //    Directory.CreateDirectory(settings.OutputDir);
+        settings.TextAddedDir = settings.TextAddedDir + "/" + CleanPathRegEx().Replace(Path.GetFileNameWithoutExtension(settings.PathToVideo), "");
+        Directory.CreateDirectory(settings.TextAddedDir);
 
-    //    settings.TextAddedDir = settings.TextAddedDir + "/" + CleanPathRegEx().Replace(Path.GetFileNameWithoutExtension(settings.PathToVideo), "");
-    //    Directory.CreateDirectory(settings.TextAddedDir);
+        await RunFFMpeg(settings);
 
-    //    await RunFFMpeg(settings);
+        settings.Memes = Directory.GetFiles(settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
 
-    //    settings.Memes = Directory.GetFiles(settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
+        #region Face Detection
 
-    //    #region Face Detection
+        settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
-    //    settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
+        await settings.LogService.LogInformation($"Processing {settings.Files.Length} images");
+        Array2D<RgbPixel> image = null;
+        Rectangle[] faceRectangles = null;
 
-    //    await settings.LogService.LogInformation($"Processing {settings.Files.Length} images");
-    //    Array2D<RgbPixel> image = null;
-    //    Rectangle[] faceRectangles = null;
+        for (var fileIndex = 0; fileIndex < settings.Files.Length; fileIndex++)
+        {
+            // Asynchronously load image and perform face detection in a non-blocking background thread
+            await Task.Run(async () =>
+            {
+                try
+                {
+                    // Load image
+                    image = await Task.Run(() => Dlib.LoadImage<RgbPixel>(settings.Files[fileIndex]));
 
-    //    for (var fileIndex = 0; fileIndex < settings.Files.Length; fileIndex++)
-    //    {
-    //        // Asynchronously load image and perform face detection in a non-blocking background thread
-    //        await Task.Run(async () =>
-    //        {
-    //            try
-    //            {
-    //                // Load image
-    //                image = await Task.Run(() => Dlib.LoadImage<RgbPixel>(settings.Files[fileIndex]));
+                    using var frontalFaceDetector = Dlib.GetFrontalFaceDetector();
+                    // Detect faces in the image
+                    faceRectangles = frontalFaceDetector.Operator(image);
 
-    //                using var frontalFaceDetector = Dlib.GetFrontalFaceDetector();
-    //                // Detect faces in the image
-    //                faceRectangles = frontalFaceDetector.Operator(image);
+                    // Continue processing with image and faceRectangles...
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error processing image: {ex.Message}");
+                    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                    if (ex.InnerException != null)
+                    {
+                        Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                    }
+                }
+            });
 
-    //                // Continue processing with image and faceRectangles...
-    //            }
-    //            catch (Exception ex)
-    //            {
-    //                Console.WriteLine($"Error processing image: {ex.Message}");
-    //                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
-    //                if (ex.InnerException != null)
-    //                {
-    //                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
-    //                }
-    //            }
-    //        });
-
-    //        #endregion
+            #endregion
 
 
-    //        PictureData passPictureData = new()
-    //        {
-    //            FileName = settings.Files[fileIndex],
-    //            _numberOfBoxes = 2,
-    //        };
+            PictureData passPictureData = new()
+            {
+                FileName = settings.Files[fileIndex],
+                _numberOfBoxes = 2,
+            };
 
-    //        for (var amountOfBoxes = 0; amountOfBoxes < passPictureData._numberOfBoxes; amountOfBoxes++)
-    //        {
-    //            ParamForTextCreation currentParameters = new();
+            for (var amountOfBoxes = 0; amountOfBoxes < passPictureData._numberOfBoxes; amountOfBoxes++)
+            {
+                ParamForTextCreation currentParameters = new();
 
-    //            List<BoxType> populatedBoxes = [];
+                List<BoxType> populatedBoxes = [];
 
-    //            if (passPictureData.BoxParameters.Count > 0)
-    //                populatedBoxes.Add(passPictureData.BoxParameters[0].CurrentBox.Type);
+                if (passPictureData.BoxParameters.Count > 0)
+                    populatedBoxes.Add(passPictureData.BoxParameters[0].CurrentBox.Type);
 
 
-    //            currentParameters.Boxes = DataGeneration.BuildDefaultBoxes(image);
-    //            DataGeneration.GetTextPosition(currentParameters, faceRectangles, populatedBoxes);
-    //            ColorData.SelectTwoRandomColors(currentParameters);
-    //            currentParameters.Gradient = DataGeneration.RandomBool();
-    //            currentParameters.Shadows = DataGeneration.RandomBool();
+                currentParameters.Boxes = DataGeneration.BuildDefaultBoxes(image);
+                DataGeneration.GetTextPosition(currentParameters, faceRectangles, populatedBoxes);
+                ColorData.SelectTwoRandomColors(currentParameters);
+                currentParameters.Gradient = DataGeneration.RandomBool();
+                currentParameters.Shadows = DataGeneration.RandomBool();
 
-    //            var directoryWrapper = new DirectoryWrapper();
-    //            var dg = new DataGeneration(directoryWrapper);
-    //            currentParameters.Font = dg.PickRandomFont();
+                var directoryWrapper = new DirectoryWrapper();
+                var dg = new DataGeneration(directoryWrapper);
+                currentParameters.Font = dg.PickRandomFont();
 
-    //            // picks a random string from the list
-    //            Random pickAString = new();
-    //            var pickedString = pickAString.Next(settings.ListOfText.Count);
-    //            currentParameters.Text = settings.ListOfText[pickedString];
-    //            passPictureData.BoxParameters.Add(currentParameters);
-    //        }
+                // picks a random string from the list
+                Random pickAString = new();
+                var pickedString = pickAString.Next(settings.ListOfText.Count);
+                currentParameters.Text = settings.ListOfText[pickedString];
+                passPictureData.BoxParameters.Add(currentParameters);
+            }
 
-    //        settings.PictureDatas.Add(passPictureData);
-    //    }
+            settings.PictureDatas.Add(passPictureData);
+        }
 
-    //    var dirWrapper = new DirectoryWrapper();
-    //    var varietyInstance = new Variety(dirWrapper, settings);
+        var dirWrapper = new DirectoryWrapper();
+        var varietyInstance = new Variety(dirWrapper, settings);
 
-    //    //// Produce varietydata for the current object
-    //    for (var i = 0; i < settings.PictureDatas.Count; i++)
-    //    {
-    //        varietyInstance.Random(settings.PictureDatas[i]);
-    //        varietyInstance.Meme(settings.PictureDatas[i]);
-    //    }
+        //// Produce varietydata for the current object
+        for (var i = 0; i < settings.PictureDatas.Count; i++)
+        {
+            varietyInstance.Random(settings.PictureDatas[i]);
+            varietyInstance.Meme(settings.PictureDatas[i]);
+        }
 
-    //    #region File Production
+        #region File Production
 
-    //    SemaphoreSlim semaphore = new(4);
-    //    List<Task> productionTasks = [];
+        SemaphoreSlim semaphore = new(4);
+        List<Task> productionTasks = [];
 
-    //    foreach (var picData in settings.PictureDatas)
-    //    {
-    //        var noBoxes = picData.BoxParameters.All(bp => bp.CurrentBox.Type == BoxType.None);
+        foreach (var picData in settings.PictureDatas)
+        {
+            var noBoxes = picData.BoxParameters.All(bp => bp.CurrentBox.Type == BoxType.None);
 
-    //        if (!noBoxes)
-    //        {
-    //            // Start the task asynchronously
-    //            var productionTask = Task.Run(async () =>
-    //            {
-    //                try
-    //                {
-    //                    // Acquire a slot from the semaphore
-    //                    await semaphore.WaitAsync();
+            if (!noBoxes)
+            {
+                // Start the task asynchronously
+                var productionTask = Task.Run(async () =>
+                {
+                    try
+                    {
+                        // Acquire a slot from the semaphore
+                        await semaphore.WaitAsync();
 
-    //                    // Execute the image processing task
-    //                    await Production.ProduceTextPictures(picData, settings);
-    //                }
-    //                finally
-    //                {
-    //                    // Release the slot when the task completes or throws an exception
-    //                    semaphore.Release();
-    //                }
-    //            });
+                        // Execute the image processing task
+                        await Production.ProduceTextPictures(picData, settings);
+                    }
+                    finally
+                    {
+                        // Release the slot when the task completes or throws an exception
+                        semaphore.Release();
+                    }
+                });
 
-    //            // Add the task to the list
-    //            productionTasks.Add(productionTask);
-    //        }
-    //    }
+                // Add the task to the list
+                productionTasks.Add(productionTask);
+            }
+        }
 
-    //    // Wait for all tasks to complete
-    //    await Task.WhenAll(productionTasks);
+        // Wait for all tasks to complete
+        await Task.WhenAll(productionTasks);
 
-    //    #endregion
+        #endregion
 
-    //    #region Front Page Picture Line Up Mocking
-    //    if (Mocking.BTCRunCount != 1 && settings.MakeMocking)
-    //    {
-    //        // ffmpeg has finished, lets copy our mock data
-    //        Mocking.CopyOutPutDir(settings);
-    //    }
-    //    #endregion
-    //}
+        #region Front Page Picture Line Up Mocking
+        if (Mocking.BTCRunCount != 1 && settings.MakeMocking)
+        {
+            // ffmpeg has finished, lets copy our mock data
+            Mocking.CopyOutPutDir(settings);
+        }
+        #endregion
+
+        return settings.PictureDatas;
+    }
 
     private static async Task RunFFMpeg(Settings settings)
     {

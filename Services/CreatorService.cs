@@ -64,8 +64,10 @@ public class CreatorService
         // except by the job itself performing something
         IsLoading = true;
         job.State = States.Loading;
+        settings.ListOfText = listOfTextToPrint;
         job.Settings = settings;
         job.TextToPrint = listOfTextToPrint;
+        
 
 
         if (job.Settings.Mocking && job.Settings.MakeMocking)
@@ -74,7 +76,7 @@ public class CreatorService
         }
         else
         {
-            job.PictureData = await Creator.Process(ProductionType.FrontPagePictureLineUp, url, listOfTextToPrint, settings);
+            job.PictureData = await Creator.FrontPagePictureLineup(url, settings);
         }
 
         if (settings.PathToVideo != null)
