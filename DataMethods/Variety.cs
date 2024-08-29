@@ -43,6 +43,49 @@ public class Variety
         return copiedPicData;
     }
 
+    public static PictureData Colors(PictureData pictureData)
+    {
+        var copiedPicData = new PictureData(pictureData);
+        copiedPicData.Varieties.Clear();
+
+        const int VarietiesToMake = 6;
+
+        for (var i = 0; i < VarietiesToMake; i++)
+        {
+            var varietyData = new PictureData(copiedPicData);
+
+            foreach (var boxparam in varietyData.BoxParameters)
+            {
+                ColorData.SelectTwoRandomColors(boxparam);
+            }
+            varietyData.OutPutType = OutputType.ColorVariety;
+            copiedPicData.Varieties.Add(varietyData);
+        }
+        return copiedPicData;
+    }
+
+    public static PictureData FX(PictureData pictureData)
+    {
+        var copiedPicData = new PictureData(pictureData);
+        copiedPicData.Varieties.Clear();
+        const int FXToMake = 6;
+
+        for(var i = 0;i < FXToMake; i++)
+        {
+            var varietyData = new PictureData(copiedPicData);
+            {
+                foreach(var boxparam in varietyData.BoxParameters)
+                {
+                    boxparam.Gradient = DataGeneration.RandomBool();
+                    boxparam.Shadows = DataGeneration.RandomBool();
+                }
+            }
+            varietyData.OutPutType = OutputType.FXVariety;
+            copiedPicData.Varieties.Add(varietyData);
+        }
+        return copiedPicData;
+    }
+
     public void Random(PictureData pictureInputData)
     {
         const int NumberOfRandomsToProduce = 5;

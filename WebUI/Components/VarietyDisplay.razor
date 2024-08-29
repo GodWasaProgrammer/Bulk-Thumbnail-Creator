@@ -5,7 +5,7 @@
 @using BulkThumbnailCreator.Enums;
 
 @using WebUI.Pages;
-@inject CreatorService PicDataService;
+@inject CreatorService creatorService;
 @inject ILogService logger;
 @inject JobService JobService;
 @inject AuthenticationStateProvider AuthProvider;
@@ -30,8 +30,8 @@
                     <MudText Align="Align.Center" Color="Color.Tertiary">Make Varieties</MudText>
 
                     <MudButton OnClick="CreateFonts" Variant="Variant.Filled" Color="Color.Secondary">Fonts</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary">Colors</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary">F/X</MudButton>
+                    <MudButton OnClick="CreateColors" Variant="Variant.Filled" Color="Color.Secondary">Colors</MudButton>
+                    <MudButton OnClick="FXVariety" Variant="Variant.Filled" Color="Color.Secondary">F/X</MudButton>
                     <MudButton Variant="Variant.Filled" Color="Color.Secondary">Memes</MudButton>
 
                     <MudButton Variant="Variant.Filled" Color="Color.Secondary">Randomize</MudButton>
@@ -88,13 +88,30 @@
         InvokeAsync(() => StateHasChanged());
     }
 
-    private bool _disableButtons = false;
-
-    public async Task CreateFonts()
+    private async Task FXVariety()
     {
         loading = true;
-        _disableButtons = true;
-        ParentPictureProp = await PicDataService.CreateFontVariety(ParentPictureProp, CurrentJob);
+        ParentPictureProp = await creatorService.CreateFXVariety(ParentPictureProp, CurrentJob);
+        _VarietyUrls = CurrentJob.VarietyUrls;
+        picDataBoxURL = ParentPictureProp.OutPath;
+        loading = false;
+        StateHasChanged();
+    }
+
+    private async Task CreateColors()
+    {
+        loading = true;
+        ParentPictureProp = await creatorService.CreateColorVariety(ParentPictureProp, CurrentJob);
+        _VarietyUrls = CurrentJob.VarietyUrls;
+        picDataBoxURL = ParentPictureProp.OutPath;
+        loading = false;
+        StateHasChanged();
+    }
+
+    private async Task CreateFonts()
+    {
+        loading = true;
+        ParentPictureProp = await creatorService.CreateFontVariety(ParentPictureProp, CurrentJob);
         _VarietyUrls = CurrentJob.VarietyUrls;
         picDataBoxURL = ParentPictureProp.OutPath;
         loading = false;

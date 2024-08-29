@@ -369,6 +369,22 @@ public static class Production
             outputPath += $"/{guid}.png";
             pictureData.OutPath = outputPath;
         }
+        if (pictureData.OutPutType is OutputType.ColorVariety)
+        {
+            var guid = Guid.NewGuid();
+            outputPath += $"{Varietyof}{imageName}/ColorVariety";
+            Directory.CreateDirectory(outputPath);
+            outputPath += $"/{guid}.png";
+            pictureData.OutPath = outputPath;
+        }
+        if (pictureData.OutPutType is OutputType.FXVariety)
+        {
+            var guid = Guid.NewGuid();
+            outputPath += $"{Varietyof}{imageName}/FXVariety";
+            Directory.CreateDirectory(outputPath);
+            outputPath += $"/{guid}.png";
+            pictureData.OutPath = outputPath;
+        }
         if (pictureData.OutPutType == OutputType.RandomVariety)
         {
             var guid = Guid.NewGuid();

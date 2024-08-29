@@ -118,7 +118,6 @@ public class CreatorService
         else
         {
             job.State = States.Loading;
-            //job.PictureData = await Creator.Process(ProductionType.VarietyList, url, job.TextToPrint, job.Settings, pictureData);
             job.PictureData = await Creator.VarietyLineup(job.Settings, pictureData);
             job.State = States.varietyList;
         }
@@ -164,6 +163,27 @@ public class CreatorService
         IsLoading = true;
 
         await Creator.FontVariety(job, pictureData);
+
+        IsLoading = false;
+
+        return pictureData;
+    }
+    public async Task<PictureData> CreateFXVariety(PictureData pictureData, Job job)
+    {
+        IsLoading = true;
+
+        await Creator.SpecialEffectsVariety(job, pictureData);
+
+        IsLoading = false;
+
+        return pictureData;
+    }
+
+    public async Task<PictureData> CreateColorVariety(PictureData pictureData, Job job)
+    {
+        IsLoading = true;
+
+        await Creator.ColorVariety(job, pictureData);
 
         IsLoading = false;
 

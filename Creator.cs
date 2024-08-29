@@ -1,4 +1,5 @@
-﻿using BulkThumbnailCreator.PictureClasses;
+﻿using System.Xml.Linq;
+using BulkThumbnailCreator.PictureClasses;
 using BulkThumbnailCreator.Wrappers;
 
 namespace BulkThumbnailCreator;
@@ -244,9 +245,9 @@ public static partial class Creator
         var picdata = await variety.Fonts(pictureData);
         job.VarietyUrls.Clear();
 
-        foreach(var varietyData in picdata.Varieties)
+        foreach (var varietyData in picdata.Varieties)
         {
-            await Production.ProduceTextPictures(varietyData,job.Settings);
+            await Production.ProduceTextPictures(varietyData, job.Settings);
         }
 
         var parentfilename = Path.GetFileName(pictureData.FileName);
@@ -261,6 +262,55 @@ public static partial class Creator
         }
         job.VarietyUrls = imageUrls;
         job.PictureData.Add(picdata);
+    }
+
+    public static async Task<PictureData> SpecialEffectsVariety(Job job, PictureData pictureData)
+    {
+        pictureData = Variety.FX(pictureData);
+
+        foreach(var varietyData in pictureData.Varieties)
+        {
+            await Production.ProduceTextPictures(varietyData, job.Settings);
+        }
+        var parentfilename = Path.GetFileName(pictureData.FileName);
+        var concatenatedString = $"{job.Settings.TextAddedDir}/varietyof{parentfilename}/FXVariety";
+        var arrayOfFilePaths = Directory.GetFiles(concatenatedString, "*.png");
+
+        List<string> imageUrls = [];
+        foreach (var filepath in arrayOfFilePaths)
+        {
+            var imageurl = $"/{filepath}"; // convert to URL
+            imageUrls.Add(imageurl);
+        }
+        job.VarietyUrls = imageUrls;
+        job.PictureData.Add(pictureData);
+
+        return pictureData;
+    }
+
+    public static async Task<PictureData> ColorVariety(Job job, PictureData pictureData)
+    {
+        pictureData = Variety.Colors(pictureData);
+
+        foreach (var varietyData in pictureData.Varieties)
+        {
+            await Production.ProduceTextPictures(varietyData, job.Settings);
+        }
+
+        var parentfilename = Path.GetFileName(pictureData.FileName);
+        var concatenatedString = $"{job.Settings.TextAddedDir}/varietyof{parentfilename}/ColorVariety";
+        var arrayOfFilePaths = Directory.GetFiles(concatenatedString, "*.png");
+
+        List<string> imageUrls = [];
+        foreach (var filepath in arrayOfFilePaths)
+        {
+            var imageurl = $"/{filepath}"; // convert to URL
+            imageUrls.Add(imageurl);
+        }
+        job.VarietyUrls = imageUrls;
+        job.PictureData.Add(pictureData);
+
+        return pictureData;
     }
 
     public static async Task<List<PictureData>> Process(ProductionType prodType, string url, List<string> texts, Settings settings, PictureData pictureData = null)

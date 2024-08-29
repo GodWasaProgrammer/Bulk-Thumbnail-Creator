@@ -6,5 +6,7 @@ public enum OutputType
     RandomVariety,
     MemeVariety,
     FontVariety,
+    ColorVariety,
+    FXVariety,
     Custom,
 }
