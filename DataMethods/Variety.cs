@@ -1,4 +1,4 @@
-﻿namespace BulkThumbnailCreator;
+﻿namespace BulkThumbnailCreator.DataMethods;
 
 public class Variety
 {
@@ -70,11 +70,11 @@ public class Variety
         copiedPicData.Varieties.Clear();
         const int FXToMake = 6;
 
-        for(var i = 0;i < FXToMake; i++)
+        for (var i = 0; i < FXToMake; i++)
         {
             var varietyData = new PictureData(copiedPicData);
             {
-                foreach(var boxparam in varietyData.BoxParameters)
+                foreach (var boxparam in varietyData.BoxParameters)
                 {
                     boxparam.Gradient = DataGeneration.RandomBool();
                     boxparam.Shadows = DataGeneration.RandomBool();

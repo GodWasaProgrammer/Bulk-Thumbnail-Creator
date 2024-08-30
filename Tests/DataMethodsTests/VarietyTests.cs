@@ -1,4 +1,5 @@
 ﻿using BulkThumbnailCreator;
+using BulkThumbnailCreator.DataMethods;
 using BulkThumbnailCreator.Enums;
 using BulkThumbnailCreator.Interfaces;
 using BulkThumbnailCreator.PictureClasses;

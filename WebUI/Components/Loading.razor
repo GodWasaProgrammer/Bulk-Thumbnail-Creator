@@ -46,10 +46,10 @@
     }
 
     // value of progress bar
-    private double Value { get; set; }
+    private double Value { get; set; } = 10;
 
     // Buffer
-    private double BufferValue = 10;
+    private double BufferValue = 15;
 
     // number of images being processed
     private double _numberOfImages;
@@ -182,7 +182,7 @@
         if (Value > 100 || Value == 100)
         {
             if (logEntry.Contains("Processing Finished"))
-                Value = 1; BufferValue = 10;
+                Value = 10; BufferValue = 15;
         }
     }
 

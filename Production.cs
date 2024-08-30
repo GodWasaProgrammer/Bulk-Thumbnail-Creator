@@ -238,13 +238,7 @@ public static class Production
                     // gradient section
                     if (boxParam.Gradient)
                     {
-                        using var sparseColorImage = caption.Clone(); // +clone
-                        var fillColor = ColorData.MakeQuantumColor(boxParam.FillColor);
-                        var strokeColor = ColorData.MakeQuantumColor(boxParam.StrokeColor);
-                        var sparseColorArgs = new SparseColorArg[2];
-                        sparseColorArgs[0] = new SparseColorArg(0, caption.Height, fillColor);
-                        sparseColorArgs[1] = new SparseColorArg(caption.Width, 0, strokeColor);
-                        sparseColorImage.SparseColor(SparseColorMethod.Bilinear, sparseColorArgs); // -sparse - color Barycentric
+                        using var sparseColorImage = CreateGradient(boxParam, caption); // -sparse - color Barycentric
 
                         caption.Composite(sparseColorImage, CompositeOperator.In); // -compose In -composite
                     }
@@ -252,31 +246,7 @@ public static class Production
                     var takeX = boxParam.CurrentBox.X;
                     if (boxParam.Shadows)
                     {
-                        // Create a larger canvas to accommodate the shadow
-                        using var largerCanvas = new MagickImage(MagickColors.Transparent, caption.Width + 50, caption.Height + 50);
-                        // Composite the text onto the larger canvas
-                        largerCanvas.Composite(caption, 10, 10, CompositeOperator.Over);
-
-                        // Create a shadow image with larger width
-                        using (var shadow = new MagickImage(MagickColors.Transparent, largerCanvas.Width, largerCanvas.Height))
-                        {
-                            var shadowcaption = new MagickImage($"caption:{boxParam.Text}", pictureData.ReadSettings);
-
-                            // Clone the text image onto the shadow image
-                            shadow.Composite(caption, 0, 0, CompositeOperator.Over);
-
-                            // shadow 2
-                            shadow.Shadow(0, 0, 6, new Percentage(200), MagickColors.Black);
-                            largerCanvas.Composite(shadow, 10, 0, CompositeOperator.DstOver);
-
-                            // shadow 2
-                            shadow.Shadow(0, 0, 6, new Percentage(200), MagickColors.Black);
-                            largerCanvas.Composite(shadow, 10, 0, CompositeOperator.DstOver);
-
-                            // if you want the shadow to be offset you have to do it here
-                            // Composite the shadow behind the text on the larger canvas
-                            largerCanvas.Composite(shadow, 10, 0, CompositeOperator.DstOver);
-                        }
+                        using var largerCanvas = CreateShadow(pictureData, boxParam, caption);
                         if (boxParam.Shadows)
                         {
                             outputImage.Composite(largerCanvas, takeX, takeY, CompositeOperator.Over);
@@ -310,6 +280,49 @@ public static class Production
         // outputs the file to the provided path and name
         await Task.Run(() => outputImage.Write(outputPath));
         await settings.LogService.LogInformation($"File Created: {Path.GetFileName(outputPath)}");
+    }
+
+    private static MagickImage CreateShadow(PictureData pictureData, ParamForTextCreation boxParam, MagickImage caption)
+    {
+        // Create a larger canvas to accommodate the shadow
+        var largerCanvas = new MagickImage(MagickColors.Transparent, caption.Width + 50, caption.Height + 50);
+        // Composite the text onto the larger canvas
+        largerCanvas.Composite(caption, 10, 10, CompositeOperator.Over);
+
+        // Create a shadow image with larger width
+        using (var shadow = new MagickImage(MagickColors.Transparent, largerCanvas.Width, largerCanvas.Height))
+        {
+            var shadowcaption = new MagickImage($"caption:{boxParam.Text}", pictureData.ReadSettings);
+
+            // Clone the text image onto the shadow image
+            shadow.Composite(caption, 0, 0, CompositeOperator.Over);
+
+            // shadow 2
+            shadow.Shadow(0, 0, 6, new Percentage(200), MagickColors.Black);
+            largerCanvas.Composite(shadow, 10, 0, CompositeOperator.DstOver);
+
+            // shadow 2
+            shadow.Shadow(0, 0, 6, new Percentage(200), MagickColors.Black);
+            largerCanvas.Composite(shadow, 10, 0, CompositeOperator.DstOver);
+
+            // if you want the shadow to be offset you have to do it here
+            // Composite the shadow behind the text on the larger canvas
+            largerCanvas.Composite(shadow, 10, 0, CompositeOperator.DstOver);
+        }
+
+        return largerCanvas;
+    }
+
+    private static IMagickImage<ushort> CreateGradient(ParamForTextCreation boxParam, MagickImage caption)
+    {
+        var sparseColorImage = caption.Clone(); // +clone
+        var fillColor = ColorData.MakeQuantumColor(boxParam.FillColor);
+        var strokeColor = ColorData.MakeQuantumColor(boxParam.StrokeColor);
+        var sparseColorArgs = new SparseColorArg[2];
+        sparseColorArgs[0] = new SparseColorArg(0, caption.Height, fillColor);
+        sparseColorArgs[1] = new SparseColorArg(caption.Width, 0, strokeColor);
+        sparseColorImage.SparseColor(SparseColorMethod.Bilinear, sparseColorArgs);
+        return sparseColorImage;
     }
 
     /// <summary>

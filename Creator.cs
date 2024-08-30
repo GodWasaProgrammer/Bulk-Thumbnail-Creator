@@ -1,4 +1,5 @@
-﻿using BulkThumbnailCreator.Wrappers;
+﻿using BulkThumbnailCreator.DataMethods;
+using BulkThumbnailCreator.Wrappers;
 
 namespace BulkThumbnailCreator;
 
