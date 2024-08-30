@@ -126,7 +126,7 @@
     private async Task CreateFonts()
     {
         loading = true;
-        ParentPictureProp = await creatorService.CreateFontVariety(ParentPictureProp, CurrentJob);
+        ParentPictureProp = new(await creatorService.CreateFontVariety(ParentPictureProp, CurrentJob));
         _VarietyUrls = CurrentJob.VarietyUrls;
         picDataBoxURL = ParentPictureProp.OutPath;
         loading = false;
