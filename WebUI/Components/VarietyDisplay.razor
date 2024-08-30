@@ -48,10 +48,7 @@
                 var index = ClickedImage;
 
                 <div class="image-wrapper">
-                    <!-- Bilden -->
-                    <MudImage Fluid="true" class="image-button" src="@VarietyUrls[index]" />
-
-                    <!-- Knappar som visas ovanpå bilden -->
+                    <MudImage Fluid="true" class="image-button" src="@VarietyUrls[index]"/> 
                     <div class="buttons">
                         <MudButton Class="button" OnClick="(() => NavToCustomizePicture(VarietyUrls[index]))" Color="Color.Primary" Variant="Variant.Filled">
                             Customize
@@ -60,6 +57,7 @@
                             Select
                         </MudButton>
                     </div>
+                
                 </div>
 
                 @if ((ClickedImage + 1) % 3 == 0)
@@ -108,7 +106,7 @@
     private async Task FXVariety()
     {
         loading = true;
-        ParentPictureProp = await creatorService.CreateFXVariety(ParentPictureProp, CurrentJob);
+        ParentPictureProp = new(await creatorService.CreateFXVariety(ParentPictureProp, CurrentJob));
         _VarietyUrls = CurrentJob.VarietyUrls;
         picDataBoxURL = ParentPictureProp.OutPath;
         loading = false;
@@ -118,7 +116,7 @@
     private async Task CreateColors()
     {
         loading = true;
-        ParentPictureProp = await creatorService.CreateColorVariety(ParentPictureProp, CurrentJob);
+        ParentPictureProp = new(await creatorService.CreateColorVariety(ParentPictureProp, CurrentJob));
         _VarietyUrls = CurrentJob.VarietyUrls;
         picDataBoxURL = ParentPictureProp.OutPath;
         loading = false;
@@ -263,7 +261,8 @@
             display: block;
         }
 
-    .buttons {
+    .buttons 
+    {
         position: absolute;
         bottom: 21px; /* 21px från botten */
         left: 0; /* För vänsterknappen */
@@ -282,15 +281,10 @@
         opacity: 1; /* Sätt opacity till 1 vid hovring */
     }
 
-    .button {
-        background-color: rgba(0, 0, 0, 0.6); /* Bakgrundsfärg på knapparna */
-        color: white;
-        border: none;
-        border-radius: 5px; /* Rundade hörn */
-        cursor: pointer; /* Pekare vid hovring */
+    .button 
+    {
         transition: background-color 0.3s ease; /* Smidig övergång vid hovring */
     }
-
         .button:hover {
             background-color: rgba(0, 0, 0, 0.8); /* Bakgrundsfärg vid hovring */
         }

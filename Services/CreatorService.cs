@@ -1,6 +1,4 @@
-﻿using BulkThumbnailCreator.Wrappers;
-
-namespace BulkThumbnailCreator.Services;
+﻿namespace BulkThumbnailCreator.Services;
 
 public class CreatorService
 {
@@ -162,32 +160,32 @@ public class CreatorService
     {
         IsLoading = true;
 
-        await Creator.FontVariety(job, pictureData);
+        var newData = await Creator.FontVariety(job, pictureData);
 
         IsLoading = false;
 
-        return pictureData;
+        return newData;
     }
     public async Task<PictureData> CreateFXVariety(PictureData pictureData, Job job)
     {
         IsLoading = true;
 
-        await Creator.SpecialEffectsVariety(job, pictureData);
+        var newData = await Creator.SpecialEffectsVariety(job, pictureData);
 
         IsLoading = false;
 
-        return pictureData;
+        return newData;
     }
 
     public async Task<PictureData> CreateColorVariety(PictureData pictureData, Job job)
     {
         IsLoading = true;
 
-        await Creator.ColorVariety(job, pictureData);
+        var newData = await Creator.ColorVariety(job, pictureData);
 
         IsLoading = false;
 
-        return pictureData;
+        return newData;
     }
 
     public async Task<PictureData> CreateCustomPicDataObject(PictureData pictureData, Job job)

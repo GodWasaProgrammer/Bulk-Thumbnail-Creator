@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-using BulkThumbnailCreator.PictureClasses;
-using BulkThumbnailCreator.Wrappers;
+﻿using BulkThumbnailCreator.Wrappers;
 
 namespace BulkThumbnailCreator;
 
@@ -238,14 +236,14 @@ public static partial class Creator
         return settings.PictureDatas;
     }
 
-    public static async Task FontVariety(Job job, PictureData pictureData)
+    public static async Task<PictureData> FontVariety(Job job, PictureData pictureData)
     {
         DirectoryWrapper directoryWrapper = new();
         Variety variety = new(directoryWrapper, job.Settings);
-        var picdata = await variety.Fonts(pictureData);
+        var copyData = await variety.Fonts(pictureData);
         job.VarietyUrls.Clear();
 
-        foreach (var varietyData in picdata.Varieties)
+        foreach (var varietyData in copyData.Varieties)
         {
             await Production.ProduceTextPictures(varietyData, job.Settings);
         }
@@ -261,18 +259,20 @@ public static partial class Creator
             imageUrls.Add(imageurl);
         }
         job.VarietyUrls = imageUrls;
-        job.PictureData.Add(picdata);
+        job.PictureData.Add(copyData);
+
+        return copyData;
     }
 
     public static async Task<PictureData> SpecialEffectsVariety(Job job, PictureData pictureData)
     {
-        pictureData = Variety.FX(pictureData);
+        var copyData = Variety.FX(pictureData);
 
-        foreach(var varietyData in pictureData.Varieties)
+        foreach (var varietyData in copyData.Varieties)
         {
             await Production.ProduceTextPictures(varietyData, job.Settings);
         }
-        var parentfilename = Path.GetFileName(pictureData.FileName);
+        var parentfilename = Path.GetFileName(copyData.FileName);
         var concatenatedString = $"{job.Settings.TextAddedDir}/varietyof{parentfilename}/FXVariety";
         var arrayOfFilePaths = Directory.GetFiles(concatenatedString, "*.png");
 
@@ -283,21 +283,21 @@ public static partial class Creator
             imageUrls.Add(imageurl);
         }
         job.VarietyUrls = imageUrls;
-        job.PictureData.Add(pictureData);
+        job.PictureData.Add(copyData);
 
-        return pictureData;
+        return copyData;
     }
 
     public static async Task<PictureData> ColorVariety(Job job, PictureData pictureData)
     {
-        pictureData = Variety.Colors(pictureData);
+        var copyData = Variety.Colors(pictureData);
 
-        foreach (var varietyData in pictureData.Varieties)
+        foreach (var varietyData in copyData.Varieties)
         {
             await Production.ProduceTextPictures(varietyData, job.Settings);
         }
 
-        var parentfilename = Path.GetFileName(pictureData.FileName);
+        var parentfilename = Path.GetFileName(copyData.FileName);
         var concatenatedString = $"{job.Settings.TextAddedDir}/varietyof{parentfilename}/ColorVariety";
         var arrayOfFilePaths = Directory.GetFiles(concatenatedString, "*.png");
 
@@ -308,9 +308,9 @@ public static partial class Creator
             imageUrls.Add(imageurl);
         }
         job.VarietyUrls = imageUrls;
-        job.PictureData.Add(pictureData);
+        job.PictureData.Add(copyData);
 
-        return pictureData;
+        return copyData;
     }
 
     public static async Task<List<PictureData>> Process(ProductionType prodType, string url, List<string> texts, Settings settings, PictureData pictureData = null)
