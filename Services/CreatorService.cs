@@ -177,6 +177,17 @@ public class CreatorService
         return newData;
     }
 
+    public async Task<PictureData> CreateBoxVariety(PictureData pictureData, Job job)
+    {
+        IsLoading = true;
+
+        var newData = await Creator.BoxVariety(job, pictureData);
+
+        IsLoading = false;
+
+        return newData;
+    }
+
     public async Task<PictureData> CreateColorVariety(PictureData pictureData, Job job)
     {
         IsLoading = true;

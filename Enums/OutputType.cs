@@ -8,5 +8,6 @@ public enum OutputType
     FontVariety,
     ColorVariety,
     FXVariety,
+    BoxVariety,
     Custom,
 }

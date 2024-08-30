@@ -64,6 +64,53 @@ public class Variety
         return copiedPicData;
     }
 
+    public static PictureData Boxes(PictureData pictureData)
+    {
+        var copiedPicData = new PictureData(pictureData);
+        copiedPicData.Varieties.Clear();
+        const int BoxesToMake = 6;
+
+        var liftBoxes = copiedPicData.BoxParameters[0].Boxes;
+
+        for (var i = 0; i < BoxesToMake; i++)
+        {
+            var varietyData = new PictureData(copiedPicData);
+
+            foreach (var boxparam in varietyData.BoxParameters)
+            {
+                var boxtoWrite = BoxType.None;
+                if (boxparam.CurrentBox.Type is BoxType.BottomBox)
+                {
+                    boxtoWrite = BoxType.TopBox;
+                }
+                if (boxparam.CurrentBox.Type is BoxType.TopBox)
+                {
+                    boxtoWrite = BoxType.BottomBox;
+                }
+                if (boxparam.CurrentBox.Type is BoxType.BottomLeft)
+                {
+                    boxtoWrite = BoxType.TopLeft;
+                }
+                if (boxparam.CurrentBox.Type is BoxType.BottomRight)
+                {
+                    boxtoWrite = BoxType.TopRight;
+                }
+                if (boxparam.CurrentBox.Type is BoxType.TopRight)
+                {
+                    boxtoWrite = BoxType.BottomRight;
+                }
+                if (boxparam.CurrentBox.Type is BoxType.TopLeft)
+                {
+                    boxtoWrite = BoxType.BottomLeft;
+                }
+                boxparam.CurrentBox = liftBoxes.Find(q => q.Type == boxtoWrite);
+            }
+            varietyData.OutPutType = OutputType.BoxVariety;
+            copiedPicData.Varieties.Add(varietyData);
+        }
+        return copiedPicData;
+    }
+
     public static PictureData FX(PictureData pictureData)
     {
         var copiedPicData = new PictureData(pictureData);
@@ -73,12 +120,10 @@ public class Variety
         for (var i = 0; i < FXToMake; i++)
         {
             var varietyData = new PictureData(copiedPicData);
+            foreach (var boxparam in varietyData.BoxParameters)
             {
-                foreach (var boxparam in varietyData.BoxParameters)
-                {
-                    boxparam.Gradient = DataGeneration.RandomBool();
-                    boxparam.Shadows = DataGeneration.RandomBool();
-                }
+                boxparam.Gradient = DataGeneration.RandomBool();
+                boxparam.Shadows = DataGeneration.RandomBool();
             }
             varietyData.OutPutType = OutputType.FXVariety;
             copiedPicData.Varieties.Add(varietyData);

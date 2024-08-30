@@ -265,6 +265,32 @@ public static partial class Creator
         return copyData;
     }
 
+    public static async Task<PictureData> BoxVariety(Job job, PictureData pictureData)
+    {
+        var copyData = Variety.Boxes(pictureData);
+        job.VarietyUrls.Clear();
+
+        foreach (var varietyData in copyData.Varieties)
+        {
+            await Production.ProduceTextPictures(varietyData, job.Settings);
+        }
+
+        var parentfilename = Path.GetFileName(pictureData.FileName);
+        var concatenatedString = $"{job.Settings.TextAddedDir}/varietyof{parentfilename}/BoxVariety";
+        var arrayOfFilePaths = Directory.GetFiles(concatenatedString, "*.png");
+
+        List<string> imageUrls = [];
+        foreach (var filepath in arrayOfFilePaths)
+        {
+            var imageurl = $"/{filepath}"; // convert to URL
+            imageUrls.Add(imageurl);
+        }
+        job.VarietyUrls = imageUrls;
+        job.PictureData.Add(copyData);
+
+        return copyData;
+    }
+
     public static async Task<PictureData> SpecialEffectsVariety(Job job, PictureData pictureData)
     {
         var copyData = Variety.FX(pictureData);

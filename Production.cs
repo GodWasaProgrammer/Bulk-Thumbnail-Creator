@@ -390,6 +390,14 @@ public static class Production
             outputPath += $"/{guid}.png";
             pictureData.OutPath = outputPath;
         }
+        if (pictureData.OutPutType is OutputType.BoxVariety)
+        {
+            var guid = Guid.NewGuid();
+            outputPath += $"{Varietyof}{imageName}/BoxVariety";
+            Directory.CreateDirectory(outputPath);
+            outputPath += $"/{guid}.png";
+            pictureData.OutPath = outputPath;
+        }
         if (pictureData.OutPutType is OutputType.FXVariety)
         {
             var guid = Guid.NewGuid();
