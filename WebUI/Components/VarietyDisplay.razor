@@ -31,7 +31,7 @@
                     <MudButton OnClick="CreateColors" Variant="Variant.Filled" Color="Color.Secondary">Colors</MudButton>
                     <MudButton OnClick="FXVariety" Variant="Variant.Filled" Color="Color.Secondary">F/X</MudButton>
                     <MudButton OnClick="BoxVariety" Variant="Variant.Filled" Color="Color.Secondary">Boxes</MudButton>
-                    <MudButton Variant="Variant.Filled" Color="Color.Secondary">Randomize</MudButton>
+                    <MudButton OnClick="RandomVariety" Variant="Variant.Filled" Color="Color.Secondary">Randomize</MudButton>
                 </MudItem>
             }
 
@@ -48,7 +48,7 @@
                 var index = ClickedImage;
 
                 <div class="image-wrapper">
-                    <MudImage Fluid="true" class="image-button" src="@VarietyUrls[index]"/> 
+                    <MudImage Fluid="true" class="image-button" src="@VarietyUrls[index]" />
                     <div class="buttons">
                         <MudButton Class="button" OnClick="(() => NavToCustomizePicture(VarietyUrls[index]))" Color="Color.Primary" Variant="Variant.Filled">
                             Customize
@@ -57,7 +57,7 @@
                             Select
                         </MudButton>
                     </div>
-                
+
                 </div>
 
                 @if ((ClickedImage + 1) % 3 == 0)
@@ -89,17 +89,29 @@
 
     private void SelectPicture(string VarietyUrl)
     {
+        var filename = Path.GetFileName(VarietyUrl);
         foreach (var variety in ParentPictureProp.Varieties)
         {
-            var filename = Path.GetFileName(VarietyUrl);
+            var success = variety.OutPath.Contains(VarietyUrl);
             if (variety.OutPath.Contains(filename))
             {
                 ParentPictureProp = variety;
                 picDataBoxURL = ParentPictureProp.OutPath;
-                VarietyUrls.Clear();
+                CurrentJob.ClickedImage = picDataBoxURL;
+                _VarietyUrls.Clear();
                 break;
             }
         }
+        StateHasChanged();
+    }
+
+    private async Task RandomVariety()
+    {
+        loading = true;
+        ParentPictureProp = new(await creatorService.CreateRandomVariety(ParentPictureProp, CurrentJob));
+        _VarietyUrls = CurrentJob.VarietyUrls;
+        picDataBoxURL = ParentPictureProp.OutPath;
+        loading = false;
         StateHasChanged();
     }
 
@@ -197,12 +209,16 @@
                 if (CurrentJob.State == States.varietyList)
                 {
                     VarietyUrls = CurrentJob.VarietyUrls;
-                    StateHasChanged();
                     picDataBoxURL = CurrentJob.ClickedImage;
+                    ParentPictureProp = await CreatorService.SetPictureDataImageDisplayCorrelation(picDataBoxURL, CurrentJob);
+                    if(ParentPictureProp.OutPath is null)
+                    {
+                        ParentPictureProp = CreatorService.SetPictureDataImageDisplayCorrelationForVarietyList(picDataBoxURL, CurrentJob);
+                    }
+                    StateHasChanged();
                 }
                 if (CurrentJob.State == States.CustomPicture)
                 {
-                    // disable the varietylist from being shown since we have already clicked an image
                     // lifts the clicked image
                     passURL = CurrentJob.ClickedImage;
 
@@ -212,7 +228,6 @@
 
                     // /// The service will be reset if we refreshed and is missing the correlating picturedata
                     // /// So we lift it from the job and off to the races
-                    // PicDataService.PicDataServiceList = CurrentJob.PictureData;
 
                     passData = CreatorService.SetPictureDataImageDisplayCorrelationForVarietyList(passURL, CurrentJob);
                     CustomPicture = true;
@@ -250,8 +265,8 @@
 
     .image-wrapper {
         position: relative;
-        width: 300px; /* Fastställd bredd */
-        height: 200px; /* Fastställd höjd */
+        width: 320px; /* Fastställd bredd */
+        height: 220px; /* Fastställd höjd */
         overflow: hidden; /* Ser till att inget sticker ut */
         box-sizing: border-box;
     }
@@ -262,8 +277,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            width: auto;
-            height: auto;
+            width: 300px;
+            height: 200px;
             max-width: 100%;
             max-height: 100%;
             margin: auto; /* Centrera bilden */
@@ -271,10 +286,9 @@
             display: block;
         }
 
-    .buttons 
-    {
+    .buttons {
         position: absolute;
-        bottom: 21px; /* 21px från botten */
+        bottom: 40px; /* 21px från botten */
         left: 0; /* För vänsterknappen */
         right: 0; /* För högerknappen */
         display: flex;
@@ -291,10 +305,10 @@
         opacity: 1; /* Sätt opacity till 1 vid hovring */
     }
 
-    .button 
-    {
+    .button {
         transition: background-color 0.3s ease; /* Smidig övergång vid hovring */
     }
+
         .button:hover {
             background-color: rgba(0, 0, 0, 0.8); /* Bakgrundsfärg vid hovring */
         }

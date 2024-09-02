@@ -237,6 +237,25 @@ public static partial class Creator
         return settings.PictureDatas;
     }
 
+    public static async Task<PictureData> Random(Job job, PictureData pictureData)
+    {
+        job.VarietyUrls.Clear();
+        var dirWrapper = new DirectoryWrapper();
+        var varietyClass = new Variety(dirWrapper, job.Settings);
+
+        var copyData = new PictureData(pictureData);
+        copyData.Varieties.Clear();
+        varietyClass.Random(copyData);
+
+        foreach (var variety in copyData.Varieties)
+        {
+            await Production.ProduceTextPictures(variety, job.Settings);
+            job.VarietyUrls.Add(variety.OutPath);
+        }
+
+        return copyData;
+    }
+
     public static async Task<PictureData> FontVariety(Job job, PictureData pictureData)
     {
         DirectoryWrapper directoryWrapper = new();
@@ -247,21 +266,10 @@ public static partial class Creator
         foreach (var varietyData in copyData.Varieties)
         {
             await Production.ProduceTextPictures(varietyData, job.Settings);
+            job.VarietyUrls.Add(varietyData.OutPath);
         }
 
-        var parentfilename = Path.GetFileName(pictureData.FileName);
-        var concatenatedString = $"{job.Settings.TextAddedDir}/varietyof{parentfilename}/FontVariety";
-        var arrayOfFilePaths = Directory.GetFiles(concatenatedString, "*.png");
-
-        List<string> imageUrls = [];
-        foreach (var filepath in arrayOfFilePaths)
-        {
-            var imageurl = $"/{filepath}"; // convert to URL
-            imageUrls.Add(imageurl);
-        }
-        job.VarietyUrls = imageUrls;
         job.PictureData.Add(copyData);
-
         return copyData;
     }
 
@@ -273,68 +281,36 @@ public static partial class Creator
         foreach (var varietyData in copyData.Varieties)
         {
             await Production.ProduceTextPictures(varietyData, job.Settings);
+            job.VarietyUrls.Add(varietyData.OutPath);
         }
-
-        var parentfilename = Path.GetFileName(pictureData.FileName);
-        var concatenatedString = $"{job.Settings.TextAddedDir}/varietyof{parentfilename}/BoxVariety";
-        var arrayOfFilePaths = Directory.GetFiles(concatenatedString, "*.png");
-
-        List<string> imageUrls = [];
-        foreach (var filepath in arrayOfFilePaths)
-        {
-            var imageurl = $"/{filepath}"; // convert to URL
-            imageUrls.Add(imageurl);
-        }
-        job.VarietyUrls = imageUrls;
         job.PictureData.Add(copyData);
-
         return copyData;
     }
 
     public static async Task<PictureData> SpecialEffectsVariety(Job job, PictureData pictureData)
     {
         var copyData = Variety.FX(pictureData);
+        job.VarietyUrls.Clear();
 
         foreach (var varietyData in copyData.Varieties)
         {
             await Production.ProduceTextPictures(varietyData, job.Settings);
+            job.VarietyUrls.Add(varietyData.OutPath);
         }
-        var parentfilename = Path.GetFileName(copyData.FileName);
-        var concatenatedString = $"{job.Settings.TextAddedDir}/varietyof{parentfilename}/FXVariety";
-        var arrayOfFilePaths = Directory.GetFiles(concatenatedString, "*.png");
-
-        List<string> imageUrls = [];
-        foreach (var filepath in arrayOfFilePaths)
-        {
-            var imageurl = $"/{filepath}"; // convert to URL
-            imageUrls.Add(imageurl);
-        }
-        job.VarietyUrls = imageUrls;
         job.PictureData.Add(copyData);
-
         return copyData;
     }
 
     public static async Task<PictureData> ColorVariety(Job job, PictureData pictureData)
     {
         var copyData = Variety.Colors(pictureData);
+        job.VarietyUrls.Clear();
 
         foreach (var varietyData in copyData.Varieties)
         {
             await Production.ProduceTextPictures(varietyData, job.Settings);
+            job.VarietyUrls.Add(varietyData.OutPath);
         }
-
-        var parentfilename = Path.GetFileName(copyData.FileName);
-        var concatenatedString = $"{job.Settings.TextAddedDir}/varietyof{parentfilename}/ColorVariety";
-        var arrayOfFilePaths = Directory.GetFiles(concatenatedString, "*.png");
-
-        List<string> imageUrls = [];
-        foreach (var filepath in arrayOfFilePaths)
-        {
-            var imageurl = $"/{filepath}"; // convert to URL
-            imageUrls.Add(imageurl);
-        }
-        job.VarietyUrls = imageUrls;
         job.PictureData.Add(copyData);
 
         return copyData;

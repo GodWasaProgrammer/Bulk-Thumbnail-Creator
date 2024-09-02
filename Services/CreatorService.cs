@@ -156,6 +156,17 @@ public class CreatorService
         return imageUrls;
     }
 
+    public async Task<PictureData> CreateRandomVariety(PictureData pictureData, Job job)
+    {
+        IsLoading = true;
+
+        var newData = await Creator.Random(job, pictureData);
+
+        IsLoading = false;
+
+        return newData;
+    }
+
     public async Task<PictureData> CreateFontVariety(PictureData pictureData, Job job)
     {
         IsLoading = true;
