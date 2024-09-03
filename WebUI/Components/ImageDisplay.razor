@@ -37,7 +37,7 @@
             }
             @if (IMGDetailClicked)
             {
-                <VarietyDisplay picDataBoxURL="@passUrl" CurrentJob="@CurrentJob" ParentPictureProp="@picdata" VarietyUrls="@CurrentJob.VarietyUrls"></VarietyDisplay>
+                <VarietyDisplay picDataBoxURLChanged="UpdatePicDataBoxURL" picDataBoxURL="@passUrl" CurrentJob="@CurrentJob" ParentPictureProp="@picdata" VarietyUrls="@CurrentJob.VarietyUrls"></VarietyDisplay>
             }
         }
     }
@@ -56,6 +56,12 @@
     private string passUrl;
 
     private bool IMGDetailClicked = false;
+
+    void UpdatePicDataBoxURL(string newUrl)
+    {
+        passUrl = newUrl;
+        StateHasChanged();
+    }
 
     private void reset()
     {

@@ -87,7 +87,7 @@
         InvokeAsync(() => StateHasChanged());
     }
 
-    private void SelectPicture(string VarietyUrl)
+    private async void SelectPicture(string VarietyUrl)
     {
         var filename = Path.GetFileName(VarietyUrl);
         foreach (var variety in ParentPictureProp.Varieties)
@@ -102,6 +102,7 @@
                 break;
             }
         }
+        await picDataBoxURLChanged.InvokeAsync(picDataBoxURL);
         StateHasChanged();
     }
 
@@ -162,6 +163,9 @@
 
     [Parameter]
     public string picDataBoxURL { get; set; }
+
+    [Parameter]
+    public EventCallback<string> picDataBoxURLChanged  { get; set; }
 
     private bool loading = false;
 
