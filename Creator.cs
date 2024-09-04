@@ -5,52 +5,8 @@ namespace BulkThumbnailCreator;
 
 public static partial class Creator
 {
-    public static async Task<string> FetchVideo(string url, Settings settings)
+    private static async Task FaceDetection(Settings settings)
     {
-        await Production.VerifyDirectoryAndExeIntegrity(settings);
-        var pathToDownloadedVideo = await Production.YouTubeDL(url, settings);
-        return pathToDownloadedVideo;
-    }
-    private static async Task RunFFMpeg(Settings settings)
-    {
-        var parameters = new Dictionary<string, string>();
-
-        var extractedfilename = Path.GetFileName(settings.PathToVideo);
-        parameters["i"] = $@"""{extractedfilename}""";
-        parameters["vf"] = "select='gt(scene,0.3)',select=key";
-        parameters["vsync"] = "vfr";
-
-        // get our current location
-        var parentDirectory = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName;
-
-        var pictureOutput = $@"""{Path.GetRelativePath(Path.Combine(parentDirectory, "Executables"), settings.OutputDir)}/%03d.png""";
-
-        await FFmpegHandler.RunFFMPG(parameters, pictureOutput, settings);
-    }
-
-    public static async Task<List<PictureData>> FrontPageLineup(string url, Settings settings)
-    {
-        settings.PictureDatas = [];
-
-        // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
-        Production.CreateDirectories(settings.OutputDir, settings.TextAddedDir, settings.YTDLOutPutDir, settings);
-
-        await Production.VerifyDirectoryAndExeIntegrity(settings);
-
-        settings.PathToVideo = await Production.YouTubeDL(url, settings);
-
-        settings.OutputDir = settings.OutputDir + "/" + CleanPathRegEx().Replace(Path.GetFileNameWithoutExtension(settings.PathToVideo), "");
-        Directory.CreateDirectory(settings.OutputDir);
-
-        settings.TextAddedDir = settings.TextAddedDir + "/" + CleanPathRegEx().Replace(Path.GetFileNameWithoutExtension(settings.PathToVideo), "");
-        Directory.CreateDirectory(settings.TextAddedDir);
-
-        await RunFFMpeg(settings);
-
-        settings.Memes = Directory.GetFiles(settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
-
-        #region Face Detection
-
         settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
         await settings.LogService.LogInformation($"Processing {settings.Files.Length} images");
@@ -83,9 +39,6 @@ public static partial class Creator
                     }
                 }
             });
-
-            #endregion
-
 
             PictureData passPictureData = new()
             {
@@ -122,22 +75,61 @@ public static partial class Creator
 
             settings.PictureDatas.Add(passPictureData);
         }
+    }
+    public static async Task<string> FetchVideo(string url, Settings settings)
+    {
+        await Production.VerifyDirectoryAndExeIntegrity(settings);
+        // var pathToDownloadedVideo = await Production.YouTubeDL(url, settings);
+        return null;
+    }
+    private static async Task RunFFMpeg(Settings settings)
+    {
+        var parameters = new Dictionary<string, string>();
 
-        var dirWrapper = new DirectoryWrapper();
-        var varietyInstance = new Variety(dirWrapper, settings);
+        var extractedfilename = Path.GetFileName(settings.PathToVideo);
+        parameters["i"] = $@"""{extractedfilename}""";
+        parameters["vf"] = "select='gt(scene,0.3)',select=key";
+        parameters["vsync"] = "vfr";
+
+        // get our current location
+        var parentDirectory = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName;
+
+        var pictureOutput = $@"""{Path.GetRelativePath(Path.Combine(parentDirectory, "Executables"), settings.OutputDir)}/%03d.png""";
+
+        await FFmpegHandler.RunFFMPG(parameters, pictureOutput, settings);
+    }
+
+    public static async Task FrontPageLineup(Job job)
+    {
+        // make ref for verbosity
+        var settings = job.Settings;
+
+        // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
+        Production.CreateDirectories(settings);
+
+        await Production.VerifyDirectoryAndExeIntegrity(settings);
+
+        await Production.YouTubeDL(job);
+
+        CleanPathNames(job);
+
+        await RunFFMpeg(settings);
+
+        job.Settings.Memes = Directory.GetFiles(job.Settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
+
+        await FaceDetection(settings);
 
         //// Produce varietydata for the current object
+        var dirWrapper = new DirectoryWrapper();
+        var varietyInstance = new Variety(dirWrapper, job.Settings);
         for (var i = 0; i < settings.PictureDatas.Count; i++)
         {
             varietyInstance.Random(settings.PictureDatas[i]);
             varietyInstance.Meme(settings.PictureDatas[i]);
         }
 
-        #region File Production
-
         SemaphoreSlim semaphore = new(4);
         List<Task> productionTasks = [];
-
         foreach (var picData in settings.PictureDatas)
         {
             var noBoxes = picData.BoxParameters.All(bp => bp.CurrentBox.Type == BoxType.None);
@@ -153,7 +145,8 @@ public static partial class Creator
                         await semaphore.WaitAsync();
 
                         // Execute the image processing task
-                        await Production.ProduceTextPictures(picData, settings);
+                        await Production.ProduceTextPictures(picData, job.Settings);
+                        job.FrontLineUpUrls.Add(picData.OutPath);
                     }
                     finally
                     {
@@ -161,26 +154,30 @@ public static partial class Creator
                         semaphore.Release();
                     }
                 });
-
                 // Add the task to the list
                 productionTasks.Add(productionTask);
             }
         }
-
         // Wait for all tasks to complete
         await Task.WhenAll(productionTasks);
 
-        #endregion
-
-        #region Front Page Picture Line Up Mocking
-        if (Mocking.BTCRunCount != 1 && settings.MakeMocking)
+        if (Mocking.BTCRunCount != 1 && job.Settings.MakeMocking)
         {
             // ffmpeg has finished, lets copy our mock data
-            Mocking.CopyOutPutDir(settings);
+            Mocking.CopyOutPutDir(job.Settings);
         }
-        #endregion
 
-        return settings.PictureDatas;
+        // kekfix 
+        job.PictureData = settings.PictureDatas;
+    }
+
+    private static void CleanPathNames(Job job)
+    {
+        job.Settings.OutputDir = job.Settings.OutputDir + "/" + CleanPathRegEx().Replace(Path.GetFileNameWithoutExtension(job.Settings.PathToVideo), "");
+        Directory.CreateDirectory(job.Settings.OutputDir);
+
+        job.Settings.TextAddedDir = job.Settings.TextAddedDir + "/" + CleanPathRegEx().Replace(Path.GetFileNameWithoutExtension(job.Settings.PathToVideo), "");
+        Directory.CreateDirectory(job.Settings.TextAddedDir);
     }
 
     public static async Task<List<PictureData>> VarietyLineup(Settings settings, PictureData pictureData)
@@ -328,7 +325,7 @@ public static partial class Creator
         return copyData;
     }
 
-    public static async Task<List<PictureData>> Process(ProductionType prodType, string url, List<string> texts, Settings settings, PictureData pictureData = null)
+    public static async Task<List<PictureData>> Process(ProductionType prodType, string url, List<string> texts, Settings settings, PictureData pictureData = null) 
     {
         settings.ListOfText = texts;
 
@@ -338,11 +335,11 @@ public static partial class Creator
             settings.PictureDatas = [];
 
             // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
-            Production.CreateDirectories(settings.OutputDir, settings.TextAddedDir, settings.YTDLOutPutDir, settings);
+            //Production.CreateDirectories(settings.OutputDir, settings.TextAddedDir, settings.YTDLOutPutDir, settings);
 
             await Production.VerifyDirectoryAndExeIntegrity(settings);
 
-            settings.PathToVideo = await Production.YouTubeDL(url, settings);
+            // settings.PathToVideo = await Production.YouTubeDL(url, settings);
 
             settings.OutputDir = settings.OutputDir + "/" + CleanPathRegEx().Replace(Path.GetFileNameWithoutExtension(settings.PathToVideo), "");
             Directory.CreateDirectory(settings.OutputDir);

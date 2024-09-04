@@ -157,14 +157,14 @@ public static class Production
     /// </summary>
     /// <param name="url">the specified link URL to download</param>
     /// <returns>returns the path to the downloaded video</returns>
-    public static async Task<string> YouTubeDL(string url, Settings settings)
+    public static async Task YouTubeDL(Job job)
     {
         var ytdl = new YoutubeDL
         {
             // set paths
-            YoutubeDLPath = settings.YTDLPDir,
-            FFmpegPath = settings.FfmpegDir,
-            OutputFolder = settings.YTDLOutPutDir,
+            YoutubeDLPath = job.Settings.YTDLPDir,
+            FFmpegPath = job.Settings.FfmpegDir,
+            OutputFolder = job.Settings.YTDLOutPutDir,
         };
 
         // downloads specified video from youtube if it does not already exist.
@@ -172,39 +172,39 @@ public static class Production
 
         ytdl.OverwriteFiles = false;
 
-        if (url == null)
+        if (job.VideoUrl == null)
         {
-            await settings.LogService.LogError("URL has been passed as null to YTDL");
-            throw new ArgumentNullException(nameof(url));
+            await job.Settings.LogService.LogError("URL has been passed as null to YTDL");
+            throw new ArgumentNullException(nameof(job.VideoUrl));
         }
         else
         {
-            await settings.LogService.LogInformation($"Attempting download of: {url}");
-            res = await ytdl.RunVideoDownload(url: url);
+            await job.Settings.LogService.LogInformation($"Attempting download of: {job.VideoUrl}");
+            res = await ytdl.RunVideoDownload(url: job.VideoUrl);
         }
 
-        await settings.LogService.LogInformation("Download Success:" + res.Success.ToString());
+        await job.Settings.LogService.LogInformation("Download Success:" + res.Success.ToString());
 
         // sets BTC to run on the recently downloaded file res.data is the returned path.
-        return res.Data;
+        job.Settings.PathToVideo = res.Data;
     }
 
-    public static void CreateDirectories(string outputDir, string textAdded, string ytdl, Settings settings)
+    public static void CreateDirectories(Settings settings)
     {
-        if (!Directory.Exists(outputDir))
+        if (!Directory.Exists(settings.OutputDir))
         {
-            settings.LogService.LogInformation($"{outputDir} Directory was missing, will be created");
-            Directory.CreateDirectory(outputDir);
+            settings.LogService.LogInformation($"{settings.OutputDir} Directory was missing, will be created");
+            Directory.CreateDirectory(settings.OutputDir);
         }
-        if (!Directory.Exists(ytdl))
+        if (!Directory.Exists(settings.TextAddedDir))
         {
-            settings.LogService.LogInformation($"{textAdded} Directory was missing, will be created");
-            Directory.CreateDirectory(textAdded);
+            settings.LogService.LogInformation($"{settings.TextAddedDir} Directory was missing, will be created");
+            Directory.CreateDirectory(settings.TextAddedDir);
         }
-        if (!Directory.Exists(ytdl))
+        if (!Directory.Exists(settings.YTDLOutPutDir))
         {
-            settings.LogService.LogInformation($"{ytdl} Directory was missing, will be created");
-            Directory.CreateDirectory(ytdl);
+            settings.LogService.LogInformation($"{settings.YTDLOutPutDir} Directory was missing, will be created");
+            Directory.CreateDirectory(settings.YTDLOutPutDir);
         }
     }
 

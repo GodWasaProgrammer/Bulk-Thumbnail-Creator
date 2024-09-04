@@ -72,7 +72,8 @@ public class CreatorService
         }
         else
         {
-            job.PictureData = await Creator.FrontPageLineup(url, settings);
+            job.VideoUrl = url;
+            await Creator.FrontPageLineup(job);
         }
 
         if (settings.PathToVideo != null)
@@ -80,24 +81,6 @@ public class CreatorService
             job.VideoPath = settings.PathToVideo;
             job.VideoName = Path.GetFileNameWithoutExtension(settings.PathToVideo);
         }
-
-        var imagePath = settings.TextAddedDir;
-
-        // Get the list of image files in the folder asynchronously
-        var imageFiles = await Task.Run(() => Directory.GetFiles(imagePath, "*.png"));
-
-        // Initialize the image URLs list
-        var imageUrls = new List<string>();
-
-        // Create the URLs for the images and add them to the list
-        foreach (var imageFile in imageFiles)
-        {
-            var imageUrl = $"/{imageFile}";
-            imageUrls.Add(imageUrl);
-        }
-
-        // write the url list to the currentjob
-        job.FrontLineUpUrls = imageUrls;
         job.State = States.FrontPagePictureLineUp;
         IsLoading = false;
     }
