@@ -45,7 +45,4 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mocking\FrontpagePictureLineUp\textadded\" />
-  </ItemGroup>
 </Project>

@@ -216,10 +216,22 @@ public static partial class Creator
             await Task.WhenAll(productionVarietyTaskList);
         }
 
+
         if (Mocking.BTCRunCount != 1 && settings.MakeMocking)
         {
+            Mocking.SerializePicData(settings);
+            await settings.LogService.LogInformation("PicData has been Serialized");
+
+            Mocking.CopyTextAddedDir(settings);
+            await settings.LogService.LogInformation("TextAdded Dir has been copied for mocking");
+
             await Mocking.CopyVarietyDir(settings);
+            await settings.LogService.LogInformation("Variety Dir has been copied");
         }
+
+        Mocking.BTCRunCount++;
+        settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
+        await settings.LogService.LogInformation("Processing Finished");
         return settings.PictureDatas;
     }
 

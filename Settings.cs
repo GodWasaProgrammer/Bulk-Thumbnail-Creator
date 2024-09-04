@@ -2,8 +2,8 @@
 
 public class Settings(ILogService logger, JobService jobService) : ISettings
 {
-    public bool Mocking { get; set; } = false;
-    public bool MakeMocking { get; set; } = false;
+    public bool Mocking { get; set; } = true;
+    public bool MakeMocking { get; set; } = true;
     public ILogService LogService { get; set; } = logger;
     public JobService JobService { get; set; } = jobService;
     public string OutputDir { get; set; } = "output";
