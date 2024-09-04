@@ -5,7 +5,7 @@ internal static class Mocking
     // this class is displayed in the order it is called for easy understanding of its structure
     public static int BTCRunCount = 0;
 
-    internal static void SerializePicData(Settings settings)
+    internal static void SerializePicData(List<PictureData> pictureDatas)
     {
         XmlSerializer serializer = new(typeof(List<PictureData>));
 
@@ -13,9 +13,9 @@ internal static class Mocking
         using (StreamWriter streamWriter = new("mockFP.xml"))
         {
             // Serialize the entire list at once
-            serializer.Serialize(streamWriter, settings.PictureDatas);
+            serializer.Serialize(streamWriter, pictureDatas);
         }
-        settings.LogService.LogInformation("Settings.PictureData Serialized to mockFP.xml");
+        // settings.LogService.LogInformation("Settings.PictureData Serialized to mockFP.xml");
 
         var mockDir = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "mockFP.xml");
         File.Copy("mockFP.xml", mockDir, true);
@@ -108,8 +108,11 @@ internal static class Mocking
         }
     }
 
-    internal static async Task SetupFrontPagePictureLineUp(Settings settings)
+    internal static async Task SetupFrontPagePictureLineUp(Job job)
     {
+        // make ref for verbosity
+        var settings = job.Settings;
+
         // pretend to make line up
         var srcMockFolder = Path.Combine(Path.GetFullPath(".."), "Mocking", "FrontpagePictureLineUp", "output");
         var dirToCopy = Directory.GetDirectories(srcMockFolder);
@@ -174,7 +177,7 @@ internal static class Mocking
         }
         // add the deserialized list to the PictureData list
         // this completes the mocking of the process
-        settings.PictureDatas = deserializedList;
+        job.PictureData = deserializedList;
     }
 
     internal static async Task SetupVarietyDisplay(Settings settings)

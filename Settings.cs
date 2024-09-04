@@ -14,7 +14,7 @@ public class Settings(ILogService logger, JobService jobService) : ISettings
     public string[] Files { get; set; }
     public string DankMemeStashDir { get; set; } = "DankMemeStash";
     public string[] Memes { get; set; }
-    public List<PictureData> PictureDatas { get; set; } = [];
+    //public List<PictureData> PictureDatas { get; set; } = [];
     public List<string> ListOfText { get; set; } = [];
     public string PathToVideo { get; set; }
     public List<string> DownloadedVideosList { get; set; } = [];

@@ -68,7 +68,7 @@ public class CreatorService
 
         if (job.Settings.Mocking && job.Settings.MakeMocking)
         {
-            job.PictureData = await Creator.MockProcess(ProductionType.FrontPagePictureLineUp, url, listOfTextToPrint, settings);
+            job.PictureData = await Creator.MockProcess(ProductionType.FrontPagePictureLineUp, url, listOfTextToPrint, job);
         }
         else
         {
@@ -93,13 +93,13 @@ public class CreatorService
 
         if (job.Settings.Mocking && job.Settings.MakeMocking)
         {
-            job.PictureData = await Creator.MockProcess(ProductionType.VarietyList, url, job.TextToPrint, job.Settings, pictureData);
+            job.PictureData = await Creator.MockProcess(ProductionType.VarietyList, url, job.TextToPrint, job, pictureData);
             job.State = States.varietyList;
         }
         else
         {
             job.State = States.Loading;
-            job.PictureData = await Creator.VarietyLineup(job.Settings, pictureData);
+            job.PictureData = await Creator.VarietyLineup(job, pictureData);
             job.State = States.varietyList;
         }
 
@@ -197,7 +197,7 @@ public class CreatorService
     {
         _isLoading = true;
         job.State = States.CustomPicture;
-        job.PictureData = await Creator.CustomPicture(job.Settings, pictureData);
+        job.PictureData = await Creator.CustomPicture(job, pictureData);
         _isLoading = false;
 
         return pictureData;
