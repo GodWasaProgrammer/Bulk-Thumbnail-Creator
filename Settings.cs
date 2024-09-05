@@ -14,5 +14,4 @@ public class Settings() : ISettings
     public string[] Memes { get; set; }
     public List<string> ListOfText { get; set; } = [];
     public string PathToVideo { get; set; }
-    public List<string> DownloadedVideosList { get; set; } = [];
 }

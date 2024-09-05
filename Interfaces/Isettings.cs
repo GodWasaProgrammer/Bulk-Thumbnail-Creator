@@ -14,5 +14,4 @@ public interface ISettings
     string[] Memes { get; set; }
     List<string> ListOfText { get; set; }
     string PathToVideo { get; set; }
-    List<string> DownloadedVideosList { get; set; }
 }
