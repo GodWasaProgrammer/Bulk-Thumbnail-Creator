@@ -2,50 +2,18 @@
 
 public class CreatorService
 {
-    public CreatorService(ILogService logger, JobService jobService, Creator creator)
+    public CreatorService(ILogService logger, Creator creator)
     {
+        _logService = logger;
+        _creator = creator;
         // if we are not in a state where we have a job, we should clear the output directories
         // this should only be called when the app is started
         // or if the joblist has been cleared
-        //if (UserStateService.UserJobs.Count == 0)
-        //{
-        //    ClearBaseOutPutDirectories();
-        //}
-        _logService = logger;
-        _jobService = jobService;
-        _creator = creator;
     }
 
     private ILogService _logService;
 
-    private JobService _jobService;
-
     private Creator _creator;
-
-    public static void ClearBaseOutPutDirectories(Settings settings)
-    {
-        DirectoryInfo di = new(settings.TextAddedDir);
-
-        foreach (var file in di.GetFiles())
-        {
-            file.Delete();
-        }
-        foreach (var dir in di.GetDirectories())
-        {
-            dir.Delete(true);
-        }
-
-        DirectoryInfo di2 = new(settings.OutputDir);
-
-        foreach (var file in di2.GetFiles())
-        {
-            file.Delete();
-        }
-        foreach (var dir in di2.GetDirectories())
-        {
-            dir.Delete(true);
-        }
-    }
 
     public event EventHandler<bool> LoadingStateChanged;
 
