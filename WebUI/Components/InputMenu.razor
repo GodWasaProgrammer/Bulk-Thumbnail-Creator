@@ -126,12 +126,12 @@
             /// if we have text, we pass it to the backend
             if (userInputText.Count != 0)
             {
-                await ds.CreateInitialPictureArrayAsync(youtubeLink, userInputText, settings, job);
+                await ds.CreateInitialPictureArrayAsync(youtubeLink, userInputText,job);
             }
             /// otherwise we use our default text values
             else
             {
-                await ds.CreateInitialPictureArrayAsync(youtubeLink, defaultText, settings, job);
+                await ds.CreateInitialPictureArrayAsync(youtubeLink, defaultText, job);
             }
         }
         await InvokeAsync(() => StateHasChanged());

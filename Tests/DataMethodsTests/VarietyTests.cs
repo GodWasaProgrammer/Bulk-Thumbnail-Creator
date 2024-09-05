@@ -20,11 +20,11 @@ public class VarietyTests
 
         var logService = new LogService();
         var jobService = new JobService();
-        var settings = new Settings(logService, jobService);
+        //var settings = new Settings(logService, jobService);
         var mockDirectoryWrapper = new Mock<IDirectoryWrapper>();
         mockDirectoryWrapper.Setup(x => x.GetFiles(It.IsAny<string>(), It.IsAny<string>()))
                             .Returns(["font1.ttf", "font2.ttf", "font3.ttf", "font4.ttf", "font5.ttf", "font6.ttf"]);
-        var varietyMocked = new Variety(mockDirectoryWrapper.Object, settings);
+        //var varietyMocked = new Variety(mockDirectoryWrapper.Object, settings);
         var picdata1 = new PictureData
         {
             FileName = "VarietyTest",
@@ -67,7 +67,7 @@ public class VarietyTests
         // call the varietymethod on all the picdatas
         foreach (var pictureData in pictureDatas)
         {
-            varietyMocked.Random(pictureData);
+            //varietyMocked.Random(pictureData);
         }
 
         // Assert

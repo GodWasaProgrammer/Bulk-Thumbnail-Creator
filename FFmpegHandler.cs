@@ -1,12 +1,19 @@
 ﻿namespace BulkThumbnailCreator;
 
-internal static class FFmpegHandler
+internal class FFmpegHandler
 {
+    public FFmpegHandler(ILogService logService)
+    {
+        _logService = logService;
+    }
+
+    ILogService _logService;
+
     /// <summary>
     /// This runs the process of ffmpeg and feeds it with parameters for file extraction
     /// </summary>
     /// <param name="parameters"></param>
-    private static async Task ExecuteFFMPG(string parameters, Settings settings)
+    private async Task ExecuteFFMPG(string parameters, Settings settings)
     {
         Process processFFMpeg = new();
 
@@ -21,17 +28,17 @@ internal static class FFmpegHandler
 
         if (!processStarted)
         {
-            await settings.LogService.LogError("FFMpeg failed to start");
+            await _logService.LogError("FFMpeg failed to start");
             return;
         }
         else
         {
-            await settings.LogService.LogInformation("FFMpeg started");
+            await _logService.LogInformation("FFMpeg started");
         }
 
         await Task.Run(() => processFFMpeg.WaitForExit());
 
-        await settings.LogService.LogInformation("Ffmpeg finished producing pictures");
+        await _logService.LogInformation("Ffmpeg finished producing pictures");
     }
 
     /// <summary>
@@ -39,7 +46,7 @@ internal static class FFmpegHandler
     /// </summary>
     /// <param name="parameters"></param>
     /// <param name="outPath"></param>
-    public static async Task RunFFMPG(Dictionary<string, string> parameters, string outPath, Settings settings)
+    public async Task RunFFMPG(Dictionary<string, string> parameters, string outPath, Settings settings)
     {
         var exePars = "";
         foreach (var parameter in parameters)

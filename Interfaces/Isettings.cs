@@ -4,8 +4,6 @@ public interface ISettings
 {
     bool Mocking { get; set; }
     bool MakeMocking { get; set; }
-    ILogService LogService { get; set; }
-    JobService JobService { get; set; }
     string OutputDir { get; set; }
     string TextAddedDir { get; set; }
     string YTDLPDir { get; set; }

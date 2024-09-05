@@ -61,7 +61,7 @@ internal static class Mocking
         if (!Directory.Exists(mockdir3))
         {
             Directory.CreateDirectory(mockdir3);
-            settings.LogService.LogInformation("MockDirectory TextAdded was Missing, so it has been created.");
+            // settings.LogService.LogInformation("MockDirectory TextAdded was Missing, so it has been created.");
         }
 
         // we will then clean up the directory if we have residual files there
@@ -164,7 +164,7 @@ internal static class Mocking
         }
         catch (Exception)
         {
-            await settings.LogService.LogError("Could not find mockFP.xml");
+            // await settings.LogService.LogError("Could not find mockFP.xml");
             throw;
         }
 
@@ -200,7 +200,7 @@ internal static class Mocking
                 outPath = Path.Combine(outPath, Path.GetFileName(file));
 
                 await Task.Run(() => File.Copy(file, outPath));
-                await settings.LogService.LogInformation($"Copied {file} to {outPath}");
+                // await _logService.LogInformation($"Copied {file} to {outPath}");
             }
         }
     }

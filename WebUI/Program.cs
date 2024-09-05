@@ -38,6 +38,7 @@ public static class Program
         builder.Services.AddScoped<ILogService, LogService>();
         builder.Services.AddScoped<Settings>();
         builder.Services.AddSingleton<UserStateService>();
+        builder.Services.AddScoped<Creator>();
         builder.Services.AddMudServices();
         var app = builder.Build();
 

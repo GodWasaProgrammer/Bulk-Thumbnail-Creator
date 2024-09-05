@@ -39,6 +39,7 @@
         public Task<Job> CreateJob(string videoUrl, string currentUser)
         {
             Job job = new(videoUrl, currentUser);
+            job.Settings = new Settings();
 
             // add the job the joblist
             UserStateService.AddJob(job);

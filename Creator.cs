@@ -3,9 +3,19 @@ using BulkThumbnailCreator.Wrappers;
 
 namespace BulkThumbnailCreator;
 
-public static partial class Creator
+public partial class Creator
 {
-    private static async Task<(Array2D<RgbPixel>, Rectangle[])> FaceDetection(string file)
+    public Creator(ILogService logger)
+    {
+        _logger = logger;
+        _production = new Production(logger);
+    }
+
+    private ILogService _logger;
+
+    private Production _production;
+
+    private async Task<(Array2D<RgbPixel>, Rectangle[])> FaceDetection(string file)
     {
         Array2D<RgbPixel> image = null;
         Rectangle[] faceRectangles = null;
@@ -39,7 +49,7 @@ public static partial class Creator
         return t1;
     }
 
-    private static void CreateData(Job job, Array2D<RgbPixel> image, Rectangle[] faceRectangles, PictureData picData)
+    private void CreateData(Job job, Array2D<RgbPixel> image, Rectangle[] faceRectangles, PictureData picData)
     {
         for (var amountOfBoxes = 0; amountOfBoxes < picData._numberOfBoxes; amountOfBoxes++)
         {
@@ -70,13 +80,14 @@ public static partial class Creator
         job.PictureData.Add(picData);
     }
 
-    public static async Task<string> FetchVideo(string url, Settings settings)
+    public async Task<string> FetchVideo(string url, Settings settings)
     {
-        await Production.VerifyDirectoryAndExeIntegrity(settings);
+
+        await _production.VerifyDirectoryAndExeIntegrity(settings);
         // var pathToDownloadedVideo = await Production.YouTubeDL(url, settings);
         return null;
     }
-    private static async Task RunFFMpeg(Settings settings)
+    private async Task RunFFMpeg(Settings settings)
     {
         var parameters = new Dictionary<string, string>();
 
@@ -90,20 +101,23 @@ public static partial class Creator
 
         var pictureOutput = $@"""{Path.GetRelativePath(Path.Combine(parentDirectory, "Executables"), settings.OutputDir)}/%03d.png""";
 
-        await FFmpegHandler.RunFFMPG(parameters, pictureOutput, settings);
+        var ffmpg = new FFmpegHandler(_logger);
+        await ffmpg.RunFFMPG(parameters, pictureOutput, settings);
     }
 
-    public static async Task FrontPageLineup(Job job)
+    public async Task FrontPageLineup(Job job)
     {
         // make ref for verbosity
         var settings = job.Settings;
 
+        var prod = new Production(_logger);
+
         // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
-        Production.CreateDirectories(settings);
+        prod.CreateDirectories(settings);
 
-        await Production.VerifyDirectoryAndExeIntegrity(settings);
+        await prod.VerifyDirectoryAndExeIntegrity(settings);
 
-        await Production.YouTubeDL(job);
+        await prod.YouTubeDL(job);
 
         CleanPathNames(job);
 
@@ -113,7 +127,7 @@ public static partial class Creator
 
         settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
 
-        await settings.LogService.LogInformation($"Processing {settings.Files.Length} images");
+        await _logger.LogInformation($"Processing {settings.Files.Length} images");
         foreach (var file in settings.Files)
         {
             var dataTuple = await FaceDetection(file);
@@ -137,6 +151,7 @@ public static partial class Creator
 
         SemaphoreSlim semaphore = new(4);
         List<Task> productionTasks = [];
+
         foreach (var picData in job.PictureData)
         {
             var noBoxes = picData.BoxParameters.All(bp => bp.CurrentBox.Type == BoxType.None);
@@ -152,7 +167,8 @@ public static partial class Creator
                         await semaphore.WaitAsync();
 
                         // Execute the image processing task
-                        await Production.ProduceTextPictures(picData, job.Settings);
+
+                        await prod.ProduceTextPictures(picData, job.Settings);
                         job.FrontLineUpUrls.Add(picData.OutPath);
                     }
                     finally
@@ -175,7 +191,7 @@ public static partial class Creator
         }
     }
 
-    private static void CleanPathNames(Job job)
+    private void CleanPathNames(Job job)
     {
         job.Settings.OutputDir = job.Settings.OutputDir + "/" + CleanPathRegEx().Replace(Path.GetFileNameWithoutExtension(job.Settings.PathToVideo), "");
         Directory.CreateDirectory(job.Settings.OutputDir);
@@ -184,11 +200,11 @@ public static partial class Creator
         Directory.CreateDirectory(job.Settings.TextAddedDir);
     }
 
-    public static async Task<List<PictureData>> VarietyLineup(Job job, PictureData pictureData)
+    public async Task<List<PictureData>> VarietyLineup(Job job, PictureData pictureData)
     {
         if (pictureData == null)
         {
-            await job.Settings.LogService.LogError("null has been passed to PicdataobjToVarietize");
+            await _logger.LogError("null has been passed to PicdataobjToVarietize");
         }
         else
         {
@@ -203,7 +219,7 @@ public static partial class Creator
                 {
                     try
                     {
-                        await Production.ProduceTextPictures(picData, job.Settings);
+                        await _production.ProduceTextPictures(picData, job.Settings);
                     }
                     finally
                     {
@@ -221,36 +237,36 @@ public static partial class Creator
         if (Mocking.BTCRunCount != 1 && job.Settings.MakeMocking)
         {
             Mocking.SerializePicData(job.PictureData);
-            await job.Settings.LogService.LogInformation("PicData has been Serialized");
+            await _logger.LogInformation("PicData has been Serialized");
 
             Mocking.CopyTextAddedDir(job.Settings);
-            await job.Settings.LogService.LogInformation("TextAdded Dir has been copied for mocking");
+            await _logger.LogInformation("TextAdded Dir has been copied for mocking");
 
             await Mocking.CopyVarietyDir(job.Settings);
-            await job.Settings.LogService.LogInformation("Variety Dir has been copied");
+            await _logger.LogInformation("Variety Dir has been copied");
         }
 
         Mocking.BTCRunCount++;
         job.Settings.Files = Directory.GetFiles(job.Settings.OutputDir, "*.*", SearchOption.AllDirectories);
-        await job.Settings.LogService.LogInformation("Processing Finished");
+        await _logger.LogInformation("Processing Finished");
         return job.PictureData;
     }
 
-    public static async Task<List<PictureData>> CustomPicture(Job job, PictureData pictureData)
+    public async Task<List<PictureData>> CustomPicture(Job job, PictureData pictureData)
     {
         if (pictureData == null)
         {
-            await job.Settings.LogService.LogError("Null has been passed to CustomPicture");
+            await _logger.LogError("Null has been passed to CustomPicture");
         }
         else
         {
-            await Production.ProduceTextPictures(pictureData, job.Settings);
+            await _production.ProduceTextPictures(pictureData, job.Settings);
             job.PictureData.Add(pictureData);
         }
         return job.PictureData;
     }
 
-    public static async Task<PictureData> Random(Job job, PictureData pictureData)
+    public async Task<PictureData> Random(Job job, PictureData pictureData)
     {
         job.VarietyUrls.Clear();
         var dirWrapper = new DirectoryWrapper();
@@ -262,14 +278,14 @@ public static partial class Creator
 
         foreach (var variety in copyData.Varieties)
         {
-            await Production.ProduceTextPictures(variety, job.Settings);
+            await _production.ProduceTextPictures(variety, job.Settings);
             job.VarietyUrls.Add(variety.OutPath);
         }
 
         return copyData;
     }
 
-    public static async Task<PictureData> FontVariety(Job job, PictureData pictureData)
+    public async Task<PictureData> FontVariety(Job job, PictureData pictureData)
     {
         DirectoryWrapper directoryWrapper = new();
         Variety variety = new(directoryWrapper, job.Settings);
@@ -278,7 +294,7 @@ public static partial class Creator
 
         foreach (var varietyData in copyData.Varieties)
         {
-            await Production.ProduceTextPictures(varietyData, job.Settings);
+            await _production.ProduceTextPictures(varietyData, job.Settings);
             job.VarietyUrls.Add(varietyData.OutPath);
         }
 
@@ -286,42 +302,42 @@ public static partial class Creator
         return copyData;
     }
 
-    public static async Task<PictureData> BoxVariety(Job job, PictureData pictureData)
+    public async Task<PictureData> BoxVariety(Job job, PictureData pictureData)
     {
         var copyData = Variety.Boxes(pictureData);
         job.VarietyUrls.Clear();
 
         foreach (var varietyData in copyData.Varieties)
         {
-            await Production.ProduceTextPictures(varietyData, job.Settings);
+            await _production.ProduceTextPictures(varietyData, job.Settings);
             job.VarietyUrls.Add(varietyData.OutPath);
         }
         job.PictureData.Add(copyData);
         return copyData;
     }
 
-    public static async Task<PictureData> SpecialEffectsVariety(Job job, PictureData pictureData)
+    public async Task<PictureData> SpecialEffectsVariety(Job job, PictureData pictureData)
     {
         var copyData = Variety.FX(pictureData);
         job.VarietyUrls.Clear();
 
         foreach (var varietyData in copyData.Varieties)
         {
-            await Production.ProduceTextPictures(varietyData, job.Settings);
+            await _production.ProduceTextPictures(varietyData, job.Settings);
             job.VarietyUrls.Add(varietyData.OutPath);
         }
         job.PictureData.Add(copyData);
         return copyData;
     }
 
-    public static async Task<PictureData> ColorVariety(Job job, PictureData pictureData)
+    public async Task<PictureData> ColorVariety(Job job, PictureData pictureData)
     {
         var copyData = Variety.Colors(pictureData);
         job.VarietyUrls.Clear();
 
         foreach (var varietyData in copyData.Varieties)
         {
-            await Production.ProduceTextPictures(varietyData, job.Settings);
+            await _production.ProduceTextPictures(varietyData, job.Settings);
             job.VarietyUrls.Add(varietyData.OutPath);
         }
         job.PictureData.Add(copyData);
@@ -336,14 +352,14 @@ public static partial class Creator
     /// <param name="texts"></param>
     /// <param name="pictureData"></param>
     /// <returns></returns>
-    public static async Task<List<PictureData>> MockProcess(ProductionType productionType, string url, List<string> texts, Job job, PictureData pictureData = null)
+    public async Task<List<PictureData>> MockProcess(ProductionType productionType, string url, List<string> texts, Job job, PictureData pictureData = null)
     {
         job.Settings.ListOfText = texts;
 
         if (productionType == ProductionType.FrontPagePictureLineUp)
         {
             await Mocking.SetupFrontPagePictureLineUp(job);
-            await job.Settings.LogService.LogInformation("Mocking of FrontPagePictureLineUp complete");
+            await _logger.LogInformation("Mocking of FrontPagePictureLineUp complete");
         }
 
         ArgumentNullException.ThrowIfNull(texts);
@@ -356,12 +372,12 @@ public static partial class Creator
             // when the code ran last time
             if (pictureData is null)
             {
-                await job.Settings.LogService.LogError("null has been passed to PicdataobjToVarietize");
+                await _logger.LogError("null has been passed to PicdataobjToVarietize");
             }
             else
             {
                 await Mocking.SetupVarietyDisplay(job.Settings);
-                await job.Settings.LogService.LogInformation("Mocking of Variety List complete");
+                await _logger.LogInformation("Mocking of Variety List complete");
             }
         }
 
@@ -369,11 +385,11 @@ public static partial class Creator
         {
             if (pictureData == null)
             {
-                await job.Settings.LogService.LogError("Null has been passed to CustomPicture");
+                await _logger.LogError("Null has been passed to CustomPicture");
             }
             else
             {
-                await Production.ProduceTextPictures(pictureData, job.Settings);
+                await _production.ProduceTextPictures(pictureData, job.Settings);
                 job.PictureData.Add(pictureData);
             }
         }

@@ -2,12 +2,19 @@
 
 namespace BulkThumbnailCreator;
 
-public static class Production
+public class Production
 {
+    public Production(ILogService logger)
+    {
+        _logService = logger;
+    }
+
+    private ILogService _logService;
+
     /// <summary>
     /// Checks if we have our directory/executables  in order
     /// </summary>
-    public static async Task VerifyDirectoryAndExeIntegrity(Settings settings)
+    public async Task VerifyDirectoryAndExeIntegrity(Settings settings)
     {
         var currentLoc = Assembly.GetExecutingAssembly().Location;
         var parentDirectory = Directory.GetParent(currentLoc).FullName;
@@ -27,58 +34,58 @@ public static class Production
 
         if (operatingSystem.Platform == PlatformID.Win32NT)
         {
-            await settings.LogService.LogInformation("Windows OS Detected");
+            await _logService.LogInformation("Windows OS Detected");
             YtdlpDir += ".exe";
             ffMpegDir += ".exe";
         }
         else if (operatingSystem.Platform == PlatformID.Unix)
         {
-            await settings.LogService.LogInformation("Unix OS Detected");
+            await _logService.LogInformation("Unix OS Detected");
         }
 
         if (File.Exists(YtdlpDir))
         {
-            await settings.LogService.LogInformation($"YTDLP has been confirmed");
+            await _logService.LogInformation($"YTDLP has been confirmed");
         }
         else
         {
-            await settings.LogService.LogError("yt-dlp was not found");
-            await settings.LogService.LogInformation("Will Try To Download yt-dlp");
+            await _logService.LogError("yt-dlp was not found");
+            await _logService.LogInformation("Will Try To Download yt-dlp");
             await YoutubeDLSharp.Utils.DownloadYtDlp(exePath);
 
             if (File.Exists(YtdlpDir))
             {
-                await settings.LogService.LogInformation("Successfully downloaded yt-dlp");
+                await _logService.LogInformation("Successfully downloaded yt-dlp");
             }
             else
             {
-                await settings.LogService.LogError("Failed to download yt-dlp");
+                await _logService.LogError("Failed to download yt-dlp");
             }
         }
         settings.YTDLPDir = YtdlpDir;
 
         if (File.Exists(ffMpegDir))
         {
-            await settings.LogService.LogInformation($"FFmpeg Has been confirmed");
+            await _logService.LogInformation($"FFmpeg Has been confirmed");
         }
         else
         {
             // we didnt find ffmpeg
-            await settings.LogService.LogError("ffmpeg was not found");
+            await _logService.LogError("ffmpeg was not found");
 
             // so will download it
-            await settings.LogService.LogInformation("Will Try To Download ffmpeg");
+            await _logService.LogInformation("Will Try To Download ffmpeg");
 
             //attempts to download the file to local dir
             await YoutubeDLSharp.Utils.DownloadFFmpeg(exePath);
 
             if (File.Exists(ffMpegDir))
             {
-                await settings.LogService.LogInformation("File has been successfully downloaded");
+                await _logService.LogInformation("File has been successfully downloaded");
             }
             else
             {
-                await settings.LogService.LogInformation("Download of FFMPEG has failed.");
+                await _logService.LogInformation("Download of FFMPEG has failed.");
             }
         }
 
@@ -87,13 +94,13 @@ public static class Production
 
         if (Directory.Exists(ytdlDir))
         {
-            await settings.LogService.LogInformation($"YTDL has been confirmed");
+            await _logService.LogInformation($"YTDL has been confirmed");
         }
         else
         {
-            await settings.LogService.LogError("YTDL Dir was not found");
+            await _logService.LogError("YTDL Dir was not found");
             Directory.CreateDirectory(ytdlDir);
-            await settings.LogService.LogInformation($"YTDL Dir has been created");
+            await _logService.LogInformation($"YTDL Dir has been created");
         }
         settings.YTDLOutPutDir = ytdlDir;
 
@@ -101,7 +108,7 @@ public static class Production
         SetExecutePermission(ffMpegDir, settings);
     }
 
-    public static void SetExecutePermission(string filePath, Settings settings)
+    public void SetExecutePermission(string filePath, Settings settings)
     {
         var operatingSystem = Environment.OSVersion;
 
@@ -111,8 +118,8 @@ public static class Production
         }
         else if (operatingSystem.Platform == PlatformID.Unix)
         {
-            settings.LogService.LogInformation("Unix OS Detected");
-            settings.LogService.LogInformation($"Attempting to set execute permission on {filePath}");
+            _logService.LogInformation("Unix OS Detected");
+            _logService.LogInformation($"Attempting to set execute permission on {filePath}");
         }
 
         try
@@ -138,17 +145,17 @@ public static class Production
 
             if (!string.IsNullOrEmpty(output))
             {
-                settings.LogService.LogInformation($"chmod output: {output}");
+                _logService.LogInformation($"chmod output: {output}");
             }
 
             if (!string.IsNullOrEmpty(error))
             {
-                settings.LogService.LogError($"chmod error: {error}");
+                _logService.LogError($"chmod error: {error}");
             }
         }
         catch (Exception ex)
         {
-            settings.LogService.LogError($"Error setting execute permission: {ex.Message}");
+            _logService.LogError($"Error setting execute permission: {ex.Message}");
         }
     }
 
@@ -157,7 +164,7 @@ public static class Production
     /// </summary>
     /// <param name="url">the specified link URL to download</param>
     /// <returns>returns the path to the downloaded video</returns>
-    public static async Task YouTubeDL(Job job)
+    public async Task YouTubeDL(Job job)
     {
         var ytdl = new YoutubeDL
         {
@@ -174,36 +181,36 @@ public static class Production
 
         if (job.VideoUrl == null)
         {
-            await job.Settings.LogService.LogError("URL has been passed as null to YTDL");
+            await _logService.LogError("URL has been passed as null to YTDL");
             throw new ArgumentNullException(nameof(job.VideoUrl));
         }
         else
         {
-            await job.Settings.LogService.LogInformation($"Attempting download of: {job.VideoUrl}");
+            await _logService.LogInformation($"Attempting download of: {job.VideoUrl}");
             res = await ytdl.RunVideoDownload(url: job.VideoUrl);
         }
 
-        await job.Settings.LogService.LogInformation("Download Success:" + res.Success.ToString());
+        await _logService.LogInformation("Download Success:" + res.Success.ToString());
 
         // sets BTC to run on the recently downloaded file res.data is the returned path.
         job.Settings.PathToVideo = res.Data;
     }
 
-    public static void CreateDirectories(Settings settings)
+    public void CreateDirectories(Settings settings)
     {
         if (!Directory.Exists(settings.OutputDir))
         {
-            settings.LogService.LogInformation($"{settings.OutputDir} Directory was missing, will be created");
+            _logService.LogInformation($"{settings.OutputDir} Directory was missing, will be created");
             Directory.CreateDirectory(settings.OutputDir);
         }
         if (!Directory.Exists(settings.TextAddedDir))
         {
-            settings.LogService.LogInformation($"{settings.TextAddedDir} Directory was missing, will be created");
+            _logService.LogInformation($"{settings.TextAddedDir} Directory was missing, will be created");
             Directory.CreateDirectory(settings.TextAddedDir);
         }
         if (!Directory.Exists(settings.YTDLOutPutDir))
         {
-            settings.LogService.LogInformation($"{settings.YTDLOutPutDir} Directory was missing, will be created");
+            _logService.LogInformation($"{settings.YTDLOutPutDir} Directory was missing, will be created");
             Directory.CreateDirectory(settings.YTDLOutPutDir);
         }
     }
@@ -212,7 +219,7 @@ public static class Production
     /// Produces Picture using the ImageMagick Library
     /// </summary>
     /// <param name="pictureData">PictureDataObject Containing everything needed to create an image</param>
-    public static async Task ProduceTextPictures(PictureData pictureData, Settings settings)
+    public async Task ProduceTextPictures(PictureData pictureData, Settings settings)
     {
         var outputPath = BuildFileName(pictureData, settings);
         var outputImage = await CreateImage(pictureData, settings);
@@ -257,7 +264,7 @@ public static class Production
                         outputImage.Composite(caption, takeX, takeY, CompositeOperator.Over);
                     }
                 }
-                settings.LogService.LogInformation($"Picture:{Path.GetFileName(pictureData.FileName)}Box Type:{pictureData.BoxParameters[box].CurrentBox.Type} Box: {box + 1} of {pictureData.BoxParameters.Count} has been composited");
+                _logService.LogInformation($"Picture:{Path.GetFileName(pictureData.FileName)}Box Type:{pictureData.BoxParameters[box].CurrentBox.Type} Box: {box + 1} of {pictureData.BoxParameters.Count} has been composited");
             });
         }
 
@@ -271,7 +278,7 @@ public static class Production
             catch (Exception ex)
             {
                 // Handle annotation error asynchronously
-                await settings.LogService.LogError($"Error in annotation: {ex.Message}");
+                await _logService.LogError($"Error in annotation: {ex.Message}");
             }
         });
 
@@ -279,7 +286,7 @@ public static class Production
 
         // outputs the file to the provided path and name
         await Task.Run(() => outputImage.Write(outputPath));
-        await settings.LogService.LogInformation($"File Created: {Path.GetFileName(outputPath)}");
+        await _logService.LogInformation($"File Created: {Path.GetFileName(outputPath)}");
     }
 
     private static MagickImage CreateShadow(PictureData pictureData, ParamForTextCreation boxParam, MagickImage caption)
@@ -331,7 +338,7 @@ public static class Production
     /// <param name="pictureData"></param>
     /// <param name="settings"></param>
     /// <returns></returns>
-    public static async Task<MagickImage> CreateImage(PictureData pictureData, Settings settings)
+    public async Task<MagickImage> CreateImage(PictureData pictureData, Settings settings)
     {
         MagickImage outputImage;
 
@@ -343,7 +350,7 @@ public static class Production
         catch (Exception ex)
         {
             outputImage = null;
-            await settings.LogService.LogError($"Error in reading image into ImageMagick: {ex.Message}");
+            await _logService.LogError($"Error in reading image into ImageMagick: {ex.Message}");
         }
 
         return outputImage;

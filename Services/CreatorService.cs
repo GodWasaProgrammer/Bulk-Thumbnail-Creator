@@ -2,18 +2,26 @@
 
 public class CreatorService
 {
-    public CreatorService(ILogService logger, JobService jobService, Settings settings)
+    public CreatorService(ILogService logger, JobService jobService, Creator creator)
     {
         // if we are not in a state where we have a job, we should clear the output directories
         // this should only be called when the app is started
         // or if the joblist has been cleared
-        if (UserStateService.UserJobs.Count == 0)
-        {
-            ClearBaseOutPutDirectories(settings);
-        }
-        settings.LogService = logger;
-        settings.JobService = jobService;
+        //if (UserStateService.UserJobs.Count == 0)
+        //{
+        //    ClearBaseOutPutDirectories();
+        //}
+        _logService = logger;
+        _jobService = jobService;
+        _creator = creator;
     }
+
+    private ILogService _logService;
+
+    private JobService _jobService;
+
+    private Creator _creator;
+
     public static void ClearBaseOutPutDirectories(Settings settings)
     {
         DirectoryInfo di = new(settings.TextAddedDir);
@@ -56,30 +64,29 @@ public class CreatorService
         }
     }
 
-    public async Task CreateInitialPictureArrayAsync(string url, List<string> listOfTextToPrint, Settings settings, Job job)
+    public async Task CreateInitialPictureArrayAsync(string url, List<string> listOfTextToPrint, Job job)
     {
         // this is the initial building of the job object, after this the settings inside the job should not be modified
         // except by the job itself performing something
         IsLoading = true;
         job.State = States.Loading;
-        settings.ListOfText = listOfTextToPrint;
-        job.Settings = settings;
+        job.Settings.ListOfText = listOfTextToPrint;
         job.TextToPrint = listOfTextToPrint;
 
         if (job.Settings.Mocking && job.Settings.MakeMocking)
         {
-            job.PictureData = await Creator.MockProcess(ProductionType.FrontPagePictureLineUp, url, listOfTextToPrint, job);
+            job.PictureData = await _creator.MockProcess(ProductionType.FrontPagePictureLineUp, url, listOfTextToPrint, job);
         }
         else
         {
             job.VideoUrl = url;
-            await Creator.FrontPageLineup(job);
+            await _creator.FrontPageLineup(job);
         }
 
-        if (settings.PathToVideo != null)
+        if (job.Settings.PathToVideo != null)
         {
-            job.VideoPath = settings.PathToVideo;
-            job.VideoName = Path.GetFileNameWithoutExtension(settings.PathToVideo);
+            job.VideoPath = job.Settings.PathToVideo;
+            job.VideoName = Path.GetFileNameWithoutExtension(job.Settings.PathToVideo);
         }
         job.State = States.FrontPagePictureLineUp;
         IsLoading = false;
@@ -93,13 +100,13 @@ public class CreatorService
 
         if (job.Settings.Mocking && job.Settings.MakeMocking)
         {
-            job.PictureData = await Creator.MockProcess(ProductionType.VarietyList, url, job.TextToPrint, job, pictureData);
+            job.PictureData = await _creator.MockProcess(ProductionType.VarietyList, url, job.TextToPrint, job, pictureData);
             job.State = States.varietyList;
         }
         else
         {
             job.State = States.Loading;
-            job.PictureData = await Creator.VarietyLineup(job, pictureData);
+            job.PictureData = await _creator.VarietyLineup(job, pictureData);
             job.State = States.varietyList;
         }
 
@@ -143,7 +150,7 @@ public class CreatorService
     {
         IsLoading = true;
 
-        var newData = await Creator.Random(job, pictureData);
+        var newData = await _creator.Random(job, pictureData);
 
         IsLoading = false;
 
@@ -154,7 +161,7 @@ public class CreatorService
     {
         IsLoading = true;
 
-        var newData = await Creator.FontVariety(job, pictureData);
+        var newData = await _creator.FontVariety(job, pictureData);
 
         IsLoading = false;
 
@@ -164,7 +171,7 @@ public class CreatorService
     {
         IsLoading = true;
 
-        var newData = await Creator.SpecialEffectsVariety(job, pictureData);
+        var newData = await _creator.SpecialEffectsVariety(job, pictureData);
 
         IsLoading = false;
 
@@ -175,7 +182,7 @@ public class CreatorService
     {
         IsLoading = true;
 
-        var newData = await Creator.BoxVariety(job, pictureData);
+        var newData = await _creator.BoxVariety(job, pictureData);
 
         IsLoading = false;
 
@@ -186,7 +193,7 @@ public class CreatorService
     {
         IsLoading = true;
 
-        var newData = await Creator.ColorVariety(job, pictureData);
+        var newData = await _creator.ColorVariety(job, pictureData);
 
         IsLoading = false;
 
@@ -197,7 +204,7 @@ public class CreatorService
     {
         _isLoading = true;
         job.State = States.CustomPicture;
-        job.PictureData = await Creator.CustomPicture(job, pictureData);
+        job.PictureData = await _creator.CustomPicture(job, pictureData);
         _isLoading = false;
 
         return pictureData;
@@ -282,9 +289,9 @@ public class CreatorService
         return picData;
     }
 
-    public static async Task<string> FetchVideo(string urlToVideo, Settings settings)
+    public async Task<string> FetchVideo(string urlToVideo, Settings settings)
     {
-        var pathToVideo = await Creator.FetchVideo(urlToVideo, settings);
+        var pathToVideo = await _creator.FetchVideo(urlToVideo, settings);
         return pathToVideo;
     }
 }
