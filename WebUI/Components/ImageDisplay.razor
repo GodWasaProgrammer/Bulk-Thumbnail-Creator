@@ -37,7 +37,7 @@
             }
             @if (IMGDetailClicked)
             {
-                <VarietyDisplay ParentPicturePropChanged="UpdatePicData" picDataBoxURLChanged="UpdatePicDataBoxURL" picDataBoxURL="@passUrl" CurrentJob="@CurrentJob" ParentPictureProp="@picdata" VarietyUrls="@CurrentJob.VarietyUrls"></VarietyDisplay>
+                <VarietyDisplay ParentPicturePropChanged="UpdatePicData" picDataBoxURLChanged="UpdatePicDataBoxURL" PicDataBoxURL="@passUrl" CurrentJob="@CurrentJob" ParentPictureProp="@picdata" VarietyUrls="@CurrentJob.VarietyUrls"></VarietyDisplay>
             }
         }
     }
@@ -102,14 +102,14 @@
             }
             if (CurrentJob.State == States.varietyList)
             {
-                picdata = CreatorService.SetPictureDataImageDisplayCorrelationForVarietyList(CurrentJob.ClickedImage, CurrentJob);
+                picdata = Creator.FindPictureDataByImageUrl(CurrentJob.ClickedImage, CurrentJob);
                 passUrl = CurrentJob.ClickedImage;
                 IMGDetailClicked = true;
             }
             if (CurrentJob.State == States.CustomPicture)
             {
                 IMGDetailClicked = true;
-                picdata = CreatorService.SetPictureDataImageDisplayCorrelationForVarietyList(CurrentJob.ClickedImage, CurrentJob);
+                picdata = Creator.FindPictureDataByImageUrl(CurrentJob.ClickedImage, CurrentJob);
             }
 
         }
@@ -138,7 +138,7 @@
         IMGDetailClicked = true;
         passUrl = imageToDisplayVarietyOf;
 
-        picdata = await CreatorService.SetPictureDataImageDisplayCorrelation(imageToDisplayVarietyOf, CurrentJob);
+        picdata = Creator.FindPictureDataByImageUrl(imageToDisplayVarietyOf, CurrentJob);
         await creator.VarietyLineup(CurrentJob, picdata);
 
         CurrentJob.ClickedImage = imageToDisplayVarietyOf;

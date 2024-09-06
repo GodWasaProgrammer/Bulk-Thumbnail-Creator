@@ -243,7 +243,7 @@
                     // /// The service will be reset if we refreshed and is missing the correlating picturedata
                     // /// So we lift it from the job and off to the races
 
-                    passData = CreatorService.SetPictureDataImageDisplayCorrelationForVarietyList(passURL, CurrentJob);
+                    passData = Creator.FindPictureDataByImageUrl(CurrentJob.ClickedImage, CurrentJob);
                     CustomPicture = true;
                     StateHasChanged();
                 }
@@ -262,7 +262,7 @@
         CustomPicture = true;
         passURL = imageURL;
 
-        PictureData passData = CreatorService.SetPictureDataImageDisplayCorrelationForVarietyList(imageURL, CurrentJob);
+        PictureData passData = Creator.FindPictureDataByImageUrl(CurrentJob.ClickedImage, CurrentJob);
 
         this.passData = passData;
     }

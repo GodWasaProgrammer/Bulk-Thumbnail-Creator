@@ -422,6 +422,76 @@ public partial class Creator
         IsLoading = false;
     }
 
+    public static PictureData FindPictureDataByImageUrl(string imageUrl, Job job)
+    {
+        PictureData foundPictureData = null;
+
+        // Mocking-läge
+        if (job.Settings.Mocking && job.Settings.MakeMocking)
+        {
+            var dirToMockPicture = Path.Combine("..", "Mocking", "FrontpagePictureLineUp", "TextAdded");
+            DirectoryInfo di = new(dirToMockPicture);
+
+            var directories = di.GetDirectories();
+            string mockCorrelation = directories.FirstOrDefault()?.FullName;
+
+            if (mockCorrelation != null)
+            {
+                string mockPictureName = Path.GetFileNameWithoutExtension(mockCorrelation);
+
+                const string VarOfPrefix = "varietyof ";
+                if (mockPictureName.StartsWith(VarOfPrefix))
+                {
+                    mockPictureName = mockPictureName.Substring(VarOfPrefix.Length);
+                }
+
+                foundPictureData = FindPictureDataByName(mockPictureName, job.PictureData);
+            }
+        }
+        else
+        {
+            // Sök efter matchande bild-url i job.PictureData och dess varieties
+            foundPictureData = FindPictureDataRecursively(imageUrl, job.PictureData);
+        }
+
+        return foundPictureData ?? new PictureData();
+    }
+
+    // Rekursiv metod för att söka i PictureData och dess Varieties
+    private static PictureData FindPictureDataRecursively(string imageUrl, IEnumerable<PictureData> pictureDataList)
+    {
+        foreach (var pictureData in pictureDataList)
+        {
+            if (Path.GetFileNameWithoutExtension(pictureData.OutPath) == Path.GetFileNameWithoutExtension(imageUrl))
+            {
+                return new PictureData(pictureData);
+            }
+
+            // Rekursiv sökning i Varieties
+            var foundInVarieties = FindPictureDataRecursively(imageUrl, pictureData.Varieties);
+            if (foundInVarieties != null)
+            {
+                return foundInVarieties;
+            }
+        }
+        return null;
+    }
+
+    // Hitta PictureData baserat på namn (används för mocking)
+    private static PictureData FindPictureDataByName(string pictureName, IEnumerable<PictureData> pictureDataList)
+    {
+        foreach (var pictureData in pictureDataList)
+        {
+            var numberOfPicture = Path.GetFileNameWithoutExtension(pictureData.FileName);
+            if (numberOfPicture == pictureName)
+            {
+                return new PictureData(pictureData);
+            }
+        }
+        return null;
+    }
+
+
     /// <summary>
     /// Mocking version of Process for debugging and testing
     /// <param name="productionType"></param>
