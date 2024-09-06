@@ -22,8 +22,6 @@
 
 @code
 {
-    private bool _disposed;
-
     private bool IsInitialized { get; set; } = false;
 
     [Parameter]
@@ -233,5 +231,4 @@
         Logger.LogEntryAdded += OnLogEntryAdded;
         IsInitialized = true;
     }
-    public void Dispose() => _disposed = true;
 }

@@ -9,5 +9,6 @@ public enum OutputType
     ColorVariety,
     FXVariety,
     BoxVariety,
+    VarietyListRandom,
     Custom,
 }

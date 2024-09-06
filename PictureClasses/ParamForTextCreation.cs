@@ -17,16 +17,20 @@ public class ParamForTextCreation
     public Box CurrentBox { get; set; } = new();
     public ParamForTextCreation(ParamForTextCreation param)
     {
-        Text = (string)param.Text.Clone(); // string
-        Font = (string)param.Font.Clone(); // string
+        Text = param.Text; // string
+        Font = param.Font; // string
         WidthOfBox = param.WidthOfBox; // int
         HeightOfBox = param.HeightOfBox; // int
-        Meme = (string)param.Meme?.Clone(); // string
+        Meme = param.Meme; // string
         MemeBool = param.MemeBool; // boolean
         Shadows = param.Shadows; // boolean
         FillColor = new ColorItem(param.FillColor); // object
         StrokeColor = new ColorItem(param.StrokeColor); // object
-        Boxes = new List<Box>(param.Boxes); // dictionary
+        Boxes = new List<Box>();
+        foreach (var box in param.Boxes)
+        {
+            Boxes.Add(new Box(box)); // Förutsätter att Box har en copy-konstruktor
+        }
         CurrentBox = new(param.CurrentBox); // object
     }
 

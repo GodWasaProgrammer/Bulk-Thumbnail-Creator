@@ -266,83 +266,75 @@ public partial class Creator
         return job.PictureData;
     }
 
-    public async Task<PictureData> Random(Job job, PictureData pictureData)
+    public async Task Random(Job job, PictureData pictureData)
     {
         job.VarietyUrls.Clear();
         var dirWrapper = new DirectoryWrapper();
         var varietyClass = new Variety(dirWrapper, job.Settings);
 
-        var copyData = new PictureData(pictureData);
-        copyData.Varieties.Clear();
-        varietyClass.Random(copyData);
+        varietyClass.Random(pictureData);
 
-        foreach (var variety in copyData.Varieties)
+        foreach (var variety in pictureData.Varieties)
         {
             await _production.ProduceTextPictures(variety, job.Settings);
             job.VarietyUrls.Add(variety.OutPath);
         }
-
-        return copyData;
     }
 
-    public async Task<PictureData> FontVariety(Job job, PictureData pictureData)
+    public async Task FontVariety(Job job, PictureData pictureData)
     {
         DirectoryWrapper directoryWrapper = new();
         Variety variety = new(directoryWrapper, job.Settings);
-        var copyData = await variety.Fonts(pictureData);
+        await variety.Fonts(pictureData);
+
+        // we will clear the state for the frontend for easy lookups
         job.VarietyUrls.Clear();
 
-        foreach (var varietyData in copyData.Varieties)
+        foreach (var varietyData in pictureData.Varieties)
         {
-            await _production.ProduceTextPictures(varietyData, job.Settings);
-            job.VarietyUrls.Add(varietyData.OutPath);
+            if (varietyData.OutPutType is OutputType.FontVariety)
+            {
+                await _production.ProduceTextPictures(varietyData, job.Settings);
+                job.VarietyUrls.Add(varietyData.OutPath);
+            }
         }
-
-        job.PictureData.Add(copyData);
-        return copyData;
+        return;
     }
 
-    public async Task<PictureData> BoxVariety(Job job, PictureData pictureData)
+    public async Task BoxVariety(Job job, PictureData pictureData)
     {
-        var copyData = Variety.Boxes(pictureData);
+        Variety.Boxes(pictureData);
         job.VarietyUrls.Clear();
 
-        foreach (var varietyData in copyData.Varieties)
+        foreach (var varietyData in pictureData.Varieties)
         {
             await _production.ProduceTextPictures(varietyData, job.Settings);
             job.VarietyUrls.Add(varietyData.OutPath);
         }
-        job.PictureData.Add(copyData);
-        return copyData;
     }
 
-    public async Task<PictureData> SpecialEffectsVariety(Job job, PictureData pictureData)
+    public async Task SpecialEffectsVariety(Job job, PictureData pictureData)
     {
-        var copyData = Variety.FX(pictureData);
+        Variety.FX(pictureData);
         job.VarietyUrls.Clear();
 
-        foreach (var varietyData in copyData.Varieties)
+        foreach (var varietyData in pictureData.Varieties)
         {
             await _production.ProduceTextPictures(varietyData, job.Settings);
             job.VarietyUrls.Add(varietyData.OutPath);
         }
-        job.PictureData.Add(copyData);
-        return copyData;
     }
 
-    public async Task<PictureData> ColorVariety(Job job, PictureData pictureData)
+    public async Task ColorVariety(Job job, PictureData pictureData)
     {
-        var copyData = Variety.Colors(pictureData);
+        Variety.Colors(pictureData);
         job.VarietyUrls.Clear();
 
-        foreach (var varietyData in copyData.Varieties)
+        foreach (var varietyData in pictureData.Varieties)
         {
             await _production.ProduceTextPictures(varietyData, job.Settings);
             job.VarietyUrls.Add(varietyData.OutPath);
         }
-        job.PictureData.Add(copyData);
-
-        return copyData;
     }
 
     /// <summary>

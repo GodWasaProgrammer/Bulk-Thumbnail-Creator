@@ -43,17 +43,21 @@ public class PictureData
     // Copy Constructor 
     public PictureData(PictureData pictureDataToCopy)
     {
-        FileName = (string)pictureDataToCopy.FileName.Clone();
-        BoxParameters = [];
+        FileName = pictureDataToCopy.FileName;
+        BoxParameters = new List<ParamForTextCreation>();
         foreach (var item in pictureDataToCopy.BoxParameters)
         {
             BoxParameters.Add(new ParamForTextCreation(item));
         }
-        Varieties = new List<PictureData>(pictureDataToCopy.Varieties);
+        Varieties = new List<PictureData>();
+        foreach (var variety in pictureDataToCopy.Varieties)
+        {
+            Varieties.Add(new PictureData(variety));
+        }
         OutPutType = pictureDataToCopy.OutPutType;
         if (pictureDataToCopy.OutPath != null)
         {
-            OutPath = (string)pictureDataToCopy.OutPath.Clone();
+            OutPath = pictureDataToCopy.OutPath;
         }
     }
     public PictureData()

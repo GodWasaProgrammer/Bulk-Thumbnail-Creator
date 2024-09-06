@@ -87,7 +87,7 @@
         InvokeAsync(() => StateHasChanged());
     }
 
-    private async void SelectPicture(string VarietyUrl)
+    private void SelectPicture(string VarietyUrl)
     {
         var filename = Path.GetFileName(VarietyUrl);
         foreach (var variety in ParentPictureProp.Varieties)
@@ -98,61 +98,72 @@
                 ParentPictureProp = variety;
                 picDataBoxURL = ParentPictureProp.OutPath;
                 CurrentJob.ClickedImage = picDataBoxURL;
-                _VarietyUrls.Clear();
+                VarietyUrls.Clear();
+                UpdateParents();
+                StateHasChanged();
                 break;
             }
         }
+    }
+
+    async void UpdateParents()
+    {
         await picDataBoxURLChanged.InvokeAsync(picDataBoxURL);
-        StateHasChanged();
+        await ParentPicturePropChanged.InvokeAsync(ParentPictureProp);
     }
 
     private async Task RandomVariety()
     {
         loading = true;
-        ParentPictureProp = new(await creatorService.CreateRandomVariety(ParentPictureProp, CurrentJob));
+        await creatorService.CreateRandomVariety(ParentPictureProp, CurrentJob);
         _VarietyUrls = CurrentJob.VarietyUrls;
         picDataBoxURL = ParentPictureProp.OutPath;
         loading = false;
+        UpdateParents();
         StateHasChanged();
     }
 
     private async Task BoxVariety()
     {
         loading = true;
-        ParentPictureProp = new(await creatorService.CreateBoxVariety(ParentPictureProp, CurrentJob));
+        await creatorService.CreateBoxVariety(ParentPictureProp, CurrentJob);
         _VarietyUrls = CurrentJob.VarietyUrls;
         picDataBoxURL = ParentPictureProp.OutPath;
         loading = false;
+        UpdateParents();
         StateHasChanged();
     }
 
     private async Task FXVariety()
     {
         loading = true;
-        ParentPictureProp = new(await creatorService.CreateFXVariety(ParentPictureProp, CurrentJob));
+        await creatorService.CreateFXVariety(ParentPictureProp, CurrentJob);
         _VarietyUrls = CurrentJob.VarietyUrls;
         picDataBoxURL = ParentPictureProp.OutPath;
         loading = false;
+        UpdateParents();
         StateHasChanged();
     }
 
     private async Task CreateColors()
     {
         loading = true;
-        ParentPictureProp = new(await creatorService.CreateColorVariety(ParentPictureProp, CurrentJob));
+        await creatorService.CreateColorVariety(ParentPictureProp, CurrentJob);
         _VarietyUrls = CurrentJob.VarietyUrls;
         picDataBoxURL = ParentPictureProp.OutPath;
         loading = false;
+        UpdateParents();
         StateHasChanged();
     }
 
     private async Task CreateFonts()
     {
         loading = true;
-        ParentPictureProp = new(await creatorService.CreateFontVariety(ParentPictureProp, CurrentJob));
+        await creatorService.CreateFontVariety(ParentPictureProp, CurrentJob);
         _VarietyUrls = CurrentJob.VarietyUrls;
         picDataBoxURL = ParentPictureProp.OutPath;
         loading = false;
+        UpdateParents();
         StateHasChanged();
     }
 
@@ -165,7 +176,10 @@
     public string picDataBoxURL { get; set; }
 
     [Parameter]
-    public EventCallback<string> picDataBoxURLChanged  { get; set; }
+    public EventCallback<string> picDataBoxURLChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<PictureData> ParentPicturePropChanged { get; set; }
 
     private bool loading = false;
 
@@ -215,7 +229,7 @@
                     VarietyUrls = CurrentJob.VarietyUrls;
                     picDataBoxURL = CurrentJob.ClickedImage;
                     ParentPictureProp = await CreatorService.SetPictureDataImageDisplayCorrelation(picDataBoxURL, CurrentJob);
-                    if(ParentPictureProp.OutPath is null)
+                    if (ParentPictureProp.OutPath is null)
                     {
                         ParentPictureProp = CreatorService.SetPictureDataImageDisplayCorrelationForVarietyList(picDataBoxURL, CurrentJob);
                     }

@@ -9,6 +9,44 @@ public class CreatorService
         // if we are not in a state where we have a job, we should clear the output directories
         // this should only be called when the app is started
         // or if the joblist has been cleared
+        if (UserStateService.UserJobs.Count == 0)
+        {
+            ClearBaseOutPutDirectories();
+        }
+    }
+
+    public void ClearBaseOutPutDirectories()
+    {
+        var path = Environment.CurrentDirectory;
+        path += "/TextAdded";
+        DirectoryInfo di = new(path);
+
+        foreach (var file in di.GetFiles())
+        {
+            file.Delete();
+            _logService.LogInformation($"Deleted:{file.Name}");
+        }
+        foreach (var dir in di.GetDirectories())
+        {
+            dir.Delete(true);
+            _logService.LogInformation($"Deleted:{dir.Name}");
+        }
+
+        path = Environment.CurrentDirectory;
+        path += "/output";
+
+        DirectoryInfo di2 = new(path);
+
+        foreach (var file in di2.GetFiles())
+        {
+            file.Delete();
+            _logService.LogInformation($"Deleted:{file.Name}");
+        }
+        foreach (var dir in di2.GetDirectories())
+        {
+            dir.Delete(true);
+            _logService.LogInformation($"Deleted:{dir.Name}");
+        }
     }
 
     private ILogService _logService;
@@ -114,58 +152,42 @@ public class CreatorService
         return imageUrls;
     }
 
-    public async Task<PictureData> CreateRandomVariety(PictureData pictureData, Job job)
+    public async Task CreateRandomVariety(PictureData pictureData, Job job)
     {
         IsLoading = true;
 
-        var newData = await _creator.Random(job, pictureData);
+        await _creator.Random(job, pictureData);
 
         IsLoading = false;
-
-        return newData;
     }
 
-    public async Task<PictureData> CreateFontVariety(PictureData pictureData, Job job)
+    public async Task CreateFontVariety(PictureData pictureData, Job job)
     {
         IsLoading = true;
 
-        var newData = await _creator.FontVariety(job, pictureData);
+        await _creator.FontVariety(job, pictureData);
 
         IsLoading = false;
-
-        return newData;
     }
-    public async Task<PictureData> CreateFXVariety(PictureData pictureData, Job job)
+    public async Task CreateFXVariety(PictureData pictureData, Job job)
     {
         IsLoading = true;
-
-        var newData = await _creator.SpecialEffectsVariety(job, pictureData);
-
+        await _creator.SpecialEffectsVariety(job, pictureData);
         IsLoading = false;
-
-        return newData;
     }
 
-    public async Task<PictureData> CreateBoxVariety(PictureData pictureData, Job job)
+    public async Task CreateBoxVariety(PictureData pictureData, Job job)
     {
         IsLoading = true;
-
-        var newData = await _creator.BoxVariety(job, pictureData);
-
+        await _creator.BoxVariety(job, pictureData);
         IsLoading = false;
-
-        return newData;
     }
 
-    public async Task<PictureData> CreateColorVariety(PictureData pictureData, Job job)
+    public async Task CreateColorVariety(PictureData pictureData, Job job)
     {
         IsLoading = true;
-
-        var newData = await _creator.ColorVariety(job, pictureData);
-
+        await _creator.ColorVariety(job, pictureData);
         IsLoading = false;
-
-        return newData;
     }
 
     public async Task<PictureData> CreateCustomPicDataObject(PictureData pictureData, Job job)

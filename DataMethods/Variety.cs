@@ -11,21 +11,15 @@ public class Variety
         _isettings = settings;
     }
 
-    public async Task<PictureData> Fonts(PictureData pictureData)
+    public async Task Fonts(PictureData pictureData)
     {
         // we will make 6 new font varieties
         const int FontVarietiesToMake = 6;
 
-        // make a new object with same values
-        var copiedPicData = new PictureData(pictureData);
-
-        // clear out the list
-        copiedPicData.Varieties.Clear();
-
         for (var i = 0; i < FontVarietiesToMake; i++)
         {
-            PictureData varietyData = new(copiedPicData);
-
+            PictureData varietyData = new(pictureData);
+            varietyData.Varieties.Clear();
             foreach (var boxparameter in varietyData.BoxParameters)
             {
                 var dg = new DataGeneration(_directoryWrapper);
@@ -38,43 +32,38 @@ public class Variety
             }
             // add the result
             varietyData.OutPutType = OutputType.FontVariety;
-            copiedPicData.Varieties.Add(varietyData);
+            pictureData.Varieties.Add(varietyData);
         }
-        return copiedPicData;
+        return;
     }
 
-    public static PictureData Colors(PictureData pictureData)
+    public static void Colors(PictureData pictureData)
     {
-        var copiedPicData = new PictureData(pictureData);
-        copiedPicData.Varieties.Clear();
-
         const int VarietiesToMake = 6;
 
         for (var i = 0; i < VarietiesToMake; i++)
         {
-            var varietyData = new PictureData(copiedPicData);
-
+            var varietyData = new PictureData(pictureData);
+            varietyData.Varieties.Clear();
             foreach (var boxparam in varietyData.BoxParameters)
             {
                 ColorData.SelectTwoRandomColors(boxparam);
             }
             varietyData.OutPutType = OutputType.ColorVariety;
-            copiedPicData.Varieties.Add(varietyData);
+            pictureData.Varieties.Add(varietyData);
         }
-        return copiedPicData;
     }
 
-    public static PictureData Boxes(PictureData pictureData)
+    public static void Boxes(PictureData pictureData)
     {
-        var copiedPicData = new PictureData(pictureData);
-        copiedPicData.Varieties.Clear();
         const int BoxesToMake = 6;
 
-        var liftBoxes = copiedPicData.BoxParameters[0].Boxes;
+        var liftBoxes = pictureData.BoxParameters[0].Boxes;
 
         for (var i = 0; i < BoxesToMake; i++)
         {
-            var varietyData = new PictureData(copiedPicData);
+            var varietyData = new PictureData(pictureData);
+            varietyData.Varieties.Clear();
 
             foreach (var boxparam in varietyData.BoxParameters)
             {
@@ -106,29 +95,26 @@ public class Variety
                 boxparam.CurrentBox = liftBoxes.Find(q => q.Type == boxtoWrite);
             }
             varietyData.OutPutType = OutputType.BoxVariety;
-            copiedPicData.Varieties.Add(varietyData);
+            pictureData.Varieties.Add(varietyData);
         }
-        return copiedPicData;
     }
 
-    public static PictureData FX(PictureData pictureData)
+    public static void FX(PictureData pictureData)
     {
-        var copiedPicData = new PictureData(pictureData);
-        copiedPicData.Varieties.Clear();
         const int FXToMake = 6;
 
         for (var i = 0; i < FXToMake; i++)
         {
-            var varietyData = new PictureData(copiedPicData);
+            var varietyData = new PictureData(pictureData);
+            varietyData.Varieties.Clear();
             foreach (var boxparam in varietyData.BoxParameters)
             {
                 boxparam.Gradient = DataGeneration.RandomBool();
                 boxparam.Shadows = DataGeneration.RandomBool();
             }
             varietyData.OutPutType = OutputType.FXVariety;
-            copiedPicData.Varieties.Add(varietyData);
+            pictureData.Varieties.Add(varietyData);
         }
-        return copiedPicData;
     }
 
     public void Random(PictureData pictureInputData)
