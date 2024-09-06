@@ -3,7 +3,7 @@
 @using BulkThumbnailCreator.Services
 @using BulkThumbnailCreator.Enums
 
-@inject CreatorService PicDataService;
+@inject Creator creator
 @inject JobService JService;
 @inject Settings settings;
 @inject AuthenticationStateProvider AuthProvider;
@@ -139,7 +139,7 @@
         passUrl = imageToDisplayVarietyOf;
 
         picdata = await CreatorService.SetPictureDataImageDisplayCorrelation(imageToDisplayVarietyOf, CurrentJob);
-        CurrentJob.VarietyUrls = await PicDataService.CreatePictureDataVariety(picdata, CurrentJob);
+        await creator.VarietyLineup(CurrentJob, picdata);
 
         CurrentJob.ClickedImage = imageToDisplayVarietyOf;
         await InvokeAsync(() => StateHasChanged());

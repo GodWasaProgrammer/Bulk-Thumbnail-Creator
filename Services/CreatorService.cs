@@ -21,7 +21,7 @@ public class CreatorService
         else
         {
             job.State = States.Loading;
-            job.PictureData = await _creator.VarietyLineup(job, pictureData);
+            // job.PictureData = await _creator.VarietyLineup(job, pictureData);
             job.State = States.varietyList;
         }
 

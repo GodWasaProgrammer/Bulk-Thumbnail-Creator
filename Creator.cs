@@ -263,8 +263,12 @@ public partial class Creator
         Directory.CreateDirectory(job.Settings.TextAddedDir);
     }
 
-    public async Task<List<PictureData>> VarietyLineup(Job job, PictureData pictureData)
+    public async Task VarietyLineup(Job job, PictureData pictureData)
     {
+        // set the delegates 
+        IsLoading = true;
+        job.State = States.Loading;
+
         if (pictureData == null)
         {
             await _logger.LogError("null has been passed to PicdataobjToVarietize");
@@ -273,7 +277,7 @@ public partial class Creator
         {
             List<Task> productionVarietyTaskList = [];
             SemaphoreSlim semaphore = new(4);
-
+            job.VarietyUrls = new List<string>();
             foreach (var picData in pictureData.Varieties)
             {
                 await semaphore.WaitAsync(); // Acquire a semaphore slot
@@ -283,6 +287,7 @@ public partial class Creator
                     try
                     {
                         await _production.ProduceTextPictures(picData, job.Settings);
+                        job.VarietyUrls.Add(picData.OutPath);
                     }
                     finally
                     {
@@ -295,7 +300,6 @@ public partial class Creator
 
             await Task.WhenAll(productionVarietyTaskList);
         }
-
 
         if (Mocking.BTCRunCount != 1 && job.Settings.MakeMocking)
         {
@@ -312,7 +316,8 @@ public partial class Creator
         Mocking.BTCRunCount++;
         job.Settings.Files = Directory.GetFiles(job.Settings.OutputDir, "*.*", SearchOption.AllDirectories);
         await _logger.LogInformation("Processing Finished");
-        return job.PictureData;
+        job.State = States.varietyList;
+        IsLoading = false;
     }
 
     public async Task<List<PictureData>> CustomPicture(Job job, PictureData pictureData)
