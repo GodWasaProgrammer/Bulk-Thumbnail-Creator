@@ -9,11 +9,70 @@ public partial class Creator
     {
         _logger = logger;
         _production = new Production(logger);
+
+        // if we are not in a state where we have a job, we should clear the output directories
+        // this should only be called when the app is started
+        // or if the joblist has been cleared
+        if (UserStateService.UserJobs.Count == 0)
+        {
+            ClearBaseOutPutDirectories();
+        }
     }
 
-    private ILogService _logger;
+    public event EventHandler<bool> LoadingStateChanged;
 
-    private Production _production;
+    private bool _isLoading = false;
+
+    public bool IsLoading
+    {
+        get => _isLoading;
+        private set
+        {
+            if (_isLoading != value)
+            {
+                _isLoading = value;
+                LoadingStateChanged?.Invoke(this, _isLoading);
+            }
+        }
+    }
+
+    private readonly ILogService _logger;
+
+    private readonly Production _production;
+
+    public void ClearBaseOutPutDirectories()
+    {
+        var path = Environment.CurrentDirectory;
+        path += "/TextAdded";
+        DirectoryInfo di = new(path);
+
+        foreach (var file in di.GetFiles())
+        {
+            file.Delete();
+            _logger.LogInformation($"Deleted:{file.Name}");
+        }
+        foreach (var dir in di.GetDirectories())
+        {
+            dir.Delete(true);
+            _logger.LogInformation($"Deleted:{dir.Name}");
+        }
+
+        path = Environment.CurrentDirectory;
+        path += "/output";
+
+        DirectoryInfo di2 = new(path);
+
+        foreach (var file in di2.GetFiles())
+        {
+            file.Delete();
+            _logger.LogInformation($"Deleted:{file.Name}");
+        }
+        foreach (var dir in di2.GetDirectories())
+        {
+            dir.Delete(true);
+            _logger.LogInformation($"Deleted:{dir.Name}");
+        }
+    }
 
     private async Task<(Array2D<RgbPixel>, Rectangle[])> FaceDetection(string file)
     {
@@ -72,8 +131,8 @@ public partial class Creator
 
             // picks a random string from the list
             Random pickAString = new();
-            var pickedString = pickAString.Next(job.Settings.ListOfText.Count);
-            currentParameters.Text = job.Settings.ListOfText[pickedString];
+            var pickedString = pickAString.Next(job.TextToPrint.Count);
+            currentParameters.Text = job.TextToPrint[pickedString];
             picData.BoxParameters.Add(currentParameters);
         }
 
@@ -107,6 +166,8 @@ public partial class Creator
 
     public async Task FrontPageLineup(Job job)
     {
+        IsLoading = true;
+        job.State = States.Loading;
         // make ref for verbosity
         var settings = job.Settings;
 
@@ -189,6 +250,8 @@ public partial class Creator
             // ffmpeg has finished, lets copy our mock data
             Mocking.CopyOutPutDir(job.Settings);
         }
+        job.State = States.FrontPagePictureLineUp;
+        IsLoading = false;
     }
 
     private void CleanPathNames(Job job)
@@ -346,7 +409,7 @@ public partial class Creator
     /// <returns></returns>
     public async Task<List<PictureData>> MockProcess(ProductionType productionType, string url, List<string> texts, Job job, PictureData pictureData = null)
     {
-        job.Settings.ListOfText = texts;
+        job.TextToPrint = texts;
 
         if (productionType == ProductionType.FrontPagePictureLineUp)
         {

@@ -2,105 +2,14 @@
 
 public class CreatorService
 {
-    public CreatorService(ILogService logger, Creator creator)
+    public CreatorService( Creator creator)
     {
-        _logService = logger;
         _creator = creator;
-        // if we are not in a state where we have a job, we should clear the output directories
-        // this should only be called when the app is started
-        // or if the joblist has been cleared
-        if (UserStateService.UserJobs.Count == 0)
-        {
-            ClearBaseOutPutDirectories();
-        }
     }
-
-    public void ClearBaseOutPutDirectories()
-    {
-        var path = Environment.CurrentDirectory;
-        path += "/TextAdded";
-        DirectoryInfo di = new(path);
-
-        foreach (var file in di.GetFiles())
-        {
-            file.Delete();
-            _logService.LogInformation($"Deleted:{file.Name}");
-        }
-        foreach (var dir in di.GetDirectories())
-        {
-            dir.Delete(true);
-            _logService.LogInformation($"Deleted:{dir.Name}");
-        }
-
-        path = Environment.CurrentDirectory;
-        path += "/output";
-
-        DirectoryInfo di2 = new(path);
-
-        foreach (var file in di2.GetFiles())
-        {
-            file.Delete();
-            _logService.LogInformation($"Deleted:{file.Name}");
-        }
-        foreach (var dir in di2.GetDirectories())
-        {
-            dir.Delete(true);
-            _logService.LogInformation($"Deleted:{dir.Name}");
-        }
-    }
-
-    private ILogService _logService;
 
     private Creator _creator;
-
-    public event EventHandler<bool> LoadingStateChanged;
-
-    private bool _isLoading = false;
-
-    public bool IsLoading
-    {
-        get => _isLoading;
-        private set
-        {
-            if (_isLoading != value)
-            {
-                _isLoading = value;
-                LoadingStateChanged?.Invoke(this, _isLoading);
-            }
-        }
-    }
-
-    public async Task CreateInitialPictureArrayAsync(string url, List<string> listOfTextToPrint, Job job)
-    {
-        // this is the initial building of the job object, after this the settings inside the job should not be modified
-        // except by the job itself performing something
-        IsLoading = true;
-        job.State = States.Loading;
-        job.Settings.ListOfText = listOfTextToPrint;
-        job.TextToPrint = listOfTextToPrint;
-
-        if (job.Settings.Mocking && job.Settings.MakeMocking)
-        {
-            job.PictureData = await _creator.MockProcess(ProductionType.FrontPagePictureLineUp, url, listOfTextToPrint, job);
-        }
-        else
-        {
-            job.VideoUrl = url;
-            await _creator.FrontPageLineup(job);
-        }
-
-        if (job.Settings.PathToVideo != null)
-        {
-            job.VideoPath = job.Settings.PathToVideo;
-            job.VideoName = Path.GetFileNameWithoutExtension(job.Settings.PathToVideo);
-        }
-        job.State = States.FrontPagePictureLineUp;
-        IsLoading = false;
-    }
-
     public async Task<List<string>> CreatePictureDataVariety(PictureData pictureData, Job job)
     {
-        IsLoading = true;
         List<string> imageUrls = [];
         var url = string.Empty;
 
@@ -147,55 +56,40 @@ public class CreatorService
 
         // the list of urls to be displayed in variety display
         job.VarietyUrls = imageUrls;
-        IsLoading = false;
 
         return imageUrls;
     }
 
     public async Task CreateRandomVariety(PictureData pictureData, Job job)
     {
-        IsLoading = true;
-
         await _creator.Random(job, pictureData);
-
-        IsLoading = false;
     }
 
     public async Task CreateFontVariety(PictureData pictureData, Job job)
     {
-        IsLoading = true;
 
         await _creator.FontVariety(job, pictureData);
 
-        IsLoading = false;
     }
     public async Task CreateFXVariety(PictureData pictureData, Job job)
     {
-        IsLoading = true;
         await _creator.SpecialEffectsVariety(job, pictureData);
-        IsLoading = false;
     }
 
     public async Task CreateBoxVariety(PictureData pictureData, Job job)
     {
-        IsLoading = true;
         await _creator.BoxVariety(job, pictureData);
-        IsLoading = false;
     }
 
     public async Task CreateColorVariety(PictureData pictureData, Job job)
     {
-        IsLoading = true;
         await _creator.ColorVariety(job, pictureData);
-        IsLoading = false;
     }
 
     public async Task<PictureData> CreateCustomPicDataObject(PictureData pictureData, Job job)
     {
-        _isLoading = true;
         job.State = States.CustomPicture;
         job.PictureData = await _creator.CustomPicture(job, pictureData);
-        _isLoading = false;
 
         return pictureData;
     }

@@ -4,7 +4,7 @@
 @using BulkThumbnailCreator.Services;
 @using System.Text.RegularExpressions
 
-@inject BulkThumbnailCreator.Services.CreatorService ds;
+@inject Creator creator
 @inject ILogService logger;
 @inject JobService JS;
 @inject Settings settings;
@@ -34,7 +34,7 @@
             }
             <form @onsubmit="OnKeyPress">
                 <div style="padding-top:20px;">
-                    <MudTextField AdornmentColor="Color.Success" Label="Youtube Link" Variant="Variant.Outlined" @bind-Value="youtubeLink" />
+                    <MudTextField AdornmentColor="Color.Success" Label="Youtube Link" Variant="Variant.Outlined" @bind-Value="YoutubeLink" />
                     <MudButton OnClick="() => AwaitBTC(User)" Variant="Variant.Filled" Color="Color.Primary"> <MudText>Run BTC</MudText></MudButton>
                 </div>
             </form>
@@ -60,7 +60,7 @@
     private string defaultText3 = "Tallyhoo Laddiooo";
     List<string> userInputText = new();
     private string userText;
-    private string youtubeLink;
+    private string YoutubeLink;
 
     private bool DisableMenu;
     private bool validURL = false;
@@ -90,7 +90,7 @@
     private async Task AwaitBTC(string User)
     {
         // validate that our input is not something else than a youtube link
-        validURL = ValidateYTLink(youtubeLink);
+        validURL = ValidateYTLink(YoutubeLink);
 
         /// disables our input options
         DisableMenu = true;
@@ -114,11 +114,11 @@
             // // creates a job
             if (userID is not "")
             {
-                job = await JS.CreateJob(youtubeLink, userID);
+                job = await JS.CreateJob(YoutubeLink, userID);
             }
             else
             {
-                job = await JS.CreateJob(youtubeLink, User);
+                job = await JS.CreateJob(YoutubeLink, User);
             }
 
             List<string> defaultText = new() { defaultText1, defaultText2, defaultText3 };
@@ -126,12 +126,16 @@
             /// if we have text, we pass it to the backend
             if (userInputText.Count != 0)
             {
-                await ds.CreateInitialPictureArrayAsync(youtubeLink, userInputText,job);
+                job.TextToPrint = userInputText;
+                job.VideoUrl = YoutubeLink;
+                await creator.FrontPageLineup(job);
             }
             /// otherwise we use our default text values
             else
             {
-                await ds.CreateInitialPictureArrayAsync(youtubeLink, defaultText, job);
+                job.TextToPrint = defaultText;
+                job.VideoUrl = YoutubeLink;
+                await creator.FrontPageLineup(job);
             }
         }
         await InvokeAsync(() => StateHasChanged());
@@ -192,7 +196,7 @@
         job = null;
         DisableMenu = false;
         userInputText.Clear();
-        youtubeLink = null;
+        YoutubeLink = null;
         userText = null;
         validURL = false;
         ButtonClicked = false;

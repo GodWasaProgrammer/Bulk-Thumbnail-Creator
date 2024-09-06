@@ -12,6 +12,5 @@ public interface ISettings
     string[] Files { get; set; }
     string DankMemeStashDir { get; set; }
     string[] Memes { get; set; }
-    List<string> ListOfText { get; set; }
     string PathToVideo { get; set; }
 }

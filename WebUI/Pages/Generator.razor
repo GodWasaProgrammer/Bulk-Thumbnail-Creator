@@ -8,7 +8,7 @@
 @using BulkThumbnailCreator.Services
 @using BulkThumbnailCreator.DataMethods
 @using BulkThumbnailCreator.Enums
-@inject CreatorService ds;
+@inject Creator creator
 @inject JobService js;
 @inject Settings settings;
 @inject AuthenticationStateProvider AuthProvider;
@@ -86,7 +86,7 @@
         js.RegisterDelegateForJobChange(FetchChangedJob);
 
         js.RegisterResetMethod(reset);
-        ds.LoadingStateChanged += HandleLoadingStateChanged;
+        creator.LoadingStateChanged += HandleLoadingStateChanged;
 
         // we check if there is a job
         if (CurrentJob is null)
