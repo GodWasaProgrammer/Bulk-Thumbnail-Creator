@@ -336,10 +336,15 @@ public partial class Creator
 
     public async Task Random(Job job, PictureData pictureData)
     {
+        IsLoading = true;
         job.VarietyUrls.Clear();
         var dirWrapper = new DirectoryWrapper();
         var varietyClass = new Variety(dirWrapper, job.Settings);
-
+        if (job.State == States.varietyList)
+        {
+            // guard against reproducing old objects
+            pictureData.Varieties.Clear();
+        }
         varietyClass.Random(pictureData);
 
         foreach (var variety in pictureData.Varieties)
@@ -347,10 +352,13 @@ public partial class Creator
             await _production.ProduceTextPictures(variety, job.Settings);
             job.VarietyUrls.Add(variety.OutPath);
         }
+        IsLoading = false;
     }
 
     public async Task FontVariety(Job job, PictureData pictureData)
     {
+        IsLoading = true;
+        pictureData.Varieties.Clear();
         DirectoryWrapper directoryWrapper = new();
         Variety variety = new(directoryWrapper, job.Settings);
         await variety.Fonts(pictureData);
@@ -366,11 +374,13 @@ public partial class Creator
                 job.VarietyUrls.Add(varietyData.OutPath);
             }
         }
-        return;
+        IsLoading = false;
     }
 
     public async Task BoxVariety(Job job, PictureData pictureData)
     {
+        IsLoading = true;
+        pictureData.Varieties.Clear();
         Variety.Boxes(pictureData);
         job.VarietyUrls.Clear();
 
@@ -379,10 +389,13 @@ public partial class Creator
             await _production.ProduceTextPictures(varietyData, job.Settings);
             job.VarietyUrls.Add(varietyData.OutPath);
         }
+        IsLoading = false;
     }
 
     public async Task SpecialEffectsVariety(Job job, PictureData pictureData)
     {
+        IsLoading = true;
+        pictureData.Varieties.Clear();
         Variety.FX(pictureData);
         job.VarietyUrls.Clear();
 
@@ -391,10 +404,13 @@ public partial class Creator
             await _production.ProduceTextPictures(varietyData, job.Settings);
             job.VarietyUrls.Add(varietyData.OutPath);
         }
+        IsLoading = false;
     }
 
     public async Task ColorVariety(Job job, PictureData pictureData)
     {
+        IsLoading = true;
+        pictureData.Varieties.Clear();
         Variety.Colors(pictureData);
         job.VarietyUrls.Clear();
 
@@ -403,6 +419,7 @@ public partial class Creator
             await _production.ProduceTextPictures(varietyData, job.Settings);
             job.VarietyUrls.Add(varietyData.OutPath);
         }
+        IsLoading = false;
     }
 
     /// <summary>

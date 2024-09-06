@@ -5,18 +5,18 @@
 @using BulkThumbnailCreator.Enums;
 
 @using WebUI.Pages;
-@inject CreatorService creatorService;
+@inject Creator creator;
 @inject ILogService logger;
 @inject JobService JobService;
 @inject AuthenticationStateProvider AuthProvider;
 
 @* here we will show the image that has been selected *@
-@if (VarietyUrls != null && CustomPicture == false)
+@if (_picDataBoxURL != null)
 {
     <MudGrid Justify="Justify.Center">
         <MudPaper Outlined="true" Elevation="3">
             <MudItem>
-                <MudImage ObjectPosition="ObjectPosition.Center" style="width: 300px; height: 200px;" Fluid="true" Src="@picDataBoxURL"></MudImage>
+                <MudImage ObjectPosition="ObjectPosition.Center" style="width: 300px; height: 200px;" Fluid="true" Src="@_picDataBoxURL"></MudImage>
             </MudItem>
         </MudPaper>
     </MudGrid>
@@ -96,8 +96,8 @@
             if (variety.OutPath.Contains(filename))
             {
                 ParentPictureProp = variety;
-                picDataBoxURL = ParentPictureProp.OutPath;
-                CurrentJob.ClickedImage = picDataBoxURL;
+                _picDataBoxURL = ParentPictureProp.OutPath;
+                CurrentJob.ClickedImage = _picDataBoxURL;
                 VarietyUrls.Clear();
                 UpdateParents();
                 StateHasChanged();
@@ -108,16 +108,15 @@
 
     async void UpdateParents()
     {
-        await picDataBoxURLChanged.InvokeAsync(picDataBoxURL);
+        await picDataBoxURLChanged.InvokeAsync(_picDataBoxURL);
         await ParentPicturePropChanged.InvokeAsync(ParentPictureProp);
     }
 
     private async Task RandomVariety()
     {
         loading = true;
-        await creatorService.CreateRandomVariety(ParentPictureProp, CurrentJob);
+        await creator.Random(CurrentJob, ParentPictureProp);
         _VarietyUrls = CurrentJob.VarietyUrls;
-        picDataBoxURL = ParentPictureProp.OutPath;
         loading = false;
         UpdateParents();
         StateHasChanged();
@@ -126,9 +125,8 @@
     private async Task BoxVariety()
     {
         loading = true;
-        await creatorService.CreateBoxVariety(ParentPictureProp, CurrentJob);
+        await creator.BoxVariety(CurrentJob, ParentPictureProp);
         _VarietyUrls = CurrentJob.VarietyUrls;
-        picDataBoxURL = ParentPictureProp.OutPath;
         loading = false;
         UpdateParents();
         StateHasChanged();
@@ -137,9 +135,8 @@
     private async Task FXVariety()
     {
         loading = true;
-        await creatorService.CreateFXVariety(ParentPictureProp, CurrentJob);
+        await creator.SpecialEffectsVariety(CurrentJob, ParentPictureProp);
         _VarietyUrls = CurrentJob.VarietyUrls;
-        picDataBoxURL = ParentPictureProp.OutPath;
         loading = false;
         UpdateParents();
         StateHasChanged();
@@ -148,9 +145,8 @@
     private async Task CreateColors()
     {
         loading = true;
-        await creatorService.CreateColorVariety(ParentPictureProp, CurrentJob);
+        await creator.ColorVariety(CurrentJob, ParentPictureProp);
         _VarietyUrls = CurrentJob.VarietyUrls;
-        picDataBoxURL = ParentPictureProp.OutPath;
         loading = false;
         UpdateParents();
         StateHasChanged();
@@ -159,9 +155,8 @@
     private async Task CreateFonts()
     {
         loading = true;
-        await creatorService.CreateFontVariety(ParentPictureProp, CurrentJob);
+        await creator.FontVariety(CurrentJob, ParentPictureProp);
         _VarietyUrls = CurrentJob.VarietyUrls;
-        picDataBoxURL = ParentPictureProp.OutPath;
         loading = false;
         UpdateParents();
         StateHasChanged();
@@ -173,7 +168,8 @@
     }
 
     [Parameter]
-    public string picDataBoxURL { get; set; }
+    public string PicDataBoxURL { get; set; }
+    private string _picDataBoxURL;
 
     [Parameter]
     public EventCallback<string> picDataBoxURLChanged { get; set; }
@@ -227,11 +223,11 @@
                 if (CurrentJob.State == States.varietyList)
                 {
                     VarietyUrls = CurrentJob.VarietyUrls;
-                    picDataBoxURL = CurrentJob.ClickedImage;
-                    ParentPictureProp = await CreatorService.SetPictureDataImageDisplayCorrelation(picDataBoxURL, CurrentJob);
+                    _picDataBoxURL = CurrentJob.ClickedImage;
+                    //ParentPictureProp = await CreatorService.SetPictureDataImageDisplayCorrelation(_picDataBoxURL, CurrentJob);
                     if (ParentPictureProp.OutPath is null)
                     {
-                        ParentPictureProp = CreatorService.SetPictureDataImageDisplayCorrelationForVarietyList(picDataBoxURL, CurrentJob);
+                       // ParentPictureProp = CreatorService.SetPictureDataImageDisplayCorrelationForVarietyList(picDataBoxURL, CurrentJob);
                     }
                     StateHasChanged();
                 }
