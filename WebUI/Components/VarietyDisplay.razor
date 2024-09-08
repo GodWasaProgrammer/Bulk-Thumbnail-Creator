@@ -187,19 +187,10 @@
 
     private string CurrentUser;
 
-    // pass to customize Picture
-    private PictureData passData;
-
-    private List<string> _VarietyUrls = new();
-
     [Parameter]
     public List<string> VarietyUrls { get { return _VarietyUrls; } set { _VarietyUrls = value; } }
-
-    // pass to customize Picture
-    private string passURL;
-
-    private bool CustomPicture = false;
-
+    private List<string> _VarietyUrls = new();
+    
     protected override async Task OnInitializedAsync()
     {
         var AuthState = await AuthProvider.GetAuthenticationStateAsync();
@@ -251,6 +242,11 @@
         }
     }
 
+    // pass to customize Picture
+    private PictureData passData;
+    // pass to customize Picture
+    private string passURL;
+    private bool CustomPicture = false;
     private void NavToCustomizePicture(string imageURL)
     {
         // set the correct state of the currentjob
@@ -266,7 +262,6 @@
 
         this.passData = passData;
     }
-
 }
 
 <style>
