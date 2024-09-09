@@ -461,7 +461,7 @@ public partial class Creator
         {
             if (Path.GetFileNameWithoutExtension(pictureData.OutPath) == Path.GetFileNameWithoutExtension(imageUrl))
             {
-                return new PictureData(pictureData);
+                return pictureData;
             }
 
             if (pictureData.Varieties.Count is not 0)
