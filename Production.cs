@@ -104,11 +104,11 @@ public class Production
         }
         settings.YTDLOutPutDir = ytdlDir;
 
-        SetExecutePermission(YtdlpDir, settings);
-        SetExecutePermission(ffMpegDir, settings);
+        SetExecutePermission(YtdlpDir);
+        SetExecutePermission(ffMpegDir);
     }
 
-    public void SetExecutePermission(string filePath, Settings settings)
+    public void SetExecutePermission(string filePath)
     {
         var operatingSystem = Environment.OSVersion;
 

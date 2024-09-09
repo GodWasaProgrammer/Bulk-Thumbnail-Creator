@@ -297,7 +297,6 @@ public partial class Creator
 
                 productionVarietyTaskList.Add(productionTask);
             }
-
             await Task.WhenAll(productionVarietyTaskList);
         }
 
