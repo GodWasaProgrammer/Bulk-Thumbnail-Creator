@@ -11,12 +11,12 @@
 @inject AuthenticationStateProvider AuthProvider;
 
 @* here we will show the image that has been selected *@
-@if (_picDataBoxURL != null)
+@if (PicDataBoxURL != null && !CustomPicture)
 {
     <MudGrid Justify="Justify.Center">
         <MudPaper Outlined="true" Elevation="3">
             <MudItem>
-                <MudImage ObjectPosition="ObjectPosition.Center" style="width: 300px; height: 200px;" Fluid="true" Src="@_picDataBoxURL"></MudImage>
+                <MudImage ObjectPosition="ObjectPosition.Center" style="width: 300px; height: 200px;" Fluid="true" Src="@PicDataBoxURL"></MudImage>
             </MudItem>
         </MudPaper>
     </MudGrid>
@@ -96,8 +96,8 @@
             if (variety.OutPath.Contains(filename))
             {
                 ParentPictureProp = variety;
-                _picDataBoxURL = ParentPictureProp.OutPath;
-                CurrentJob.ClickedImage = _picDataBoxURL;
+                PicDataBoxURL = ParentPictureProp.OutPath;
+                CurrentJob.ClickedImage = PicDataBoxURL;
                 VarietyUrls.Clear();
                 UpdateParents();
                 StateHasChanged();
@@ -108,7 +108,7 @@
 
     async void UpdateParents()
     {
-        await picDataBoxURLChanged.InvokeAsync(_picDataBoxURL);
+        await picDataBoxURLChanged.InvokeAsync(PicDataBoxURL);
         await ParentPicturePropChanged.InvokeAsync(ParentPictureProp);
     }
 
@@ -169,7 +169,6 @@
 
     [Parameter]
     public string PicDataBoxURL { get; set; }
-    private string _picDataBoxURL;
 
     [Parameter]
     public EventCallback<string> picDataBoxURLChanged { get; set; }
@@ -190,7 +189,7 @@
     [Parameter]
     public List<string> VarietyUrls { get { return _VarietyUrls; } set { _VarietyUrls = value; } }
     private List<string> _VarietyUrls = new();
-    
+
     protected override async Task OnInitializedAsync()
     {
         var AuthState = await AuthProvider.GetAuthenticationStateAsync();
@@ -214,12 +213,8 @@
                 if (CurrentJob.State == States.varietyList)
                 {
                     VarietyUrls = CurrentJob.VarietyUrls;
-                    _picDataBoxURL = CurrentJob.ClickedImage;
-                    //ParentPictureProp = await CreatorService.SetPictureDataImageDisplayCorrelation(_picDataBoxURL, CurrentJob);
-                    if (ParentPictureProp.OutPath is null)
-                    {
-                       // ParentPictureProp = CreatorService.SetPictureDataImageDisplayCorrelationForVarietyList(picDataBoxURL, CurrentJob);
-                    }
+                    PicDataBoxURL = CurrentJob.ClickedImage;
+                    ParentPictureProp = Creator.FindPictureDataByImageUrl(passURL, CurrentJob);
                     StateHasChanged();
                 }
                 if (CurrentJob.State == States.CustomPicture)

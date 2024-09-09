@@ -450,14 +450,12 @@ public partial class Creator
         }
         else
         {
-            // Sök efter matchande bild-url i job.PictureData och dess varieties
             foundPictureData = FindPictureDataRecursively(imageUrl, job.PictureData);
         }
 
         return foundPictureData ?? new PictureData();
     }
 
-    // Rekursiv metod för att söka i PictureData och dess Varieties
     private static PictureData FindPictureDataRecursively(string imageUrl, IEnumerable<PictureData> pictureDataList)
     {
         foreach (var pictureData in pictureDataList)
@@ -467,11 +465,13 @@ public partial class Creator
                 return new PictureData(pictureData);
             }
 
-            // Rekursiv sökning i Varieties
-            var foundInVarieties = FindPictureDataRecursively(imageUrl, pictureData.Varieties);
-            if (foundInVarieties != null)
+            if (pictureData.Varieties.Count is not 0)
             {
-                return foundInVarieties;
+                var foundInVarieties = FindPictureDataRecursively(imageUrl, pictureData.Varieties);
+                if (foundInVarieties != null)
+                {
+                    return foundInVarieties;
+                }
             }
         }
         return null;
