@@ -53,11 +53,7 @@
                             <MudText>StrokeColor</MudText>
                             <div style="width: 20px; height: 20px; background-color: @HslToRgb(param.StrokeColor.Hue, param.StrokeColor.Saturation, param.StrokeColor.Luminance);"></div>
                         </MudButton>
-
                     </MudPaper>
-
-
-
                 </MudItem>
             }
             <MudItem>
@@ -82,7 +78,7 @@
                 <MudCheckBox @bind-Value="param.MemeBool">Meme</MudCheckBox>
                 @if (param.MemeBool)
                 {
-                    <MudButton OnClick="MemeDialog">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="MemeDialog">
                         <MudText>Select Meme</MudText>
                     </MudButton>
                 }

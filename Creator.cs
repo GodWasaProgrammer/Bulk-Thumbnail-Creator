@@ -319,7 +319,7 @@ public partial class Creator
         IsLoading = false;
     }
 
-    public async Task<List<PictureData>> CustomPicture(Job job, PictureData pictureData)
+    public async Task<PictureData> CustomPicture(Job job, PictureData pictureData)
     {
         if (pictureData == null)
         {
@@ -330,7 +330,7 @@ public partial class Creator
             await _production.ProduceTextPictures(pictureData, job.Settings);
             job.PictureData.Add(pictureData);
         }
-        return job.PictureData;
+        return pictureData;
     }
 
     public async Task Random(Job job, PictureData pictureData)

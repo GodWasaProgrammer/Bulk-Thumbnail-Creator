@@ -3,7 +3,6 @@
 @using BulkThumbnailCreator
 @using System.Text.RegularExpressions
 @using WebUI.Components
-@inject CreatorService CreatorService
 @inject Settings settings
 @inject IJSRuntime JSinterOP
 
@@ -79,7 +78,7 @@ else
         if (linkValid)
         {
             Loading = true;
-            FetchedVideoPath = await CreatorService.FetchVideo(YTlink, settings);
+            // FetchedVideoPath = await CreatorService.FetchVideo(YTlink, settings);
             Loading = false;
             string videoname;
             @if (!string.IsNullOrEmpty(FetchedVideoPath))

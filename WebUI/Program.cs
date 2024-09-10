@@ -32,7 +32,6 @@ public static class Program
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor();
         builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
-        builder.Services.AddScoped<CreatorService>();
         builder.Services.AddSingleton<LogoService>();
         builder.Services.AddScoped<JobService>();
         builder.Services.AddScoped<ILogService, LogService>();

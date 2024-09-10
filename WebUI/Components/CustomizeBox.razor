@@ -7,8 +7,7 @@
 @using MudBlazor.Utilities;
 @using BulkThumbnailCreator.Interfaces;
 @using System;
-
-@inject CreatorService PicDataService
+@inject Creator creator;
 @inject ILogService Logger;
 @inject Settings Settings;
 
@@ -74,7 +73,7 @@
         }
 
         // The actual Service call where the production happens
-        //CurrentPagePictureData = await PicDataService.CreateCustomPicDataObject(CurrentPagePictureData, CurrentJob);
+        CurrentPagePictureData = await creator.CustomPicture(CurrentJob, CurrentPagePictureData);
 
         // get relative path of the out path
         var currentDir = Directory.GetCurrentDirectory();
