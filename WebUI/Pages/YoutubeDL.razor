@@ -5,6 +5,7 @@
 @using WebUI.Components
 @inject Settings settings
 @inject IJSRuntime JSinterOP
+@inject Creator creator
 
 @if (!Loading)
 {
@@ -71,14 +72,13 @@ else
         return match.Success;
     }
 
-
     async void FetchVideo(string YTlink)
     {
         linkValid = ValidateYTLink(YTlink);
         if (linkValid)
         {
             Loading = true;
-            // FetchedVideoPath = await CreatorService.FetchVideo(YTlink, settings);
+            await creator.FetchVideo(YTlink, settings);
             Loading = false;
             string videoname;
             @if (!string.IsNullOrEmpty(FetchedVideoPath))
