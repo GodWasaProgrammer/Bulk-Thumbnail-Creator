@@ -1,25 +1,100 @@
-﻿@using Microsoft.JSInterop;
+﻿@inject IJSRuntime JS
 
-<h3>Some Sweet Cracktro Music to enjoy!</h3>
+@inject IJSRuntime JS
 
-<audio id="audioPlayer" controls autoplay>
-    <source src="@musicUrl" type="audio/mpeg">
-    Your browser does not support the audio element.
-</audio>
+<MudStack Spacing="1" Class="p-1">
+    <!-- Spelarkontroller -->
+    <MudPaper Class="d-flex justify-content-center align-items-center mb-2">
+        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.SkipPrevious" OnClick="@(() => PreviousTrack())" Color="Color.Primary" />
+        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.PlayArrow" OnClick="@(() => PlayPauseTrack())" Color="Color.Primary" />
+        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.SkipNext" OnClick="@(() => NextTrack())" Color="Color.Primary" />
+        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Stop" OnClick="@(() => StopTrack())" Color="Color.Primary" />
+    </MudPaper>
 
-@code
-{
-    private string musicUrl = "song.mp3";
+    <!-- Volymreglage -->
+    <MudPaper Class="d-flex align-items-center mb-2">
+        <MudSlider Min="0" Max="100" Step="1" Value="Volume" OnChange="@(() => VolumeChanged)" Color="Color.Secondary" Class="flex-grow-1" />
+        <MudIcon Icon="@Icons.Material.Filled.VolumeUp" Class="ml-2" />
+    </MudPaper>
 
-    [Inject]
-    private IJSRuntime JSRuntime { get; set; }
+    <!-- Spellista -->
+    <MudPaper Class="overflow-auto" Style="max-height: 300px;">
+        <MudList T="string" Dense="true">
+            @foreach (var track in Tracks)
+            {
+                <MudListItem OnClick="@(() => PlayTrack(track.Url))" Selected="@track.IsPlaying">
+                    @track.Name
+                </MudListItem>
+            }
+        </MudList>
+    </MudPaper>
+</MudStack>
 
-    protected override async void OnAfterRender(bool firstRender)
+@code {
+    List<Track> Tracks = new List<Track> {
+        new Track { Name = "Track 1", Url = "your-track1.mp3" },
+        new Track { Name = "Track 2", Url = "your-track2.mp3" }
+    };
+
+    private int Volume = 50;
+    private bool IsPlaying;
+    private string currentTrackUrl = "your-track1.mp3";
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        await JS.InvokeVoidAsync("audioPlayer.initialize", "audioPlayer");
+    }
+
+    private async Task PlayTrack(string url)
+    {
+        currentTrackUrl = url;
+        await JS.InvokeVoidAsync("audioPlayer.next", url);
+    }
+
+    private async Task StopTrack()
+    {
+        await JS.InvokeVoidAsync("audioPlayer.stop");
+    }
+
+    private async Task NextTrack()
+    {
+        // Logik för att hitta nästa spår
+        string nextTrackUrl = "your-next-track.mp3";
+        await JS.InvokeVoidAsync("audioPlayer.next", nextTrackUrl);
+    }
+
+    private async Task PreviousTrack()
+    {
+        // Logik för att hitta föregående spår
+        string previousTrackUrl = "your-previous-track.mp3";
+        await JS.InvokeVoidAsync("audioPlayer.previous", previousTrackUrl);
+    }
+
+    private async Task PlayPauseTrack()
+    {
+        if (IsPlaying)
         {
-            // Play the audio when the component is first rendered
-            await JSRuntime.InvokeVoidAsync("playAudio");
+            await JS.InvokeVoidAsync("audioPlayer.pause");
+            IsPlaying = false;
         }
+        else
+        {
+            await JS.InvokeVoidAsync("audioPlayer.play");
+            IsPlaying = true;
+        }
+    }
+
+    private async Task VolumeChanged(double value)
+    {
+        Volume = (int)value;
+        await JS.InvokeVoidAsync("audioPlayer.setVolume", Volume);
+    }
+
+
+    public class Track
+    {
+        public string Name { get; set; }
+        public string Url { get; set; }
+        public bool IsPlaying { get; set; }
     }
 }

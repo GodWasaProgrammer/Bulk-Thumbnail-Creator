@@ -6,12 +6,6 @@
 <html lang="en">
 <head>
     <script>
-        function playAudio() {
-            var audioPlayer = document.getElementById("audioPlayer");
-            audioPlayer.play();
-        }
-    </script>
-    <script>
         window.downloadFileFromUrl = (fileUrl) => {
             const link = document.createElement('a');
             link.href = fileUrl;
@@ -44,5 +38,6 @@
     <script src="~/BoxPicker.js"></script>
     <script src="_framework/blazor.server.js"></script>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    <script src="audioPlayer.js"></script>
 </body>
 </html>
