@@ -14,19 +14,23 @@
         <Compile Remove="logs\**" />
         <Compile Remove="output\**" />
         <Compile Remove="textadded\**" />
+        <Compile Remove="wwwroot\Media\**" />
         <Compile Remove="YTDL\**" />
         <Content Remove="logs\**" />
         <Content Remove="output\**" />
         <Content Remove="textadded\**" />
+        <Content Remove="wwwroot\Media\**" />
         <Content Remove="YTDL\**" />
         <EmbeddedResource Remove="Fonts\**" />
         <EmbeddedResource Remove="logs\**" />
         <EmbeddedResource Remove="output\**" />
         <EmbeddedResource Remove="textadded\**" />
+        <EmbeddedResource Remove="wwwroot\Media\**" />
         <EmbeddedResource Remove="YTDL\**" />
         <None Remove="logs\**" />
         <None Remove="output\**" />
         <None Remove="textadded\**" />
+        <None Remove="wwwroot\Media\**" />
         <None Remove="YTDL\**" />
     </ItemGroup>
 

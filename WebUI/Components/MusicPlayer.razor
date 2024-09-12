@@ -1,23 +1,19 @@
 ﻿@inject IJSRuntime JS
 
-@inject IJSRuntime JS
-
 <MudStack Spacing="1" Class="p-1">
-    <!-- Spelarkontroller -->
+
     <MudPaper Class="d-flex justify-content-center align-items-center mb-2">
         <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.SkipPrevious" OnClick="@(() => PreviousTrack())" Color="Color.Primary" />
-        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.PlayArrow" OnClick="@(() => PlayPauseTrack())" Color="Color.Primary" />
+        <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.PlayArrow" OnClick="@(() => PlayTrack(currentTrackUrl))" Color="Color.Primary" />
         <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.SkipNext" OnClick="@(() => NextTrack())" Color="Color.Primary" />
         <MudIconButton Size="Size.Small" Icon="@Icons.Material.Filled.Stop" OnClick="@(() => StopTrack())" Color="Color.Primary" />
     </MudPaper>
 
-    <!-- Volymreglage -->
     <MudPaper Class="d-flex align-items-center mb-2">
         <MudSlider Min="0" Max="100" Step="1" Value="Volume" OnChange="@(() => VolumeChanged)" Color="Color.Secondary" Class="flex-grow-1" />
         <MudIcon Icon="@Icons.Material.Filled.VolumeUp" Class="ml-2" />
     </MudPaper>
 
-    <!-- Spellista -->
     <MudPaper Class="overflow-auto" Style="max-height: 300px;">
         <MudList T="string" Dense="true">
             @foreach (var track in Tracks)
@@ -31,18 +27,34 @@
 </MudStack>
 
 @code {
-    List<Track> Tracks = new List<Track> {
-        new Track { Name = "Track 1", Url = "your-track1.mp3" },
-        new Track { Name = "Track 2", Url = "your-track2.mp3" }
-    };
+    List<Track> Tracks = new List<Track>();
 
     private int Volume = 50;
     private bool IsPlaying;
-    private string currentTrackUrl = "your-track1.mp3";
+    private string currentTrackUrl = "";
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
+        currentTrackUrl = Tracks[0].Url;
+        if(firstRender)
+        {
+            
         await JS.InvokeVoidAsync("audioPlayer.initialize", "audioPlayer");
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        var Files = Directory.GetFiles("wwwroot/Media");
+
+        foreach (var file in Files)
+        {
+            var name = Path.GetFileNameWithoutExtension(file);
+            string correctedUrl = $"/Media/{Path.GetFileName(file)}";
+            var addTrack = new Track { Name = name, Url = correctedUrl, IsPlaying = false };
+            Tracks.Add(addTrack);
+        }
+        
     }
 
     private async Task PlayTrack(string url)
