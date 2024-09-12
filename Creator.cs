@@ -74,7 +74,7 @@ public partial class Creator
         }
     }
 
-    private async Task<(Array2D<RgbPixel>, Rectangle[])> FaceDetection(string file)
+    private static async Task<(Array2D<RgbPixel>, Rectangle[])> FaceDetection(string file)
     {
         Array2D<RgbPixel> image = null;
         Rectangle[] faceRectangles = null;
@@ -108,7 +108,7 @@ public partial class Creator
         return t1;
     }
 
-    private void CreateData(Job job, Array2D<RgbPixel> image, Rectangle[] faceRectangles, PictureData picData)
+    private static void CreateData(Job job, Array2D<RgbPixel> image, Rectangle[] faceRectangles, PictureData picData)
     {
         for (var amountOfBoxes = 0; amountOfBoxes < picData._numberOfBoxes; amountOfBoxes++)
         {
@@ -139,11 +139,15 @@ public partial class Creator
         job.PictureData.Add(picData);
     }
 
-    public async Task<string> FetchVideo(string url, Settings settings)
+    public async Task<string> FetchVideo(string ytlink, Settings settings)
     {
-
         await _production.VerifyDirectoryAndExeIntegrity(settings);
-        // var pathToDownloadedVideo = await Production.YouTubeDL(url, settings);
+
+        var newjob = new Job(ytlink, "anon");
+        newjob.Settings = settings;
+
+        await _production.YouTubeDL(newjob);
+
         return null;
     }
     private async Task RunFFMpeg(Settings settings)
@@ -254,7 +258,7 @@ public partial class Creator
         IsLoading = false;
     }
 
-    private void CleanPathNames(Job job)
+    private static void CleanPathNames(Job job)
     {
         job.Settings.OutputDir = job.Settings.OutputDir + "/" + CleanPathRegEx().Replace(Path.GetFileNameWithoutExtension(job.Settings.PathToVideo), "");
         Directory.CreateDirectory(job.Settings.OutputDir);

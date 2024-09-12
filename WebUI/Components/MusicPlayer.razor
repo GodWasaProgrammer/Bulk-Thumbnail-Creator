@@ -1,5 +1,6 @@
-﻿@inject IJSRuntime JS
-
+﻿@using BulkThumbnailCreator.Interfaces
+@inject IJSRuntime JS
+@inject ILogService logger
 <MudStack Spacing="1" Class="p-1">
 
     <MudPaper Class="d-flex justify-content-center align-items-center mb-2">
@@ -24,6 +25,11 @@
             }
         </MudList>
     </MudPaper>
+
+    <MudPaper>
+        <MudText Color="Color.Warning">Now playing: @Path.GetFileNameWithoutExtension(currentTrackUrl)</MudText>
+    </MudPaper>
+
 </MudStack>
 
 <audio id="audioPlayer" controls style="display:none;">
@@ -40,10 +46,9 @@
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
         currentTrackUrl = Tracks[0].Url;
-        if(firstRender)
+        if (firstRender)
         {
-            
-        await JS.InvokeVoidAsync("audioPlayer.initialize", "audioPlayer");
+            await JS.InvokeVoidAsync("audioPlayer.initialize", "audioPlayer");
         }
     }
 
@@ -58,12 +63,28 @@
             var addTrack = new Track { Name = name, Url = correctedUrl, IsPlaying = false };
             Tracks.Add(addTrack);
         }
-        
+
     }
 
     private async Task PlayTrack(string url)
     {
+        foreach(var track in Tracks)
+        {
+            if(track.Url == currentTrackUrl)
+            {
+                track.IsPlaying = false;
+            }
+        }
         currentTrackUrl = url;
+
+        foreach(var track in Tracks)
+        {
+            if(currentTrackUrl == track.Url)
+            {
+                track.IsPlaying = true;
+            }
+        }
+
         await JS.InvokeVoidAsync("audioPlayer.next", url);
     }
 
@@ -74,16 +95,43 @@
 
     private async Task NextTrack()
     {
-        // Logik för att hitta nästa spår
-        string nextTrackUrl = "your-next-track.mp3";
-        await JS.InvokeVoidAsync("audioPlayer.next", nextTrackUrl);
+        var currentIndex = Tracks.FindIndex(i => i.IsPlaying);
+
+        if (currentIndex == -1)
+        {
+            await logger.LogInformation("No track is currently playing.");
+            return;
+        }
+        int nextIndex = currentIndex + 1;
+
+        if (nextIndex < Tracks.Count)
+        {
+            Tracks[currentIndex].IsPlaying = false;
+            Tracks[nextIndex].IsPlaying = true;
+
+            await JS.InvokeVoidAsync("audioPlayer.next", Tracks[nextIndex].Url);
+        }
+        else
+        {
+            await logger.LogInformation("You have reached the end of the playlist.");
+        }
     }
 
     private async Task PreviousTrack()
     {
-        // Logik för att hitta föregående spår
-        string previousTrackUrl = "your-previous-track.mp3";
-        await JS.InvokeVoidAsync("audioPlayer.previous", previousTrackUrl);
+        var currentIndex = Tracks.FindIndex(i => i.IsPlaying);
+
+        if (currentIndex == -1)
+        {
+            await logger.LogInformation("No track is currently playing.");
+            return;
+        }
+        int EarlierIndex = currentIndex - 1;
+
+            Tracks[currentIndex].IsPlaying = false;
+            Tracks[EarlierIndex].IsPlaying = true;
+
+            await JS.InvokeVoidAsync("audioPlayer.previous", Tracks[EarlierIndex].Url);
     }
 
     private async Task PlayPauseTrack()
