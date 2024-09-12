@@ -374,3 +374,4 @@ FodyWeavers.xsd
 /Mocking/FrontpagePictureLineUp
 *.xml
 *webm
+/WebUI/wwwroot/Media/song.mp3
