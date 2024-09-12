@@ -10,7 +10,7 @@
     </MudPaper>
 
     <MudPaper Class="d-flex align-items-center mb-2">
-        <MudSlider Min="0" Max="100" Step="1" Value="Volume" OnChange="@(() => VolumeChanged)" Color="Color.Secondary" Class="flex-grow-1" />
+        <MudSlider Min="0" Max="100" Step="1" Value="Volume" ValueChanged="EventCallback.Factory.Create<double>(this, VolumeChanged)" Color="Color.Secondary" Class="flex-grow-1" />
         <MudIcon Icon="@Icons.Material.Filled.VolumeUp" Class="ml-2" />
     </MudPaper>
 
@@ -26,10 +26,14 @@
     </MudPaper>
 </MudStack>
 
+<audio id="audioPlayer" controls style="display:none;">
+    Din webbläsare stöder inte ljuduppspelning.
+</audio>
+
 @code {
     List<Track> Tracks = new List<Track>();
 
-    private int Volume = 50;
+    private double Volume = 50;
     private bool IsPlaying;
     private string currentTrackUrl = "";
 
