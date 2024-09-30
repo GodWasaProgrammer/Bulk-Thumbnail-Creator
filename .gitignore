@@ -363,7 +363,6 @@ MigrationBackup/
 FodyWeavers.xsd
 /WebUI/YTDL
 /WebUI/output
-/WebUI/wwwroot/song.mp3
 /WebUI/textadded
 /Executables/old dlp
 /Executables
@@ -374,4 +373,4 @@ FodyWeavers.xsd
 /Mocking/FrontpagePictureLineUp
 *.xml
 *webm
-/WebUI/wwwroot/Media/song.mp3
+*.mp3
