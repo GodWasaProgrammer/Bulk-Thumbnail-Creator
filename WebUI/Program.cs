@@ -2,6 +2,8 @@
 using BulkThumbnailCreator.Interfaces;
 using BulkThumbnailCreator.Services;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -18,6 +20,11 @@ public static class Program
         Directory.CreateDirectory("TextAdded");
         Directory.CreateDirectory("logs");
         var builder = WebApplication.CreateBuilder(args);
+
+
+        builder.Services.AddDataProtection()
+                                            .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(Directory.GetCurrentDirectory(), "keys")))
+                                            .SetApplicationName("BulkThumbnailCreator"); // Använd ett unikt namn för din applikation
         // Add configuration settings
         builder.Configuration.AddJsonFile("appsettings.json", optional: false);
         builder.Services.AddDefaultIdentity<IdentityUser>()
@@ -26,7 +33,6 @@ public static class Program
         {
             googleOptions.ClientId = Environment.GetEnvironmentVariable("ClientId")?.Trim();
             googleOptions.ClientSecret = Environment.GetEnvironmentVariable("ClientSecret")?.Trim();
-            var bajs = googleOptions.CallbackPath;
         });
         // Add services
         builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -40,6 +46,15 @@ public static class Program
         builder.Services.AddSingleton<UserStateService>();
         builder.Services.AddScoped<Creator>();
         builder.Services.AddMudServices();
+        builder.Services.Configure<CookiePolicyOptions>(options =>
+        {
+            options.MinimumSameSitePolicy = SameSiteMode.None;
+            options.Secure = CookieSecurePolicy.Always;
+        });
+        builder.Services.Configure<HttpsRedirectionOptions>(options =>
+        {
+            options.HttpsPort = 443;
+        });
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -55,7 +70,7 @@ public static class Program
         {
             app.UseMigrationsEndPoint();
         }
-
+        
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseStaticFiles(new StaticFileOptions
