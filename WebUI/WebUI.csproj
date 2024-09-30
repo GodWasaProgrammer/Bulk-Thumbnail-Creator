@@ -14,23 +14,19 @@
         <Compile Remove="logs\**" />
         <Compile Remove="output\**" />
         <Compile Remove="textadded\**" />
-        <Compile Remove="wwwroot\Media\**" />
         <Compile Remove="YTDL\**" />
         <Content Remove="logs\**" />
         <Content Remove="output\**" />
         <Content Remove="textadded\**" />
-        <Content Remove="wwwroot\Media\**" />
         <Content Remove="YTDL\**" />
         <EmbeddedResource Remove="Fonts\**" />
         <EmbeddedResource Remove="logs\**" />
         <EmbeddedResource Remove="output\**" />
         <EmbeddedResource Remove="textadded\**" />
-        <EmbeddedResource Remove="wwwroot\Media\**" />
         <EmbeddedResource Remove="YTDL\**" />
         <None Remove="logs\**" />
         <None Remove="output\**" />
         <None Remove="textadded\**" />
-        <None Remove="wwwroot\Media\**" />
         <None Remove="YTDL\**" />
     </ItemGroup>
 
@@ -53,11 +49,15 @@
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.8" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.4" />
-        <PackageReference Include="MudBlazor" Version="7.6.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.5" />
+        <PackageReference Include="MudBlazor" Version="7.8.0" />
         <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.8" />
 
     </ItemGroup>
@@ -89,6 +89,18 @@
         </Content>
         <Content Update="wwwroot\images\MemeTrickery.jpeg">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Update="wwwroot\Media\Prestige.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Update="wwwroot\Media\The_Company.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Update="wwwroot\Media\The_Company_2.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Update="wwwroot\Media\Zenith.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
 
@@ -303,6 +315,19 @@
         <None Update="Fonts\vgasys.fon">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <None Update="UserBase.db">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\Media\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Migrations\ApplicationDbContextModelSnapshot.cs">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </Compile>
     </ItemGroup>
 
 </Project>

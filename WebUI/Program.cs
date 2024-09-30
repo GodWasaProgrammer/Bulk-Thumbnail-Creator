@@ -26,6 +26,7 @@ public static class Program
         {
             googleOptions.ClientId = Environment.GetEnvironmentVariable("ClientId")?.Trim();
             googleOptions.ClientSecret = Environment.GetEnvironmentVariable("ClientSecret")?.Trim();
+            var bajs = googleOptions.CallbackPath;
         });
         // Add services
         builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
