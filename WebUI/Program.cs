@@ -70,8 +70,6 @@ public static class Program
         {
             ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
         });
-
-        app.UseForwardedHeaders();
         app.UseStaticFiles();
         app.UseStaticFiles(new StaticFileOptions
         {
@@ -88,7 +86,36 @@ public static class Program
             FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Fonts")),
             RequestPath = "/Fonts"
         });
+        app.Use(async (context, next) =>
+        {
+            var proto = context.Request.Headers["X-Forwarded-Proto"].ToString();
+            Console.WriteLine($"X-Forwarded-Proto: {proto}");
+            await next.Invoke();
+        });
+
         app.UseRouting();
+        app.Use(async (context, next) =>
+        {
+            await next.Invoke();
+
+            // Kontrollera om svaret innehåller en redirect
+            if (context.Response.StatusCode == 302 && context.Response.Headers.ContainsKey("Location"))
+            {
+                var location = context.Response.Headers["Location"].ToString();
+                if (location.StartsWith("http://"))
+                {
+                    // Logga till konsolen
+                    Console.WriteLine($"Redirect från HTTP till HTTPS: {location}");
+
+                    // Ändra Location-header till HTTPS
+                    context.Response.Headers["Location"] = location.Replace("http://", "https://");
+
+                    // Logga den nya redirecten till konsolen
+                    Console.WriteLine($"Uppdaterad redirect: {context.Response.Headers["Location"]}");
+                }
+            }
+        });
+
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapBlazorHub();
