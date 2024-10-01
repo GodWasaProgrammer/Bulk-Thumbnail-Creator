@@ -3,7 +3,7 @@ using BulkThumbnailCreator.Interfaces;
 using BulkThumbnailCreator.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -24,7 +24,7 @@ public static class Program
 
         builder.Services.AddDataProtection()
                                             .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(Directory.GetCurrentDirectory(), "keys")))
-                                            .SetApplicationName("BulkThumbnailCreator"); // Använd ett unikt namn för din applikation
+                                            .SetApplicationName("BulkThumbnailCreator");
         // Add configuration settings
         builder.Configuration.AddJsonFile("appsettings.json", optional: false);
         builder.Services.AddDefaultIdentity<IdentityUser>()
@@ -51,10 +51,6 @@ public static class Program
             options.MinimumSameSitePolicy = SameSiteMode.None;
             options.Secure = CookieSecurePolicy.Always;
         });
-        builder.Services.Configure<HttpsRedirectionOptions>(options =>
-        {
-            options.HttpsPort = 443;
-        });
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -70,8 +66,12 @@ public static class Program
         {
             app.UseMigrationsEndPoint();
         }
-        
-        app.UseHttpsRedirection();
+        app.UseForwardedHeaders(new ForwardedHeadersOptions
+        {
+            ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+        });
+
+        app.UseForwardedHeaders();
         app.UseStaticFiles();
         app.UseStaticFiles(new StaticFileOptions
         {
