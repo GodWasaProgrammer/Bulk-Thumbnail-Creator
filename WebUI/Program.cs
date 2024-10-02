@@ -2,7 +2,6 @@
 using BulkThumbnailCreator.Interfaces;
 using BulkThumbnailCreator.Services;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,21 +18,21 @@ public static class Program
         Directory.CreateDirectory("YTDL");
         Directory.CreateDirectory("TextAdded");
         Directory.CreateDirectory("logs");
+
         var builder = WebApplication.CreateBuilder(args);
 
-
-        builder.Services.AddDataProtection()
-                                            .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(Directory.GetCurrentDirectory(), "keys")))
-                                            .SetApplicationName("BulkThumbnailCreator");
         // Add configuration settings
         builder.Configuration.AddJsonFile("appsettings.json", optional: false);
         builder.Services.AddDefaultIdentity<IdentityUser>()
                         .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
         builder.Services.AddAuthentication().AddGoogle(googleOptions =>
-        {
-            googleOptions.ClientId = Environment.GetEnvironmentVariable("ClientId")?.Trim();
-            googleOptions.ClientSecret = Environment.GetEnvironmentVariable("ClientSecret")?.Trim();
-        });
+            {
+                googleOptions.ClientId = Environment.GetEnvironmentVariable("ClientId")?.Trim();
+                googleOptions.ClientSecret = Environment.GetEnvironmentVariable("ClientSecret")?.Trim();
+            });
+
         // Add services
         builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
         builder.Services.AddRazorPages();
@@ -46,19 +45,21 @@ public static class Program
         builder.Services.AddSingleton<UserStateService>();
         builder.Services.AddScoped<Creator>();
         builder.Services.AddMudServices();
-        builder.Services.Configure<CookiePolicyOptions>(options =>
-        {
-            options.MinimumSameSitePolicy = SameSiteMode.None;
-            options.Secure = CookieSecurePolicy.Always;
-        });
+
+
+
         var app = builder.Build();
+        app.UseForwardedHeaders(new ForwardedHeadersOptions
+        {
+            ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+        });
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler("/Error");
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
+            // app.UseHsts();
         }
 
         // Configure the HTTP request pipeline.
@@ -66,10 +67,6 @@ public static class Program
         {
             app.UseMigrationsEndPoint();
         }
-        app.UseForwardedHeaders(new ForwardedHeadersOptions
-        {
-            ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-        });
         app.UseStaticFiles();
         app.UseStaticFiles(new StaticFileOptions
         {
@@ -88,6 +85,8 @@ public static class Program
         });
         app.Use(async (context, next) =>
         {
+            Console.WriteLine($"Current scheme:{context.Request.Scheme.ToString()}");
+            context.Request.Scheme = "https";
             var proto = context.Request.Headers["X-Forwarded-Proto"].ToString();
             Console.WriteLine($"X-Forwarded-Proto: {proto}");
             await next.Invoke();
@@ -98,22 +97,24 @@ public static class Program
         {
             await next.Invoke();
 
-            // Kontrollera om svaret innehåller en redirect
-            if (context.Response.StatusCode == 302 && context.Response.Headers.ContainsKey("Location"))
+            // Logga alla statuskoder för att se om vi når den här delen av pipelinen
+            Console.WriteLine($"Response Status Code: {context.Response.StatusCode}");
+
+            var location = context.Response.Headers["Location"].ToString();
+            Console.WriteLine($"Original Redirect Location: {location}");
+
+            if (location.StartsWith("http://"))
             {
-                var location = context.Response.Headers["Location"].ToString();
-                if (location.StartsWith("http://"))
-                {
-                    // Logga till konsolen
-                    Console.WriteLine($"Redirect från HTTP till HTTPS: {location}");
+                // Logga till konsolen
+                Console.WriteLine($"Redirect från HTTP till HTTPS: {location}");
 
-                    // Ändra Location-header till HTTPS
-                    context.Response.Headers["Location"] = location.Replace("http://", "https://");
+                // Ändra Location-header till HTTPS
+                context.Response.Headers["Location"] = location.Replace("http://", "https://");
 
-                    // Logga den nya redirecten till konsolen
-                    Console.WriteLine($"Uppdaterad redirect: {context.Response.Headers["Location"]}");
-                }
+                // Logga den nya redirecten till konsolen
+                Console.WriteLine($"Uppdaterad redirect: {context.Response.Headers["Location"]}");
             }
+
         });
 
         app.UseAuthentication();
