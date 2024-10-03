@@ -1,4 +1,5 @@
-﻿using BulkThumbnailCreator;
+﻿using System.Net;
+using BulkThumbnailCreator;
 using BulkThumbnailCreator.Interfaces;
 using BulkThumbnailCreator.Services;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -45,9 +46,11 @@ public static class Program
         builder.Services.AddSingleton<UserStateService>();
         builder.Services.AddScoped<Creator>();
         builder.Services.AddMudServices();
-
-
-
+        builder.Services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.KnownProxies.Add(IPAddress.Parse("172.19.0.3")); // nginx ip
+            options.KnownNetworks.Add(new Microsoft.AspNetCore.HttpOverrides.IPNetwork(IPAddress.Parse("172.19.0.3"), 24));
+        });
         var app = builder.Build();
         app.UseForwardedHeaders(new ForwardedHeadersOptions
         {
@@ -89,6 +92,10 @@ public static class Program
             context.Request.Scheme = "https";
             var proto = context.Request.Headers["X-Forwarded-Proto"].ToString();
             Console.WriteLine($"X-Forwarded-Proto: {proto}");
+            Console.WriteLine($"Response Status Code: {context.Response.StatusCode}");
+
+            var location = context.Response.Headers["Location"].ToString();
+            Console.WriteLine($"Original Redirect Location: {location}");
             await next.Invoke();
         });
 
