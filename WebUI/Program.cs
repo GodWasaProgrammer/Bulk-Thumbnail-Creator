@@ -3,7 +3,6 @@ using BulkThumbnailCreator;
 using BulkThumbnailCreator.Interfaces;
 using BulkThumbnailCreator.Services;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -32,6 +31,7 @@ public static class Program
             {
                 googleOptions.ClientId = Environment.GetEnvironmentVariable("ClientId")?.Trim();
                 googleOptions.ClientSecret = Environment.GetEnvironmentVariable("ClientSecret")?.Trim();
+                googleOptions.CallbackPath = new PathString("/signin-google");
             });
 
         // Add services
@@ -46,16 +46,7 @@ public static class Program
         builder.Services.AddSingleton<UserStateService>();
         builder.Services.AddScoped<Creator>();
         builder.Services.AddMudServices();
-        builder.Services.Configure<ForwardedHeadersOptions>(options =>
-        {
-            options.KnownProxies.Add(IPAddress.Parse("172.19.0.3")); // nginx ip
-            options.KnownNetworks.Add(new Microsoft.AspNetCore.HttpOverrides.IPNetwork(IPAddress.Parse("172.19.0.3"), 24));
-        });
         var app = builder.Build();
-        app.UseForwardedHeaders(new ForwardedHeadersOptions
-        {
-            ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-        });
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
@@ -86,44 +77,7 @@ public static class Program
             FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Fonts")),
             RequestPath = "/Fonts"
         });
-        app.Use(async (context, next) =>
-        {
-            Console.WriteLine($"Current scheme:{context.Request.Scheme.ToString()}");
-            context.Request.Scheme = "https";
-            var proto = context.Request.Headers["X-Forwarded-Proto"].ToString();
-            Console.WriteLine($"X-Forwarded-Proto: {proto}");
-            Console.WriteLine($"Response Status Code: {context.Response.StatusCode}");
-
-            var location = context.Response.Headers["Location"].ToString();
-            Console.WriteLine($"Original Redirect Location: {location}");
-            await next.Invoke();
-        });
-
         app.UseRouting();
-        app.Use(async (context, next) =>
-        {
-            await next.Invoke();
-
-            // Logga alla statuskoder för att se om vi når den här delen av pipelinen
-            Console.WriteLine($"Response Status Code: {context.Response.StatusCode}");
-
-            var location = context.Response.Headers["Location"].ToString();
-            Console.WriteLine($"Original Redirect Location: {location}");
-
-            if (location.StartsWith("http://"))
-            {
-                // Logga till konsolen
-                Console.WriteLine($"Redirect från HTTP till HTTPS: {location}");
-
-                // Ändra Location-header till HTTPS
-                context.Response.Headers["Location"] = location.Replace("http://", "https://");
-
-                // Logga den nya redirecten till konsolen
-                Console.WriteLine($"Uppdaterad redirect: {context.Response.Headers["Location"]}");
-            }
-
-        });
-
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapBlazorHub();
