@@ -5,85 +5,87 @@
 @inherits LayoutComponentBase
 
 <MudThemeProvider Theme="BulkThumbnailCreatorTheme" IsDarkMode="true" />
-<MudPopoverProvider/>
+<MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Elevation="0">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <CascadingAuthenticationState>
-            <LoginDisplay></LoginDisplay>
-        </CascadingAuthenticationState>
-        <img src=@logoUrl style="max-width: 100%; max-height: 100%; object-fit: contain; margin: auto; display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" />
-        <MudSpacer />
-        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" href="https://github.com/GodWasAProgrammer" Target="_blank" />
-        <MudIconButton Icon="@Icons.Custom.Brands.LinkedIn" Color="Color.Inherit" href="https://www.linkedin.com/in/bnilssondev/" Target="_blank" />
-        <MudIconButton OnClick="ToggleMusicPlayer" ButtonType="ButtonType.Button" Icon="@Icons.Material.Rounded.MusicNote"></MudIconButton>
-    </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
-        <NavMenu />
-    </MudDrawer>
-    <MudDrawer Anchor="Anchor.Right" @bind-Open="_MusicPlayerOpen">
-        <MudContainer>
-            <MusicPlayer></MusicPlayer>
-        </MudContainer>
-    </MudDrawer>
-    <MudMainContent>
-        <MudContainer Class="align-content-center">
-            @Body
-        </MudContainer>
-    </MudMainContent>
+	<MudAppBar Elevation="0">
+		<MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+		<CascadingAuthenticationState>
+			<LoginDisplay></LoginDisplay>
+		</CascadingAuthenticationState>
+		<img src=@logoUrl style="max-width: 100%; max-height: 100%; object-fit: contain; margin: auto; display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);" />
+		<MudSpacer />
+		<MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" href="https://github.com/GodWasAProgrammer" Target="_blank" />
+		<MudIconButton Icon="@Icons.Custom.Brands.LinkedIn" Color="Color.Inherit" href="https://www.linkedin.com/in/bnilssondev/" Target="_blank" />
+		<AuthorizeView>
+			<MudIconButton OnClick="ToggleMusicPlayer" ButtonType="ButtonType.Button" Icon="@Icons.Material.Rounded.MusicNote"></MudIconButton>
+		</AuthorizeView>
+	</MudAppBar>
+	<MudDrawer @bind-Open="_drawerOpen" Elevation="1">
+		<NavMenu />
+	</MudDrawer>
+	<MudDrawer Anchor="Anchor.Right" @bind-Open="_MusicPlayerOpen">
+		<MudContainer>
+			<MusicPlayer></MusicPlayer>
+		</MudContainer>
+	</MudDrawer>
+	<MudMainContent>
+		<MudContainer Class="align-content-center">
+			@Body
+		</MudContainer>
+	</MudMainContent>
 </MudLayout>
 
 @code {
-    bool _drawerOpen = false;
-    bool _MusicPlayerOpen = false;
+	bool _drawerOpen = false;
+	bool _MusicPlayerOpen = false;
 
-    [Parameter]
-    public string logoUrl { get; set; }
+	[Parameter]
+	public string logoUrl { get; set; }
 
-    public void ToggleMusicPlayer()
-    {
-        _MusicPlayerOpen = !_MusicPlayerOpen;
-    }
+	public void ToggleMusicPlayer()
+	{
+		_MusicPlayerOpen = !_MusicPlayerOpen;
+	}
 
-    MudTheme BulkThumbnailCreatorTheme = new MudTheme()
-        {
-            // PaletteDark = new()
-            // {
-            //     Primary = Colors.Purple.Lighten1,
-            //     Secondary = Colors.DeepPurple.Accent4,
-            //     AppbarBackground = Colors.Blue.Darken1,
-            //     DrawerBackground = Colors.Shades.Black,
-            //     DrawerText = Colors.Green.Lighten5,
-            //     Background = Colors.Grey.Darken4,
-            //     Surface = Colors.Shades.Black,
-            //     TextPrimary = Colors.Shades.White,
-            //     InfoContrastText = Colors.Shades.White,
-            //     TextSecondary = Colors.Shades.White,
-            // },
+	MudTheme BulkThumbnailCreatorTheme = new MudTheme()
+		{
+		// PaletteDark = new()
+		// {
+		//     Primary = Colors.Purple.Lighten1,
+		//     Secondary = Colors.DeepPurple.Accent4,
+		//     AppbarBackground = Colors.Blue.Darken1,
+		//     DrawerBackground = Colors.Shades.Black,
+		//     DrawerText = Colors.Green.Lighten5,
+		//     Background = Colors.Grey.Darken4,
+		//     Surface = Colors.Shades.Black,
+		//     TextPrimary = Colors.Shades.White,
+		//     InfoContrastText = Colors.Shades.White,
+		//     TextSecondary = Colors.Shades.White,
+		// },
 
-            LayoutProperties = new LayoutProperties()
-            {
-                DrawerWidthLeft = "150px",
-                DrawerWidthRight = "150px",
-                AppbarHeight = "30px",
-            }
-        };
+			LayoutProperties = new LayoutProperties()
+			{
+				DrawerWidthLeft = "150px",
+				DrawerWidthRight = "150px",
+				AppbarHeight = "30px",
+			}
+		};
 
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
+	void DrawerToggle()
+	{
+		_drawerOpen = !_drawerOpen;
+	}
 
-    protected override void OnInitialized()
-    {
-        var fetchlogo = LogoService.GetRandomLogo();
+	protected override void OnInitialized()
+	{
+		var fetchlogo = LogoService.GetRandomLogo();
 
-        // Förutsatt att wwwroot är rotkatalogen för dina statiska filer
-        var wwwrootPath = Path.Combine(Environment.CurrentDirectory, "wwwroot");
-        var relativePath = Path.GetRelativePath(wwwrootPath, fetchlogo);
-        logoUrl = $"/{relativePath.Replace('\\', '/')}";
-    }
+		// Förutsatt att wwwroot är rotkatalogen för dina statiska filer
+		var wwwrootPath = Path.Combine(Environment.CurrentDirectory, "wwwroot");
+		var relativePath = Path.GetRelativePath(wwwrootPath, fetchlogo);
+		logoUrl = $"/{relativePath.Replace('\\', '/')}";
+	}
 }
