@@ -22,6 +22,7 @@
     <None Remove="WebUI\**" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Blazor.Extensions.Canvas" Version="1.1.1" />
     <PackageReference Include="DlibDotNet" Version="19.21.0.20220724" />
     <PackageReference Include="libpng-msvc-x64" Version="1.6.33.8807" />
     <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="13.10.0" />

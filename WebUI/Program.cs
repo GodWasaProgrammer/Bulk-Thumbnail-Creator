@@ -1,5 +1,4 @@
-﻿using System.Net;
-using BulkThumbnailCreator;
+﻿using BulkThumbnailCreator;
 using BulkThumbnailCreator.Interfaces;
 using BulkThumbnailCreator.Services;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -25,7 +24,6 @@ public static class Program
         builder.Configuration.AddJsonFile("appsettings.json", optional: false);
         builder.Services.AddDefaultIdentity<IdentityUser>()
                         .AddEntityFrameworkStores<ApplicationDbContext>();
-
 
         builder.Services.AddAuthentication().AddGoogle(googleOptions =>
             {

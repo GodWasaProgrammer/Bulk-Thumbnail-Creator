@@ -1,0 +1,106 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
+@implements IAsyncDisposable
+@inject IJSRuntime JSRuntime
+
+<style>
+    .snake-board {
+        border: 2px solid #333;
+        background-color: #000;
+        display: inline-block;
+    }
+
+    canvas {
+        display: block;
+        image-rendering: pixelated;
+    }
+
+    .restart-button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+</style>
+
+<div class="snake-container">
+    <div class="snake-board" tabindex="0" @ref="BoardDiv">
+        <canvas @ref="CanvasReference"
+                width="@Width"
+                height="@Height"
+                style="width: @(Width)px; height: @(Height)px;"></canvas>
+    </div>
+    <div class="score-display">Score: @Score</div>
+    <button @onclick="RestartGame" class="restart-button">Restart Game</button>
+</div>
+
+@code {
+    [Parameter] public int Width { get; set; } = 400;
+    [Parameter] public int Height { get; set; } = 400;
+    [Parameter] public int GridSize { get; set; } = 20;
+
+    private ElementReference CanvasReference;
+    private ElementReference BoardDiv;
+    private IJSObjectReference? GameModule;
+    private DotNetObjectReference<SnakeBoard>? objRef;
+
+    private int Score = 0;
+    private bool GameRunning = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            objRef = DotNetObjectReference.Create(this);
+            GameModule = await JSRuntime.InvokeAsync<IJSObjectReference>(
+                "import", "./snakeGame.js");
+
+            await GameModule.InvokeVoidAsync("initializeGame",
+                CanvasReference,
+                objRef,
+                Width,
+                Height,
+                GridSize);
+
+            await BoardDiv.FocusAsync();
+            GameRunning = true;
+        }
+    }
+
+    [JSInvokable]
+    public void UpdateScore(int newScore)
+    {
+        Score = newScore;
+        StateHasChanged();
+    }
+
+    [JSInvokable]
+    public void GameEnded()
+    {
+        GameRunning = false;
+        StateHasChanged();
+    }
+
+    private async Task RestartGame()
+    {
+        if (GameModule != null)
+        {
+            await GameModule.InvokeVoidAsync("restartGame");
+            await BoardDiv.FocusAsync();
+            GameRunning = true;
+            Score = 0;
+            StateHasChanged();
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (GameModule != null)
+        {
+            await GameModule.DisposeAsync();
+        }
+        objRef?.Dispose();
+    }
+}
