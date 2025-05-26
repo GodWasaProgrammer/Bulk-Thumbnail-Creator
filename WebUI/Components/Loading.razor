@@ -17,6 +17,7 @@
         var entry = LogEntries.ElementAt(i);
         <MudAlert Dense="true" Severity="Severity.Success">@entry</MudAlert>
     }
+    <SnakeBoard/>
 }
 
 @code
@@ -30,7 +31,7 @@
     public string CurrentUser { get; set; }
 
     [Parameter]
-    public int takeEntries { get; set; } = 10;
+    public int takeEntries { get; set; } = 5;
 
     [Parameter]
     public bool processing { get; set; }
