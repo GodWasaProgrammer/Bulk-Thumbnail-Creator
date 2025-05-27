@@ -149,6 +149,7 @@ public class ProductionTests
         var logService = new LogService();
         var jobService = new JobService();
         // var settings = new Settings(logService, jobService);
+        Settings settings = new Settings();
 
         // create our test data
         var picDataMain = new PictureData { FileName = "Main", OutPutType = OutputType.Main };
@@ -169,27 +170,27 @@ public class ProductionTests
         picDataCustom.BoxParameters.Add(param1);
         picDataCustom.BoxParameters.Add(param2);
 
-        // Act
-        //var resultMain = Production.BuildFileName(picDataMain, settings);
-        //var resultRandom = Production.BuildFileName(picDataRandom, settings);
-        //var resultMeme = Production.BuildFileName(picDataMeme, settings);
-        //var resultCustom = Production.BuildFileName(picDataCustom, settings);
+        //Act
+       var resultMain = Production.BuildFileName(picDataMain, settings);
+        var resultRandom = Production.BuildFileName(picDataRandom, settings);
+        var resultMeme = Production.BuildFileName(picDataMeme, settings);
+        var resultCustom = Production.BuildFileName(picDataCustom, settings);
 
-        // Assert
-        //Assert.Contains(settings.TextAddedDir, resultMain);
-        //Assert.Contains(picDataMain.FileName, resultMain);
-        //Assert.Contains(picDataMain.OutPath, resultMain);
+        //Assert
+        Assert.Contains(settings.TextAddedDir, resultMain);
+        Assert.Contains(picDataMain.FileName, resultMain);
+        Assert.Contains(picDataMain.OutPath, resultMain);
 
-        ////Assert.Contains(settings.TextAddedDir, resultRandom);
-        //Assert.Contains(picDataRandom.FileName, resultRandom);
-        //Assert.Contains(picDataRandom.OutPath, resultRandom);
+        Assert.Contains(settings.TextAddedDir, resultRandom);
+        Assert.Contains(picDataRandom.FileName, resultRandom);
+        Assert.Contains(picDataRandom.OutPath, resultRandom);
 
-        ////Assert.Contains(settings.TextAddedDir, resultMeme);
-        //Assert.Contains(picDataMeme.FileName, resultMeme);
-        //Assert.Contains(picDataMeme.OutPath, resultMeme);
+        Assert.Contains(settings.TextAddedDir, resultMeme);
+        Assert.Contains(picDataMeme.FileName, resultMeme);
+        Assert.Contains(picDataMeme.OutPath, resultMeme);
 
-        ////Assert.Contains(settings.TextAddedDir, resultCustom);
-        //Assert.Contains(picDataCustom.FileName, resultCustom);
-        //Assert.Contains(picDataCustom.OutPath, resultCustom);
+        Assert.Contains(settings.TextAddedDir, resultCustom);
+        Assert.Contains(picDataCustom.FileName, resultCustom);
+        Assert.Contains(picDataCustom.OutPath, resultCustom);
     }
 }
