@@ -12,11 +12,27 @@ namespace Tests;
 
 public class ProductionTests
 {
-    //[Fact]
-    //public void Youtube_DL_Test()
-    //{
-    //    throw new NotImplementedException();
-    //}
+    [Fact]
+    public async Task YTDL_TestAsync()
+    {
+        var linkToFetch = "https://www.youtube.com/watch?v=ZsqKrT3wG34";
+        // First we set up our services
+        var logService = new Mock<ILogService>();
+        var logger = logService.Object;
+        var prodinstance = new Production(logger);
+        var settings = new Settings();
+        var moqjob = new Job(linkToFetch, "Mocking");
+        moqjob.Settings = settings;
+        await prodinstance.VerifyDirectoryAndExeIntegrity(settings);
+        await prodinstance.YouTubeDL(moqjob);
+
+        Assert.True(File.Exists(moqjob.Settings.PathToVideo));
+
+        if(File.Exists(moqjob.VideoPath))
+        {
+            File.Delete(moqjob.VideoPath);
+        }
+    }
 
     [Fact]
     public async Task ProduceTextImageAsync()
