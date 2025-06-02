@@ -28,7 +28,7 @@ public class ProductionTests
 
         Assert.True(File.Exists(moqjob.Settings.PathToVideo));
 
-        if(File.Exists(moqjob.VideoPath))
+        if (File.Exists(moqjob.VideoPath))
         {
             File.Delete(moqjob.VideoPath);
         }

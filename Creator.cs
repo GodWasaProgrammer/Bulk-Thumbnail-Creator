@@ -168,6 +168,117 @@ public partial class Creator
         await ffmpg.RunFFMPG(parameters, pictureOutput, settings);
     }
 
+    private async Task RunFFMpegUpdated(Settings settings)
+    {
+        var parameters = new Dictionary<string, string>();
+
+        var extractedfilename = Path.GetFileName(settings.PathToVideo);
+        var parentDirectory = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName;
+        var pictureOutput = $@"""{Path.GetRelativePath(Path.Combine(parentDirectory, "Executables"), settings.OutputDir)}/%03d.png""";
+
+        // Scenavkänning baserad på histogramdifferens
+        parameters["i"] = $@"""{extractedfilename}"""; // Input-fil
+        parameters["vf"] = "select='gt(scene,0.4)',showinfo"; // Detektera scener baserat på scenavkänning
+        parameters["vsync"] = "vfr"; // Variabel bildhastighet för att endast spara utvalda ramar
+        parameters["q:v"] = "2"; // Hög kvalitet för utgångsbilder
+
+        var ffmpg = new FFmpegHandler(_logger);
+        await ffmpg.RunFFMPG(parameters, pictureOutput, settings);
+    }
+
+
+
+
+    public async Task FrontPageLineup_Thumbies(Job job)
+    {
+        IsLoading = true;
+        job.State = States.Loading;
+        // make ref for verbosity
+        var settings = job.Settings;
+
+        var prod = new Production(_logger);
+
+        // creates our 3 dirs to push out unedited thumbnails, and the edited thumbnails and also a path for where the downloaded youtube clips goes.
+        prod.CreateDirectories(settings);
+
+        await prod.VerifyDirectoryAndExeIntegrity(settings);
+
+        await prod.YouTubeDL(job);
+
+        CleanPathNames(job);
+
+        await RunFFMpegUpdated(settings);
+
+        job.Settings.Memes = Directory.GetFiles(job.Settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
+
+        settings.Files = Directory.GetFiles(settings.OutputDir, "*.*", SearchOption.AllDirectories);
+
+        await _logger.LogInformation($"Processing {settings.Files.Length} images");
+        foreach (var file in settings.Files)
+        {
+            var dataTuple = await FaceDetection(file);
+
+            PictureData passPictureData = new()
+            {
+                FileName = file,
+                _numberOfBoxes = 2,
+            };
+            CreateData(job, dataTuple.Item1, dataTuple.Item2, passPictureData);
+        }
+
+        //// Produce varietydata for the current object
+        var dirWrapper = new DirectoryWrapper();
+        var varietyInstance = new Variety(dirWrapper, job.Settings);
+        for (var i = 0; i < job.PictureData.Count; i++)
+        {
+            varietyInstance.Random(job.PictureData[i]);
+            varietyInstance.Meme(job.PictureData[i]);
+        }
+
+        SemaphoreSlim semaphore = new(4);
+        List<Task> productionTasks = [];
+
+        foreach (var picData in job.PictureData)
+        {
+            var noBoxes = picData.BoxParameters.All(bp => bp.CurrentBox.Type == BoxType.None);
+
+            if (!noBoxes)
+            {
+                // Start the task asynchronously
+                var productionTask = Task.Run(async () =>
+                {
+                    try
+                    {
+                        // Acquire a slot from the semaphore
+                        await semaphore.WaitAsync();
+
+                        // Execute the image processing task
+
+                        await prod.ProduceTextPictures(picData, job.Settings);
+                        job.FrontLineUpUrls.Add(picData.OutPath);
+                    }
+                    finally
+                    {
+                        // Release the slot when the task completes or throws an exception
+                        semaphore.Release();
+                    }
+                });
+                // Add the task to the list
+                productionTasks.Add(productionTask);
+            }
+        }
+        // Wait for all tasks to complete
+        await Task.WhenAll(productionTasks);
+
+        if (Mocking.BTCRunCount != 1 && job.Settings.MakeMocking)
+        {
+            // ffmpeg has finished, lets copy our mock data
+            Mocking.CopyOutPutDir(job.Settings);
+        }
+        job.State = States.FrontPagePictureLineUp;
+        IsLoading = false;
+    }
+
     public async Task FrontPageLineup(Job job)
     {
         IsLoading = true;
@@ -186,7 +297,7 @@ public partial class Creator
 
         CleanPathNames(job);
 
-        await RunFFMpeg(settings);
+        await RunFFMpegUpdated(settings);
 
         job.Settings.Memes = Directory.GetFiles(job.Settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
 

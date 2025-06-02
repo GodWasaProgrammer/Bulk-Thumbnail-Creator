@@ -1,0 +1,18 @@
+﻿<h3>CreatorDashBoard</h3>
+@inject Creator creator
+@inject JobService JobService
+@page "/db"
+@using BulkThumbnailCreator
+@using BulkThumbnailCreator.Services
+
+<YoutubeDL></YoutubeDL>
+
+<MudButton>FFmpeg Classic(scene detection)</MudButton>
+<MudButton>Fffmpeg New(histogram,pixelated detection)</MudButton>
+@code 
+{
+    protected override Task OnParametersSetAsync()
+    {
+        JobService.RequestCurrentJob()
+    }
+}
