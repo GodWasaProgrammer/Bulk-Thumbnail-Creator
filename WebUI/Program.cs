@@ -1,4 +1,5 @@
-﻿using BulkThumbnailCreator;
+﻿using System.Reflection;
+using BulkThumbnailCreator;
 using BulkThumbnailCreator.Diagnostics;
 using BulkThumbnailCreator.Interfaces;
 using BulkThumbnailCreator.Services;
@@ -58,13 +59,22 @@ public static class Program
         });
 
         //builder.Services.AddScoped<Creator>();
+        builder.Services.AddScoped<IProduction, Production>();
         builder.Services.AddScoped<ICreator>(provider =>
         {
+            // Skapa original Creator med sina egna beroenden
             var logger = provider.GetRequiredService<ILogService>();
-            var inner = new Creator(logger);
+            var innerCreator = new Creator(logger); // _production skapas internt här
+
+            // Skapa TimedCreator med alla dess beroenden
             var tracker = provider.GetRequiredService<IPerformanceTracker>();
             var decoratorLogger = provider.GetRequiredService<ILogger<TimedCreator>>();
-            return new TimedCreator(inner, tracker, decoratorLogger);
+
+            return new TimedCreator(
+                innerCreator,
+                tracker,
+                decoratorLogger,
+                logger); // Skicka med ILogService för att skapa TimedProduction
         });
         builder.Services.AddMudServices();
         var app = builder.Build();

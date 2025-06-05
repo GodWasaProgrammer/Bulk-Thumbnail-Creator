@@ -2,7 +2,7 @@
 
 namespace BulkThumbnailCreator;
 
-public class Production
+public class Production : IProduction
 {
     public Production(ILogService logger)
     {
