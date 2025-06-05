@@ -41,7 +41,8 @@ public static class Program
         builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
         builder.Services.AddSingleton<LogoService>();
         //builder.Services.AddScoped<JobService>();
-        builder.Services.AddScoped<IPerformanceTracker, PerformanceTracker>();
+        builder.Services.AddSingleton<JobReportService>();
+        builder.Services.AddSingleton<IPerformanceTracker, PerformanceTracker>();
         builder.Services.AddScoped<IJobService>(provider =>
         {
             var inner = new JobService();
@@ -59,11 +60,15 @@ public static class Program
         });
 
         //builder.Services.AddScoped<Creator>();
+
+        builder.Services.AddSingleton<JobReportService>();
+
         builder.Services.AddScoped<IProduction, Production>();
         builder.Services.AddScoped<ICreator>(provider =>
         {
             // Skapa original Creator med sina egna beroenden
             var logger = provider.GetRequiredService<ILogService>();
+            var jobrepservice = provider.GetRequiredService<JobReportService>();
             var innerCreator = new Creator(logger); // _production skapas internt här
 
             // Skapa TimedCreator med alla dess beroenden
@@ -74,6 +79,7 @@ public static class Program
                 innerCreator,
                 tracker,
                 decoratorLogger,
+                jobrepservice,
                 logger); // Skicka med ILogService för att skapa TimedProduction
         });
         builder.Services.AddMudServices();

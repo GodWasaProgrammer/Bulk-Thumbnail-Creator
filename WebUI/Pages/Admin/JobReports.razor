@@ -1,0 +1,56 @@
+﻿@page "/reports"
+@using BulkThumbnailCreator.Services
+@using System.Text.Json
+@using System.Text
+@inject JobReportService ReportService
+@inject NavigationManager Navigation
+@inject IJSRuntime JS;
+
+<h3>Jobbhistorik</h3>
+
+@if (_selectedReport != null)
+{
+	<div class="mt-4 p-3 border rounded">
+		<h5>Systemprestanda:</h5>
+		<table class="table table-sm">
+			<tr><th>CPU-användning:</th><td>@_selectedReport.PerformanceMetrics.CpuUsagePercent%</td></tr>
+			<tr><th>Minne:</th><td>@_selectedReport.PerformanceMetrics.MemoryUsageMB MB / @_selectedReport.PerformanceMetrics.TotalMemoryMB MB</td></tr>
+			<tr><th>Trådar:</th><td>@_selectedReport.PerformanceMetrics.ActiveThreads</td></tr>
+			<tr><th>Undantag:</th><td>@_selectedReport.PerformanceMetrics.ProcessCounters["Exceptions"]</td></tr>
+		</table>
+	</div>
+}
+
+@code {
+	private List<JobExecutionReport> _reports = new();
+	private JobExecutionReport _selectedReport;
+
+	protected override void OnInitialized()
+	{
+		_reports = ReportService.GetAllReports();
+	}
+
+	private string GetVideoName(string url) => url.Split('/').Last();
+
+	private void ShowDetails(JobExecutionReport report)
+	{
+		_selectedReport = report;
+	}
+
+	private async Task ExportToCsv()
+	{
+		var csv = new StringBuilder();
+		csv.AppendLine("JobId,User,StartTime,VideoUrl,Segment,Duration");
+
+		foreach (var report in _reports)
+		{
+			foreach (var timing in report.Timings)
+			{
+				csv.AppendLine($"\"{report.JobId}\",\"{report.User}\",\"{report.StartTime:g}\",\"{report.VideoUrl}\",\"{timing.Key}\",{timing.Value.TotalSeconds}");
+			}
+		}
+
+		var fileName = $"job_reports_{DateTime.Now:yyyyMMddHHmmss}.csv";
+		await JS.InvokeVoidAsync("downloadFile", fileName, csv.ToString());
+	}
+}

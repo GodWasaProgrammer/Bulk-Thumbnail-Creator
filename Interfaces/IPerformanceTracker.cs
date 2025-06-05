@@ -1,6 +1,13 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using BulkThumbnailCreator;
+
+public interface ITimedOperation : IDisposable
+{
+    TimeSpan Elapsed { get; }
+}
 
 public interface IPerformanceTracker
 {
-    IDisposable TrackOperation(string operationName);
+    ITimedOperation TrackOperation(string operationName);
+    PerformanceMetrics GetMetrics();
+    IEnumerable<OperationMetric> GetRecentOperations();
 }

@@ -1,6 +1,9 @@
 ﻿using BulkThumbnailCreator.DataMethods;
 using BulkThumbnailCreator.Wrappers;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
+using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace BulkThumbnailCreator.Diagnostics;
 
@@ -10,6 +13,7 @@ public partial class TimedCreator : ICreator
     private readonly IPerformanceTracker _tracker;
     private readonly ILogger<TimedCreator> _logger;
     private readonly TimedProduction _timedProduction;
+    private readonly JobReportService _jobReportService;
 
     private event EventHandler<bool> _loadingChanged;
 
@@ -34,12 +38,9 @@ public partial class TimedCreator : ICreator
         {
             if (_inner.IsLoading != value)
             {
-                // Sätt det privata fältet
                 var field = _inner.GetType().GetField("_isLoading",
                     BindingFlags.NonPublic | BindingFlags.Instance);
                 field?.SetValue(_inner, value);
-
-                // Triggera event manuellt
                 _loadingChanged?.Invoke(this, value);
                 _logger.LogDebug($"Loading state changed to: {value}");
             }
@@ -86,6 +87,8 @@ public partial class TimedCreator : ICreator
 
     public async Task FrontPageLineup_Thumbies(Job job)
     {
+        var segmentTimings = new Dictionary<string, TimeSpan>();
+
         using var overallOp = _tracker.TrackOperation($"{nameof(Creator)}.{nameof(FrontPageLineup_Thumbies)}");
 
         try
@@ -97,6 +100,7 @@ public partial class TimedCreator : ICreator
                 job.State = States.Loading;
                 _timedProduction.CreateDirectories(job.Settings);
                 await _timedProduction.VerifyDirectoryAndExeIntegrity(job.Settings);
+                segmentTimings["InitialSetup"] = segment.Elapsed;
             }
 
             // Segment 2: Videohämtning
@@ -104,6 +108,7 @@ public partial class TimedCreator : ICreator
             {
                 await _timedProduction.YouTubeDL(job);
                 CleanPathNames(job);
+                segmentTimings["VideoDownload"] = segment.Elapsed;
             }
 
             // Segment 3: Bilduttagning
@@ -112,6 +117,7 @@ public partial class TimedCreator : ICreator
                 await RunFFMpeg(job.Settings);
                 job.Settings.Memes = Directory.GetFiles(job.Settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
                 job.Settings.Files = Directory.GetFiles(job.Settings.OutputDir, "*.*", SearchOption.AllDirectories);
+                segmentTimings["FrameExtraction"] = segment.Elapsed;
             }
 
             // Segment 4: Ansiktsdetektering
@@ -124,6 +130,7 @@ public partial class TimedCreator : ICreator
                     var passPictureData = new PictureData { FileName = file, _numberOfBoxes = 2 };
                     CreateData(job, dataTuple.Item1, dataTuple.Item2, passPictureData);
                 }
+                segmentTimings["FaceDetection"] = segment.Elapsed;
             }
 
             // Segment 5: Variationer
@@ -136,6 +143,7 @@ public partial class TimedCreator : ICreator
                     varietyInstance.Random(job.PictureData[i]);
                     varietyInstance.Meme(job.PictureData[i]);
                 }
+                segmentTimings["VarietyGeneration"] = segment.Elapsed;
             }
 
             // Segment 6: Parallell produktion
@@ -164,6 +172,7 @@ public partial class TimedCreator : ICreator
                     }
                 }
                 await Task.WhenAll(tasks);
+                segmentTimings["ParallelProduction"] = segment.Elapsed;
             }
 
             // Segment 7: Avslut
@@ -174,10 +183,16 @@ public partial class TimedCreator : ICreator
                     Mocking.CopyOutPutDir(job.Settings);
                 }
                 job.State = States.FrontPagePictureLineUp;
+                segmentTimings["Finalization"] = segment.Elapsed;
             }
+
+            // LÄGG TILL RAPPORT EFTER FRAMGÅNGSRIK KÖRNING
+            _jobReportService.AddReport(job, segmentTimings);
         }
         catch (Exception ex)
         {
+            // LÄGG TILL MISSlyCKAD RAPPORT
+            //_jobReportService.AddFailedJob(job, ex, segmentTimings);
             _logger.LogError(ex, "Error in FrontPageLineup_Thumbies");
             throw;
         }
@@ -352,11 +367,13 @@ public partial class TimedCreator : ICreator
         ICreator inner,
         IPerformanceTracker tracker,
         ILogger<TimedCreator> logger,
+        JobReportService jobrepservice,
         ILogService logService)
     {
         _inner = inner;
         _tracker = tracker;
         _logger = logger;
+        _jobReportService = jobrepservice;
 
         // Skapa en timed wrapper för den interna production-instansen
         var productionField = inner.GetType().GetField("_production", BindingFlags.NonPublic | BindingFlags.Instance);
