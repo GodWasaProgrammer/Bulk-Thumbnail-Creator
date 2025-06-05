@@ -11,10 +11,20 @@ public partial class TimedCreator : ICreator
     private readonly ILogger<TimedCreator> _logger;
     private readonly TimedProduction _timedProduction;
 
+    private event EventHandler<bool> _loadingChanged;
+
     public event EventHandler<bool> LoadingStateChanged
     {
-        add => _inner.LoadingStateChanged += value;
-        remove => _inner.LoadingStateChanged -= value;
+        add
+        {
+            _loadingChanged += value;
+            _inner.LoadingStateChanged += value;
+        }
+        remove
+        {
+            _loadingChanged -= value;
+            _inner.LoadingStateChanged -= value;
+        }
     }
 
     public bool IsLoading
@@ -22,8 +32,17 @@ public partial class TimedCreator : ICreator
         get => _inner.IsLoading;
         private set
         {
-            var field = _inner.GetType().GetField("_isLoading", BindingFlags.NonPublic | BindingFlags.Instance);
-            field?.SetValue(_inner, value);
+            if (_inner.IsLoading != value)
+            {
+                // Sätt det privata fältet
+                var field = _inner.GetType().GetField("_isLoading",
+                    BindingFlags.NonPublic | BindingFlags.Instance);
+                field?.SetValue(_inner, value);
+
+                // Triggera event manuellt
+                _loadingChanged?.Invoke(this, value);
+                _logger.LogDebug($"Loading state changed to: {value}");
+            }
         }
     }
 
