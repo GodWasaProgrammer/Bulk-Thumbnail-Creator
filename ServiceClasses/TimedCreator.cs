@@ -35,6 +35,28 @@ public partial class TimedCreator : ICreator
         }
     }
 
+    private async Task<(Array2D<RgbPixel>, Rectangle[])> FaceDetection(string file)
+    {
+        const string operationName = "FaceDetection";
+        using (_tracker.TrackOperation($"Creator.{operationName}"))
+        {
+            try
+            {
+                var stopwatch = Stopwatch.StartNew();
+                var task = (Task<(Array2D<RgbPixel>, Rectangle[])>)_faceDetectionMethod.Invoke(null, [file]);
+                var result = await task;
+
+                _logger.LogDebug($"{operationName} completed in {stopwatch.ElapsedMilliseconds}ms");
+                return result;
+            }
+            catch (TargetInvocationException tex)
+            {
+                _logger.LogError(tex.InnerException ?? tex, $"{operationName} failed");
+                throw new InvalidOperationException($"{operationName} execution error", tex.InnerException ?? tex);
+            }
+        }
+    }
+
     public async Task<string> FetchVideo(string ytlink, Settings settings)
     {
         using (_tracker.TrackOperation($"{nameof(Creator)}.{nameof(FetchVideo)}"))
@@ -224,12 +246,6 @@ public partial class TimedCreator : ICreator
         await (Task)method.Invoke(_inner, new object[] { settings });
     }
 
-    private async Task<(Array2D<RgbPixel>, Rectangle[])> FaceDetection(string file)
-    {
-        var method = typeof(Creator).GetMethod("FaceDetection", BindingFlags.NonPublic | BindingFlags.Instance);
-        return await (Task<(Array2D<RgbPixel>, Rectangle[])>)method.Invoke(_inner, new object[] { file });
-    }
-
     private void CreateData(Job job, Array2D<RgbPixel> image, Rectangle[] faceRectangles, PictureData picData)
     {
         var method = typeof(Creator).GetMethod("CreateData", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -248,7 +264,23 @@ public partial class TimedCreator : ICreator
             _cleanPathRegex.Replace(Path.GetFileNameWithoutExtension(job.Settings.PathToVideo), ""));
         Directory.CreateDirectory(job.Settings.TextAddedDir);
     }
+    private static readonly MethodInfo _faceDetectionMethod;
 
+    static TimedCreator()
+    {
+        _faceDetectionMethod = typeof(Creator)
+            .GetMethod("FaceDetection",
+                BindingFlags.NonPublic | BindingFlags.Static,
+                null,
+                [typeof(string)],
+                null);
+
+        if (_faceDetectionMethod == null)
+        {
+            throw new TypeInitializationException(typeof(TimedCreator).FullName,
+                new MissingMethodException("FaceDetection method not found in Creator"));
+        }
+    }
     public TimedCreator(
         ICreator inner,
         IPerformanceTracker tracker,
