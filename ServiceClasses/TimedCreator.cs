@@ -248,8 +248,56 @@ public partial class TimedCreator : ICreator
 
     private void CreateData(Job job, Array2D<RgbPixel> image, Rectangle[] faceRectangles, PictureData picData)
     {
-        var method = typeof(Creator).GetMethod("CreateData", BindingFlags.NonPublic | BindingFlags.Instance);
-        method.Invoke(_inner, new object[] { job, image, faceRectangles, picData });
+        const string methodName = "CreateData";
+        using (_tracker.TrackOperation($"Creator.{methodName}"))
+        {
+            try
+            {
+                // Initiera random generator (om den behövs)
+                var random = new Random();
+
+                for (int i = 0; i < picData._numberOfBoxes; i++)
+                {
+                    using (_tracker.TrackOperation($"BoxCreation_{i}"))
+                    {
+                        var currentParameters = new ParamForTextCreation();
+
+                        // 1. Bygg boxar
+                        currentParameters.Boxes = DataGeneration.BuildDefaultBoxes(image);
+
+                        // 2. Positionera text
+                        DataGeneration.GetTextPosition(
+                            currentParameters,
+                            faceRectangles,
+                            picData.BoxParameters.Count > 0
+                                ? new List<BoxType> { picData.BoxParameters[0].CurrentBox.Type }
+                                : new List<BoxType>());
+
+                        // 3. Färgval
+                        ColorData.SelectTwoRandomColors(currentParameters);
+                        currentParameters.Gradient = DataGeneration.RandomBool();
+                        currentParameters.Shadows = DataGeneration.RandomBool();
+
+                        // 4. Teckensnitt
+                        var directoryWrapper = new DirectoryWrapper();
+                        var dg = new DataGeneration(directoryWrapper);
+                        currentParameters.Font = dg.PickRandomFont();
+
+                        // 5. Texturval
+                        currentParameters.Text = job.TextToPrint[random.Next(job.TextToPrint.Count)];
+
+                        picData.BoxParameters.Add(currentParameters);
+                    }
+                }
+
+                job.PictureData.Add(picData);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"{methodName} failed for {picData.FileName}");
+                throw;
+            }
+        }
     }
 
     private static readonly Regex _cleanPathRegex = new Regex(@"[^\w\d?]+", RegexOptions.Compiled);
