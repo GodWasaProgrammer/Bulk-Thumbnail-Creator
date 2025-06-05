@@ -128,14 +128,14 @@
             {
                 job.TextToPrint = userInputText;
                 job.VideoUrl = YoutubeLink;
-                await creator.FrontPageLineup(job);
+                await creator.FrontPageLineup_Thumbies(job);
             }
             /// otherwise we use our default text values
             else
             {
                 job.TextToPrint = defaultText;
                 job.VideoUrl = YoutubeLink;
-                await creator.FrontPageLineup(job);
+                await creator.FrontPageLineup_Thumbies(job);
             }
         }
         await InvokeAsync(() => StateHasChanged());

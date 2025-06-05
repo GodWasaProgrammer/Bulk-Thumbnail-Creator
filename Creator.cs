@@ -168,6 +168,12 @@ public partial class Creator
         await ffmpg.RunFFMPG(parameters, pictureOutput, settings);
     }
 
+
+    /// <summary>
+    /// not working properly
+    /// </summary>
+    /// <param name="settings"></param>
+    /// <returns></returns>
     private async Task RunFFMpegUpdated(Settings settings)
     {
         var parameters = new Dictionary<string, string>();
@@ -186,9 +192,6 @@ public partial class Creator
         await ffmpg.RunFFMPG(parameters, pictureOutput, settings);
     }
 
-
-
-
     public async Task FrontPageLineup_Thumbies(Job job)
     {
         IsLoading = true;
@@ -205,9 +208,14 @@ public partial class Creator
 
         await prod.YouTubeDL(job);
 
+        if(job.Settings.PathToVideo is null)
+        {
+            throw new Exception("We done fucked up");
+        }
+
         CleanPathNames(job);
 
-        await RunFFMpegUpdated(settings);
+        await RunFFMpeg(settings);
 
         job.Settings.Memes = Directory.GetFiles(job.Settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
 
@@ -297,6 +305,7 @@ public partial class Creator
 
         CleanPathNames(job);
 
+        //TODO: Stop FFmpeg from failing silently, either post some relevant info or smth
         await RunFFMpegUpdated(settings);
 
         job.Settings.Memes = Directory.GetFiles(job.Settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);

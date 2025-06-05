@@ -1,57 +1,73 @@
 ﻿@using System.Timers
 
 <div class="centered-content">
-    <MudText Color="Color.Tertiary" Typo="Typo.h4">We are loading your content...</MudText>
+	<MudText Color="Color.Tertiary" Typo="Typo.h4">We are loading your content...</MudText>
 </div>
 
 <div class="centered-content">
-    <MudText Color="Color.Info" Typo="Typo.h4">@loadingMessage</MudText>
-    </div>
-    <div>
-        <Loading CurrentUser="@CurrentUser" processing="true"></Loading>
-    </div>
+	<MudText Color="Color.Info" Typo="Typo.h4">@loadingMessage</MudText>
+</div>
 
-    @code
+<div class="centered-content">
+	<MudText Color="Color.Warning" Typo="Typo.h6">Elapsed Time: @elapsedTimeDisplay</MudText>
+</div>
+
+<div>
+	<Loading CurrentUser="@CurrentUser" processing="true"></Loading>
+</div>
+
+@code
 {
-    private string loadingMessage = "We are loading your content";
+	private string loadingMessage = "We are loading your content";
+	private string elapsedTimeDisplay = "0s";
 
-    [Parameter]
-    public string CurrentUser { get; set; }
-    private Timer timer;
-    private int dotCount = 1;
+	[Parameter]
+	public string CurrentUser { get; set; }
 
-    protected override void OnInitialized()
-    {
-        // Set up a timer to update the loading message every 500 milliseconds
-        timer = new Timer(500);
-        timer.Elapsed += TimerElapsed;
-        timer.Start();
-    }
+	private Timer timer;
+	private int dotCount = 1;
+	private DateTime startTime;
 
-    private void TimerElapsed(object sender, ElapsedEventArgs e)
-    {
-        // Update the loading message with the appropriate number of dots
-        loadingMessage = "Please wait" + new string('.', dotCount);
+	protected override void OnInitialized()
+	{
+		// Spara starttid för att beräkna elapsed time
+		startTime = DateTime.Now;
 
-        // Increment the dot count, resetting to 1 after reaching 3
-        dotCount = dotCount % 3 + 1;
+		// Set up a timer to update the loading message every 500 milliseconds
+		timer = new Timer(500);
+		timer.Elapsed += TimerElapsed;
+		timer.Start();
+	}
 
-        // Notify Blazor to re-render the component
-        InvokeAsync(StateHasChanged);
-    }
+	private void TimerElapsed(object sender, ElapsedEventArgs e)
+	{
+		// Beräkna förfluten tid och uppdatera elapsedTimeDisplay
+		var elapsed = DateTime.Now - startTime;
+		elapsedTimeDisplay = $"{elapsed.TotalSeconds:F1}s";
 
-    // Don't forget to stop the timer when the component is disposed
-    public void Dispose()
-    {
-        timer?.Stop();
-        timer?.Dispose();
-    }
+		// Uppdatera loading-meddelandet med rätt antal punkter
+		loadingMessage = "Please wait" + new string('.', dotCount);
 
+		// Increment the dot count, resetting to 1 after reaching 3
+		dotCount = dotCount % 3 + 1;
+
+		// Notify Blazor to re-render the component
+		InvokeAsync(StateHasChanged);
+	}
+
+	// Stoppa timern när komponenten tas bort
+	public void Dispose()
+	{
+		timer?.Stop();
+		timer?.Dispose();
+	}
 }
+
 <style>
-    .centered-content {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+	.centered-content {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 </style>
+

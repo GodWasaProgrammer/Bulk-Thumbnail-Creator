@@ -11,7 +11,6 @@
 
 @if (processing)
 {
-    <SnakeBoard/>
     <MudProgressLinear Striped="true" Buffer="true" BufferValue="BufferValue" Size="Size.Medium" Color="Color.Warning" Value="@Value" Class="my-7" />
     @for (int i = LogEntries.TakeLast(takeEntries).Count() - 1; i >= 0; i--)
     {
