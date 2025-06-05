@@ -1,4 +1,5 @@
 ﻿using BulkThumbnailCreator;
+using BulkThumbnailCreator.Diagnostics;
 using BulkThumbnailCreator.Interfaces;
 using BulkThumbnailCreator.Services;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -48,8 +49,23 @@ public static class Program
         });
         builder.Services.AddScoped<ILogService, LogService>();
         builder.Services.AddScoped<Settings>();
-        builder.Services.AddSingleton<UserStateService>();
-        builder.Services.AddScoped<Creator>();
+        //builder.Services.AddSingleton<UserStateService>();
+        builder.Services.AddSingleton<IUserStateService>(provider =>
+        {
+            var inner = new UserStateServiceInstance();
+            var tracker = provider.GetRequiredService<IPerformanceTracker>();
+            return new TimedUserStateService(inner, tracker);
+        });
+
+        //builder.Services.AddScoped<Creator>();
+        builder.Services.AddScoped<ICreator>(provider =>
+        {
+            var logger = provider.GetRequiredService<ILogService>();
+            var inner = new Creator(logger);
+            var tracker = provider.GetRequiredService<IPerformanceTracker>();
+            var decoratorLogger = provider.GetRequiredService<ILogger<TimedCreator>>();
+            return new TimedCreator(inner, tracker, decoratorLogger);
+        });
         builder.Services.AddMudServices();
         var app = builder.Build();
 

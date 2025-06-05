@@ -3,7 +3,7 @@ using BulkThumbnailCreator.Wrappers;
 
 namespace BulkThumbnailCreator;
 
-public partial class Creator
+public partial class Creator : ICreator
 {
     public Creator(ILogService logger)
     {
@@ -579,7 +579,7 @@ public partial class Creator
         return foundPictureData ?? new PictureData();
     }
 
-    private static PictureData FindPictureDataRecursively(string imageUrl, IEnumerable<PictureData> pictureDataList)
+    public static PictureData FindPictureDataRecursively(string imageUrl, IEnumerable<PictureData> pictureDataList)
     {
         foreach (var pictureData in pictureDataList)
         {
@@ -601,7 +601,7 @@ public partial class Creator
     }
 
     // Hitta PictureData baserat på namn (används för mocking)
-    private static PictureData FindPictureDataByName(string pictureName, IEnumerable<PictureData> pictureDataList)
+    public static PictureData FindPictureDataByName(string pictureName, IEnumerable<PictureData> pictureDataList)
     {
         foreach (var pictureData in pictureDataList)
         {
