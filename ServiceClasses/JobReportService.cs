@@ -1,5 +1,5 @@
-﻿using BulkThumbnailCreator;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
+using BulkThumbnailCreator;
 
 public class JobReportService
 {

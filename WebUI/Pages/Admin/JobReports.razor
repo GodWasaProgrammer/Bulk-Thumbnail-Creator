@@ -4,53 +4,98 @@
 @using System.Text
 @inject JobReportService ReportService
 @inject NavigationManager Navigation
-@inject IJSRuntime JS;
+@inject IJSRuntime JS
 
 <h3>Jobbhistorik</h3>
-
-@if (_selectedReport != null)
+<script src="~/ReportExport.js"></script>
+@if (_reports.Count == 0)
 {
-	<div class="mt-4 p-3 border rounded">
-		<h5>Systemprestanda:</h5>
-		<table class="table table-sm">
-			<tr><th>CPU-användning:</th><td>@_selectedReport.PerformanceMetrics.CpuUsagePercent%</td></tr>
-			<tr><th>Minne:</th><td>@_selectedReport.PerformanceMetrics.MemoryUsageMB MB / @_selectedReport.PerformanceMetrics.TotalMemoryMB MB</td></tr>
-			<tr><th>Trådar:</th><td>@_selectedReport.PerformanceMetrics.ActiveThreads</td></tr>
-			<tr><th>Undantag:</th><td>@_selectedReport.PerformanceMetrics.ProcessCounters["Exceptions"]</td></tr>
-		</table>
-	</div>
+    <p>Inga rapporter tillgängliga ännu</p>
+}
+else
+{
+    <div class="mb-4">
+        <button @onclick="ExportToCsv" class="btn btn-primary">Exportera till CSV</button>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Jobb-ID</th>
+                <th>Användare</th>
+                <th>Starttid</th>
+                <th>Video</th>
+                <th>Detaljer</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var report in _reports)
+            {
+                <tr>
+                    <td>@report.JobId[..8]...</td>
+                    <td>@report.User</td>
+                    <td>@report.StartTime.ToString("g")</td>
+                    <td>@GetVideoName(report.VideoUrl)</td>
+                    <td>
+                        <button @onclick="() => ShowDetails(report)"
+                                class="btn btn-sm btn-info">
+                            Visa
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (_selectedReport != null)
+    {
+        <div class="mt-4 p-3 border rounded">
+            <h4>Detaljer för @_selectedReport.JobId</h4>
+
+            <h5>Tidsåtgång:</h5>
+            <ul>
+                @foreach (var timing in _selectedReport.Timings)
+                {
+                    <li>@timing.Key: @timing.Value.TotalSeconds.ToString("0.00")s</li>
+                }
+            </ul>
+
+            <h5>Inställningar:</h5>
+            <pre>@JsonSerializer.Serialize(_selectedReport.Settings, new JsonSerializerOptions { WriteIndented = true })</pre>
+        </div>
+    }
 }
 
 @code {
-	private List<JobExecutionReport> _reports = new();
-	private JobExecutionReport _selectedReport;
+    private List<JobExecutionReport> _reports = new();
+    private JobExecutionReport _selectedReport;
 
-	protected override void OnInitialized()
-	{
-		_reports = ReportService.GetAllReports();
-	}
+    protected override void OnInitialized()
+    {
+        _reports = ReportService.GetAllReports();
+    }
 
-	private string GetVideoName(string url) => url.Split('/').Last();
+    private string GetVideoName(string url) => url.Split('/').Last();
 
-	private void ShowDetails(JobExecutionReport report)
-	{
-		_selectedReport = report;
-	}
+    private void ShowDetails(JobExecutionReport report)
+    {
+        _selectedReport = report;
+    }
 
-	private async Task ExportToCsv()
-	{
-		var csv = new StringBuilder();
-		csv.AppendLine("JobId,User,StartTime,VideoUrl,Segment,Duration");
+    private async Task ExportToCsv()
+    {
+        var csv = new StringBuilder();
+        csv.AppendLine("JobId,User,StartTime,VideoUrl,Segment,Duration");
 
-		foreach (var report in _reports)
-		{
-			foreach (var timing in report.Timings)
-			{
-				csv.AppendLine($"\"{report.JobId}\",\"{report.User}\",\"{report.StartTime:g}\",\"{report.VideoUrl}\",\"{timing.Key}\",{timing.Value.TotalSeconds}");
-			}
-		}
+        foreach (var report in _reports)
+        {
+            foreach (var timing in report.Timings)
+            {
+                csv.AppendLine($"\"{report.JobId}\",\"{report.User}\",\"{report.StartTime:g}\",\"{report.VideoUrl}\",\"{timing.Key}\",{timing.Value.TotalSeconds}");
+            }
+        }
 
-		var fileName = $"job_reports_{DateTime.Now:yyyyMMddHHmmss}.csv";
-		await JS.InvokeVoidAsync("downloadFile", fileName, csv.ToString());
-	}
+        var fileName = $"job_reports_{DateTime.Now:yyyyMMddHHmmss}.csv";
+        await JS.InvokeVoidAsync("downloadFile", fileName, csv.ToString());
+    }
 }

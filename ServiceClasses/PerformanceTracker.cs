@@ -1,6 +1,5 @@
-﻿using BulkThumbnailCreator;
-using System.Collections.Concurrent;
-using System.Diagnostics;
+﻿using System.Collections.Concurrent;
+using BulkThumbnailCreator;
 using Microsoft.Extensions.Logging;
 
 public class PerformanceTracker : IPerformanceTracker

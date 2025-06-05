@@ -208,7 +208,7 @@ public partial class Creator : ICreator
 
         await prod.YouTubeDL(job);
 
-        if(job.Settings.PathToVideo is null)
+        if (job.Settings.PathToVideo is null)
         {
             throw new Exception("We done fucked up");
         }
