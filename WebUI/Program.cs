@@ -38,7 +38,14 @@ public static class Program
         builder.Services.AddServerSideBlazor();
         builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
         builder.Services.AddSingleton<LogoService>();
-        builder.Services.AddScoped<JobService>();
+        //builder.Services.AddScoped<JobService>();
+        builder.Services.AddScoped<IPerformanceTracker, PerformanceTracker>();
+        builder.Services.AddScoped<IJobService>(provider =>
+        {
+            var inner = new JobService();
+            var tracker = provider.GetRequiredService<IPerformanceTracker>();
+            return JobServiceDecoratorFactory.Create(inner, tracker);
+        });
         builder.Services.AddScoped<ILogService, LogService>();
         builder.Services.AddScoped<Settings>();
         builder.Services.AddSingleton<UserStateService>();

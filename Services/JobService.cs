@@ -1,52 +1,53 @@
-﻿namespace BulkThumbnailCreator.Services
+﻿namespace BulkThumbnailCreator.Services;
+
+public class JobService : IJobService
 {
-    public class JobService
+    // representing methods with no parameters and no return value
+    public delegate void ResetGlobalState();
+
+    // the private field that stores the delegate
+    //private ResetGlobalState _resetDelegate;
+    private IJobService.ResetGlobalState? _resetDelegate;
+    private IJobService.CurrentJobHasChanged? _currentJobHasChanged;
+
+    // here we will register methods to be called when the reset method is called
+    public void RegisterResetMethod(IJobService.ResetGlobalState resetGlobalState)
     {
-        // representing methods with no parameters and no return value
-        public delegate void ResetGlobalState();
+        _resetDelegate += resetGlobalState;
+    }
 
-        // the private field that stores the delegate
-        private ResetGlobalState _resetDelegate;
+    public void RegisterDelegateForJobChange(IJobService.CurrentJobHasChanged currentJobHasChanged)
+    {
+        _currentJobHasChanged += currentJobHasChanged;
+    }
 
-        // here we will register methods to be called when the reset method is called
-        public void RegisterResetMethod(ResetGlobalState resetGlobalState)
-        {
-            _resetDelegate += resetGlobalState;
-        }
+    public delegate void CurrentJobHasChanged();
 
-        public void RegisterDelegateForJobChange(CurrentJobHasChanged currentJobHasChanged)
-        {
-            _currentJobHasChanged += currentJobHasChanged;
-        }
+    //private CurrentJobHasChanged _currentJobHasChanged;
 
-        public delegate void CurrentJobHasChanged();
+    // here is our actual global reset
+    public void ResetState()
+    {
+        _resetDelegate?.Invoke();
+    }
 
-        private CurrentJobHasChanged _currentJobHasChanged;
+    public Task<Job> RequestCurrentJob(string user)
+    {
+        var job = UserStateService.GetJob(user);
 
-        // here is our actual global reset
-        public void ResetState()
-        {
-            _resetDelegate?.Invoke();
-        }
+        return Task.FromResult(job);
+    }
 
-        public Task<Job> RequestCurrentJob(string user)
-        {
-            var job = UserStateService.GetJob(user);
+    public Task<Job> CreateJob(string videoUrl, string currentUser)
+    {
+        Job job = new(videoUrl, currentUser);
+        job.Settings = new Settings();
 
-            return Task.FromResult(job);
-        }
+        // add the job the joblist
+        UserStateService.AddJob(job);
+        _currentJobHasChanged.Invoke();
 
-        public Task<Job> CreateJob(string videoUrl, string currentUser)
-        {
-            Job job = new(videoUrl, currentUser);
-            job.Settings = new Settings();
-
-            // add the job the joblist
-            UserStateService.AddJob(job);
-            _currentJobHasChanged.Invoke();
-
-            // will return the job if it was created successfully, otherwise will return a null object
-            return job != null ? Task.FromResult(job) : null;
-        }
+        // will return the job if it was created successfully, otherwise will return a null object
+        return job != null ? Task.FromResult(job) : null;
     }
 }
