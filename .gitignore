@@ -374,3 +374,4 @@ FodyWeavers.xsd
 *.xml
 *webm
 *.mp3
+/WebUI/models/mmod_human_face_detector.dat
