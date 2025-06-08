@@ -1,5 +1,7 @@
 ﻿using System.Collections.Concurrent;
-using BulkThumbnailCreator;
+using BulkThumbnailCreator.ServiceClasses;
+
+namespace BulkThumbnailCreator.Services;
 
 public class JobReportService
 {
@@ -28,31 +30,4 @@ public class JobReportService
     }
 
     public List<JobExecutionReport> GetAllReports() => _reports.Values.ToList();
-}
-
-public record OperationMetric
-{
-    public string Name { get; init; }
-    public TimeSpan Duration { get; init; }
-    public DateTime Timestamp { get; init; }
-    public int ThreadId { get; init; }
-}
-
-public record JobExecutionReport
-{
-    public string JobId { get; init; }
-    public string User { get; init; }
-    public DateTime StartTime { get; init; }
-    public string VideoUrl { get; init; }
-    public Settings Settings { get; init; }
-    public Dictionary<string, TimeSpan> Timings { get; init; }
-    public PerformanceMetrics PerformanceMetrics { get; init; }
-}
-
-public static class ExceptionCounter
-{
-    private static int _count;
-    public static int Count => _count;
-
-    public static void Increment() => Interlocked.Increment(ref _count);
 }

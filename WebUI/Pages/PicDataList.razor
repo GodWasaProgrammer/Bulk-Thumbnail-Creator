@@ -1,9 +1,10 @@
 ﻿@page "/picdatalist"
+@using System.Net.Http
+@using System.Net.Http.Json
+@using BulkThumbnailCreator
+@using BulkThumbnailCreator.Interfaces
 @using BulkThumbnailCreator.PictureClasses
 @using BulkThumbnailCreator.Services
-@using System.Net.Http.Json
-@using System.Net.Http
-@using BulkThumbnailCreator
 @using WebUI.Components
 @inject IJobService js
 @inject Settings settings

@@ -1,5 +1,5 @@
 ﻿// 4. Skapa en fabriksklass för JobService
-using BulkThumbnailCreator;
+using BulkThumbnailCreator.Diagnostics;
 
 public static class JobServiceDecoratorFactory
 {

@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using BulkThumbnailCreator;
+﻿using BulkThumbnailCreator;
 using BulkThumbnailCreator.Diagnostics;
 using BulkThumbnailCreator.Interfaces;
 using BulkThumbnailCreator.Services;

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Concurrent;
-using BulkThumbnailCreator;
+using BulkThumbnailCreator.ServiceClasses;
 using Microsoft.Extensions.Logging;
+
+namespace BulkThumbnailCreator.Diagnostics;
 
 public class PerformanceTracker : IPerformanceTracker
 {
@@ -15,7 +17,6 @@ public class PerformanceTracker : IPerformanceTracker
         _logger = logger;
     }
 
-    // Interface implementation
     public ITimedOperation TrackOperation(string operationName)
     {
         return new TimedOperation(operationName, this);

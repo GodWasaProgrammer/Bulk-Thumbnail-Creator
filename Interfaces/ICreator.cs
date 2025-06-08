@@ -1,4 +1,4 @@
-﻿namespace BulkThumbnailCreator;
+﻿namespace BulkThumbnailCreator.Interfaces;
 
 public interface ICreator
 {

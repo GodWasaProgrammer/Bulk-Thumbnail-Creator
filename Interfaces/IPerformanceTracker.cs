@@ -1,4 +1,7 @@
-﻿using BulkThumbnailCreator;
+﻿using BulkThumbnailCreator.Diagnostics;
+using BulkThumbnailCreator.ServiceClasses;
+
+namespace BulkThumbnailCreator.Interfaces;
 
 public interface ITimedOperation : IDisposable
 {

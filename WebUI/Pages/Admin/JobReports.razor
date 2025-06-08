@@ -1,7 +1,8 @@
 ﻿@page "/reports"
-@using BulkThumbnailCreator.Services
 @using System.Text.Json
 @using System.Text
+@using BulkThumbnailCreator.ServiceClasses
+@using BulkThumbnailCreator.Services
 @inject JobReportService ReportService
 @inject NavigationManager Navigation
 @inject IJSRuntime JS
@@ -15,7 +16,7 @@
 else
 {
     <div class="mb-4">
-        <button @onclick="ExportToCsv" class="btn btn-primary">Exportera till CSV</button>
+        <MudButton @onclick="ExportToCsv" class="btn btn-primary">Exportera till CSV</MudButton>
     </div>
 
     <table class="table table-striped">
@@ -37,10 +38,10 @@ else
                     <td>@report.StartTime.ToString("g")</td>
                     <td>@GetVideoName(report.VideoUrl)</td>
                     <td>
-                        <button @onclick="() => ShowDetails(report)"
+                        <MudButton @onclick="() => ShowDetails(report)"
                                 class="btn btn-sm btn-info">
                             Visa
-                        </button>
+                        </MudButton>
                     </td>
                 </tr>
             }

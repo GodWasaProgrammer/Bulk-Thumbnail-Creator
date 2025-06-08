@@ -1,4 +1,4 @@
-﻿namespace BulkThumbnailCreator;
+﻿namespace BulkThumbnailCreator.Diagnostics;
 
 public class PerformanceMetrics
 {

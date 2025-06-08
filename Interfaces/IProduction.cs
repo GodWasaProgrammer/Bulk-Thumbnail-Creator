@@ -1,4 +1,4 @@
-﻿namespace BulkThumbnailCreator.Services;
+﻿namespace BulkThumbnailCreator.Interfaces;
 
 public interface IProduction
 {

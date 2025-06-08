@@ -1,4 +1,4 @@
-﻿using BulkThumbnailCreator;
+﻿namespace BulkThumbnailCreator.Diagnostics;
 
 public class UserStateServiceInstance : IUserStateService
 {

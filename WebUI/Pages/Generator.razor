@@ -1,13 +1,14 @@
 ﻿@page "/Generator"
-@using WebUI.Components
-@using Microsoft.AspNetCore.Components
-@using Microsoft.AspNetCore.Hosting
-@using Microsoft.JSInterop
 @using BulkThumbnailCreator
-@using Microsoft.AspNetCore.Identity
-@using BulkThumbnailCreator.Services
 @using BulkThumbnailCreator.DataMethods
 @using BulkThumbnailCreator.Enums
+@using BulkThumbnailCreator.Interfaces
+@using BulkThumbnailCreator.Services
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.JSInterop
+@using WebUI.Components
 @inject ICreator creator
 @inject IJobService js;
 @inject Settings settings;
