@@ -111,7 +111,8 @@ public partial class TimedCreator : ICreator
             // Segment 3: Bilduttagning
             using (var segment = _tracker.TrackOperation("3.FrameExtraction"))
             {
-                await RunFFMpeg(job.Settings);
+                //await RunFFMpeg(job.Settings);
+                await SceneDetector.DetectAndSaveBestFrames(job.Settings.PathToVideo, job.Settings.OutputDir);
                 job.Settings.Memes = Directory.GetFiles(job.Settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
                 job.Settings.Files = Directory.GetFiles(job.Settings.OutputDir, "*.*", SearchOption.AllDirectories);
                 segmentTimings["FrameExtraction"] = segment.Elapsed;
