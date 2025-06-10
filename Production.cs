@@ -1,8 +1,5 @@
 ﻿// Ignore Spelling: ytdl Exe
 
-using System.Text;
-using YoutubeDLSharp.Metadata;
-
 namespace BulkThumbnailCreator;
 
 public class Production : IProduction

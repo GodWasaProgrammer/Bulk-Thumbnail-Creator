@@ -61,6 +61,7 @@ public static class Program
         //builder.Services.AddScoped<Creator>();
 
         builder.Services.AddSingleton<JobReportService>();
+        builder.Services.AddScoped<SceneDetector>();
 
         builder.Services.AddScoped<IProduction, Production>();
         builder.Services.AddScoped<ICreator>(provider =>
@@ -74,12 +75,15 @@ public static class Program
             var tracker = provider.GetRequiredService<IPerformanceTracker>();
             var decoratorLogger = provider.GetRequiredService<ILogger<TimedCreator>>();
 
+            var scenedetector = provider.GetRequiredService<SceneDetector>();
+
             return new TimedCreator(
                 innerCreator,
                 tracker,
                 decoratorLogger,
                 jobrepservice,
-                logger); // Skicka med ILogService för att skapa TimedProduction
+                logger,
+                scenedetector); // Skicka med ILogService för att skapa TimedProduction
         });
         builder.Services.AddMudServices();
         var app = builder.Build();

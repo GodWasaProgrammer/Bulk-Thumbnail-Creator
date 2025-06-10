@@ -11,6 +11,7 @@ public partial class TimedCreator : ICreator
     private readonly ILogger<TimedCreator> _logger;
     private readonly TimedProduction _timedProduction;
     private readonly JobReportService _jobReportService;
+    private readonly SceneDetector _sceneDetector;
 
     private event EventHandler<bool> _loadingChanged;
 
@@ -111,9 +112,7 @@ public partial class TimedCreator : ICreator
             // Segment 3: Bilduttagning
             using (var segment = _tracker.TrackOperation("3.FrameExtraction"))
             {
-                //await RunFFMpeg(job.Settings);
-                var detector = new SceneDetector();
-                await detector.DetectAndSaveBestFramesParallelAsync(job.Settings.PathToVideo, job.Settings.OutputDir);
+                await _sceneDetector.DetectAndSaveBestFramesParallelAsync(job.Settings.PathToVideo, job.Settings.OutputDir);
                 job.Settings.Memes = Directory.GetFiles(job.Settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
                 job.Settings.Files = Directory.GetFiles(job.Settings.OutputDir, "*.*", SearchOption.AllDirectories);
                 segmentTimings["FrameExtraction"] = segment.Elapsed;
@@ -367,12 +366,13 @@ public partial class TimedCreator : ICreator
         IPerformanceTracker tracker,
         ILogger<TimedCreator> logger,
         JobReportService jobrepservice,
-        ILogService logService)
+        ILogService logService, SceneDetector detector)
     {
         _inner = inner;
         _tracker = tracker;
         _logger = logger;
         _jobReportService = jobrepservice;
+        _sceneDetector = detector;
 
         // Skapa en timed wrapper för den interna production-instansen
         var productionField = inner.GetType().GetField("_production", BindingFlags.NonPublic | BindingFlags.Instance);

@@ -6,6 +6,12 @@ using Emgu.CV.CvEnum;
 
 public class SceneDetector
 {
+    private readonly ILogService _logger;
+    public SceneDetector(ILogService logger)
+    {
+        _logger = logger;
+    }
+
     public async Task DetectAndSaveBestFramesParallelAsync(string videoPath, string outputFolder)
     {
         await Task.Run(() =>
@@ -19,18 +25,18 @@ public class SceneDetector
             {
                 if (!capture.IsOpened)
                 {
-                    Console.WriteLine("[ERROR] Kunde inte öppna video!");
+                    _logger.LogError("[ERROR] Kunde inte öppna video!");
                     return;
                 }
 
                 double fps = capture.Get(CapProp.Fps);
                 int cooldownFrames = (int)(fps * 2.5);
-                Console.WriteLine($"[INFO] Video FPS: {fps} | Cooldown: {cooldownFrames} frames");
+                _logger.LogInformation($"[INFO] Video FPS: {fps} | Cooldown: {cooldownFrames} frames");
 
                 var frameBuffer = new BlockingCollection<FrameData>(boundedCapacity: 10);
                 var sceneData = new SceneAnalysisData(cooldownFrames);
 
-                
+
                 var processingTask = Task.Run(() => ProcessFrames(frameBuffer, sceneData, outputFolder));
 
                 try
@@ -42,7 +48,7 @@ public class SceneDetector
                         {
                             if (!capture.Read(currentFrame))
                             {
-                                Console.WriteLine("[DEBUG] Slut på video");
+                                _logger.LogInformation("[DEBUG] end of video");
                                 break;
                             }
 
@@ -88,7 +94,7 @@ public class SceneDetector
                     // Steg 1: Validera bildruta
                     if (frameData.Frame.IsEmpty || IsBlackFrame(frameData.Frame))
                     {
-                        Console.WriteLine($"[DEBUG] Skipping frame {frameData.FrameNumber}");
+                        _logger.LogInformation($"[DEBUG] Skipping frame {frameData.FrameNumber}");
                         continue;
                     }
 
@@ -111,7 +117,7 @@ public class SceneDetector
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] Fel vid bearbetning av frame {frameData.FrameNumber}: {ex.Message}");
+                _logger.LogInformation($"[ERROR] Failure at {frameData.FrameNumber}: {ex.Message}");
             }
         }
     }
@@ -142,7 +148,7 @@ public class SceneDetector
         {
             sceneData.BestFrame?.Dispose();
             sceneData.BestFrame = frameData.Frame.Clone();
-            Console.WriteLine($"[BEST] Frame {frameData.FrameNumber} | Score: {currentScore:F2}");
+            _logger.LogInformation($"[BEST] Frame {frameData.FrameNumber} | Score: {currentScore:F2}");
         }
     }
 
@@ -150,14 +156,14 @@ public class SceneDetector
     {
         string outputPath = Path.Combine(outputFolder, $"scene_{sceneNumber}.jpg");
         CvInvoke.Imwrite(outputPath, frame);
-        Console.WriteLine($"[SAVE] Scene {sceneNumber} sparad");
+        _logger.LogInformation($"[SAVE] Scene {sceneNumber}");
     }
 
     private void SaveBestFrame(SceneAnalysisData sceneData, string outputFolder)
     {
         string outputPath = Path.Combine(outputFolder, $"scene_{sceneData.SceneNumber}.jpg");
         CvInvoke.Imwrite(outputPath, sceneData.BestFrame);
-        Console.WriteLine($"[FINAL] Sista scenen sparad");
+        _logger.LogInformation($"[FINAL] Last scene saved");
     }
 
     private bool IsBlackFrame(Mat frame)
@@ -167,7 +173,7 @@ public class SceneDetector
             CvInvoke.CvtColor(frame, gray, ColorConversion.Bgr2Gray);
             double mean = CvInvoke.Mean(gray).V0;
             bool isBlack = mean < 10;
-            if (isBlack) Console.WriteLine($"[BLACK] Mean: {mean:F2}");
+            if (isBlack) _logger.LogInformation($"[BLACK] Mean: {mean:F2}");
             return isBlack;
         }
     }

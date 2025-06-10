@@ -216,7 +216,7 @@ public partial class Creator : ICreator
         CleanPathNames(job);
 
         //await RunFFMpeg(settings);
-        var detector = new SceneDetector();
+        var detector = new SceneDetector(_logger);
         await detector.DetectAndSaveBestFramesParallelAsync(settings.PathToVideo, settings.OutputDir);
 
         job.Settings.Memes = Directory.GetFiles(job.Settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
