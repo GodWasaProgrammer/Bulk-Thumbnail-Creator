@@ -82,7 +82,6 @@ public static class Program
                 tracker,
                 decoratorLogger,
                 jobrepservice,
-                logger,
                 scenedetector); // Skicka med ILogService för att skapa TimedProduction
         });
         builder.Services.AddMudServices();

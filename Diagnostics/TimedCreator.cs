@@ -13,18 +13,18 @@ public partial class TimedCreator : ICreator
     private readonly JobReportService _jobReportService;
     private readonly SceneDetector _sceneDetector;
 
-    private event EventHandler<bool> _loadingChanged;
+    private event EventHandler<bool> LoadingChanged;
 
     public event EventHandler<bool> LoadingStateChanged
     {
         add
         {
-            _loadingChanged += value;
+            LoadingChanged += value;
             _inner.LoadingStateChanged += value;
         }
         remove
         {
-            _loadingChanged -= value;
+            LoadingChanged -= value;
             _inner.LoadingStateChanged -= value;
         }
     }
@@ -39,7 +39,7 @@ public partial class TimedCreator : ICreator
                 var field = _inner.GetType().GetField("_isLoading",
                     BindingFlags.NonPublic | BindingFlags.Instance);
                 field?.SetValue(_inner, value);
-                _loadingChanged?.Invoke(this, value);
+                LoadingChanged?.Invoke(this, value);
                 _logger.LogDebug($"Loading state changed to: {value}");
             }
         }
@@ -55,22 +55,22 @@ public partial class TimedCreator : ICreator
 
     private async Task<(Array2D<RgbPixel>, Rectangle[])> FaceDetection(string file)
     {
-        const string operationName = "FaceDetection";
-        using (_tracker.TrackOperation($"Creator.{operationName}"))
+        const string OperationName = "FaceDetection";
+        using (_tracker.TrackOperation($"Creator.{OperationName}"))
         {
             try
             {
                 var stopwatch = Stopwatch.StartNew();
-                var task = (Task<(Array2D<RgbPixel>, Rectangle[])>)_faceDetectionMethod.Invoke(null, [file]);
+                var task = (Task<(Array2D<RgbPixel>, Rectangle[])>)s_faceDetectionMethod.Invoke(null, [file]);
                 var result = await task;
 
-                _logger.LogDebug($"{operationName} completed in {stopwatch.ElapsedMilliseconds}ms");
+                _logger.LogDebug($"{OperationName} completed in {stopwatch.ElapsedMilliseconds}ms");
                 return result;
             }
             catch (TargetInvocationException tex)
             {
-                _logger.LogError(tex.InnerException ?? tex, $"{operationName} failed");
-                throw new InvalidOperationException($"{operationName} execution error", tex.InnerException ?? tex);
+                _logger.LogError(tex.InnerException ?? tex, $"{OperationName} failed");
+                throw new InvalidOperationException($"{OperationName} execution error", tex.InnerException ?? tex);
             }
         }
     }
@@ -280,30 +280,31 @@ public partial class TimedCreator : ICreator
 
     private void CreateData(Job job, Array2D<RgbPixel> image, Rectangle[] faceRectangles, PictureData picData)
     {
-        const string methodName = "CreateData";
-        using (_tracker.TrackOperation($"Creator.{methodName}"))
+        const string MethodName = "CreateData";
+        using (_tracker.TrackOperation($"Creator.{MethodName}"))
         {
             try
             {
                 // Initiera random generator (om den behövs)
                 var random = new Random();
 
-                for (int i = 0; i < picData._numberOfBoxes; i++)
+                for (var i = 0; i < picData._numberOfBoxes; i++)
                 {
                     using (_tracker.TrackOperation($"BoxCreation_{i}"))
                     {
-                        var currentParameters = new ParamForTextCreation();
-
-                        // 1. Bygg boxar
-                        currentParameters.Boxes = DataGeneration.BuildDefaultBoxes(image);
+                        var currentParameters = new ParamForTextCreation
+                        {
+                            // 1. Bygg boxar
+                            Boxes = DataGeneration.BuildDefaultBoxes(image)
+                        };
 
                         // 2. Positionera text
                         DataGeneration.GetTextPosition(
                             currentParameters,
                             faceRectangles,
                             picData.BoxParameters.Count > 0
-                                ? new List<BoxType> { picData.BoxParameters[0].CurrentBox.Type }
-                                : new List<BoxType>());
+                                ? [picData.BoxParameters[0].CurrentBox.Type]
+                                : []);
 
                         // 3. Färgval
                         ColorData.SelectTwoRandomColors(currentParameters);
@@ -326,36 +327,36 @@ public partial class TimedCreator : ICreator
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"{methodName} failed for {picData.FileName}");
+                _logger.LogError(ex, $"{MethodName} failed for {picData.FileName}");
                 throw;
             }
         }
     }
 
-    private static readonly Regex _cleanPathRegex = new Regex(@"[^\w\d?]+", RegexOptions.Compiled);
+    private static readonly Regex s_cleanPathRegex = new(@"[^\w\d?]+", RegexOptions.Compiled);
 
-    private void CleanPathNames(Job job)
+    private static void CleanPathNames(Job job)
     {
         job.Settings.OutputDir = Path.Combine(job.Settings.OutputDir,
-            _cleanPathRegex.Replace(Path.GetFileNameWithoutExtension(job.Settings.PathToVideo), ""));
+            s_cleanPathRegex.Replace(Path.GetFileNameWithoutExtension(job.Settings.PathToVideo), ""));
         Directory.CreateDirectory(job.Settings.OutputDir);
 
         job.Settings.TextAddedDir = Path.Combine(job.Settings.TextAddedDir,
-            _cleanPathRegex.Replace(Path.GetFileNameWithoutExtension(job.Settings.PathToVideo), ""));
+            s_cleanPathRegex.Replace(Path.GetFileNameWithoutExtension(job.Settings.PathToVideo), ""));
         Directory.CreateDirectory(job.Settings.TextAddedDir);
     }
-    private static readonly MethodInfo _faceDetectionMethod;
+    private static readonly MethodInfo s_faceDetectionMethod;
 
     static TimedCreator()
     {
-        _faceDetectionMethod = typeof(Creator)
+        s_faceDetectionMethod = typeof(Creator)
             .GetMethod("FaceDetection",
                 BindingFlags.NonPublic | BindingFlags.Static,
                 null,
                 [typeof(string)],
                 null);
 
-        if (_faceDetectionMethod == null)
+        if (s_faceDetectionMethod == null)
         {
             throw new TypeInitializationException(typeof(TimedCreator).FullName,
                 new MissingMethodException("FaceDetection method not found in Creator"));
@@ -366,7 +367,7 @@ public partial class TimedCreator : ICreator
         IPerformanceTracker tracker,
         ILogger<TimedCreator> logger,
         JobReportService jobrepservice,
-        ILogService logService, SceneDetector detector)
+        SceneDetector detector)
     {
         _inner = inner;
         _tracker = tracker;

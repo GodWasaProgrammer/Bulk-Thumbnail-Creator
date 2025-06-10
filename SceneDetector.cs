@@ -4,14 +4,8 @@ using System.Collections.Concurrent;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
 
-public class SceneDetector
+public class SceneDetector(ILogService logger)
 {
-    private readonly ILogService _logger;
-    public SceneDetector(ILogService logger)
-    {
-        _logger = logger;
-    }
-
     public async Task DetectAndSaveBestFramesParallelAsync(string videoPath, string outputFolder)
     {
         await Task.Run(() =>
@@ -21,55 +15,51 @@ public class SceneDetector
                 Directory.CreateDirectory(outputFolder);
             }
 
-            using (var capture = new VideoCapture(videoPath))
+            using var capture = new VideoCapture(videoPath);
+            if (!capture.IsOpened)
             {
-                if (!capture.IsOpened)
+                logger.LogError("[ERROR] Kunde inte öppna video!");
+                return;
+            }
+
+            double fps = capture.Get(CapProp.Fps);
+            var cooldownFrames = (int)(fps * 2.5);
+            logger.LogInformation($"[INFO] Video FPS: {fps} | Cooldown: {cooldownFrames} frames");
+
+            var frameBuffer = new BlockingCollection<FrameData>(boundedCapacity: 10);
+            var sceneData = new SceneAnalysisData(cooldownFrames);
+
+
+            var processingTask = Task.Run(() => ProcessFrames(frameBuffer, sceneData, outputFolder));
+
+            try
+            {
+                var frameCount = 0;
+                while (true)
                 {
-                    _logger.LogError("[ERROR] Kunde inte öppna video!");
-                    return;
-                }
-
-                double fps = capture.Get(CapProp.Fps);
-                int cooldownFrames = (int)(fps * 2.5);
-                _logger.LogInformation($"[INFO] Video FPS: {fps} | Cooldown: {cooldownFrames} frames");
-
-                var frameBuffer = new BlockingCollection<FrameData>(boundedCapacity: 10);
-                var sceneData = new SceneAnalysisData(cooldownFrames);
-
-
-                var processingTask = Task.Run(() => ProcessFrames(frameBuffer, sceneData, outputFolder));
-
-                try
-                {
-                    int frameCount = 0;
-                    while (true)
+                    using var currentFrame = new Mat();
+                    if (!capture.Read(currentFrame))
                     {
-                        using (var currentFrame = new Mat())
-                        {
-                            if (!capture.Read(currentFrame))
-                            {
-                                _logger.LogInformation("[DEBUG] end of video");
-                                break;
-                            }
-
-                            frameBuffer.Add(new FrameData
-                            {
-                                Frame = currentFrame.Clone(),
-                                FrameNumber = frameCount++
-                            });
-                        }
+                        logger.LogInformation("[DEBUG] end of video");
+                        break;
                     }
-                }
-                finally
-                {
-                    frameBuffer.CompleteAdding();
-                    processingTask.Wait();
 
-                    // Spara sista scenen
-                    if (sceneData.BestFrame != null)
+                    frameBuffer.Add(new FrameData
                     {
-                        SaveBestFrame(sceneData, outputFolder);
-                    }
+                        Frame = currentFrame.Clone(),
+                        FrameNumber = frameCount++
+                    });
+                }
+            }
+            finally
+            {
+                frameBuffer.CompleteAdding();
+                processingTask.Wait();
+
+                // Spara sista scenen
+                if (sceneData.BestFrame != null)
+                {
+                    SaveBestFrame(sceneData, outputFolder);
                 }
             }
         });
@@ -94,12 +84,12 @@ public class SceneDetector
                     // Steg 1: Validera bildruta
                     if (frameData.Frame.IsEmpty || IsBlackFrame(frameData.Frame))
                     {
-                        _logger.LogInformation($"[DEBUG] Skipping frame {frameData.FrameNumber}");
+                        logger.LogInformation($"[DEBUG] Skipping frame {frameData.FrameNumber}");
                         continue;
                     }
 
                     // Steg 2: Beräkna förändring (parallelliserbar)
-                    double change = sceneData.PreviousFrame != null
+                    var change = sceneData.PreviousFrame != null
                         ? CalculateFrameDifference(sceneData.PreviousFrame, frameData.Frame)
                         : 0;
 
@@ -117,7 +107,7 @@ public class SceneDetector
             }
             catch (Exception ex)
             {
-                _logger.LogInformation($"[ERROR] Failure at {frameData.FrameNumber}: {ex.Message}");
+                logger.LogInformation($"[ERROR] Failure at {frameData.FrameNumber}: {ex.Message}");
             }
         }
     }
@@ -129,7 +119,7 @@ public class SceneDetector
         SceneAnalysisData sceneData,
         string outputFolder)
     {
-        bool isCooldownOver = (frameData.FrameNumber - sceneData.LastSceneFrame) >= sceneData.CooldownFrames;
+        var isCooldownOver = (frameData.FrameNumber - sceneData.LastSceneFrame) >= sceneData.CooldownFrames;
 
         // Scenskifte
         if (change > 15 && isCooldownOver && sceneData.BestFrame != null)
@@ -148,55 +138,49 @@ public class SceneDetector
         {
             sceneData.BestFrame?.Dispose();
             sceneData.BestFrame = frameData.Frame.Clone();
-            _logger.LogInformation($"[BEST] Frame {frameData.FrameNumber} | Score: {currentScore:F2}");
+            logger.LogInformation($"[BEST] Frame {frameData.FrameNumber} | Score: {currentScore:F2}");
         }
     }
 
     private void SaveScene(Mat frame, string outputFolder, int sceneNumber)
     {
-        string outputPath = Path.Combine(outputFolder, $"scene_{sceneNumber}.jpg");
+        var outputPath = Path.Combine(outputFolder, $"scene_{sceneNumber}.jpg");
         CvInvoke.Imwrite(outputPath, frame);
-        _logger.LogInformation($"[SAVE] Scene {sceneNumber}");
+        logger.LogInformation($"[SAVE] Scene {sceneNumber}");
     }
 
     private void SaveBestFrame(SceneAnalysisData sceneData, string outputFolder)
     {
-        string outputPath = Path.Combine(outputFolder, $"scene_{sceneData.SceneNumber}.jpg");
+        var outputPath = Path.Combine(outputFolder, $"scene_{sceneData.SceneNumber}.jpg");
         CvInvoke.Imwrite(outputPath, sceneData.BestFrame);
-        _logger.LogInformation($"[FINAL] Last scene saved");
+        logger.LogInformation($"[FINAL] Last scene saved");
     }
 
     private bool IsBlackFrame(Mat frame)
     {
-        using (Mat gray = new Mat())
-        {
-            CvInvoke.CvtColor(frame, gray, ColorConversion.Bgr2Gray);
-            double mean = CvInvoke.Mean(gray).V0;
-            bool isBlack = mean < 10;
-            if (isBlack) _logger.LogInformation($"[BLACK] Mean: {mean:F2}");
-            return isBlack;
-        }
+        using Mat gray = new Mat();
+        CvInvoke.CvtColor(frame, gray, ColorConversion.Bgr2Gray);
+        var mean = CvInvoke.Mean(gray).V0;
+        var isBlack = mean < 10;
+        if (isBlack) logger.LogInformation($"[BLACK] Mean: {mean:F2}");
+        return isBlack;
     }
 
-    private double CalculateFrameDifference(Mat a, Mat b)
+    private static double CalculateFrameDifference(Mat a, Mat b)
     {
-        using (Mat diff = new Mat())
-        {
-            CvInvoke.AbsDiff(a, b, diff);
-            CvInvoke.CvtColor(diff, diff, ColorConversion.Bgr2Gray);
-            CvInvoke.Threshold(diff, diff, 25, 255, ThresholdType.Binary);
-            return CvInvoke.Mean(diff).V0;
-        }
+        using var diff = new Mat();
+        CvInvoke.AbsDiff(a, b, diff);
+        CvInvoke.CvtColor(diff, diff, ColorConversion.Bgr2Gray);
+        CvInvoke.Threshold(diff, diff, 25, 255, ThresholdType.Binary);
+        return CvInvoke.Mean(diff).V0;
     }
 
-    private double CalculateSharpness(Mat frame)
+    private static double CalculateSharpness(Mat frame)
     {
-        using (Mat gray = new Mat())
-        {
-            CvInvoke.CvtColor(frame, gray, ColorConversion.Bgr2Gray);
-            CvInvoke.Laplacian(gray, gray, DepthType.Cv64F);
-            return CvInvoke.Mean(gray).V0;
-        }
+        using var gray = new Mat();
+        CvInvoke.CvtColor(frame, gray, ColorConversion.Bgr2Gray);
+        CvInvoke.Laplacian(gray, gray, DepthType.Cv64F);
+        return CvInvoke.Mean(gray).V0;
     }
 }
 
@@ -208,7 +192,7 @@ public class FrameData
 
 public class SceneAnalysisData
 {
-    public readonly object LockObject = new object();
+    public readonly object LockObject = new();
     public Mat PreviousFrame { get; set; }
     public Mat BestFrame { get; set; }
     public int SceneNumber { get; set; }

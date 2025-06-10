@@ -143,8 +143,10 @@ public partial class Creator : ICreator
     {
         await _production.VerifyDirectoryAndExeIntegrity(settings);
 
-        var newjob = new Job(ytlink, "anon");
-        newjob.Settings = settings;
+        var newjob = new Job(ytlink, "anon")
+        {
+            Settings = settings
+        };
 
         await _production.YouTubeDL(newjob);
 
@@ -403,7 +405,7 @@ public partial class Creator : ICreator
         {
             List<Task> productionVarietyTaskList = [];
             SemaphoreSlim semaphore = new(4);
-            job.VarietyUrls = new List<string>();
+            job.VarietyUrls = [];
             foreach (var picData in pictureData.Varieties)
             {
                 await semaphore.WaitAsync(); // Acquire a semaphore slot
@@ -558,11 +560,11 @@ public partial class Creator : ICreator
             DirectoryInfo di = new(dirToMockPicture);
 
             var directories = di.GetDirectories();
-            string mockCorrelation = directories.FirstOrDefault()?.FullName;
+            var mockCorrelation = directories.FirstOrDefault()?.FullName;
 
             if (mockCorrelation != null)
             {
-                string mockPictureName = Path.GetFileNameWithoutExtension(mockCorrelation);
+                var mockPictureName = Path.GetFileNameWithoutExtension(mockCorrelation);
 
                 const string VarOfPrefix = "varietyof ";
                 if (mockPictureName.StartsWith(VarOfPrefix))

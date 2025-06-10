@@ -9,7 +9,7 @@ public class Production : IProduction
         _logService = logger;
     }
 
-    private ILogService _logService;
+    private readonly ILogService _logService;
 
     /// <summary>
     /// Checks if we have our directory/executables  in order
@@ -192,10 +192,8 @@ public class Production : IProduction
         }
 
         await _logService.LogInformation("Download Success:" + res.Success.ToString());
-        var path = res.Data;
 
         // sets BTC to run on the recently downloaded file res.data is the returned path.
-        path = Path.GetFullPath(path);
         job.Settings.PathToVideo = res.Data;
     }
 
@@ -225,7 +223,7 @@ public class Production : IProduction
     public async Task ProduceTextPictures(PictureData pictureData, Settings settings)
     {
         var outputPath = BuildFileName(pictureData, settings);
-        var outputImage = await CreateImage(pictureData, settings);
+        var outputImage = await CreateImage(pictureData);
 
         for (var box = 0; box < pictureData.BoxParameters.Count; box++)
         {
@@ -341,7 +339,7 @@ public class Production : IProduction
     /// <param name="pictureData"></param>
     /// <param name="settings"></param>
     /// <returns></returns>
-    public async Task<MagickImage> CreateImage(PictureData pictureData, Settings settings)
+    public async Task<MagickImage> CreateImage(PictureData pictureData)
     {
         MagickImage outputImage;
 
