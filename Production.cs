@@ -1,5 +1,8 @@
 ﻿// Ignore Spelling: ytdl Exe
 
+using System.Text;
+using YoutubeDLSharp.Metadata;
+
 namespace BulkThumbnailCreator;
 
 public class Production : IProduction
@@ -172,6 +175,7 @@ public class Production : IProduction
             YoutubeDLPath = job.Settings.YTDLPDir,
             FFmpegPath = job.Settings.FfmpegDir,
             OutputFolder = job.Settings.YTDLOutPutDir,
+            RestrictFilenames = true
         };
 
         // downloads specified video from youtube if it does not already exist.
@@ -191,8 +195,10 @@ public class Production : IProduction
         }
 
         await _logService.LogInformation("Download Success:" + res.Success.ToString());
+        var path = res.Data;
 
         // sets BTC to run on the recently downloaded file res.data is the returned path.
+        path = Path.GetFullPath(path);
         job.Settings.PathToVideo = res.Data;
     }
 

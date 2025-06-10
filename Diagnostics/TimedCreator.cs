@@ -112,7 +112,8 @@ public partial class TimedCreator : ICreator
             using (var segment = _tracker.TrackOperation("3.FrameExtraction"))
             {
                 //await RunFFMpeg(job.Settings);
-                await SceneDetector.DetectAndSaveBestFrames(job.Settings.PathToVideo, job.Settings.OutputDir);
+                var detector = new SceneDetector();
+                await detector.DetectAndSaveBestFramesParallelAsync(job.Settings.PathToVideo, job.Settings.OutputDir);
                 job.Settings.Memes = Directory.GetFiles(job.Settings.DankMemeStashDir, "*.*", SearchOption.AllDirectories);
                 job.Settings.Files = Directory.GetFiles(job.Settings.OutputDir, "*.*", SearchOption.AllDirectories);
                 segmentTimings["FrameExtraction"] = segment.Elapsed;
