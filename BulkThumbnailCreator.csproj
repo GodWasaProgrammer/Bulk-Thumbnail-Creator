@@ -24,7 +24,7 @@
   <ItemGroup>
     <PackageReference Include="DlibDotNet" Version="19.21.0.20220724" />
     <PackageReference Include="libpng-msvc-x64" Version="1.6.33.8807" />
-    <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="13.10.0" />
+    <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="14.7.0" />
     <PackageReference Include="Magick.NET.Core" Version="13.10.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
